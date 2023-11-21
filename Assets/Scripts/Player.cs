@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
     [Tooltip("Either signaller or receiver.")]
     public string role = null;
 
+    [SerializeField] private Camera playerCamera;
 
-    [SerializeField] private GameObject eyes = null;
+
+    [SerializeField] private Transform eyes = null;
 
     private bool frozen = false;
 
@@ -17,13 +21,24 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerCamera = GetComponent<Camera>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        // TODO: Make the eye gameobject rotate according to the eye movements of the participant
+        Vector3 direction = Input.mousePosition - playerCamera.WorldToScreenPoint(transform.position);
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    }
+
+
+    // Teleports the player to another space
+    public void Teleport(Vector3 location)
+    {
+        Transform currentLocation = GetComponent<Transform>();
+        currentLocation.position = location;
     }
 
 
@@ -38,15 +53,6 @@ public class Player : MonoBehaviour
     {
         frozen = false;
     }
-
-    // Co-Routine!!
-    // Make the eye gameobjects follow the participants' eye movements.
-    private void MoveEyes()
-    {
-        if (frozen == false)
-        {
-            // 
-        }
-    }
+ 
 
 }
