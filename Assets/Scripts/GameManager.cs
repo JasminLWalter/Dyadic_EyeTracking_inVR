@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     private int score = 0;
 
     [SerializeField] private int roundsPerCondition = 0;
-    [SerializeField] private List<GameObject> boxes = None;
+    [SerializeField] private List<GameObject> boxes = null;
 
 
     // Start is called before the first frame update

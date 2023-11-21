@@ -5,12 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Tooltip("Either signaller or receiver.")]
-    public string role = None;
+    public string role = null;
 
 
-    [SerializeField] private GameObject eyes = None
+    [SerializeField] private GameObject eyes = null;
 
-    private bool frozen = False
+    private bool frozen = false;
 
 
 
@@ -30,20 +30,20 @@ public class Player : MonoBehaviour
     // Prevent the eye gameobjects from moving according to the EyeTracking data.
     public void Freeze()
     {
-        frozen = True
+        frozen = true;
     }
 
     // Make the eye gameobjects follow the participants' eye movements again.
     public void Unfreeze()
     {
-        frozen = False
+        frozen = false;
     }
 
     // Co-Routine!!
     // Make the eye gameobjects follow the participants' eye movements.
     private void MoveEyes()
     {
-        if (frozen == False)
+        if (frozen == false)
         {
             // 
         }
