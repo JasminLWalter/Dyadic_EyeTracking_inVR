@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour
     [Tooltip("Stores the current condition of the experiment.")]
     [SerializeField] private int condition = 0;
     private int phase = 0;
-    private Player player;
+    private Player player1;
+    private Player player2;
     private int score = 0;
 
     [SerializeField] private int roundsPerCondition = 0;
