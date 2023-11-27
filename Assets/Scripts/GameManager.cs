@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int condition = 0;
     private int phase = 0;
     private Player player;
+    private Player player2;
     private int score = 0;
 
     [SerializeField] private int roundsPerCondition = 0;
