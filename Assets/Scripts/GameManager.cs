@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Random;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -57,6 +56,12 @@ public class GameManager : MonoBehaviour
             // 2. Shuffle rewards
             ShuffleRewards();
             // 3. Unfreeze signaller
+            player.Unfreeze();
+            // wait for a certain amount of time / the signaller pressing a button
+            // player.Freeze();
+            // player2.Unfreeze();
+            // 4. Receiver chooses box 
+            // Reward is added up 
         }
         // End Phase
         else if (phase > 2)
@@ -74,7 +79,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    // Shuffles the rewards values and assigns them to the boxes.
+    // Shuffles the reward values and assigns them to the boxes.
     private void ShuffleRewards()
     {
         // Shuffle the rewards of the inner boxes
