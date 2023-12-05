@@ -1,0 +1,102 @@
+{
+    "name": "InputBindings",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "8032b4e0-ea07-448e-a46f-826428218e93",
+            "actions": [
+                {
+                    "name": "MouseGaze",
+                    "type": "PassThrough",
+                    "id": "7b0bda95-acbb-4d86-bfc4-068e87d5f99b",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "a99cd13f-c086-4c44-8867-f7a3de96bb8e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a4d4a09f-1971-4c25-a69f-4785191e4917",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseGaze",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c4fa9936-f010-417d-8b2b-d84bcd227234",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "d0613ba3-3bef-4e31-a113-db450867f0f2",
+            "actions": [
+                {
+                    "name": "Forward",
+                    "type": "Button",
+                    "id": "c0c992d0-010f-421c-897a-4f0ceedf057f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Back",
+                    "type": "Button",
+                    "id": "aa62d41f-6d36-4dc4-b24a-930b7fac3350",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "22179469-0ee2-443c-932d-f7e4d471e241",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ce81a31e-7ff4-4109-857b-8bcb1367b5cf",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
