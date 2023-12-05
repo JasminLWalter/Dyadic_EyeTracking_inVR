@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Embodiment Phase
+       // Embodiment Phase
         if (phase == 0)
         { 
             
