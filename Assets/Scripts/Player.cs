@@ -30,9 +30,9 @@ public class Player : MonoBehaviour
     void Update()
     {
         // TODO: Make the eye gameobject rotate according to the eye movements of the participant
-        Vector3 direction = Input.mousePosition - playerCamera.WorldToScreenPoint(transform.position);
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        //Vector3 direction = Input.mousePosition - playerCamera.WorldToScreenPoint(transform.position);
+        //float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        //transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         // Check if the right arrow key is pressed and initiate movement
         if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
