@@ -15,9 +15,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Transform eyes = null;
 
-    private bool frozen = false;
+    public bool frozen = false;
 
-    private Vector3 teleportPosition;
+    private Vector3 teleportPosition; //TODO: remove, just for debugging purposes
 
     private InputBindings _inputBindings;
 
@@ -34,18 +34,9 @@ public class Player : MonoBehaviour
     void Update()
     {
         // TODO: Make the eye gameobject rotate according to the eye movements of the participant
-        //Vector3 direction = Input.mousePosition - playerCamera.WorldToScreenPoint(transform.position);
-        //float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        //transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
-        // Check if the right arrow key is pressed and initiate movement
-        /**
-        if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
-        {
-            transform.position = teleportPosition; // Set player position to the specified position
-            Debug.Log("Right arrow key pressed.");
-        }**/
-
+        
+        
+        //TODO: remove the following; just for debugging purposes
         if (_inputBindings.Player.TeleportationDebug.triggered)
         {
             transform.position = teleportPosition; // Set player position to the specified position
@@ -54,6 +45,7 @@ public class Player : MonoBehaviour
 
     }
 
+    //TODO: remove; just for debugging purposes
     public bool IsAtSpecificPosition()
     {
         return transform.position == new Vector3(10f, 10f, 10f);
@@ -65,17 +57,7 @@ public class Player : MonoBehaviour
         Transform currentLocation = GetComponent<Transform>();
         currentLocation.position = location;
     }
-
-    public void TeleportDebug(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed)
-        {
-            transform.position = teleportPosition; // Set player position to the specified position
-            Debug.Log("Right arrow key pressed.");
-        }
-    }
     
-
     // Prevent the eye gameobjects from moving according to the EyeTracking data.
     public void Freeze()
     {

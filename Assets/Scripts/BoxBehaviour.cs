@@ -19,7 +19,7 @@ public class BoxBehaviour : MonoBehaviour
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-        defaultMaterial = FindObjectOfType<MeshRenderer>().material;
+        defaultMaterial = gameObject.GetComponent<MeshRenderer>().material;
         rewardText = gameObject.transform.GetComponentInChildren<TextMeshPro>();
     }
 
@@ -35,22 +35,20 @@ public class BoxBehaviour : MonoBehaviour
     }
 
     // When the box is starred at (= when the x-ray collides with the box)
-    private void OnTriggerEnter(Collider xray)
+    public void StarredAt()
     {
-        FindObjectOfType<MeshRenderer>().material = highlightMaterial;
+        gameObject.GetComponent<MeshRenderer>().material = highlightMaterial;
     }
 
     // While the box is starred at (= while the x-ray collides with the box)
-    private void OnTriggerStay(Collider xray)
+    public void Selected()
     {
-        // TODO: 
-        // If box is actually selected
-        // gameManager.UpdateScore(int.Parse(rewardText.text));
+        gameManager.UpdateScore(int.Parse(rewardText.text));
     }
 
     // When the box is not longer starred at (= when the x-ray does not collide with the box anymore)
-    private void OnTriggerExit(Collider xray)
+    public void NotLongerStarredAt()
     {
-        FindObjectOfType<MeshRenderer>().material = defaultMaterial;
+        gameObject.GetComponent<MeshRenderer>().material = defaultMaterial;
     }
 }
