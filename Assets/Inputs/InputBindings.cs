@@ -44,6 +44,15 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TeleportationDebug"",
+                    ""type"": ""Button"",
+                    ""id"": ""aad3a0c4-f7c8-48cc-a775-883ae3a7ec2d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -66,6 +75,17 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ea1e386-0b37-4969-b4d4-65c7db3eaac0"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TeleportationDebug"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -126,6 +146,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_MouseGaze = m_Player.FindAction("MouseGaze", throwIfNotFound: true);
         m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
+        m_Player_TeleportationDebug = m_Player.FindAction("TeleportationDebug", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Forward = m_UI.FindAction("Forward", throwIfNotFound: true);
@@ -193,12 +214,14 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_MouseGaze;
     private readonly InputAction m_Player_Select;
+    private readonly InputAction m_Player_TeleportationDebug;
     public struct PlayerActions
     {
         private @InputBindings m_Wrapper;
         public PlayerActions(@InputBindings wrapper) { m_Wrapper = wrapper; }
         public InputAction @MouseGaze => m_Wrapper.m_Player_MouseGaze;
         public InputAction @Select => m_Wrapper.m_Player_Select;
+        public InputAction @TeleportationDebug => m_Wrapper.m_Player_TeleportationDebug;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -214,6 +237,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
+            @TeleportationDebug.started += instance.OnTeleportationDebug;
+            @TeleportationDebug.performed += instance.OnTeleportationDebug;
+            @TeleportationDebug.canceled += instance.OnTeleportationDebug;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -224,6 +250,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
+            @TeleportationDebug.started -= instance.OnTeleportationDebug;
+            @TeleportationDebug.performed -= instance.OnTeleportationDebug;
+            @TeleportationDebug.canceled -= instance.OnTeleportationDebug;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -299,6 +328,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     {
         void OnMouseGaze(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
+        void OnTeleportationDebug(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
