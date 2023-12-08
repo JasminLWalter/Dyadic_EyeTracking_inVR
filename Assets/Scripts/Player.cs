@@ -65,17 +65,7 @@ public class Player : MonoBehaviour
         Transform currentLocation = GetComponent<Transform>();
         currentLocation.position = location;
     }
-
-    public void TeleportDebug(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed)
-        {
-            transform.position = teleportPosition; // Set player position to the specified position
-            Debug.Log("Right arrow key pressed.");
-        }
-    }
     
-
     // Prevent the eye gameobjects from moving according to the EyeTracking data.
     public void Freeze()
     {

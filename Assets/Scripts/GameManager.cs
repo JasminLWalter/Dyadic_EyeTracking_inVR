@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,6 +14,8 @@ public class GameManager : MonoBehaviour
     private Player player;
     private Player player2;
     private int score;
+
+    [SerializeField] private TextMeshPro scoreDisplay;
 
     [SerializeField] private int roundsPerCondition = 0;
     [SerializeField] private List<GameObject> boxes = null;
@@ -40,18 +43,20 @@ public class GameManager : MonoBehaviour
        // Embodiment Phase
         if (phase == 0)
         { 
-            
+            Debug.Log("Phase 0");
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             EnterNextPhase();
         }
         // Instruction Phase
         else if (phase == 1)
         {
-           
+            Debug.Log("Phase 1");
+            EnterNextPhase();
         }
         // Testing Phase
         else if (phase == 2)
         {
+            //Debug.Log("Phase 2");
             // 1. Freeze receiver 
             // 2. Shuffle rewards
             ShuffleRewards();
@@ -66,7 +71,7 @@ public class GameManager : MonoBehaviour
         // End Phase
         else if (phase > 2)
         {
-            
+            Debug.Log("Phase 3");
         }
     }
 
@@ -108,6 +113,7 @@ public class GameManager : MonoBehaviour
     public void UpdateScore(int reward)
     {
         score += reward;
+        scoreDisplay.text = "Score: " + score;
     }
 
     // TODO:
