@@ -22,15 +22,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "TeleportationDebug",
-                    "type": "Button",
-                    "id": "aad3a0c4-f7c8-48cc-a775-883ae3a7ec2d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -53,17 +44,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9ea1e386-0b37-4969-b4d4-65c7db3eaac0",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "TeleportationDebug",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -95,8 +75,8 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "22179469-0ee2-443c-932d-f7e4d471e241",
-                    "path": "<Keyboard>/space",
+                    "id": "982c27bd-0915-4607-9a82-d6d22e7ac65c",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

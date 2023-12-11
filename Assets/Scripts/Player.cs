@@ -17,15 +17,12 @@ public class Player : MonoBehaviour
 
     public bool frozen = false;
 
-    private Vector3 teleportPosition; //TODO: remove, just for debugging purposes
-
     private InputBindings _inputBindings;
 
     // Start is called before the first frame update
     void Start()
     {
         playerCamera = GetComponent<Camera>();
-        teleportPosition = new Vector3(10f, 10f, 10f);
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
     }
@@ -36,21 +33,10 @@ public class Player : MonoBehaviour
         // TODO: Make the eye gameobject rotate according to the eye movements of the participant
         
         
-        //TODO: remove the following; just for debugging purposes
-        if (_inputBindings.Player.TeleportationDebug.triggered)
-        {
-            transform.position = teleportPosition; // Set player position to the specified position
-            Debug.Log("Right arrow key pressed.");
-        }
+
 
     }
-
-    //TODO: remove; just for debugging purposes
-    public bool IsAtSpecificPosition()
-    {
-        return transform.position == new Vector3(10f, 10f, 10f);
-    }
-
+    
     // Teleports the player to another space
     public void Teleport(Vector3 location)
     {
