@@ -11,9 +11,13 @@ public class MenuManager : MonoBehaviour
 
     public Player player; // Reference to the PlayerTest script
 
+    private GameManager gameManager;
+    // gameManager.EnterNextPhase()
+
 
     void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
 
         textToShow2.gameObject.SetActive(false);
 
@@ -30,7 +34,7 @@ public class MenuManager : MonoBehaviour
 
 
         // Check if the player has reached the specific position using a method in the PlayerTest script
-        if (player != null && player.IsAtSpecificPosition())
+        if (player != null && gameManager.GetCurrentPhase() == 0)
         {
             StartCoroutine(ShowTextTemporarily(textToShow1, 3f, textToShow2));
             Debug.Log("Start Coroutine.");

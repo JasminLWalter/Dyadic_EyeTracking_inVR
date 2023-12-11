@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 {
     [Tooltip("Stores the current condition of the experiment.")]
     [SerializeField] private int condition = 0;
-    [Tooltip("Phase 1: Embodiment Phase; Phase 2: Instruction Phase; Phase 3: Testing Phase; Phase 4: End Phase")]
+    [Tooltip("Phase 1: Embodiment Phase; Phase 2: Instruction Phase; Phase 3: Testing Phase Condition 1; Phase 4: Second Instruction Phase; Phase 5: Testing Phase Condition 2; Phase 6: End Phase")]
     [SerializeField] private int phase = 0;
     private Player player;
     private Player player2;
@@ -88,6 +88,11 @@ public class GameManager : MonoBehaviour
     {
         phase += 1;
         player.Teleport(spaceLocations.ElementAt(phase));
+    }
+
+    public int GetCurrentPhase()
+    {
+        return phase;
     }
 
     private IEnumerator Condition1()
