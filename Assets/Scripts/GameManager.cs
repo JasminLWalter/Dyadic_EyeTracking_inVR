@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
 {
     [Tooltip("Stores the current condition of the experiment.")]
     [SerializeField] private int condition = 0;
-    [Tooltip("Phase 1: Embodiment Phase; Phase 2: Instruction Phase; Phase 3: Testing Phase Condition 1; Phase 4: Second Instruction Phase; Phase 5: Testing Phase Condition 2; Phase 6: End Phase")]
+   // [Tooltip("Phase 1: Embodiment Phase; Phase 2: Instruction Phase; Phase 3: Testing Phase Condition 1; Phase 4: Second Instruction Phase; Phase 5: Testing Phase Condition 2; Phase 6: End Phase")]
+    [Tooltip("Phase 1: Welcome & Instruction Embodiment (UI Space); Phase 2: Embodiment (Embodiment Space); Phase 3: Instruction Testing (UI Space); Phase 4: First Condition (Experiment Room); Phase 5: Second Condition (Experiment Room); Phase 6: End Phase (UI Space)")]
     [SerializeField] private int phase = 0;
     private Player player;
     private Player player2;
@@ -53,7 +54,7 @@ public class GameManager : MonoBehaviour
         { 
             Debug.Log("Phase 0");
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
-            EnterNextPhase();
+            // EnterNextPhase();
         }
         // Instruction Phase
         else if (phase == 1)
