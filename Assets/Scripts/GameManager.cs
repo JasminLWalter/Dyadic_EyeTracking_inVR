@@ -10,9 +10,8 @@ public class GameManager : MonoBehaviour
 {
     [Tooltip("Stores the current condition of the experiment.")]
     [SerializeField] private int condition = 0;
-   // [Tooltip("Phase 1: Embodiment Phase; Phase 2: Instruction Phase; Phase 3: Testing Phase Condition 1; Phase 4: Second Instruction Phase; Phase 5: Testing Phase Condition 2; Phase 6: End Phase")]
     [Tooltip("Phase 1: Welcome & Instruction Embodiment (UI Space); Phase 2: Embodiment (Embodiment Space); Phase 3: Instruction Testing (UI Space); Phase 4: First Condition (Experiment Room); Phase 5: Second Condition (Experiment Room); Phase 6: End Phase (UI Space)")]
-    [SerializeField] private int phase = 0;
+    [SerializeField] private int phase = 1;
     private Player player;
     private Player player2;
     private InputBindings _inputBindings;
@@ -49,24 +48,29 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       // Embodiment Phase
-        if (phase == 0)
+       // Phase 1: Welcome & Instruction Embodiment (UI Space)
+        if (phase == 1)
         { 
-            Debug.Log("Phase 0");
+            Debug.Log("Phase 1");
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             // EnterNextPhase();
         }
-        // Instruction Phase
-        else if (phase == 1)
+        // Phase 2: Embodiment (Embodiment Space)
+        else if (phase == 2)
         {
-            Debug.Log("Phase 1");
+            Debug.Log("Phase 2");
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             EnterNextPhase();
         }
-        // Testing Phase
-        else if (phase == 2)
+        // Phase 3: Instruction Testing (UI Space)
+        else if (phase == 3)
         {
-            //Debug.Log("Phase 2");
+            Debug.Log("Phase 3");
+        }
+        // Phase 4: First Condition (Experiment Room)
+        else if (phase == 4)
+        {
+            //Debug.Log("Phase 4");
             if (_currentRound < roundsPerCondition)
             {   
                 if (_startedRound == false)
@@ -77,10 +81,24 @@ public class GameManager : MonoBehaviour
                 EnterNextPhase();
             }
         }
-        // End Phase
-        else if (phase > 2)
+        // Phase 5: Second Condition (Experiment Room)
+        else if (phase == 5)
         {
-            Debug.Log("Phase 3");
+            //Debug.Log("Phase 4");
+            if (_currentRound < roundsPerCondition)
+            {   
+                if (_startedRound == false)
+                    StartCoroutine(Condition2());
+            } 
+            else 
+            {
+                EnterNextPhase();
+            }
+        }
+        // Phase 6: End Phase (UI Space)
+        else
+        {
+            Debug.Log("Phase 6");
         }
     }
 
@@ -114,6 +132,15 @@ public class GameManager : MonoBehaviour
         yield return new WaitWhile(() => _selected == false);
         // Reward is added up
         
+    }
+
+    private IEnumerator Condition2()
+    {
+        _startedRound = true;
+        _selected = false;
+        roundsDisplay.text = "Round: " + _currentRound;
+        ShuffleRewards();
+        yield return new WaitWhile(() => _selected == false);
     }
 
 
