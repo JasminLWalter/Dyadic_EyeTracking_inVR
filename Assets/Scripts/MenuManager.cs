@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using System;
 using System.Collections.Generic;
 
 public class MenuManager : MonoBehaviour
@@ -43,27 +44,30 @@ public class MenuManager : MonoBehaviour
         // Subscribe to the 'Continue' action performed event
         //_inputBindings.Player.Continue.performed += OnContinuePerformed;
     }
-    private int isCoroutineRunning = 0;
+    //private int isCoroutineRunning = 0;
 
-    private bool continueButtonPressed = false;
-    private int continueCounter = 0;
+  
+    //private int continueCounter = 0;
+
+    private bool phase1CoroutineRunning = false;
+    private bool phase3CoroutineRunning = false;
 
     void Update()
     {
-        if (gameManager.GetCurrentPhase() == 1 && isCoroutineRunning == 0)
+        if (gameManager.GetCurrentPhase() == 1 && !phase1CoroutineRunning)
         {
-            StartCoroutine(ShowTextTemporarily(TextsPhase1, 3f));
+            StartCoroutine(ShowTextTemporarily(TextsPhase1, 3f, () => phase1CoroutineRunning = false));
+            phase1CoroutineRunning = true;
         }
-        else if (gameManager.GetCurrentPhase() == 3 && isCoroutineRunning == 1)
+        else if (gameManager.GetCurrentPhase() == 3 && !phase3CoroutineRunning)
         {
-            StartCoroutine(ShowTextTemporarily(TextsPhase3, 3f));
+            StartCoroutine(ShowTextTemporarily(TextsPhase3, 3f, () => phase3CoroutineRunning = false));
+            phase3CoroutineRunning = true;
         }
     }
 
-    IEnumerator ShowTextTemporarily(List<TMP_Text> textComponents, float duration)
+    IEnumerator ShowTextTemporarily(List<TMP_Text> textComponents, float duration, Action coroutineFinishedCallback)
     {
-        isCoroutineRunning += 1; // Set the flag to indicate the coroutine is running
-
         if (textComponents.Count < 3)
         {
             Debug.LogError("Insufficient text components in the list.");
@@ -78,18 +82,19 @@ public class MenuManager : MonoBehaviour
         textComponents[1].gameObject.SetActive(true);
 
         yield return new WaitWhile(() => _inputBindings.Player.Continue.triggered == false);
-        continueButtonPressed = true;
+        //continueButtonPressed = true;
 
         textComponents[1].gameObject.SetActive(false);
         textComponents[2].gameObject.SetActive(true);
 
-        while (textComponents[textComponents.Count - 1].gameObject.activeSelf)
+        while (textComponents[2].gameObject.activeSelf)
         {
-            yield return null; // Wait until textComponent[2] becomes visible
+            yield return null; // Wait until the last text component becomes visible
             if (_inputBindings.Player.Continue.triggered)
             {
                 textComponents[2].gameObject.SetActive(false);
                 gameManager.EnterNextPhase();
+                coroutineFinishedCallback?.Invoke(); // Callback to signal coroutine completion
             }
         }
 
