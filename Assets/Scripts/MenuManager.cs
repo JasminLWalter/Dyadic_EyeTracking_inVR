@@ -19,6 +19,10 @@ public class MenuManager : MonoBehaviour
 
     private bool phase1CoroutineRunning = false;
     private bool phase3CoroutineRunning = false;
+    private bool ShowedStart = false;
+
+    private int currentTextIndex = 0;
+
 
     private void Start()
     {
@@ -54,13 +58,13 @@ public class MenuManager : MonoBehaviour
             }
             else
             {
-                StartCoroutine(ShowTextTemporarily(TextsPhase1, () => phase1CoroutineRunning = false));
+                StartCoroutine(ShowTexts(TextsPhase1, () => phase1CoroutineRunning = false));
                 phase1CoroutineRunning = true;
             }
         }
         else if (gameManager.GetCurrentPhase() == 3 && !phase3CoroutineRunning)
         {
-            StartCoroutine(ShowTextTemporarily(TextsPhase3, () => phase3CoroutineRunning = false));
+            StartCoroutine(ShowTexts(TextsPhase3, () => phase3CoroutineRunning = false));
             phase3CoroutineRunning = true;
         }
         else if (gameManager.GetCurrentPhase() == 6)
@@ -72,9 +76,9 @@ public class MenuManager : MonoBehaviour
             gameManager.EnterNextPhase();
         }
     }
-    private int currentTextIndex = 0;
+    
 
-    IEnumerator ShowTextTemporarily(List<TMP_Text> textComponents, Action coroutineFinishedCallback)
+    IEnumerator ShowTexts(List<TMP_Text> textComponents, Action coroutineFinishedCallback)
     {
         int currentTextIndex = 0;
 
@@ -108,9 +112,7 @@ public class MenuManager : MonoBehaviour
 
             yield return null;
         }
-    }
-
-    private bool ShowedStart = false;
+    } 
 
     private IEnumerator ShowStart()
     {
