@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Phase 2");
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
-            EnterNextPhase();
+            //EnterNextPhase();
         }
         // Phase 3: Instruction Testing (UI Space)
         else if (phase == 3)

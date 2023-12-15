@@ -1023,7 +1023,7 @@ MonoBehaviour:
   - {x: -5.5, y: 2, z: 0}
   - {x: -50, y: -26.5, z: 1}
   - {x: -5.5, y: 2, z: 0}
-  - {x: -5.5, y: 2, z: 0}
+  - {x: -50, y: 6.5, z: 0}
   - {x: -50, y: 6.5, z: 1}
   rewards: 000000000500000000000000050000000a000000000000000500000000000000
 --- !u!4 &171754635
@@ -3406,7 +3406,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7.44, y: -1.05}
+  m_AnchoredPosition: {x: -45, y: -12.5}
   m_SizeDelta: {x: 7, y: 7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &783558477
@@ -4913,6 +4913,7 @@ MonoBehaviour:
   - {fileID: 1541335213}
   - {fileID: 205792063}
   - {fileID: 150570388}
+  TextPhase6: {fileID: 783558477}
   player: {fileID: 452463684}
   gameManager: {fileID: 171754634}
 --- !u!4 &1398317298
