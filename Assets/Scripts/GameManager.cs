@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 {
     [Tooltip("Stores the current condition of the experiment.")]
     [SerializeField] private int condition = 0;
-    [Tooltip("Phase 1: Welcome & Instruction Embodiment (UI Space); Phase 2: Embodiment (Embodiment Space); Phase 3: Instruction Testing (UI Space); Phase 4: First Condition (Experiment Room); Phase 5: Second Condition (Experiment Room); Phase 6: End Phase (UI Space)")]
+    [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: First Condition (Experiment Room); Phase 4: Instructions Second Condition (UI Space); Phase 5: Second Condition (Experiment Room); Phase 6: End Phase (UI Space)")]
     [SerializeField] private int phase = 1;
     private Player player;
     private Player player2;
@@ -48,29 +48,29 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       // Phase 1: Welcome & Instruction Embodiment (UI Space)
-        if (phase == 1)
+       // Phase 0: Welcome & Instruction Embodiment (UI Space)
+        if (phase == 0)
         { 
-            Debug.Log("Phase 1");
+            Debug.Log("Phase 0");
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             // EnterNextPhase();
         }
-        // Phase 2: Embodiment (Embodiment Space)
-        else if (phase == 2)
+        // Phase 1: Embodiment (Embodiment Space)
+        else if (phase == 1)
         {
-            Debug.Log("Phase 2");
+            Debug.Log("Phase 1");
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             //EnterNextPhase();
         }
-        // Phase 3: Instruction Testing (UI Space)
+        // Phase 2: Instruction Testing (UI Space)
+        else if (phase == 2)
+        {
+            Debug.Log("Phase 2");
+        }
+        // Phase 3: First Condition (Experiment Room)
         else if (phase == 3)
         {
-            Debug.Log("Phase 3");
-        }
-        // Phase 4: First Condition (Experiment Room)
-        else if (phase == 4)
-        {
-            //Debug.Log("Phase 4");
+            //Debug.Log("Phase 3");
             if (_currentRound < roundsPerCondition)
             {   
                 if (_startedRound == false)
@@ -80,6 +80,11 @@ public class GameManager : MonoBehaviour
             {
                 EnterNextPhase();
             }
+        }
+        // Phase 4: Second Condition Instructions (UI Space)
+        else if (phase == 4)
+        {
+            Debug.Log("Phase 4");
         }
         // Phase 5: Second Condition (Experiment Room)
         else if (phase == 5)

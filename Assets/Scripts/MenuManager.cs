@@ -7,9 +7,10 @@ using System.Collections.Generic;
 
 public class MenuManager : MonoBehaviour
 {
-    public List<TMP_Text> TextsPhase1;
-    public TMP_Text TextPhase1;
-    public List<TMP_Text> TextsPhase3;
+    public List<TMP_Text> TextsPhase0;
+    public TMP_Text TextPhase0;
+    public List<TMP_Text> TextsPhase2;
+    public TMP_Text TextPhase4;
     public TMP_Text TextPhase6;
 
     public Player player;
@@ -17,8 +18,8 @@ public class MenuManager : MonoBehaviour
 
     private InputBindings _inputBindings;
 
-    private bool phase1CoroutineRunning = false;
-    private bool phase3CoroutineRunning = false;
+    private bool phase0CoroutineRunning = false;
+    private bool phase2CoroutineRunning = false;
     private bool ShowedStart = false;
 
     private int currentTextIndex = 0;
@@ -31,14 +32,17 @@ public class MenuManager : MonoBehaviour
         
         gameManager = FindObjectOfType<GameManager>();
 
-        foreach (TMP_Text TextPhase1 in TextsPhase1)
+        TextPhase4.gameObject.SetActive(false);
+        TextPhase6.gameObject.SetActive(false);
+
+        foreach (TMP_Text TextPhase0 in TextsPhase0)
         {
-            TextPhase1.gameObject.SetActive(false);
+            TextPhase0.gameObject.SetActive(false);
         }
 
-        foreach (TMP_Text TextPhase3 in TextsPhase3)
+        foreach (TMP_Text TextPhase2 in TextsPhase2)
         {
-            TextPhase3.gameObject.SetActive(false);
+            TextPhase2.gameObject.SetActive(false);
         }
 
         if (player == null)
@@ -50,7 +54,7 @@ public class MenuManager : MonoBehaviour
 
     void Update()
     {
-        if (gameManager.GetCurrentPhase() == 1 && !phase1CoroutineRunning)
+        if (gameManager.GetCurrentPhase() == 0 && !phase0CoroutineRunning)
         {
             if (ShowedStart == false)
             {
@@ -58,14 +62,23 @@ public class MenuManager : MonoBehaviour
             }
             else
             {
-                StartCoroutine(ShowTexts(TextsPhase1, () => phase1CoroutineRunning = false));
-                phase1CoroutineRunning = true;
+                StartCoroutine(ShowTexts(TextsPhase0, () => phase0CoroutineRunning = false));
+                phase0CoroutineRunning = true;
             }
         }
-        else if (gameManager.GetCurrentPhase() == 3 && !phase3CoroutineRunning)
+        else if (gameManager.GetCurrentPhase() == 2 && !phase2CoroutineRunning)
         {
-            StartCoroutine(ShowTexts(TextsPhase3, () => phase3CoroutineRunning = false));
-            phase3CoroutineRunning = true;
+            StartCoroutine(ShowTexts(TextsPhase2, () => phase2CoroutineRunning = false));
+            phase2CoroutineRunning = true;
+        }
+        else if (gameManager.GetCurrentPhase() == 4)
+        {
+            TextPhase4.gameObject.SetActive(true);
+            if (_inputBindings.Player.Continue.triggered)
+            {
+                gameManager.EnterNextPhase();
+                TextPhase4.gameObject.SetActive(false);
+            }
         }
         else if (gameManager.GetCurrentPhase() == 6)
         {
@@ -116,9 +129,9 @@ public class MenuManager : MonoBehaviour
 
     private IEnumerator ShowStart()
     {
-        TextPhase1.gameObject.SetActive(true);
+        TextPhase0.gameObject.SetActive(true);
         yield return new WaitForSeconds(3f);
-        TextPhase1.gameObject.SetActive(false);
+        TextPhase0.gameObject.SetActive(false);
         ShowedStart = true;
     }
 
