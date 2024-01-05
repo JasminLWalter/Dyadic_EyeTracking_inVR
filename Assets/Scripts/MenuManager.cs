@@ -65,13 +65,14 @@ public class MenuManager : MonoBehaviour
                 StartCoroutine(ShowTexts(TextsPhase0, () => phase0CoroutineRunning = false));
                 phase0CoroutineRunning = true;
             }
+
         }
-        else if (gameManager.GetCurrentPhase() == 2 && !phase2CoroutineRunning)
+        if (gameManager.GetCurrentPhase() == 2 && !phase2CoroutineRunning)
         {
             StartCoroutine(ShowTexts(TextsPhase2, () => phase2CoroutineRunning = false));
             phase2CoroutineRunning = true;
         }
-        else if (gameManager.GetCurrentPhase() == 4)
+        if (gameManager.GetCurrentPhase() == 4)
         {
             TextPhase4.gameObject.SetActive(true);
             if (_inputBindings.Player.Continue.triggered)
@@ -80,14 +81,40 @@ public class MenuManager : MonoBehaviour
                 TextPhase4.gameObject.SetActive(false);
             }
         }
-        else if (gameManager.GetCurrentPhase() == 6)
+        if (gameManager.GetCurrentPhase() == 6)
         {
             TextPhase6.gameObject.SetActive(true);
         }
-        else if (_inputBindings.Player.Skip.triggered)
+        if (_inputBindings.Player.Skip.triggered)
         {
             gameManager.EnterNextPhase();
         }
+
+        //Hides everything if wrong phase
+        if (gameManager.GetCurrentPhase() != 0)
+        {
+            TextPhase0.gameObject.SetActive(false);
+            HideLists(TextsPhase0);
+        }
+
+        if (gameManager.GetCurrentPhase() != 2)
+        {
+            HideLists(TextsPhase2);
+            Debug.Log("Hides");
+        }
+
+        if (gameManager.GetCurrentPhase() != 4)
+        {
+            TextPhase4.gameObject.SetActive(false);
+
+        }
+
+        if (gameManager.GetCurrentPhase() != 6)
+        {
+            TextPhase6.gameObject.SetActive(false);
+
+        }
+
     }
     
 
@@ -133,6 +160,18 @@ public class MenuManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
         TextPhase0.gameObject.SetActive(false);
         ShowedStart = true;
+    }
+
+    void HideLists(List<TMP_Text> texts)
+    {
+        foreach (TMP_Text textElement in texts)
+        {
+            // Access each TMP_Text element and its gameObject to hide it
+            if (textElement != null)
+            {
+                textElement.gameObject.SetActive(false); // Hiding gameObject of each TMP_Text
+            }
+        }
     }
 
 }

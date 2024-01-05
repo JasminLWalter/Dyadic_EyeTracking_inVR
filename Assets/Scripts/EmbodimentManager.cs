@@ -58,6 +58,15 @@ public class EmbodimentManager : MonoBehaviour
         {
             Finish.gameObject.SetActive(true);
         }
+
+        if (gameManager.GetCurrentPhase() != 1)
+        {
+            StartRecording.gameObject.SetActive(false);
+            StopRecording.gameObject.SetActive(false);
+            ShowRecording.gameObject.SetActive(false);
+            Finish.gameObject.SetActive(false);
+            RecordingText.gameObject.SetActive(false);
+        }
     }
 
     public void OnStartRecordingButtonClick()
