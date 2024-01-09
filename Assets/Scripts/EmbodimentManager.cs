@@ -12,6 +12,10 @@ public class EmbodimentManager : MonoBehaviour
     public Button Finish;
 
     public GameObject TV;
+    public GameObject TV1;
+    public GameObject TV2;
+    public Material Invisible;
+    public Material Screen_off;
 
     public TMP_Text RecordingText;
 
@@ -36,6 +40,7 @@ public class EmbodimentManager : MonoBehaviour
         ShowRecording.gameObject.SetActive(false);
         Finish.gameObject.SetActive(false);
         RecordingText.gameObject.SetActive(false);
+        TV.gameObject.SetActive(false);
 
         StartRecording.onClick.AddListener(OnStartRecordingButtonClick);
         StopRecording.onClick.AddListener(OnStopRecordingButtonClick);
@@ -80,7 +85,7 @@ public class EmbodimentManager : MonoBehaviour
 
     public void OnStartRecordingButtonClick()
     {
-        TV.gameObject.SetActive(false);
+        
         RecordingText.gameObject.SetActive(true);
        // start data collection
        // start task
@@ -101,14 +106,20 @@ public class EmbodimentManager : MonoBehaviour
         RecordingText.gameObject.SetActive(false);
         FinishedRecording = true;
         FinishedShow = false;
+        TV.gameObject.SetActive(true);
+        ChangeColor(TV1, Screen_off);
+        ChangeColor(TV2, Screen_off);
+
     }
 
     public void OnShowRecordingButtonClick()
     {
-        //unhide TV & maybe zoom
         //show data simulation...
         StartCoroutine(ApplyRotations());
-        
+        ChangeColor(TV1, Invisible);
+        ChangeColor(TV2, Invisible);
+
+
     }
 
     private IEnumerator ApplyRotations()
@@ -133,4 +144,32 @@ public class EmbodimentManager : MonoBehaviour
         gameManager.EnterNextPhase();
 
     }
+
+
+    private void ChangeColor(GameObject obj, Material newMaterial)
+    {
+        Renderer objectRenderer = obj.GetComponent<Renderer>();
+
+        if (objectRenderer != null)
+        {
+            Material[] materials = objectRenderer.materials;
+
+            if (materials.Length > 1)
+            {
+                materials[1] = newMaterial; // Assuming you want to change the second material (index 1)
+                objectRenderer.materials = materials; // Assign the modified materials array back to the Renderer
+                Debug.LogError("Material changed");
+            }
+            else
+            {
+                Debug.LogError("Object does not have enough materials.");
+            }
+        }
+        else
+        {
+            Debug.LogError("Object does not have a Renderer component.");
+        }
+    }
+
+
 }
