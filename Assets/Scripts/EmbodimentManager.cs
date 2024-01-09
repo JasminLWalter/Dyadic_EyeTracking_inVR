@@ -59,6 +59,7 @@ public class EmbodimentManager : MonoBehaviour
                 StartRecording.gameObject.SetActive(true);
                 StopRecording.gameObject.SetActive(true);
                 ShowRecording.gameObject.SetActive(false);
+                TV.gameObject.SetActive(false);
             }
             else
             {
