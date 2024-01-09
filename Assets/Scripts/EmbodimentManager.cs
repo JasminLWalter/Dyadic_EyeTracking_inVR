@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 
 public class EmbodimentManager : MonoBehaviour
 {
@@ -15,11 +17,17 @@ public class EmbodimentManager : MonoBehaviour
 
     public GameManager gameManager;
 
+    public GameObject playerEyes;
+
+    public GameObject recordedEyes;
+
     private bool FinishedRecording = false;
     private bool FinishedShow = false;
     private bool End = false;
 
     private int Counter = 0;
+
+    private Queue<Quaternion> storedRotations;
 
     void Start()
     {
@@ -34,6 +42,7 @@ public class EmbodimentManager : MonoBehaviour
         ShowRecording.onClick.AddListener(OnShowRecordingButtonClick);
         Finish.onClick.AddListener(OnFinishButtonClick);
 
+        storedRotations = new Queue<Quaternion>();
     }
 
     void Update()
@@ -71,12 +80,20 @@ public class EmbodimentManager : MonoBehaviour
 
     public void OnStartRecordingButtonClick()
     {
-
         TV.gameObject.SetActive(false);
         RecordingText.gameObject.SetActive(true);
        // start data collection
        // start task
+        StartCoroutine(StoreRotations());
+    }
 
+    private IEnumerator StoreRotations()
+    {   
+        while (!FinishedRecording)
+        {
+            storedRotations.Enqueue(playerEyes.transform.rotation);
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 
     public void OnStopRecordingButtonClick()
@@ -84,16 +101,24 @@ public class EmbodimentManager : MonoBehaviour
         RecordingText.gameObject.SetActive(false);
         FinishedRecording = true;
         FinishedShow = false;
-        // stop task
-        // stop data collection
-
     }
 
     public void OnShowRecordingButtonClick()
     {
         //unhide TV & maybe zoom
         //show data simulation...
+        StartCoroutine(ApplyRotations());
+        
+    }
 
+    private IEnumerator ApplyRotations()
+    {
+        Debug.Log("Coroutine to show recording");
+        while (storedRotations.Count != 0)
+        {
+            recordedEyes.transform.rotation = storedRotations.Dequeue();
+            yield return new WaitForSeconds(0.2f);
+        }
         //when recording finished:
         FinishedShow = true;
         Counter += 1;
