@@ -65,8 +65,30 @@
                 },
                 {
                     "name": "",
+                    "id": "62d9b593-9afa-4b09-9eb4-a87718a07a8b",
+                    "path": "<OculusTouchController>{RightHand}/thumbstick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseGaze",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c4fa9936-f010-417d-8b2b-d84bcd227234",
                     "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "194bd626-9cbd-4f5a-90f2-b5729630c8da",
+                    "path": "<XRInputV1::Oculus::OculusTouchControllerOpenXR>{RightHand}/triggerpressed",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -158,5 +180,11 @@
             ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "VR",
+            "bindingGroup": "VR",
+            "devices": []
+        }
+    ]
 }

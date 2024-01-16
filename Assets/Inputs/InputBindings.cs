@@ -87,8 +87,30 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""62d9b593-9afa-4b09-9eb4-a87718a07a8b"",
+                    ""path"": ""<OculusTouchController>{RightHand}/thumbstick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseGaze"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""c4fa9936-f010-417d-8b2b-d84bcd227234"",
                     ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""194bd626-9cbd-4f5a-90f2-b5729630c8da"",
+                    ""path"": ""<XRInputV1::Oculus::OculusTouchControllerOpenXR>{RightHand}/triggerpressed"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -180,7 +202,13 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""VR"",
+            ""bindingGroup"": ""VR"",
+            ""devices"": []
+        }
+    ]
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
@@ -382,6 +410,15 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+    private int m_VRSchemeIndex = -1;
+    public InputControlScheme VRScheme
+    {
+        get
+        {
+            if (m_VRSchemeIndex == -1) m_VRSchemeIndex = asset.FindControlSchemeIndex("VR");
+            return asset.controlSchemes[m_VRSchemeIndex];
+        }
+    }
     public interface IPlayerActions
     {
         void OnMouseGaze(InputAction.CallbackContext context);
