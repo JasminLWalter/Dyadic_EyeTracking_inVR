@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Camera playerCamera;
 
 
-    [SerializeField] private Transform eyes = null;
+    [SerializeField] private Transform eyes;
 
     public bool frozen = false;
 
@@ -31,10 +31,12 @@ public class Player : MonoBehaviour
     void Update()
     {
         // TODO: Make the eye gameobject rotate according to the eye movements of the participant
+        if (!frozen)
+        {
+            var mousePosition = _inputBindings.Player.MouseGaze.ReadValue<Vector2>();
+            eyes.localRotation = Quaternion.Euler(mousePosition.y, mousePosition.x, 0);
+        }
         
-        
-
-
     }
     
     // Teleports the player to another space
