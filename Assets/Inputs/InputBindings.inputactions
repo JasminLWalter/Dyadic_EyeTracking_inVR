@@ -49,24 +49,31 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "EyeTracking",
+                    "type": "PassThrough",
+                    "id": "4d0b5468-84ff-45ab-8a1b-f6b4bcbc76a9",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CenterEye",
+                    "type": "PassThrough",
+                    "id": "688fe9da-382b-48dc-80ce-a5685238b2f1",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
-                    "id": "a4d4a09f-1971-4c25-a69f-4785191e4917",
+                    "id": "1145d288-c1de-48ff-a9ba-6a41974a1b7e",
                     "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MouseGaze",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "62d9b593-9afa-4b09-9eb4-a87718a07a8b",
-                    "path": "<OculusTouchController>{RightHand}/thumbstick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -126,6 +133,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Skip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1e8e4604-9ad6-45e8-8bae-aac704d73f72",
+                    "path": "<EyeGaze>/pose/rotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "EyeTracking",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2ddb4909-77cc-49c0-85a4-d0fb67b9a432",
+                    "path": "<OpenXRHmd>/centerEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "CenterEye",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

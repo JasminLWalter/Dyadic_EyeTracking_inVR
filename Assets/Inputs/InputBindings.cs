@@ -71,24 +71,31 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EyeTracking"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""4d0b5468-84ff-45ab-8a1b-f6b4bcbc76a9"",
+                    ""expectedControlType"": ""Quaternion"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CenterEye"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""688fe9da-382b-48dc-80ce-a5685238b2f1"",
+                    ""expectedControlType"": ""Vector3"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""a4d4a09f-1971-4c25-a69f-4785191e4917"",
+                    ""id"": ""1145d288-c1de-48ff-a9ba-6a41974a1b7e"",
                     ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseGaze"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""62d9b593-9afa-4b09-9eb4-a87718a07a8b"",
-                    ""path"": ""<OculusTouchController>{RightHand}/thumbstick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -148,6 +155,28 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Skip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e8e4604-9ad6-45e8-8bae-aac704d73f72"",
+                    ""path"": ""<EyeGaze>/pose/rotation"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""EyeTracking"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ddb4909-77cc-49c0-85a4-d0fb67b9a432"",
+                    ""path"": ""<OpenXRHmd>/centerEyePosition"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""CenterEye"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -217,6 +246,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         m_Player_Continue = m_Player.FindAction("Continue", throwIfNotFound: true);
         m_Player_Return = m_Player.FindAction("Return", throwIfNotFound: true);
         m_Player_Skip = m_Player.FindAction("Skip", throwIfNotFound: true);
+        m_Player_EyeTracking = m_Player.FindAction("EyeTracking", throwIfNotFound: true);
+        m_Player_CenterEye = m_Player.FindAction("CenterEye", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Forward = m_UI.FindAction("Forward", throwIfNotFound: true);
@@ -287,6 +318,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Continue;
     private readonly InputAction m_Player_Return;
     private readonly InputAction m_Player_Skip;
+    private readonly InputAction m_Player_EyeTracking;
+    private readonly InputAction m_Player_CenterEye;
     public struct PlayerActions
     {
         private @InputBindings m_Wrapper;
@@ -296,6 +329,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         public InputAction @Continue => m_Wrapper.m_Player_Continue;
         public InputAction @Return => m_Wrapper.m_Player_Return;
         public InputAction @Skip => m_Wrapper.m_Player_Skip;
+        public InputAction @EyeTracking => m_Wrapper.m_Player_EyeTracking;
+        public InputAction @CenterEye => m_Wrapper.m_Player_CenterEye;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -320,6 +355,12 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Skip.started += instance.OnSkip;
             @Skip.performed += instance.OnSkip;
             @Skip.canceled += instance.OnSkip;
+            @EyeTracking.started += instance.OnEyeTracking;
+            @EyeTracking.performed += instance.OnEyeTracking;
+            @EyeTracking.canceled += instance.OnEyeTracking;
+            @CenterEye.started += instance.OnCenterEye;
+            @CenterEye.performed += instance.OnCenterEye;
+            @CenterEye.canceled += instance.OnCenterEye;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -339,6 +380,12 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Skip.started -= instance.OnSkip;
             @Skip.performed -= instance.OnSkip;
             @Skip.canceled -= instance.OnSkip;
+            @EyeTracking.started -= instance.OnEyeTracking;
+            @EyeTracking.performed -= instance.OnEyeTracking;
+            @EyeTracking.canceled -= instance.OnEyeTracking;
+            @CenterEye.started -= instance.OnCenterEye;
+            @CenterEye.performed -= instance.OnCenterEye;
+            @CenterEye.canceled -= instance.OnCenterEye;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -426,6 +473,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         void OnContinue(InputAction.CallbackContext context);
         void OnReturn(InputAction.CallbackContext context);
         void OnSkip(InputAction.CallbackContext context);
+        void OnEyeTracking(InputAction.CallbackContext context);
+        void OnCenterEye(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
