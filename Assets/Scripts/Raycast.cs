@@ -9,6 +9,7 @@ public class Raycast : MonoBehaviour
     private Ray _ray;
     private Collider _lastHit;
     private int _layerMask = 1<<3;  // Only objects on Layer 3 should be considered
+    [SerializeField] private bool inVR = true;
 
 
     // Start is called before the first frame update
@@ -21,13 +22,30 @@ public class Raycast : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var mousePosition = _inputBindings.Player.MouseGaze.ReadValue<Vector2>();
-        // Creates a Ray from the mouse position
-        _ray = playerCamera.ScreenPointToRay(mousePosition);
-        Debug.DrawRay(_ray.origin, _ray.direction * 100);
+        Vector3 rayOrigin = new Vector3();
+        Vector3 rayDirection = new Vector3();
+
+
+        if (inVR)
+        {
+            rayOrigin = playerCamera.transform.position;
+            Quaternion eyeRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
+            rayDirection = eyeRotation * rayOrigin * (-1);
+
+        }
+    else
+        {
+            var mousePosition = _inputBindings.Player.MouseGaze.ReadValue<Vector2>();
+            // Creates a Ray from the mouse position
+            _ray = playerCamera.ScreenPointToRay(mousePosition);
+            rayOrigin = _ray.origin;
+            rayDirection = _ray.direction;
+        }
+        
+        Debug.DrawRay(rayOrigin, rayDirection * 100, Color.green);
 
         RaycastHit hitData;
-        if (Physics.Raycast(_ray, out hitData, Mathf.Infinity, _layerMask))
+        if (Physics.Raycast(new Ray(rayOrigin, rayDirection), out hitData, Mathf.Infinity, _layerMask))
         {   
             if (_lastHit == null)
             {

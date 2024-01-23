@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Eye Pose",
+                    "type": "PassThrough",
+                    "id": "99098520-1173-4fa7-87a8-b0fa16f17fba",
+                    "expectedControlType": "Pose",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -150,11 +159,22 @@
                 {
                     "name": "",
                     "id": "2ddb4909-77cc-49c0-85a4-d0fb67b9a432",
-                    "path": "<OpenXRHmd>/centerEyePosition",
+                    "path": "<EyeGaze>/pose/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "VR",
                     "action": "CenterEye",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3506058-24a7-4f0f-accc-5fd3bfe1a4b2",
+                    "path": "<EyeGaze>/pose",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Eye Pose",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

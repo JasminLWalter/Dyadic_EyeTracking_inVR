@@ -16,30 +16,38 @@ public class TrialEyeTracking : MonoBehaviour
 
     private void Update()
     {
-        var rayOrigin = _inputBindings.Player.CenterEye.ReadValue<Vector3>();
-        Vector3 eyeRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>().eulerAngles;
-        Vector3 rayDirection = eyeRotation + rayOrigin;
+        /**
+        var rayOrigin = gameObject.transform.position;   //_inputBindings.Player.CenterEye.ReadValue<Vector3>();
+        Quaternion eyeRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
+        Vector3 rayDirection = eyeRotation * rayOrigin;
 
         Debug.Log("rayOrigin: " + rayOrigin);
         Debug.Log("eyeRotation: " + eyeRotation);
         Debug.Log("rayDirection: " + rayDirection);
 
-        Debug.DrawRay(rayOrigin, rayDirection, Color.green);
+        Debug.DrawRay(rayOrigin, -rayDirection, Color.green);
+        **/
     }
 
     IEnumerator StoreValues()
     {
         float countDown = 60f;
-
-
-        yield return null;
+        for (int i = 0; i < 60000; i++)
+        {
+            while (countDown >= 0)
+            {
+                Debug.Log(i++);
+                countDown -= Time.smoothDeltaTime;
+                yield return null;
+            }
+        }
     }
 
     /**
     private IEnumerator StartCounter()
     {
         countDown = 10f;
-        for (int i = 0; i < 10000; i++)
+        for (int i = 0; i < 60000; i++)
         {
             while (countDown >= 0)
             {

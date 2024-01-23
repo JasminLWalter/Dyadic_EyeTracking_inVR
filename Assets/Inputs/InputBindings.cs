@@ -89,6 +89,15 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Eye Pose"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""99098520-1173-4fa7-87a8-b0fa16f17fba"",
+                    ""expectedControlType"": ""Pose"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,11 +181,22 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2ddb4909-77cc-49c0-85a4-d0fb67b9a432"",
-                    ""path"": ""<OpenXRHmd>/centerEyePosition"",
+                    ""path"": ""<EyeGaze>/pose/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""VR"",
                     ""action"": ""CenterEye"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3506058-24a7-4f0f-accc-5fd3bfe1a4b2"",
+                    ""path"": ""<EyeGaze>/pose"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Eye Pose"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -248,6 +268,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         m_Player_Skip = m_Player.FindAction("Skip", throwIfNotFound: true);
         m_Player_EyeTracking = m_Player.FindAction("EyeTracking", throwIfNotFound: true);
         m_Player_CenterEye = m_Player.FindAction("CenterEye", throwIfNotFound: true);
+        m_Player_EyePose = m_Player.FindAction("Eye Pose", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Forward = m_UI.FindAction("Forward", throwIfNotFound: true);
@@ -320,6 +341,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Skip;
     private readonly InputAction m_Player_EyeTracking;
     private readonly InputAction m_Player_CenterEye;
+    private readonly InputAction m_Player_EyePose;
     public struct PlayerActions
     {
         private @InputBindings m_Wrapper;
@@ -331,6 +353,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         public InputAction @Skip => m_Wrapper.m_Player_Skip;
         public InputAction @EyeTracking => m_Wrapper.m_Player_EyeTracking;
         public InputAction @CenterEye => m_Wrapper.m_Player_CenterEye;
+        public InputAction @EyePose => m_Wrapper.m_Player_EyePose;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -361,6 +384,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @CenterEye.started += instance.OnCenterEye;
             @CenterEye.performed += instance.OnCenterEye;
             @CenterEye.canceled += instance.OnCenterEye;
+            @EyePose.started += instance.OnEyePose;
+            @EyePose.performed += instance.OnEyePose;
+            @EyePose.canceled += instance.OnEyePose;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -386,6 +412,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @CenterEye.started -= instance.OnCenterEye;
             @CenterEye.performed -= instance.OnCenterEye;
             @CenterEye.canceled -= instance.OnCenterEye;
+            @EyePose.started -= instance.OnEyePose;
+            @EyePose.performed -= instance.OnEyePose;
+            @EyePose.canceled -= instance.OnEyePose;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -475,6 +504,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         void OnSkip(InputAction.CallbackContext context);
         void OnEyeTracking(InputAction.CallbackContext context);
         void OnCenterEye(InputAction.CallbackContext context);
+        void OnEyePose(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
