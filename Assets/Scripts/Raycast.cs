@@ -25,7 +25,6 @@ public class Raycast : MonoBehaviour
         Vector3 rayOrigin = new Vector3();
         Vector3 rayDirection = new Vector3();
 
-
         if (inVR)
         {
             rayOrigin = playerCamera.transform.position;
@@ -59,7 +58,7 @@ public class Raycast : MonoBehaviour
                 _lastHit = hitData.collider;
                 _lastHit.gameObject.SendMessage("StarredAt");
             }
-            else if (_inputBindings.Player.Select.triggered)
+            else if (_inputBindings.UI.Select.triggered)
             {
                 Debug.Log("Selected " + _lastHit);
                 _lastHit.gameObject.SendMessage("Selected");

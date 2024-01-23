@@ -28,7 +28,7 @@ public class MenuManager : MonoBehaviour
     private void Start()
     {
         _inputBindings = new InputBindings();
-        _inputBindings.Player.Enable();
+        _inputBindings.UI.Enable();
         
         gameManager = FindObjectOfType<GameManager>();
 
@@ -75,7 +75,7 @@ public class MenuManager : MonoBehaviour
         if (gameManager.GetCurrentPhase() == 4)
         {
             TextPhase4.gameObject.SetActive(true);
-            if (_inputBindings.Player.Continue.triggered)
+            if (_inputBindings.UI.Continue.triggered)
             {
                 gameManager.EnterNextPhase();
                 TextPhase4.gameObject.SetActive(false);
@@ -85,7 +85,7 @@ public class MenuManager : MonoBehaviour
         {
             TextPhase6.gameObject.SetActive(true);
         }
-        if (_inputBindings.Player.Skip.triggered)
+        if (_inputBindings.UI.Skip.triggered)
         {
             gameManager.EnterNextPhase();
         }
@@ -126,13 +126,13 @@ public class MenuManager : MonoBehaviour
         {
             textComponents[currentTextIndex].gameObject.SetActive(true);
 
-            if (_inputBindings.Player.Return.triggered && currentTextIndex > 0)
+            if (_inputBindings.UI.Return.triggered && currentTextIndex > 0)
             {
                 textComponents[currentTextIndex].gameObject.SetActive(false);
                 currentTextIndex -= 1;
                 textComponents[currentTextIndex].gameObject.SetActive(true);
             }
-            else if (_inputBindings.Player.Continue.triggered)
+            else if (_inputBindings.UI.Continue.triggered)
             {
                 textComponents[currentTextIndex].gameObject.SetActive(false);
                 currentTextIndex += 1;

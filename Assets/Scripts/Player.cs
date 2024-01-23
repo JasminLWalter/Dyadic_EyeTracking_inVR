@@ -30,11 +30,20 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // TODO: Make the eye gameobject rotate according to the eye movements of the participant
         if (!frozen)
         {
-            var mousePosition = _inputBindings.Player.MouseGaze.ReadValue<Vector2>();
-            eyes.localRotation = Quaternion.Euler(mousePosition.y, mousePosition.x, 0);
+
+            eyes.localRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
+            /*
+            if (!_inputBindings.Player.EyeGazeIsTracked.triggered) 
+            {
+                var mousePosition = _inputBindings.Player.MouseGaze.ReadValue<Vector2>();
+                eyes.localRotation = Quaternion.Euler(mousePosition.y, mousePosition.x, 0);
+            }
+            else
+            {
+                eyes.localRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
+            }*/
         }
         
     }

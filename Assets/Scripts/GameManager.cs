@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
         // 3. Unfreeze signaller
         player.Unfreeze();
         // wait for a certain amount of time / the signaller pressing a button
-        yield return new WaitWhile(() => _inputBindings.Player.Select.triggered == false);
+        yield return new WaitWhile(() => _inputBindings.UI.Select.triggered == false);
         player.Freeze();
         // player2.Unfreeze();
         // 4. Receiver chooses box 

@@ -37,42 +37,6 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Select"",
-                    ""type"": ""Button"",
-                    ""id"": ""a99cd13f-c086-4c44-8867-f7a3de96bb8e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Continue"",
-                    ""type"": ""Button"",
-                    ""id"": ""f10f9ed0-bf69-49b9-ba17-5bc4471069ea"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Return"",
-                    ""type"": ""Button"",
-                    ""id"": ""53e7accd-99d7-4cd2-8c80-f8b7f7955782"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Skip"",
-                    ""type"": ""Button"",
-                    ""id"": ""d78a23de-5e33-4ae0-9d7a-a85e18a7fe68"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""EyeTracking"",
                     ""type"": ""PassThrough"",
                     ""id"": ""4d0b5468-84ff-45ab-8a1b-f6b4bcbc76a9"",
@@ -82,22 +46,13 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""CenterEye"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""688fe9da-382b-48dc-80ce-a5685238b2f1"",
-                    ""expectedControlType"": ""Vector3"",
+                    ""name"": ""Eye Gaze Is Tracked"",
+                    ""type"": ""Button"",
+                    ""id"": ""06a9a29a-909b-478e-9d80-9db6477b58a2"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Eye Pose"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""99098520-1173-4fa7-87a8-b0fa16f17fba"",
-                    ""expectedControlType"": ""Pose"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -114,61 +69,6 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c4fa9936-f010-417d-8b2b-d84bcd227234"",
-                    ""path"": ""<Keyboard>/enter"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""194bd626-9cbd-4f5a-90f2-b5729630c8da"",
-                    ""path"": ""<XRInputV1::Oculus::OculusTouchControllerOpenXR>{RightHand}/triggerpressed"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ba826ca8-69ab-429e-9cab-4758356342e4"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Continue"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5aed3944-42e5-4b49-9d42-20e80fe54713"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Return"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""bfed886c-ffaa-46dc-ad82-baac4edba264"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Skip"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""1e8e4604-9ad6-45e8-8bae-aac704d73f72"",
                     ""path"": ""<EyeGaze>/pose/rotation"",
                     ""interactions"": """",
@@ -180,23 +80,12 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2ddb4909-77cc-49c0-85a4-d0fb67b9a432"",
-                    ""path"": ""<EyeGaze>/pose/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""VR"",
-                    ""action"": ""CenterEye"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d3506058-24a7-4f0f-accc-5fd3bfe1a4b2"",
-                    ""path"": ""<EyeGaze>/pose"",
+                    ""id"": ""0d52bcb8-884c-4ec6-a540-62eb821b34af"",
+                    ""path"": ""<XRInputV1::EyeTrackingOpenXR>/pose/isTracked"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Eye Pose"",
+                    ""action"": ""Eye Gaze Is Tracked"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -207,18 +96,36 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             ""id"": ""d0613ba3-3bef-4e31-a113-db450867f0f2"",
             ""actions"": [
                 {
-                    ""name"": ""Forward"",
+                    ""name"": ""Continue"",
                     ""type"": ""Button"",
-                    ""id"": ""c0c992d0-010f-421c-897a-4f0ceedf057f"",
+                    ""id"": ""9f48518a-c72a-4dd0-b42a-0a6039298806"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Back"",
+                    ""name"": ""Return"",
                     ""type"": ""Button"",
-                    ""id"": ""aa62d41f-6d36-4dc4-b24a-930b7fac3350"",
+                    ""id"": ""6a0112b9-3336-421b-8bcf-3c130dd30550"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skip"",
+                    ""type"": ""Button"",
+                    ""id"": ""25a282cc-a9fc-4158-8351-1dfe84d4ccf1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""58caaec9-d7b5-4e62-b67a-1c89ccfd0981"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -228,23 +135,78 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""982c27bd-0915-4607-9a82-d6d22e7ac65c"",
+                    ""id"": ""46fb3456-afd2-488e-ab59-d3933a80c822"",
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Forward"",
+                    ""action"": ""Continue"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ce81a31e-7ff4-4109-857b-8bcb1367b5cf"",
+                    ""id"": ""d12c2f81-d972-4f8a-bd4a-d9c3c072068a"",
+                    ""path"": ""<XRController>{RightHand}/primaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a47a8031-9228-44e9-a1b5-c2ad9758addc"",
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Back"",
+                    ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""905a6251-40fe-4195-851e-e47d798602a8"",
+                    ""path"": ""<XRController>{LeftHand}/primaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a274a355-f0d4-40c1-8a2d-b9f621bfd34e"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""74ca1241-1141-4afa-b3d5-9f541a91814d"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4bb9e23-0873-40d7-9414-388e6caa172e"",
+                    ""path"": ""<XRController>/triggerPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -262,17 +224,14 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_MouseGaze = m_Player.FindAction("MouseGaze", throwIfNotFound: true);
-        m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
-        m_Player_Continue = m_Player.FindAction("Continue", throwIfNotFound: true);
-        m_Player_Return = m_Player.FindAction("Return", throwIfNotFound: true);
-        m_Player_Skip = m_Player.FindAction("Skip", throwIfNotFound: true);
         m_Player_EyeTracking = m_Player.FindAction("EyeTracking", throwIfNotFound: true);
-        m_Player_CenterEye = m_Player.FindAction("CenterEye", throwIfNotFound: true);
-        m_Player_EyePose = m_Player.FindAction("Eye Pose", throwIfNotFound: true);
+        m_Player_EyeGazeIsTracked = m_Player.FindAction("Eye Gaze Is Tracked", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_Forward = m_UI.FindAction("Forward", throwIfNotFound: true);
-        m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
+        m_UI_Continue = m_UI.FindAction("Continue", throwIfNotFound: true);
+        m_UI_Return = m_UI.FindAction("Return", throwIfNotFound: true);
+        m_UI_Skip = m_UI.FindAction("Skip", throwIfNotFound: true);
+        m_UI_Select = m_UI.FindAction("Select", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -335,25 +294,15 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_MouseGaze;
-    private readonly InputAction m_Player_Select;
-    private readonly InputAction m_Player_Continue;
-    private readonly InputAction m_Player_Return;
-    private readonly InputAction m_Player_Skip;
     private readonly InputAction m_Player_EyeTracking;
-    private readonly InputAction m_Player_CenterEye;
-    private readonly InputAction m_Player_EyePose;
+    private readonly InputAction m_Player_EyeGazeIsTracked;
     public struct PlayerActions
     {
         private @InputBindings m_Wrapper;
         public PlayerActions(@InputBindings wrapper) { m_Wrapper = wrapper; }
         public InputAction @MouseGaze => m_Wrapper.m_Player_MouseGaze;
-        public InputAction @Select => m_Wrapper.m_Player_Select;
-        public InputAction @Continue => m_Wrapper.m_Player_Continue;
-        public InputAction @Return => m_Wrapper.m_Player_Return;
-        public InputAction @Skip => m_Wrapper.m_Player_Skip;
         public InputAction @EyeTracking => m_Wrapper.m_Player_EyeTracking;
-        public InputAction @CenterEye => m_Wrapper.m_Player_CenterEye;
-        public InputAction @EyePose => m_Wrapper.m_Player_EyePose;
+        public InputAction @EyeGazeIsTracked => m_Wrapper.m_Player_EyeGazeIsTracked;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -366,27 +315,12 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @MouseGaze.started += instance.OnMouseGaze;
             @MouseGaze.performed += instance.OnMouseGaze;
             @MouseGaze.canceled += instance.OnMouseGaze;
-            @Select.started += instance.OnSelect;
-            @Select.performed += instance.OnSelect;
-            @Select.canceled += instance.OnSelect;
-            @Continue.started += instance.OnContinue;
-            @Continue.performed += instance.OnContinue;
-            @Continue.canceled += instance.OnContinue;
-            @Return.started += instance.OnReturn;
-            @Return.performed += instance.OnReturn;
-            @Return.canceled += instance.OnReturn;
-            @Skip.started += instance.OnSkip;
-            @Skip.performed += instance.OnSkip;
-            @Skip.canceled += instance.OnSkip;
             @EyeTracking.started += instance.OnEyeTracking;
             @EyeTracking.performed += instance.OnEyeTracking;
             @EyeTracking.canceled += instance.OnEyeTracking;
-            @CenterEye.started += instance.OnCenterEye;
-            @CenterEye.performed += instance.OnCenterEye;
-            @CenterEye.canceled += instance.OnCenterEye;
-            @EyePose.started += instance.OnEyePose;
-            @EyePose.performed += instance.OnEyePose;
-            @EyePose.canceled += instance.OnEyePose;
+            @EyeGazeIsTracked.started += instance.OnEyeGazeIsTracked;
+            @EyeGazeIsTracked.performed += instance.OnEyeGazeIsTracked;
+            @EyeGazeIsTracked.canceled += instance.OnEyeGazeIsTracked;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -394,27 +328,12 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @MouseGaze.started -= instance.OnMouseGaze;
             @MouseGaze.performed -= instance.OnMouseGaze;
             @MouseGaze.canceled -= instance.OnMouseGaze;
-            @Select.started -= instance.OnSelect;
-            @Select.performed -= instance.OnSelect;
-            @Select.canceled -= instance.OnSelect;
-            @Continue.started -= instance.OnContinue;
-            @Continue.performed -= instance.OnContinue;
-            @Continue.canceled -= instance.OnContinue;
-            @Return.started -= instance.OnReturn;
-            @Return.performed -= instance.OnReturn;
-            @Return.canceled -= instance.OnReturn;
-            @Skip.started -= instance.OnSkip;
-            @Skip.performed -= instance.OnSkip;
-            @Skip.canceled -= instance.OnSkip;
             @EyeTracking.started -= instance.OnEyeTracking;
             @EyeTracking.performed -= instance.OnEyeTracking;
             @EyeTracking.canceled -= instance.OnEyeTracking;
-            @CenterEye.started -= instance.OnCenterEye;
-            @CenterEye.performed -= instance.OnCenterEye;
-            @CenterEye.canceled -= instance.OnCenterEye;
-            @EyePose.started -= instance.OnEyePose;
-            @EyePose.performed -= instance.OnEyePose;
-            @EyePose.canceled -= instance.OnEyePose;
+            @EyeGazeIsTracked.started -= instance.OnEyeGazeIsTracked;
+            @EyeGazeIsTracked.performed -= instance.OnEyeGazeIsTracked;
+            @EyeGazeIsTracked.canceled -= instance.OnEyeGazeIsTracked;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -436,14 +355,18 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
-    private readonly InputAction m_UI_Forward;
-    private readonly InputAction m_UI_Back;
+    private readonly InputAction m_UI_Continue;
+    private readonly InputAction m_UI_Return;
+    private readonly InputAction m_UI_Skip;
+    private readonly InputAction m_UI_Select;
     public struct UIActions
     {
         private @InputBindings m_Wrapper;
         public UIActions(@InputBindings wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Forward => m_Wrapper.m_UI_Forward;
-        public InputAction @Back => m_Wrapper.m_UI_Back;
+        public InputAction @Continue => m_Wrapper.m_UI_Continue;
+        public InputAction @Return => m_Wrapper.m_UI_Return;
+        public InputAction @Skip => m_Wrapper.m_UI_Skip;
+        public InputAction @Select => m_Wrapper.m_UI_Select;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -453,22 +376,34 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
-            @Forward.started += instance.OnForward;
-            @Forward.performed += instance.OnForward;
-            @Forward.canceled += instance.OnForward;
-            @Back.started += instance.OnBack;
-            @Back.performed += instance.OnBack;
-            @Back.canceled += instance.OnBack;
+            @Continue.started += instance.OnContinue;
+            @Continue.performed += instance.OnContinue;
+            @Continue.canceled += instance.OnContinue;
+            @Return.started += instance.OnReturn;
+            @Return.performed += instance.OnReturn;
+            @Return.canceled += instance.OnReturn;
+            @Skip.started += instance.OnSkip;
+            @Skip.performed += instance.OnSkip;
+            @Skip.canceled += instance.OnSkip;
+            @Select.started += instance.OnSelect;
+            @Select.performed += instance.OnSelect;
+            @Select.canceled += instance.OnSelect;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
         {
-            @Forward.started -= instance.OnForward;
-            @Forward.performed -= instance.OnForward;
-            @Forward.canceled -= instance.OnForward;
-            @Back.started -= instance.OnBack;
-            @Back.performed -= instance.OnBack;
-            @Back.canceled -= instance.OnBack;
+            @Continue.started -= instance.OnContinue;
+            @Continue.performed -= instance.OnContinue;
+            @Continue.canceled -= instance.OnContinue;
+            @Return.started -= instance.OnReturn;
+            @Return.performed -= instance.OnReturn;
+            @Return.canceled -= instance.OnReturn;
+            @Skip.started -= instance.OnSkip;
+            @Skip.performed -= instance.OnSkip;
+            @Skip.canceled -= instance.OnSkip;
+            @Select.started -= instance.OnSelect;
+            @Select.performed -= instance.OnSelect;
+            @Select.canceled -= instance.OnSelect;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -498,17 +433,14 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMouseGaze(InputAction.CallbackContext context);
-        void OnSelect(InputAction.CallbackContext context);
-        void OnContinue(InputAction.CallbackContext context);
-        void OnReturn(InputAction.CallbackContext context);
-        void OnSkip(InputAction.CallbackContext context);
         void OnEyeTracking(InputAction.CallbackContext context);
-        void OnCenterEye(InputAction.CallbackContext context);
-        void OnEyePose(InputAction.CallbackContext context);
+        void OnEyeGazeIsTracked(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
-        void OnForward(InputAction.CallbackContext context);
-        void OnBack(InputAction.CallbackContext context);
+        void OnContinue(InputAction.CallbackContext context);
+        void OnReturn(InputAction.CallbackContext context);
+        void OnSkip(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
     }
 }

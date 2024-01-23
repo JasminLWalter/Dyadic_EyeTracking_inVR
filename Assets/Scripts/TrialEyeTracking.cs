@@ -1,46 +1,39 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TrialEyeTracking : MonoBehaviour
 {
-    private InputBindings _inputBindings;
-    private Ray _ray;
+    public bool start = false;
     // Start is called before the first frame update
     void Start()
     {
-        _inputBindings = new InputBindings();
-        _inputBindings.Player.Enable();
+        
         
     }
 
     private void Update()
     {
-        /**
-        var rayOrigin = gameObject.transform.position;   //_inputBindings.Player.CenterEye.ReadValue<Vector3>();
-        Quaternion eyeRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
-        Vector3 rayDirection = eyeRotation * rayOrigin;
-
-        Debug.Log("rayOrigin: " + rayOrigin);
-        Debug.Log("eyeRotation: " + eyeRotation);
-        Debug.Log("rayDirection: " + rayDirection);
-
-        Debug.DrawRay(rayOrigin, -rayDirection, Color.green);
-        **/
+        /**if (start)
+        {
+            StartCoroutine(StoreValues());
+            start = false;
+        }**/
     }
 
     IEnumerator StoreValues()
     {
-        float countDown = 60f;
-        for (int i = 0; i < 60000; i++)
+        DateTime startTime = DateTime.Now;
+
+        for (int i=0; i < 60; i++ )
         {
-            while (countDown >= 0)
-            {
-                Debug.Log(i++);
-                countDown -= Time.smoothDeltaTime;
-                yield return null;
-            }
+            
         }
+        DateTime endTime = DateTime.Now.AddSeconds(75);
+        TimeSpan span = endTime.Subtract(startTime);
+        Console.WriteLine("Time Difference (seconds): " + span.TotalSeconds);
+        yield return null;
     }
 
     /**
