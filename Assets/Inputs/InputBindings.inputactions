@@ -31,6 +31,42 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "HeadPosition",
+                    "type": "PassThrough",
+                    "id": "75707510-0e30-4dde-99ea-d63b588b76e7",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HeadRotation",
+                    "type": "PassThrough",
+                    "id": "7cf1e19c-6229-4845-91b2-224ef0394189",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Left Controller Device",
+                    "type": "PassThrough",
+                    "id": "710cac6c-f52f-4e35-9b78-a311e942af66",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Right Controller Device",
+                    "type": "PassThrough",
+                    "id": "cc3f1646-d3bb-4f6e-ba45-e79e6432c891",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -64,6 +100,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "Eye Gaze Is Tracked",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7faa211c-44f0-454e-baa7-892372c3c995",
+                    "path": "<OpenXRHmd>/centerEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "HeadPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e41562f-8087-41b7-a641-180aa5f992be",
+                    "path": "<OpenXRHmd>/centerEyeRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "HeadRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d959c47-6ddd-407f-aacb-0d16de4e8427",
+                    "path": "<XRController>{LeftHand}/{Device}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "Left Controller Device",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "83d3da9e-ffd3-428e-833e-d90482557b66",
+                    "path": "<XRController>{RightHand}/{Device}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "Right Controller Device",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

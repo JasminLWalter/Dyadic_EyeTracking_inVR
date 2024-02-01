@@ -53,6 +53,42 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""HeadPosition"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""75707510-0e30-4dde-99ea-d63b588b76e7"",
+                    ""expectedControlType"": ""Vector3"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HeadRotation"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""7cf1e19c-6229-4845-91b2-224ef0394189"",
+                    ""expectedControlType"": ""Quaternion"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Left Controller Device"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""710cac6c-f52f-4e35-9b78-a311e942af66"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right Controller Device"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""cc3f1646-d3bb-4f6e-ba45-e79e6432c891"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -86,6 +122,50 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Eye Gaze Is Tracked"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7faa211c-44f0-454e-baa7-892372c3c995"",
+                    ""path"": ""<OpenXRHmd>/centerEyePosition"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""HeadPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e41562f-8087-41b7-a641-180aa5f992be"",
+                    ""path"": ""<OpenXRHmd>/centerEyeRotation"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""HeadRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d959c47-6ddd-407f-aacb-0d16de4e8427"",
+                    ""path"": ""<XRController>{LeftHand}/{Device}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""Left Controller Device"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""83d3da9e-ffd3-428e-833e-d90482557b66"",
+                    ""path"": ""<XRController>{RightHand}/{Device}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""Right Controller Device"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -226,6 +306,10 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         m_Player_MouseGaze = m_Player.FindAction("MouseGaze", throwIfNotFound: true);
         m_Player_EyeTracking = m_Player.FindAction("EyeTracking", throwIfNotFound: true);
         m_Player_EyeGazeIsTracked = m_Player.FindAction("Eye Gaze Is Tracked", throwIfNotFound: true);
+        m_Player_HeadPosition = m_Player.FindAction("HeadPosition", throwIfNotFound: true);
+        m_Player_HeadRotation = m_Player.FindAction("HeadRotation", throwIfNotFound: true);
+        m_Player_LeftControllerDevice = m_Player.FindAction("Left Controller Device", throwIfNotFound: true);
+        m_Player_RightControllerDevice = m_Player.FindAction("Right Controller Device", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Continue = m_UI.FindAction("Continue", throwIfNotFound: true);
@@ -296,6 +380,10 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MouseGaze;
     private readonly InputAction m_Player_EyeTracking;
     private readonly InputAction m_Player_EyeGazeIsTracked;
+    private readonly InputAction m_Player_HeadPosition;
+    private readonly InputAction m_Player_HeadRotation;
+    private readonly InputAction m_Player_LeftControllerDevice;
+    private readonly InputAction m_Player_RightControllerDevice;
     public struct PlayerActions
     {
         private @InputBindings m_Wrapper;
@@ -303,6 +391,10 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         public InputAction @MouseGaze => m_Wrapper.m_Player_MouseGaze;
         public InputAction @EyeTracking => m_Wrapper.m_Player_EyeTracking;
         public InputAction @EyeGazeIsTracked => m_Wrapper.m_Player_EyeGazeIsTracked;
+        public InputAction @HeadPosition => m_Wrapper.m_Player_HeadPosition;
+        public InputAction @HeadRotation => m_Wrapper.m_Player_HeadRotation;
+        public InputAction @LeftControllerDevice => m_Wrapper.m_Player_LeftControllerDevice;
+        public InputAction @RightControllerDevice => m_Wrapper.m_Player_RightControllerDevice;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -321,6 +413,18 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @EyeGazeIsTracked.started += instance.OnEyeGazeIsTracked;
             @EyeGazeIsTracked.performed += instance.OnEyeGazeIsTracked;
             @EyeGazeIsTracked.canceled += instance.OnEyeGazeIsTracked;
+            @HeadPosition.started += instance.OnHeadPosition;
+            @HeadPosition.performed += instance.OnHeadPosition;
+            @HeadPosition.canceled += instance.OnHeadPosition;
+            @HeadRotation.started += instance.OnHeadRotation;
+            @HeadRotation.performed += instance.OnHeadRotation;
+            @HeadRotation.canceled += instance.OnHeadRotation;
+            @LeftControllerDevice.started += instance.OnLeftControllerDevice;
+            @LeftControllerDevice.performed += instance.OnLeftControllerDevice;
+            @LeftControllerDevice.canceled += instance.OnLeftControllerDevice;
+            @RightControllerDevice.started += instance.OnRightControllerDevice;
+            @RightControllerDevice.performed += instance.OnRightControllerDevice;
+            @RightControllerDevice.canceled += instance.OnRightControllerDevice;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -334,6 +438,18 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @EyeGazeIsTracked.started -= instance.OnEyeGazeIsTracked;
             @EyeGazeIsTracked.performed -= instance.OnEyeGazeIsTracked;
             @EyeGazeIsTracked.canceled -= instance.OnEyeGazeIsTracked;
+            @HeadPosition.started -= instance.OnHeadPosition;
+            @HeadPosition.performed -= instance.OnHeadPosition;
+            @HeadPosition.canceled -= instance.OnHeadPosition;
+            @HeadRotation.started -= instance.OnHeadRotation;
+            @HeadRotation.performed -= instance.OnHeadRotation;
+            @HeadRotation.canceled -= instance.OnHeadRotation;
+            @LeftControllerDevice.started -= instance.OnLeftControllerDevice;
+            @LeftControllerDevice.performed -= instance.OnLeftControllerDevice;
+            @LeftControllerDevice.canceled -= instance.OnLeftControllerDevice;
+            @RightControllerDevice.started -= instance.OnRightControllerDevice;
+            @RightControllerDevice.performed -= instance.OnRightControllerDevice;
+            @RightControllerDevice.canceled -= instance.OnRightControllerDevice;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -435,6 +551,10 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         void OnMouseGaze(InputAction.CallbackContext context);
         void OnEyeTracking(InputAction.CallbackContext context);
         void OnEyeGazeIsTracked(InputAction.CallbackContext context);
+        void OnHeadPosition(InputAction.CallbackContext context);
+        void OnHeadRotation(InputAction.CallbackContext context);
+        void OnLeftControllerDevice(InputAction.CallbackContext context);
+        void OnRightControllerDevice(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
