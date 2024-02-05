@@ -39,23 +39,31 @@ public class Warnings : MonoBehaviour
     {
         currentHeadPosition = _inputBindings.Player.HeadPosition.ReadValue<Vector3>();
         currentHeadRotation = Camera.main.transform.rotation.eulerAngles;
-        /**
+        
         if (Math.Abs(currentHeadPosition.x - lastHeadPosition.x) > 0.05 
             || Math.Abs(currentHeadPosition.y - lastHeadPosition.y) > 0.05 
             || Math.Abs(currentHeadPosition.z - lastHeadPosition.z) > 0.05 )
         {
-            Debug.LogWarning("Head position changed!");
-            Debug.LogWarning("Position change of " + (currentHeadPosition - lastHeadPosition));
             _leftController.SendHapticImpulse(0.5f, 0.2f);
             _rightController.SendHapticImpulse(0.5f, 0.2f);
-        }**/
-        
-        if (Math.Abs(currentHeadRotation.x - lastHeadRotation.x) > 30
-            || Math.Abs(currentHeadRotation.y - lastHeadRotation.y) > 30
-            || Math.Abs(currentHeadRotation.z - lastHeadRotation.z) > 30)
+        }
+
+        float value1 = Math.Abs(currentHeadRotation.x - lastHeadRotation.x);
+        float value2 = 360 - value1;
+        float angleX = Math.Min(value1, value2);
+
+        value1 = Math.Abs(currentHeadRotation.y - lastHeadRotation.y);  
+        value2 = 360 - value1;
+        float angleY = Math.Min(value1, value2);
+
+        value1 = Math.Abs(currentHeadRotation.z - lastHeadRotation.z);
+        value2 = 360 - value1;
+        float angleZ = Math.Min(value1, value2);
+
+        if (angleX > 10
+            || angleY > 10
+            || angleZ > 10)
         {
-            //Debug.LogWarning("Head rotation changed!");
-            //Debug.LogWarning("Rotation change of " + (currentHeadRotation.eulerAngles - lastHeadRotation.eulerAngles));
             _leftController.SendHapticImpulse(0.5f, 0.2f);
             _rightController.SendHapticImpulse(0.5f, 0.2f);
         }
@@ -68,8 +76,6 @@ public class Warnings : MonoBehaviour
             yield return new WaitForSecondsRealtime(2);
             lastHeadPosition = currentHeadPosition;
             lastHeadRotation = currentHeadRotation;
-            Debug.LogWarning("Updated movement");
-            Debug.LogWarning("new last rotation: " + (lastHeadRotation.y));
         }
     }
 }
