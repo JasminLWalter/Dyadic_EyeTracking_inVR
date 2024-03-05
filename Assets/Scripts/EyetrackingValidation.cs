@@ -54,7 +54,7 @@ public class EyetrackingValidation : MonoBehaviour
         fixationPoint.SetActive(false);
         _eyeValidationDataFrames = new List<EyeValidationData>();
     }
- 
+
     /*private void SaveValidationFile()
     {
         var fileName = _participantId + "_EyeValidation_" + Instance.GetCurrentUnixTimeStamp();
@@ -62,8 +62,13 @@ public class EyetrackingValidation : MonoBehaviour
         DataSavingManager.Instance.SaveList(_eyeValidationDataFrames, fileName);
         
     } */
-   
-    
+
+    private void Update()
+    {
+        ValidateEyeTracking();
+    }
+
+
     private Vector3 GetValidationError()
     {
         return _eyeValidationData.EyeValidationError;
