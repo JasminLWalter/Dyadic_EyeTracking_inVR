@@ -281,7 +281,7 @@ public class EyetrackingValidation : MonoBehaviour
     {
         EyeValidationData eyeValidationData = new EyeValidationData();
         
-        Ray ray;
+        Ray ray = new Ray();
         
         eyeValidationData.UnixTimestamp = Instance.GetCurrentUnixTimeStamp();
         eyeValidationData.IsErrorCheck = _isErrorCheckRunning;
