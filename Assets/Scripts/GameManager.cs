@@ -112,6 +112,7 @@ public class GameManager : MonoBehaviour
         if (_ValidationSuccessStatus == false) 
         {
             SRanipal_Eye_v2.LaunchEyeCalibration();
+            _ValidationSuccessStatus = true;
         }
     }
 

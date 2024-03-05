@@ -41,7 +41,7 @@ public class Raycast : MonoBehaviour
             rayDirection = _ray.direction;
         }
         
-        Debug.DrawRay(rayOrigin, rayDirection * 100, Color.green);
+        //Debug.DrawRay(rayOrigin, rayDirection * 100, Color.green);
 
         RaycastHit hitData;
         if (Physics.Raycast(new Ray(rayOrigin, rayDirection), out hitData, Mathf.Infinity, _layerMask))

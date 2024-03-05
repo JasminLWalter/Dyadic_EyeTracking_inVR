@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 using ViveSR.anipal.Eye;
 
 public class EyetrackingValidation : MonoBehaviour
@@ -53,6 +54,7 @@ public class EyetrackingValidation : MonoBehaviour
     {
         fixationPoint.SetActive(false);
         _eyeValidationDataFrames = new List<EyeValidationData>();
+        //SRanipal_Eye_v2.LaunchEyeCalibration();
     }
 
     /*private void SaveValidationFile()
@@ -164,11 +166,13 @@ public class EyetrackingValidation : MonoBehaviour
         fixationPoint.transform.parent = gameObject.transform;
 
         Debug.Log( "Get validation error" + GetValidationError() + " + " + _eyeValidationData.EyeValidationError);
-        
+        Debug.LogWarning("Get validation error" + GetValidationError() + " + " + _eyeValidationData.EyeValidationError);
+
         _eyeValidationDataFrames.Add(_eyeValidationData);
         // SaveValidationFile();
 
         Debug.Log("ValidationError X" + CalculateValidationError(anglesX));
+        Debug.LogWarning("ValidationError X" + CalculateValidationError(anglesX));
 
         fixationPoint.SetActive(false);
 
@@ -179,7 +183,7 @@ public class EyetrackingValidation : MonoBehaviour
             _eyeValidationData.EyeValidationError == Vector3.zero)
         {
  
-            gameManager.SetValidationSuccessStatus(false);
+            //gameManager.SetValidationSuccessStatus(false);
 
           }
           else
@@ -254,7 +258,8 @@ public class EyetrackingValidation : MonoBehaviour
         fixationPoint.transform.parent = gameObject.transform;
 
         Debug.Log( "Get validation error" + GetValidationError() + " + " + _eyeValidationData.EyeValidationError);
-        
+       
+
         _eyeValidationDataFrames.Add(_eyeValidationData);
        // SaveValidationFile();
 
@@ -281,8 +286,11 @@ public class EyetrackingValidation : MonoBehaviour
     {
         EyeValidationData eyeValidationData = new EyeValidationData();
         
-        Ray ray = new Ray();
-        
+        EyeData_v2 eye_data = new EyeData_v2();
+        Vector3 origin = new Vector3();
+        Vector3 direction = new Vector3();
+
+
         eyeValidationData.UnixTimestamp = Instance.GetCurrentUnixTimeStamp();
         eyeValidationData.IsErrorCheck = _isErrorCheckRunning;
         
@@ -291,29 +299,33 @@ public class EyetrackingValidation : MonoBehaviour
         eyeValidationData.CalibrationFreq = _calibrationFreq;
         
         eyeValidationData.PointToFocus = fixationPoint.transform.position;
-
-        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out ray))
+        
+        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out origin, out direction, eye_data))
         {
+            Ray ray = new Ray(origin, direction);
             var angles = Quaternion.FromToRotation((fixationPoint.transform.position - _hmdTransform.position).normalized, _hmdTransform.rotation * ray.direction)
                 .eulerAngles;
             
             eyeValidationData.LeftEyeAngleOffset = angles;
         }
         
-        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out ray))
+        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out origin, out direction, eye_data))
         {
+            Ray ray = new Ray(origin, direction);
             var angles = Quaternion.FromToRotation((fixationPoint.transform.position - _hmdTransform.position).normalized, _hmdTransform.rotation * ray.direction)
                 .eulerAngles;
 
             eyeValidationData.RightEyeAngleOffset = angles;
         }
-
-        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out ray))
+        
+        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out origin, out direction, eye_data))
         {
+            Ray ray = new Ray(origin, direction);
             var angles = Quaternion.FromToRotation((fixationPoint.transform.position - _hmdTransform.position).normalized, _hmdTransform.rotation * ray.direction)
                 .eulerAngles;
 
             eyeValidationData.CombinedEyeAngleOffset = angles;
+            Debug.DrawRay(origin, direction * 100, Color.magenta);
         }
 
         return eyeValidationData;
