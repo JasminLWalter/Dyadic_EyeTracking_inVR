@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
+// For the avatar: https://developer.vive.com/resources/openxr/openxr-pcvr/tutorials/unity/integrate-facial-tracking-your-avatar/
+
 public class Player : MonoBehaviour
 {
     [Tooltip("Either signaller or receiver.")]

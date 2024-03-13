@@ -275,6 +275,7 @@ namespace ViveSR
                     {
                         origin = Camera.main.transform.position;
                         valid = true;
+                        Debug.LogError("Framework status: " + SRanipal_Eye_Framework.Status);
                     }
                     else
                     {

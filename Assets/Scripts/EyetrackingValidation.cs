@@ -36,6 +36,9 @@ public class EyetrackingValidation : MonoBehaviour
     private EyeValidationData _eyeValidationData;
     private const float ErrorThreshold = 1.0f;
 
+    private Vector3 rayOrigin = new Vector3();
+    private Vector3 rayDirection = new Vector3();
+
     
 
     #endregion
@@ -68,6 +71,7 @@ public class EyetrackingValidation : MonoBehaviour
     private void Update()
     {
         ValidateEyeTracking();
+        Debug.DrawRay(rayOrigin, rayDirection * 100, Color.blue);
     }
 
 
@@ -87,7 +91,7 @@ public class EyetrackingValidation : MonoBehaviour
 
         _hmdTransform = Camera.main.transform;
 
-        fixationPoint.transform.position = _hmdTransform.position + _hmdTransform.rotation * new Vector3(0,0,30);
+        fixationPoint.transform.position = _hmdTransform.position + _hmdTransform.rotation * new Vector3(0,0,10);
 
         fixationPoint.transform.LookAt(_hmdTransform);
         
@@ -325,7 +329,8 @@ public class EyetrackingValidation : MonoBehaviour
                 .eulerAngles;
 
             eyeValidationData.CombinedEyeAngleOffset = angles;
-            Debug.DrawRay(origin, direction * 100, Color.magenta);
+            rayOrigin = origin;
+            rayDirection = direction;
         }
 
         return eyeValidationData;

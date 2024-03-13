@@ -65,6 +65,7 @@ namespace ViveSR
 
                 public void StartFramework()
                 {
+                    Debug.LogError("entered startframework");
                     if (!EnableEye) return;
                     if (Status == FrameworkStatus.WORKING || Status == FrameworkStatus.NOT_SUPPORT) return;
 
@@ -75,6 +76,7 @@ namespace ViveSR
                         {
                             Status = FrameworkStatus.WORKING;
                             Debug.Log("[SRanipal] Initial Eye success!");
+                            Debug.LogError("Framework started");
                         }
                         else
                         {
@@ -98,6 +100,7 @@ namespace ViveSR
                         {
                             Status = FrameworkStatus.WORKING;
                             Debug.Log("[SRanipal] Initial Eye v2 success!");
+                            Debug.LogError("Framework started");
                         }
                         else
                         {
