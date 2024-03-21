@@ -283,6 +283,7 @@ namespace ViveSR
                         eyesData[(int)GazeIndex.LEFT] = eye_data.verbose_data.left;
                         eyesData[(int)GazeIndex.RIGHT] = eye_data.verbose_data.right;
                         eyesData[(int)GazeIndex.COMBINE] = eye_data.verbose_data.combined.eye_data;
+                        Debug.LogWarning("verbose data combined: " + eye_data.verbose_data);
 
                         if (gazeIndex == GazeIndex.COMBINE)
                         {
@@ -293,10 +294,13 @@ namespace ViveSR
                                 direction = eyesData[(int)GazeIndex.COMBINE].gaze_direction_normalized;
                                 direction.x *= -1;
                             }
+                            else
+                            { Debug.LogError("eyesData get validity not valid"); }
                         }
                         else if (gazeIndex == GazeIndex.LEFT || gazeIndex == GazeIndex.RIGHT)
                         {
-                            valid = eyesData[(int)gazeIndex].GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_GAZE_DIRECTION_VALIDITY);
+                            //valid = eyesData[(int)gazeIndex].GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_GAZE_DIRECTION_VALIDITY);
+                            valid = true;
                             if (valid)
                             {
                                 origin = eyesData[(int)gazeIndex].gaze_origin_mm * 0.001f;

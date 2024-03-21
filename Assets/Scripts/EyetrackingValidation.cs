@@ -9,8 +9,10 @@ using ViveSR.anipal.Eye;
 public class EyetrackingValidation : MonoBehaviour
 {
     public static EyetrackingValidation Instance { get; private set; }
-    
+
     #region Fields
+    public bool startCal = false;
+    public bool startVal = false;
 
     [Space] [Header("Eye-tracker validation field")]
     [SerializeField] private GameObject mainCamera;
@@ -70,8 +72,21 @@ public class EyetrackingValidation : MonoBehaviour
 
     private void Update()
     {
-        ValidateEyeTracking();
-        Debug.DrawRay(rayOrigin, rayDirection * 100, Color.blue);
+        if (startCal)
+        {
+            SRanipal_Eye_v2.LaunchEyeCalibration();
+            startCal = false;
+        }
+
+        if (startVal) { 
+            ValidateEyeTracking();
+            Debug.DrawRay(rayOrigin, rayDirection * 100, Color.blue);
+            startVal = false;
+        }
+
+        
+            
+
     }
 
 
@@ -171,12 +186,14 @@ public class EyetrackingValidation : MonoBehaviour
 
         Debug.Log( "Get validation error" + GetValidationError() + " + " + _eyeValidationData.EyeValidationError);
         Debug.LogWarning("Get validation error" + GetValidationError() + " + " + _eyeValidationData.EyeValidationError);
+        Debug.LogError("Get validation error" + GetValidationError() + " + " + _eyeValidationData.EyeValidationError);
 
         _eyeValidationDataFrames.Add(_eyeValidationData);
         // SaveValidationFile();
 
         Debug.Log("ValidationError X" + CalculateValidationError(anglesX));
         Debug.LogWarning("ValidationError X" + CalculateValidationError(anglesX));
+        Debug.LogError("ValidationError X" + CalculateValidationError(anglesX));
 
         fixationPoint.SetActive(false);
 
@@ -304,7 +321,7 @@ public class EyetrackingValidation : MonoBehaviour
         
         eyeValidationData.PointToFocus = fixationPoint.transform.position;
         
-        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out origin, out direction, eye_data))
+        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out origin, out direction))
         {
             Ray ray = new Ray(origin, direction);
             var angles = Quaternion.FromToRotation((fixationPoint.transform.position - _hmdTransform.position).normalized, _hmdTransform.rotation * ray.direction)
@@ -313,7 +330,7 @@ public class EyetrackingValidation : MonoBehaviour
             eyeValidationData.LeftEyeAngleOffset = angles;
         }
         
-        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out origin, out direction, eye_data))
+        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out origin, out direction))
         {
             Ray ray = new Ray(origin, direction);
             var angles = Quaternion.FromToRotation((fixationPoint.transform.position - _hmdTransform.position).normalized, _hmdTransform.rotation * ray.direction)
@@ -322,7 +339,7 @@ public class EyetrackingValidation : MonoBehaviour
             eyeValidationData.RightEyeAngleOffset = angles;
         }
         
-        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out origin, out direction, eye_data))
+        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out origin, out direction))
         {
             Ray ray = new Ray(origin, direction);
             var angles = Quaternion.FromToRotation((fixationPoint.transform.position - _hmdTransform.position).normalized, _hmdTransform.rotation * ray.direction)
