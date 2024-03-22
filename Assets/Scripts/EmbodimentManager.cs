@@ -32,6 +32,9 @@ public class EmbodimentManager : MonoBehaviour
     private int Counter = 0;
 
     private Queue<Quaternion> storedRotations;
+    
+    //Test
+    private InputBindings _inputBindings;
 
     void Start()
     {
@@ -48,6 +51,10 @@ public class EmbodimentManager : MonoBehaviour
         Finish.onClick.AddListener(OnFinishButtonClick);
 
         storedRotations = new Queue<Quaternion>();
+        
+        //////////Test
+        _inputBindings = new InputBindings();
+        _inputBindings.UI.Enable();
     }
 
     void Update()
@@ -82,6 +89,24 @@ public class EmbodimentManager : MonoBehaviour
             Finish.gameObject.SetActive(false);
             RecordingText.gameObject.SetActive(false);
         }
+        //Test
+        if (_inputBindings.UI.startrecordingtest.triggered)
+        {
+            OnStartRecordingButtonClick();
+            Debug.LogError("start");
+        }
+        
+        if (_inputBindings.UI.stoprecordingtest.triggered )
+        {
+            OnStopRecordingButtonClick();
+            Debug.LogError("stop");
+        }
+
+        if (_inputBindings.UI.showrecordingtest.triggered )
+        {
+            OnShowRecordingButtonClick();
+            Debug.LogError("show");
+        }
     }
 
     public void OnStartRecordingButtonClick()
@@ -98,7 +123,7 @@ public class EmbodimentManager : MonoBehaviour
         while (!FinishedRecording)
         {
             storedRotations.Enqueue(playerEyes.transform.rotation);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.02f);
         }
     }
 
@@ -125,11 +150,10 @@ public class EmbodimentManager : MonoBehaviour
 
     private IEnumerator ApplyRotations()
     {
-        Debug.Log("Coroutine to show recording");
         while (storedRotations.Count != 0)
         {
-            recordedEyes.transform.rotation = storedRotations.Dequeue();
-            yield return new WaitForSeconds(0.2f);
+            recordedEyes.transform.localRotation = storedRotations.Dequeue();
+            yield return new WaitForSeconds(0.02f);
         }
         //when recording finished:
         FinishedShow = true;
@@ -159,7 +183,6 @@ public class EmbodimentManager : MonoBehaviour
             {
                 materials[1] = newMaterial; // Assuming you want to change the second material (index 1)
                 objectRenderer.materials = materials; // Assign the modified materials array back to the Renderer
-                Debug.LogError("Material changed");
             }
             else
             {

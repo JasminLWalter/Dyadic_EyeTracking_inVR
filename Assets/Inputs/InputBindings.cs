@@ -210,6 +210,33 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""startrecordingtest"",
+                    ""type"": ""Button"",
+                    ""id"": ""cd90c677-250d-488a-b874-25896e7dff15"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""stoprecordingtest"",
+                    ""type"": ""Button"",
+                    ""id"": ""37d78d2a-1e32-4ead-bf3c-e868a8a90fcf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""showrecordingtest"",
+                    ""type"": ""Button"",
+                    ""id"": ""074bee3f-6141-4743-8603-5417aefa121a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -289,6 +316,72 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a9b80497-afb5-488d-9654-04b1c55e3e73"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""startrecordingtest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c7300ca3-d4db-4d23-870e-e138f21e1abf"",
+                    ""path"": ""<XRInputV1::Oculus::OculusTouchControllerOpenXR>{LeftHand}/secondarybutton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""startrecordingtest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fb8bfe4c-19ce-495a-a1be-6627d34ba8ef"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""stoprecordingtest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8fee7c1e-33ef-400d-9d58-1ec9cccb2c79"",
+                    ""path"": ""<XRInputV1::Oculus::OculusTouchControllerOpenXR>{LeftHand}/primarybutton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""stoprecordingtest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0387bae-2ff1-492c-a6eb-561dea198a3b"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""showrecordingtest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""474c08c7-e738-4ba5-8417-70bd170f7ed6"",
+                    ""path"": ""<XRInputV1::Oculus::OculusTouchControllerOpenXR>{LeftHand}/thumbstickclicked"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""showrecordingtest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -316,6 +409,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         m_UI_Return = m_UI.FindAction("Return", throwIfNotFound: true);
         m_UI_Skip = m_UI.FindAction("Skip", throwIfNotFound: true);
         m_UI_Select = m_UI.FindAction("Select", throwIfNotFound: true);
+        m_UI_startrecordingtest = m_UI.FindAction("startrecordingtest", throwIfNotFound: true);
+        m_UI_stoprecordingtest = m_UI.FindAction("stoprecordingtest", throwIfNotFound: true);
+        m_UI_showrecordingtest = m_UI.FindAction("showrecordingtest", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -475,6 +571,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Return;
     private readonly InputAction m_UI_Skip;
     private readonly InputAction m_UI_Select;
+    private readonly InputAction m_UI_startrecordingtest;
+    private readonly InputAction m_UI_stoprecordingtest;
+    private readonly InputAction m_UI_showrecordingtest;
     public struct UIActions
     {
         private @InputBindings m_Wrapper;
@@ -483,6 +582,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         public InputAction @Return => m_Wrapper.m_UI_Return;
         public InputAction @Skip => m_Wrapper.m_UI_Skip;
         public InputAction @Select => m_Wrapper.m_UI_Select;
+        public InputAction @startrecordingtest => m_Wrapper.m_UI_startrecordingtest;
+        public InputAction @stoprecordingtest => m_Wrapper.m_UI_stoprecordingtest;
+        public InputAction @showrecordingtest => m_Wrapper.m_UI_showrecordingtest;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -504,6 +606,15 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
+            @startrecordingtest.started += instance.OnStartrecordingtest;
+            @startrecordingtest.performed += instance.OnStartrecordingtest;
+            @startrecordingtest.canceled += instance.OnStartrecordingtest;
+            @stoprecordingtest.started += instance.OnStoprecordingtest;
+            @stoprecordingtest.performed += instance.OnStoprecordingtest;
+            @stoprecordingtest.canceled += instance.OnStoprecordingtest;
+            @showrecordingtest.started += instance.OnShowrecordingtest;
+            @showrecordingtest.performed += instance.OnShowrecordingtest;
+            @showrecordingtest.canceled += instance.OnShowrecordingtest;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -520,6 +631,15 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
+            @startrecordingtest.started -= instance.OnStartrecordingtest;
+            @startrecordingtest.performed -= instance.OnStartrecordingtest;
+            @startrecordingtest.canceled -= instance.OnStartrecordingtest;
+            @stoprecordingtest.started -= instance.OnStoprecordingtest;
+            @stoprecordingtest.performed -= instance.OnStoprecordingtest;
+            @stoprecordingtest.canceled -= instance.OnStoprecordingtest;
+            @showrecordingtest.started -= instance.OnShowrecordingtest;
+            @showrecordingtest.performed -= instance.OnShowrecordingtest;
+            @showrecordingtest.canceled -= instance.OnShowrecordingtest;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -562,5 +682,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         void OnReturn(InputAction.CallbackContext context);
         void OnSkip(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
+        void OnStartrecordingtest(InputAction.CallbackContext context);
+        void OnStoprecordingtest(InputAction.CallbackContext context);
+        void OnShowrecordingtest(InputAction.CallbackContext context);
     }
 }
