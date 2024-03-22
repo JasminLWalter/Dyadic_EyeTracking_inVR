@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using ViveSR.anipal.Eye;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameObject> boxes = null;
 
     private MenuManager menuManager;
+   
 
     [Tooltip("The locations of the embodiment, start, condition 1, break, condition 2 and end space.")]
     [SerializeField] private List<Vector3> spaceLocations = null;
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("There should be as many rewards as there are inner boxes.")]
     [SerializeField] private List<int> rewards;
 
+    private bool _ValidationSuccessStatus = true;
 
     // Start is called before the first frame update
     void Start()
@@ -105,6 +108,12 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Phase 6");
         }
+
+        if (_ValidationSuccessStatus == false) 
+        {
+            SRanipal_Eye_v2.LaunchEyeCalibration();
+            _ValidationSuccessStatus = true;
+        }
     }
 
     
@@ -130,7 +139,7 @@ public class GameManager : MonoBehaviour
         // 3. Unfreeze signaller
         player.Unfreeze();
         // wait for a certain amount of time / the signaller pressing a button
-        yield return new WaitWhile(() => _inputBindings.Player.Select.triggered == false);
+        yield return new WaitWhile(() => _inputBindings.UI.Select.triggered == false);
         player.Freeze();
         // player2.Unfreeze();
         // 4. Receiver chooses box 
@@ -198,4 +207,15 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void SetValidationSuccessStatus(bool success)
+    {
+        if (success)
+        {
+            _ValidationSuccessStatus = true;
+        }
+        else
+        {
+            _ValidationSuccessStatus = false;
+        }
+    }
 }
