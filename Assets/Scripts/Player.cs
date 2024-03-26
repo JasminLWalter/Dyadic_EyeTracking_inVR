@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UIElements;
 using ViveSR.anipal.Eye;
 using static UnityEngine.GraphicsBuffer;
@@ -43,7 +44,8 @@ public class Player : MonoBehaviour
         {
             if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayOrigin, out rayDirection))
             {
-                eyes.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.World);
+                eyes.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.Self);
+                Debug.LogError("Direction x:" + rayDirection.x + "Direction y:" + rayDirection.y + "Direction z:" + rayDirection.z);
             }
             //eyes.localRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
             /*

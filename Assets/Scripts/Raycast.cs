@@ -29,7 +29,8 @@ public class Raycast : MonoBehaviour
         {
             rayOrigin = playerCamera.transform.position;
             Quaternion eyeRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
-            rayDirection = eyeRotation * rayOrigin * (-1);
+            // rayDirection = eyeRotation * rayOrigin * (-1);
+            rayDirection = Vector3.Scale(eyeRotation.eulerAngles / 180, playerCamera.transform.forward);
 
         }
     else
@@ -41,7 +42,7 @@ public class Raycast : MonoBehaviour
             rayDirection = _ray.direction;
         }
         
-        //Debug.DrawRay(rayOrigin, rayDirection * 100, Color.green);
+        Debug.DrawRay(rayOrigin, rayDirection * 100, Color.green);
 
         RaycastHit hitData;
         if (Physics.Raycast(new Ray(rayOrigin, rayDirection), out hitData, Mathf.Infinity, _layerMask))

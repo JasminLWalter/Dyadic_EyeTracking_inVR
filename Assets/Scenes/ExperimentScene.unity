@@ -4473,7 +4473,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnableEye: 1
   EnableEyeDataCallback: 1
-  EnableEyeVersion: 0
+  EnableEyeVersion: 1
 --- !u!4 &458844615
 Transform:
   m_ObjectHideFlags: 0
