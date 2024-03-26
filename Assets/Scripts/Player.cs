@@ -4,6 +4,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using ViveSR.anipal.Eye;
+using static UnityEngine.GraphicsBuffer;
 
 // For the avatar: https://developer.vive.com/resources/openxr/openxr-pcvr/tutorials/unity/integrate-facial-tracking-your-avatar/
 
@@ -21,6 +23,11 @@ public class Player : MonoBehaviour
 
     private InputBindings _inputBindings;
 
+    private Vector3 rayOrigin;
+
+    private Vector3 rayDirection;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,8 +41,11 @@ public class Player : MonoBehaviour
     {
         if (!frozen)
         {
-
-            eyes.localRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
+            if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayOrigin, out rayDirection))
+            {
+                eyes.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.World);
+            }
+            //eyes.localRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
             /*
             if (!_inputBindings.Player.EyeGazeIsTracked.triggered) 
             {

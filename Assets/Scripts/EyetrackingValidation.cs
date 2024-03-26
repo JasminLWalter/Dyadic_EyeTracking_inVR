@@ -41,7 +41,7 @@ public class EyetrackingValidation : MonoBehaviour
     private Vector3 rayOrigin = new Vector3();
     private Vector3 rayDirection = new Vector3();
 
-    
+    private InputBindings _inputBindings;
 
     #endregion
 
@@ -57,11 +57,13 @@ public class EyetrackingValidation : MonoBehaviour
 
     private void Start()
     {
+        _inputBindings = new InputBindings();
+        _inputBindings.UI.Enable();
+
         fixationPoint.SetActive(false);
         _eyeValidationDataFrames = new List<EyeValidationData>();
         //SRanipal_Eye_v2.LaunchEyeCalibration();
     }
-
     /*private void SaveValidationFile()
     {
         var fileName = _participantId + "_EyeValidation_" + Instance.GetCurrentUnixTimeStamp();
@@ -72,20 +74,24 @@ public class EyetrackingValidation : MonoBehaviour
 
     private void Update()
     {
-        if (startCal)
+        if (startCal || _inputBindings.UI.Calibration.triggered)
         {
             SRanipal_Eye_v2.LaunchEyeCalibration();
             startCal = false;
         }
 
-        if (startVal) { 
+        if (startVal || _inputBindings.UI.Validation.triggered) { 
             ValidateEyeTracking();
-            Debug.DrawRay(rayOrigin, rayDirection * 100, Color.blue);
+            
             startVal = false;
         }
 
+        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayOrigin, out rayDirection))
+        {
+            Debug.DrawRay(Camera.main.transform.position, rayDirection * 100, Color.blue);
+        }
+
         
-            
 
     }
 
@@ -184,16 +190,13 @@ public class EyetrackingValidation : MonoBehaviour
         
         fixationPoint.transform.parent = gameObject.transform;
 
-        Debug.Log( "Get validation error" + GetValidationError() + " + " + _eyeValidationData.EyeValidationError);
-        Debug.LogWarning("Get validation error" + GetValidationError() + " + " + _eyeValidationData.EyeValidationError);
-        Debug.LogError("Get validation error" + GetValidationError() + " + " + _eyeValidationData.EyeValidationError);
+
+        Debug.LogError("Get validation error" + GetValidationError());
 
         _eyeValidationDataFrames.Add(_eyeValidationData);
         // SaveValidationFile();
 
-        Debug.Log("ValidationError X" + CalculateValidationError(anglesX));
-        Debug.LogWarning("ValidationError X" + CalculateValidationError(anglesX));
-        Debug.LogError("ValidationError X" + CalculateValidationError(anglesX));
+  
 
         fixationPoint.SetActive(false);
 

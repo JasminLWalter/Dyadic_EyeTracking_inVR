@@ -283,11 +283,11 @@ namespace ViveSR
                         eyesData[(int)GazeIndex.LEFT] = eye_data.verbose_data.left;
                         eyesData[(int)GazeIndex.RIGHT] = eye_data.verbose_data.right;
                         eyesData[(int)GazeIndex.COMBINE] = eye_data.verbose_data.combined.eye_data;
-                        Debug.LogWarning("verbose data combined: " + eye_data.verbose_data);
 
                         if (gazeIndex == GazeIndex.COMBINE)
                         {
-                            valid = eyesData[(int)GazeIndex.COMBINE].GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_GAZE_DIRECTION_VALIDITY);
+                            // valid = eyesData[(int)GazeIndex.COMBINE].GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_GAZE_DIRECTION_VALIDITY);
+                            valid = true;
                             if (valid)
                             {
                                 origin = eyesData[(int)GazeIndex.COMBINE].gaze_origin_mm * 0.001f;
