@@ -215,6 +215,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Calibration",
+                    "type": "Button",
+                    "id": "368e06a7-1c4c-4c29-8447-fb977a663714",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Validation",
+                    "type": "Button",
+                    "id": "60dec410-b0a0-4143-ace8-df3fc2360a5b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -358,6 +376,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "showrecordingtest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "42de63ce-2454-4a14-933d-8ec19f91feee",
+                    "path": "<XRController>{RightHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Calibration",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11f26c19-ca07-4588-b4f5-b4a477de196b",
+                    "path": "<XRController>{RightHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Validation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

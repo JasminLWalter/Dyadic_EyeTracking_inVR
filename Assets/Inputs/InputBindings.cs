@@ -237,6 +237,24 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Calibration"",
+                    ""type"": ""Button"",
+                    ""id"": ""368e06a7-1c4c-4c29-8447-fb977a663714"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Validation"",
+                    ""type"": ""Button"",
+                    ""id"": ""60dec410-b0a0-4143-ace8-df3fc2360a5b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -382,6 +400,28 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""action"": ""showrecordingtest"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""42de63ce-2454-4a14-933d-8ec19f91feee"",
+                    ""path"": ""<XRController>{RightHand}/primaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Calibration"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11f26c19-ca07-4588-b4f5-b4a477de196b"",
+                    ""path"": ""<XRController>{RightHand}/secondaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Validation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -412,6 +452,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         m_UI_startrecordingtest = m_UI.FindAction("startrecordingtest", throwIfNotFound: true);
         m_UI_stoprecordingtest = m_UI.FindAction("stoprecordingtest", throwIfNotFound: true);
         m_UI_showrecordingtest = m_UI.FindAction("showrecordingtest", throwIfNotFound: true);
+        m_UI_Calibration = m_UI.FindAction("Calibration", throwIfNotFound: true);
+        m_UI_Validation = m_UI.FindAction("Validation", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -574,6 +616,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_startrecordingtest;
     private readonly InputAction m_UI_stoprecordingtest;
     private readonly InputAction m_UI_showrecordingtest;
+    private readonly InputAction m_UI_Calibration;
+    private readonly InputAction m_UI_Validation;
     public struct UIActions
     {
         private @InputBindings m_Wrapper;
@@ -585,6 +629,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         public InputAction @startrecordingtest => m_Wrapper.m_UI_startrecordingtest;
         public InputAction @stoprecordingtest => m_Wrapper.m_UI_stoprecordingtest;
         public InputAction @showrecordingtest => m_Wrapper.m_UI_showrecordingtest;
+        public InputAction @Calibration => m_Wrapper.m_UI_Calibration;
+        public InputAction @Validation => m_Wrapper.m_UI_Validation;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -615,6 +661,12 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @showrecordingtest.started += instance.OnShowrecordingtest;
             @showrecordingtest.performed += instance.OnShowrecordingtest;
             @showrecordingtest.canceled += instance.OnShowrecordingtest;
+            @Calibration.started += instance.OnCalibration;
+            @Calibration.performed += instance.OnCalibration;
+            @Calibration.canceled += instance.OnCalibration;
+            @Validation.started += instance.OnValidation;
+            @Validation.performed += instance.OnValidation;
+            @Validation.canceled += instance.OnValidation;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -640,6 +692,12 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @showrecordingtest.started -= instance.OnShowrecordingtest;
             @showrecordingtest.performed -= instance.OnShowrecordingtest;
             @showrecordingtest.canceled -= instance.OnShowrecordingtest;
+            @Calibration.started -= instance.OnCalibration;
+            @Calibration.performed -= instance.OnCalibration;
+            @Calibration.canceled -= instance.OnCalibration;
+            @Validation.started -= instance.OnValidation;
+            @Validation.performed -= instance.OnValidation;
+            @Validation.canceled -= instance.OnValidation;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -685,5 +743,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         void OnStartrecordingtest(InputAction.CallbackContext context);
         void OnStoprecordingtest(InputAction.CallbackContext context);
         void OnShowrecordingtest(InputAction.CallbackContext context);
+        void OnCalibration(InputAction.CallbackContext context);
+        void OnValidation(InputAction.CallbackContext context);
     }
 }
