@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ViveSR.anipal.Eye;
 
 public class Raycast : MonoBehaviour
 {
@@ -25,13 +26,15 @@ public class Raycast : MonoBehaviour
         Vector3 rayOrigin = new Vector3();
         Vector3 rayDirection = new Vector3();
 
+
         if (inVR)
         {
             rayOrigin = playerCamera.transform.position;
             Quaternion eyeRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
+            Debug.LogError("rayOrigin" + rayOrigin);
             // rayDirection = eyeRotation * rayOrigin * (-1);
             rayDirection = Vector3.Scale(eyeRotation.eulerAngles / 180, playerCamera.transform.forward);
-
+              
         }
     else
         {
@@ -42,7 +45,7 @@ public class Raycast : MonoBehaviour
             rayDirection = _ray.direction;
         }
         
-        Debug.DrawRay(rayOrigin, rayDirection * 100, Color.green);
+        Debug.DrawRay(rayOrigin, rayDirection * 100, Color.magenta);
 
         RaycastHit hitData;
         if (Physics.Raycast(new Ray(rayOrigin, rayDirection), out hitData, Mathf.Infinity, _layerMask))

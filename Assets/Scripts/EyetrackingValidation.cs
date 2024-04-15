@@ -177,6 +177,10 @@ public class EyetrackingValidation : MonoBehaviour
                     validationData.EyeValidationError.z = CalculateValidationError(anglesZ);
 
                     _eyeValidationData = validationData;
+
+                    Debug.LogError("ValError x" + validationData.EyeValidationError.x);
+                    Debug.LogError("ValError y" + validationData.EyeValidationError.y);
+                    Debug.LogError("ValError z" + validationData.EyeValidationError.z);
                 }
                 
                 yield return new WaitForEndOfFrame();
@@ -191,7 +195,7 @@ public class EyetrackingValidation : MonoBehaviour
         fixationPoint.transform.parent = gameObject.transform;
 
 
-        Debug.LogError("Get validation error" + GetValidationError());
+        
 
         _eyeValidationDataFrames.Add(_eyeValidationData);
         // SaveValidationFile();
@@ -281,7 +285,7 @@ public class EyetrackingValidation : MonoBehaviour
         
         fixationPoint.transform.parent = gameObject.transform;
 
-        Debug.Log( "Get validation error" + GetValidationError() + " + " + _eyeValidationData.EyeValidationError);
+        Debug.LogError( "Get validation error" + GetValidationError() + " + " + _eyeValidationData.EyeValidationError);
        
 
         _eyeValidationDataFrames.Add(_eyeValidationData);
