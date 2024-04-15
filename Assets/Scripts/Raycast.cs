@@ -29,12 +29,29 @@ public class Raycast : MonoBehaviour
 
         if (inVR)
         {
+            Transform hmdTransform = playerCamera.transform;//Player.instance.hmdTransform;
+            Debug.LogError("hmdTransform " + hmdTransform.position);
+            SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
+            var eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmdTransform.position;
+            Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1, verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
+            var eyeDirectionCombinedWorld = hmdTransform.rotation * coordinateAdaptedGazeDirectionCombined;
+
+            RaycastHit firstHit;
+            if (Physics.Raycast(eyePositionCombinedWorld, eyeDirectionCombinedWorld, out firstHit))
+            {
+                transform.position = firstHit.point;
+
+            }
+
+            Debug.DrawRay(eyePositionCombinedWorld, eyeDirectionCombinedWorld * 100, Color.magenta);
+            /*
+
             rayOrigin = playerCamera.transform.position;
             Quaternion eyeRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
             Debug.LogError("rayOrigin" + rayOrigin);
             // rayDirection = eyeRotation * rayOrigin * (-1);
             rayDirection = Vector3.Scale(eyeRotation.eulerAngles / 180, playerCamera.transform.forward);
-              
+              */
         }
     else
         {
@@ -45,7 +62,6 @@ public class Raycast : MonoBehaviour
             rayDirection = _ray.direction;
         }
         
-        Debug.DrawRay(rayOrigin, rayDirection * 100, Color.magenta);
 
         RaycastHit hitData;
         if (Physics.Raycast(new Ray(rayOrigin, rayDirection), out hitData, Mathf.Infinity, _layerMask))
