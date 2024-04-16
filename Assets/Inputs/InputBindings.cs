@@ -272,7 +272,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d12c2f81-d972-4f8a-bd4a-d9c3c072068a"",
-                    ""path"": ""<XRController>{RightHand}/primaryButton"",
+                    ""path"": ""<ViveController>{RightHand}/menu"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -294,7 +294,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""905a6251-40fe-4195-851e-e47d798602a8"",
-                    ""path"": ""<XRController>{LeftHand}/primaryButton"",
+                    ""path"": ""<ViveController>{LeftHand}/menu"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -327,7 +327,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e4bb9e23-0873-40d7-9414-388e6caa172e"",
-                    ""path"": ""<XRController>/triggerPressed"",
+                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/trackpadclicked"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

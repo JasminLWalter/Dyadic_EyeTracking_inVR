@@ -6,6 +6,10 @@ using System.Collections.Generic;
 
 public class EmbodimentManager : MonoBehaviour
 {
+    public Transform controllerTransform; // Reference to the VR controller's transform
+    public float raycastDistance = 100f; // Maximum distance of the raycast
+    public LayerMask buttonLayer; // Layer mask for UI buttons
+
     public Button StartRecording;
     public Button StopRecording;
     public Button ShowRecording;
@@ -52,13 +56,31 @@ public class EmbodimentManager : MonoBehaviour
 
         storedRotations = new Queue<Quaternion>();
         
-        //////////Test
+        /* ////////Test
         _inputBindings = new InputBindings();
-        _inputBindings.UI.Enable();
+        _inputBindings.UI.Enable(); */
     }
 
     void Update()
     {
+        Ray ray = new Ray(controllerTransform.position, controllerTransform.forward);
+
+        // Check for button hit
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, raycastDistance, buttonLayer))
+        {
+            // Check if the hit object is a UI button
+            Button button = hit.collider.GetComponent<Button>();
+            if (button != null)
+            {
+                // Check for input to trigger the button click event
+                if (Input.GetButtonDown("Fire1")) // Adjust the input as needed
+                {
+                    // Trigger the button's click event programmatically
+                    button.onClick.Invoke();
+                }
+            }
+        }
         if (gameManager.GetCurrentPhase() == 1)
         {
             if (!FinishedRecording || FinishedShow)
@@ -89,7 +111,7 @@ public class EmbodimentManager : MonoBehaviour
             Finish.gameObject.SetActive(false);
             RecordingText.gameObject.SetActive(false);
         }
-        //Test
+        /* /Test/*
         if (_inputBindings.UI.startrecordingtest.triggered)
         {
             OnStartRecordingButtonClick();
@@ -106,7 +128,7 @@ public class EmbodimentManager : MonoBehaviour
         {
             OnShowRecordingButtonClick();
             Debug.LogError("show");
-        }
+        } */
     }
 
     public void OnStartRecordingButtonClick()

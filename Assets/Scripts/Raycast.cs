@@ -18,6 +18,8 @@ public class Raycast : MonoBehaviour
     {
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
+
+
     }
 
     // Update is called once per frame
@@ -26,10 +28,13 @@ public class Raycast : MonoBehaviour
         Vector3 rayOrigin = new Vector3();
         Vector3 rayDirection = new Vector3();
 
-
+        
         if (inVR)
         {
-            Transform hmdTransform = playerCamera.transform;//Player.instance.hmdTransform;
+            
+            Player playerInstance = FindObjectOfType<Player>(); // Assuming there's only one Player object in the scene
+            Transform hmdTransform = playerInstance.hmdTransform;
+            //Transform hmdTransform = Player.hmdTransform; //Transform hmdTransform = playerCamera.transform.position;  //Transform hmdTransform = playerCamera.transform;
             Debug.LogError("hmdTransform " + hmdTransform.position);
             SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
             var eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmdTransform.position;
@@ -94,5 +99,5 @@ public class Raycast : MonoBehaviour
             }
         }
 
-    }
+    }  
 }

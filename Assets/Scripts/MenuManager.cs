@@ -100,7 +100,6 @@ public class MenuManager : MonoBehaviour
         if (gameManager.GetCurrentPhase() != 2)
         {
             HideLists(TextsPhase2);
-            Debug.Log("Hides");
         }
 
         if (gameManager.GetCurrentPhase() != 4)

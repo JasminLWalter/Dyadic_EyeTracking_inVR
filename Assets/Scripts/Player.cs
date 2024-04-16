@@ -29,12 +29,19 @@ public class Player : MonoBehaviour
     private Vector3 rayDirection;
 
 
-    // Start is called before the first frame update
-    void Start()
+    public Transform hmdTransform;
+
+    private void Start()
     {
+        //hmdTransform = GameObject.Find("NameOfYourHMDObject").transform;
+        //hmdTransform = GetComponentInChildren<YourHMDComponent>().transform;
+
         playerCamera = GetComponent<Camera>();
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
+
+        
+
     }
 
     // Update is called once per frame
