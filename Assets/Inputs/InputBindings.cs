@@ -337,6 +337,17 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""80130fcc-a903-4cbb-8201-068ba1536220"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""a9b80497-afb5-488d-9654-04b1c55e3e73"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",

@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Camera playerCamera;
 
 
+
     [SerializeField] private Transform eyes;
 
     public bool frozen = false;
@@ -29,7 +30,7 @@ public class Player : MonoBehaviour
     private Vector3 rayDirection;
 
 
-    public Transform hmdTransform;
+    public Transform OriginTransform;
 
     private void Start()
     {
@@ -72,7 +73,7 @@ public class Player : MonoBehaviour
     // Teleports the player to another space
     public void Teleport(Vector3 location)
     {
-        Transform currentLocation = GetComponent<Transform>();
+        Transform currentLocation = OriginTransform;
         currentLocation.position = location;
     }
     

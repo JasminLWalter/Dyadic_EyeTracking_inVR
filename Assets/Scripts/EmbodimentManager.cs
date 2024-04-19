@@ -56,14 +56,15 @@ public class EmbodimentManager : MonoBehaviour
 
         storedRotations = new Queue<Quaternion>();
         
-        /* ////////Test
+         ////////Test
         _inputBindings = new InputBindings();
-        _inputBindings.UI.Enable(); */
+        _inputBindings.UI.Enable(); 
     }
 
     void Update()
     {
         Ray ray = new Ray(controllerTransform.position, controllerTransform.forward);
+        Debug.DrawRay(controllerTransform.position, controllerTransform.forward * 100, Color.yellow);
 
         // Check for button hit
         RaycastHit hit;
@@ -74,7 +75,7 @@ public class EmbodimentManager : MonoBehaviour
             if (button != null)
             {
                 // Check for input to trigger the button click event
-                if (Input.GetButtonDown("Fire1")) // Adjust the input as needed
+                if (_inputBindings.UI.Select.triggered) // Adjust the input as needed  //Input.GetButtonDown("Fire1")
                 {
                     // Trigger the button's click event programmatically
                     button.onClick.Invoke();

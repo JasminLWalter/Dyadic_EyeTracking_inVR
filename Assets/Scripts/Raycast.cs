@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 using ViveSR.anipal.Eye;
 
 public class Raycast : MonoBehaviour
@@ -11,6 +12,7 @@ public class Raycast : MonoBehaviour
     private Collider _lastHit;
     private int _layerMask = 1<<3;  // Only objects on Layer 3 should be considered
     [SerializeField] private bool inVR = true;
+    public GameObject hmd;
 
 
     // Start is called before the first frame update
@@ -28,35 +30,31 @@ public class Raycast : MonoBehaviour
         Vector3 rayOrigin = new Vector3();
         Vector3 rayDirection = new Vector3();
 
-        
+        SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
+        var eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmd.transform.position;
+        Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1, verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
+
+        var eyeDirectionCombinedWorld = hmd.transform.rotation * coordinateAdaptedGazeDirectionCombined;
+
+
+
         if (inVR)
         {
-            
-            Player playerInstance = FindObjectOfType<Player>(); // Assuming there's only one Player object in the scene
-            Transform hmdTransform = playerInstance.hmdTransform;
-            //Transform hmdTransform = Player.hmdTransform; //Transform hmdTransform = playerCamera.transform.position;  //Transform hmdTransform = playerCamera.transform;
-            Debug.LogError("hmdTransform " + hmdTransform.position);
-            SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
-            var eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmdTransform.position;
-            Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1, verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
-            var eyeDirectionCombinedWorld = hmdTransform.rotation * coordinateAdaptedGazeDirectionCombined;
 
+            
+            /*
             RaycastHit firstHit;
-            if (Physics.Raycast(eyePositionCombinedWorld, eyeDirectionCombinedWorld, out firstHit))
+            if (Physics.Raycast(eyePositionCombinedWorld, eyeDirectionCombinedWorld, out firstHit, Mathf.Infinity))
             {
                 transform.position = firstHit.point;
 
-            }
+            } */
+            
+
 
             Debug.DrawRay(eyePositionCombinedWorld, eyeDirectionCombinedWorld * 100, Color.magenta);
-            /*
 
-            rayOrigin = playerCamera.transform.position;
-            Quaternion eyeRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
-            Debug.LogError("rayOrigin" + rayOrigin);
-            // rayDirection = eyeRotation * rayOrigin * (-1);
-            rayDirection = Vector3.Scale(eyeRotation.eulerAngles / 180, playerCamera.transform.forward);
-              */
+            
         }
     else
         {
@@ -69,7 +67,7 @@ public class Raycast : MonoBehaviour
         
 
         RaycastHit hitData;
-        if (Physics.Raycast(new Ray(rayOrigin, rayDirection), out hitData, Mathf.Infinity, _layerMask))
+        if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _layerMask))
         {   
             if (_lastHit == null)
             {
