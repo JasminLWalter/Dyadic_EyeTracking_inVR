@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public class EmbodimentManager : MonoBehaviour
 {
@@ -36,6 +37,7 @@ public class EmbodimentManager : MonoBehaviour
     private int Counter = 0;
 
     private Queue<Quaternion> storedRotations;
+    public UnityEventQueueSystem onPressed;
     
     //Test
     private InputBindings _inputBindings;
@@ -63,25 +65,41 @@ public class EmbodimentManager : MonoBehaviour
 
     void Update()
     {
+        triggerButton();
+
+        /*
         Ray ray = new Ray(controllerTransform.position, controllerTransform.forward);
         Debug.DrawRay(controllerTransform.position, controllerTransform.forward * 100, Color.yellow);
 
         // Check for button hit
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, raycastDistance, buttonLayer))
+
+        //if (Physics.Raycast(ray, out hit, raycastDistance, buttonLayer))
+
+        if (Physics.Raycast(ray, out hit))
         {
             // Check if the hit object is a UI button
-            Button button = hit.collider.GetComponent<Button>();
-            if (button != null)
+            if (hit.collider.CompareTag("Button"))
             {
-                // Check for input to trigger the button click event
-                if (_inputBindings.UI.Select.triggered) // Adjust the input as needed  //Input.GetButtonDown("Fire1")
+                Debug.LogError("1");
+
+                // Check if the hit object has a Button component
+                Button button = hit.collider.GetComponent<Button>();
+                if (button != null)
                 {
-                    // Trigger the button's click event programmatically
-                    button.onClick.Invoke();
+                    Debug.LogError("2");
+
+                    // Check for input to trigger the button click event
+                    if (_inputBindings.UI.Pressed.triggered) // Adjust the input as needed
+                    {
+                        Debug.LogError("3");
+
+                        // Trigger the button's click event programmatically
+                        button.onClick.Invoke();
+                    }
                 }
             }
-        }
+        }    */
         if (gameManager.GetCurrentPhase() == 1)
         {
             if (!FinishedRecording || FinishedShow)
@@ -132,6 +150,53 @@ public class EmbodimentManager : MonoBehaviour
         } */
     }
 
+    private void triggerButton()
+    {
+        // Check if the XR controller's collider overlaps with any UI buttons
+        Collider[] colliders = Physics.OverlapSphere(controllerTransform.position, 50, buttonLayer);
+        foreach (Collider collider in colliders)
+        
+        {
+            // Check if the collider belongs to a UI button
+            Button button = collider.GetComponent<Button>();
+            if (button != null)
+            {
+                Debug.LogError("2");
+                // Check for input to trigger the button click event
+                if (_inputBindings.UI.Pressed.triggered)
+                {
+                    // Trigger the button's click event programmatically
+                    button.onClick.Invoke();
+                    Debug.LogError("3");
+                }
+            }
+        }
+    }
+
+
+    /*
+    private void triggerButton(Collider other) 
+    {
+
+        if (other.tag == "Button")
+        {
+            Debug.LogError("1");
+            // Check if the hit object is a UI button
+            Button button = hit.collider.GetComponent<Button>();
+            if (button != null)
+            {
+                Debug.LogError("2");
+                // Check for input to trigger the button click event
+                if (_inputBindings.UI.Pressed.triggered) // Adjust the input as needed  //Input.GetButtonDown("Fire1")
+                {
+                    Debug.LogError("3");
+                    // Trigger the button's click event programmatically
+                    button.onClick.Invoke();
+                }
+            }
+        }
+    }
+    */
     public void OnStartRecordingButtonClick()
     {
         
@@ -193,7 +258,7 @@ public class EmbodimentManager : MonoBehaviour
 
     }
 
-
+    
     private void ChangeColor(GameObject obj, Material newMaterial)
     {
         Renderer objectRenderer = obj.GetComponent<Renderer>();
@@ -216,7 +281,7 @@ public class EmbodimentManager : MonoBehaviour
         {
             Debug.LogError("Object does not have a Renderer component.");
         }
-    }
+    } 
 
 
 }

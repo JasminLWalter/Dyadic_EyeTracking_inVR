@@ -255,6 +255,15 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pressed"",
+                    ""type"": ""Button"",
+                    ""id"": ""af98807f-8423-43b0-91f2-c8e44ef1cf1a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -317,28 +326,6 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""74ca1241-1141-4afa-b3d5-9f541a91814d"",
                     ""path"": ""<Keyboard>/enter"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e4bb9e23-0873-40d7-9414-388e6caa172e"",
-                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/trackpadclicked"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""80130fcc-a903-4cbb-8201-068ba1536220"",
-                    ""path"": """",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -433,6 +420,28 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""action"": ""Validation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4bb9e23-0873-40d7-9414-388e6caa172e"",
+                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/trackpadclicked"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""Pressed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""80130fcc-a903-4cbb-8201-068ba1536220"",
+                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/trackpadclicked"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pressed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -465,6 +474,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         m_UI_showrecordingtest = m_UI.FindAction("showrecordingtest", throwIfNotFound: true);
         m_UI_Calibration = m_UI.FindAction("Calibration", throwIfNotFound: true);
         m_UI_Validation = m_UI.FindAction("Validation", throwIfNotFound: true);
+        m_UI_Pressed = m_UI.FindAction("Pressed", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -629,6 +639,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_showrecordingtest;
     private readonly InputAction m_UI_Calibration;
     private readonly InputAction m_UI_Validation;
+    private readonly InputAction m_UI_Pressed;
     public struct UIActions
     {
         private @InputBindings m_Wrapper;
@@ -642,6 +653,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         public InputAction @showrecordingtest => m_Wrapper.m_UI_showrecordingtest;
         public InputAction @Calibration => m_Wrapper.m_UI_Calibration;
         public InputAction @Validation => m_Wrapper.m_UI_Validation;
+        public InputAction @Pressed => m_Wrapper.m_UI_Pressed;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -678,6 +690,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Validation.started += instance.OnValidation;
             @Validation.performed += instance.OnValidation;
             @Validation.canceled += instance.OnValidation;
+            @Pressed.started += instance.OnPressed;
+            @Pressed.performed += instance.OnPressed;
+            @Pressed.canceled += instance.OnPressed;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -709,6 +724,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Validation.started -= instance.OnValidation;
             @Validation.performed -= instance.OnValidation;
             @Validation.canceled -= instance.OnValidation;
+            @Pressed.started -= instance.OnPressed;
+            @Pressed.performed -= instance.OnPressed;
+            @Pressed.canceled -= instance.OnPressed;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -756,5 +774,6 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         void OnShowrecordingtest(InputAction.CallbackContext context);
         void OnCalibration(InputAction.CallbackContext context);
         void OnValidation(InputAction.CallbackContext context);
+        void OnPressed(InputAction.CallbackContext context);
     }
 }

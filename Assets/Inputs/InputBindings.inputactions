@@ -233,6 +233,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Pressed",
+                    "type": "Button",
+                    "id": "af98807f-8423-43b0-91f2-c8e44ef1cf1a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -295,28 +304,6 @@
                     "name": "",
                     "id": "74ca1241-1141-4afa-b3d5-9f541a91814d",
                     "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e4bb9e23-0873-40d7-9414-388e6caa172e",
-                    "path": "<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/trackpadclicked",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "80130fcc-a903-4cbb-8201-068ba1536220",
-                    "path": "",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -409,6 +396,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Validation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4bb9e23-0873-40d7-9414-388e6caa172e",
+                    "path": "<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/trackpadclicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "Pressed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "80130fcc-a903-4cbb-8201-068ba1536220",
+                    "path": "<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/trackpadclicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pressed",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

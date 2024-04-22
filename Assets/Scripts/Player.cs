@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
             if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayOrigin, out rayDirection))
             {
                 eyes.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.Self);
-                Debug.LogError("Direction x:" + rayDirection.x + "Direction y:" + rayDirection.y + "Direction z:" + rayDirection.z);
+                //Debug.LogError("Direction x:" + rayDirection.x + "Direction y:" + rayDirection.y + "Direction z:" + rayDirection.z);
             }
             //eyes.localRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
             /*
