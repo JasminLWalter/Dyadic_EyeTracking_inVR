@@ -9,7 +9,7 @@ public class EmbodimentManager : MonoBehaviour
 {
     public Transform controllerTransform; // Reference to the VR controller's transform
     public float raycastDistance = 100f; // Maximum distance of the raycast
-    public LayerMask buttonLayer; // Layer mask for UI buttons
+    public LayerMask UI; // Layer mask for UI buttons
 
     public Button StartRecording;
     public Button StopRecording;
@@ -51,8 +51,8 @@ public class EmbodimentManager : MonoBehaviour
         RecordingText.gameObject.SetActive(false);
         TV.gameObject.SetActive(false);
 
-        StartRecording.onClick.AddListener(OnStartRecordingButtonClick);
-        StopRecording.onClick.AddListener(OnStopRecordingButtonClick);
+        //StartRecording.onClick.AddListener(OnStartRecordingButtonClick);
+        //StopRecording.onClick.AddListener(OnStopRecordingButtonClick);
         ShowRecording.onClick.AddListener(OnShowRecordingButtonClick);
         Finish.onClick.AddListener(OnFinishButtonClick);
 
@@ -60,12 +60,47 @@ public class EmbodimentManager : MonoBehaviour
         
          ////////Test
         _inputBindings = new InputBindings();
-        _inputBindings.UI.Enable(); 
+        _inputBindings.UI.Enable();
+
     }
 
     void Update()
     {
-        triggerButton();
+        // I think we are not using the internal ray for which the buttons are enabled to interact with
+        // It is clear not even the first if condition is fulfilled, what shows us that something with the ray is off
+        // Raycast from the controller position in the forward direction
+        Ray ray = new Ray(controllerTransform.position, controllerTransform.forward);
+        RaycastHit hit;
+
+        // Check if the ray hits any UI buttons
+        if (Physics.Raycast(ray, out hit, raycastDistance, UI))
+        {
+            Debug.Log("Button Pressed");
+            // Check if the hit object has a Button component
+            Button button = hit.collider.GetComponent<Button>();
+
+            if (button != null)
+            {
+                
+
+                // Check which button was pressed based on its tag
+                if (hit.collider.tag == "StartRecording")
+                {
+                    Debug.Log("Start Button Pressed 1");
+                    OnStartRecordingButtonClick();
+                    Debug.Log("Start Button Pressed");
+                }
+                else if (hit.collider.CompareTag("StopRecording") && StopRecording.onClick != null)
+                {
+                    Debug.Log("Stop Button Pressed 1");
+                    OnStopRecordingButtonClick();
+                    Debug.Log("Stop Button Pressed");
+                }
+            }
+        }
+
+
+
 
         /*
         Ray ray = new Ray(controllerTransform.position, controllerTransform.forward);
@@ -153,7 +188,7 @@ public class EmbodimentManager : MonoBehaviour
     private void triggerButton()
     {
         // Check if the XR controller's collider overlaps with any UI buttons
-        Collider[] colliders = Physics.OverlapSphere(controllerTransform.position, 50, buttonLayer);
+        Collider[] colliders = Physics.OverlapSphere(controllerTransform.position, 50);
         foreach (Collider collider in colliders)
         
         {
@@ -174,29 +209,8 @@ public class EmbodimentManager : MonoBehaviour
     }
 
 
-    /*
-    private void triggerButton(Collider other) 
-    {
 
-        if (other.tag == "Button")
-        {
-            Debug.LogError("1");
-            // Check if the hit object is a UI button
-            Button button = hit.collider.GetComponent<Button>();
-            if (button != null)
-            {
-                Debug.LogError("2");
-                // Check for input to trigger the button click event
-                if (_inputBindings.UI.Pressed.triggered) // Adjust the input as needed  //Input.GetButtonDown("Fire1")
-                {
-                    Debug.LogError("3");
-                    // Trigger the button's click event programmatically
-                    button.onClick.Invoke();
-                }
-            }
-        }
-    }
-    */
+
     public void OnStartRecordingButtonClick()
     {
         

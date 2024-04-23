@@ -218,4 +218,16 @@ public class GameManager : MonoBehaviour
             _ValidationSuccessStatus = false;
         }
     }
+    /*
+    private IEnumerator Timer()
+    { 
+        if (!_startedRound && !_selected)
+        {
+            Timer.gameObject.SetActive(false);
+        }
+        else()
+        {
+            Timer.gameObject.SetActive(true);
+        }
+    } */
 }
