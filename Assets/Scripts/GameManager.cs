@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using VIVE.OpenXR;
 using ViveSR.anipal.Eye;
 
 public class GameManager : MonoBehaviour
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
     private int score;
     [SerializeField] private TextMeshPro scoreDisplay;
     [SerializeField] private TextMeshPro roundsDisplay;
+    [SerializeField] private TextMeshPro TimeExceededTMP;
 
     [SerializeField] private int roundsPerCondition = 0;
     private int _currentRound = 0;
@@ -28,7 +30,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameObject> boxes = null;
 
     private MenuManager menuManager;
-   
+    
+
 
     [Tooltip("The locations of the embodiment, start, condition 1, break, condition 2 and end space.")]
     [SerializeField] private List<Vector3> spaceLocations = null;
@@ -37,6 +40,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<int> rewards;
 
     private bool _ValidationSuccessStatus = true;
+    
+    //Jojo Timer/Clock 
+    public ClockManager clockManager;
+    [SerializeField] private GameObject clock;
+    public bool TimeExceeded = false;
 
     // Start is called before the first frame update
     void Start()
@@ -46,12 +54,14 @@ public class GameManager : MonoBehaviour
         score = 0;
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
+        
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-       // Phase 0: Welcome & Instruction Embodiment (UI Space)
+        // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
         { 
             Debug.Log("Phase 0");
@@ -132,6 +142,8 @@ public class GameManager : MonoBehaviour
     {
         _startedRound = true;
         _selected = false;
+        Timer();
+        Debug.Log("Timer started");
         roundsDisplay.text = "Round: " + _currentRound;
         // 1. Freeze receiver 
         // 2. Shuffle rewards
@@ -218,16 +230,39 @@ public class GameManager : MonoBehaviour
             _ValidationSuccessStatus = false;
         }
     }
-    /*
-    private IEnumerator Timer()
+    
+    private void Timer()
     { 
-        if (!_startedRound && !_selected)
+        if (_startedRound && !_selected)
         {
-            Timer.gameObject.SetActive(false);
+            
+            clock.gameObject.SetActive(true);
+            clockManager.isRunning = true;
+
+            if (TimeExceeded == true)
+            {
+                Debug.LogError("Time Exceeded == true");
+                clock.gameObject.SetActive(false);
+                ShowTimeExceeded();
+
+            }
         }
-        else()
+        else
         {
-            Timer.gameObject.SetActive(true);
+            clock.gameObject.SetActive(false);
+
         }
-    } */
+    }
+
+    public IEnumerator ShowTimeExceeded()
+    {
+        // Show the object
+        TimeExceededTMP.gameObject.SetActive(true);
+        Debug.LogError("ShowTimeExceeded");
+        // Wait for the specified duration
+        yield return new WaitForSeconds(2);
+
+        // Hide the object after the duration
+        TimeExceededTMP.gameObject.SetActive(false);
+    }
 }
