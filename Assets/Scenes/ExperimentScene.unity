@@ -513,7 +513,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad9a240008ef7f5439ab4c60461eda6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controllerTransform: {fileID: 9014170783538599043}
+  leftControllerTransform: {fileID: 9014170785090376802}
+  rightControllerTransform: {fileID: 9014170783538599043}
   raycastDistance: 100
   UI:
     serializedVersion: 2
@@ -531,6 +532,9 @@ MonoBehaviour:
   gameManager: {fileID: 171754634}
   playerEyes: {fileID: 1483203750}
   recordedEyes: {fileID: 1512724218}
+  embodimentTrainingStarted: 0
+  embodimentTrainingEnd: 0
+  preferredHandTransform: {fileID: 0}
 --- !u!1 &73550101
 GameObject:
   m_ObjectHideFlags: 0
@@ -670,7 +674,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad9a240008ef7f5439ab4c60461eda6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controllerTransform: {fileID: 9014170783538599043}
+  leftControllerTransform: {fileID: 0}
+  rightControllerTransform: {fileID: 0}
   raycastDistance: 100
   UI:
     serializedVersion: 2
@@ -688,6 +693,9 @@ MonoBehaviour:
   gameManager: {fileID: 171754634}
   playerEyes: {fileID: 1483203750}
   recordedEyes: {fileID: 1512724218}
+  embodimentTrainingStarted: 0
+  embodimentTrainingEnd: 0
+  preferredHandTransform: {fileID: 0}
 --- !u!1 &97122330
 GameObject:
   m_ObjectHideFlags: 0
@@ -1876,6 +1884,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  trialNumber: 0
+  trialFailedCount: 0
   spaceLocations:
   - {x: -50, y: -26.5, z: 1}
   - {x: -105, y: 1, z: 0}
@@ -11687,6 +11697,7 @@ MonoBehaviour:
   - {x: -5, y: -4, z: 15}
   - {x: 6, y: 5, z: 15}
   gameManager: {fileID: 171754634}
+  valCalCounter: 0
 --- !u!4 &1670471451
 Transform:
   m_ObjectHideFlags: 0
