@@ -4,10 +4,12 @@ using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 
 public class EmbodimentManager : MonoBehaviour
 {
-    public Transform controllerTransform; // Reference to the VR controller's transform
+    public Transform leftControllerTransform; // Reference to the VR controller's transform
+    public Transform rightControllerTransform;
     public float raycastDistance = 100f; // Maximum distance of the raycast
     public LayerMask UI; // Layer mask for UI buttons
 
@@ -33,8 +35,12 @@ public class EmbodimentManager : MonoBehaviour
     private bool FinishedRecording = false;
     private bool FinishedShow = false;
     private bool End = false;
+    private bool startedFirstTime = false;
 
     private int Counter = 0;
+
+    public float embodimentTrainingStarted;
+    public float embodimentTrainingEnd;
 
     private Queue<Quaternion> storedRotations;
     public UnityEventQueueSystem onPressed;
@@ -42,8 +48,11 @@ public class EmbodimentManager : MonoBehaviour
     //Test
     private InputBindings _inputBindings;
 
+
+    public Transform preferredHandTransform;
     void Start()
     {
+        preferredHandTransform = rightControllerTransform;
         StartRecording.gameObject.SetActive(false);
         StopRecording.gameObject.SetActive(false);
         ShowRecording.gameObject.SetActive(false);
@@ -64,12 +73,13 @@ public class EmbodimentManager : MonoBehaviour
 
     }
 
+    
     void Update()
     {
         // I think we are not using the internal ray for which the buttons are enabled to interact with
         // It is clear not even the first if condition is fulfilled, what shows us that something with the ray is off
         // Raycast from the controller position in the forward direction
-        Ray ray = new Ray(controllerTransform.position, controllerTransform.forward);
+        Ray ray = new Ray(preferredHandTransform.position, preferredHandTransform.forward);
         RaycastHit hit;
 
         // Check if the ray hits any UI buttons
@@ -99,7 +109,10 @@ public class EmbodimentManager : MonoBehaviour
             }
         }
 
-
+        if (startedFirstTime == false)
+        {
+            embodimentTrainingStarted = Time.time;
+        }
 
 
         /*
@@ -188,7 +201,7 @@ public class EmbodimentManager : MonoBehaviour
     private void triggerButton()
     {
         // Check if the XR controller's collider overlaps with any UI buttons
-        Collider[] colliders = Physics.OverlapSphere(controllerTransform.position, 50);
+        Collider[] colliders = Physics.OverlapSphere(preferredHandTransform.position, 50);
         foreach (Collider collider in colliders)
         
         {
@@ -218,6 +231,7 @@ public class EmbodimentManager : MonoBehaviour
        // start data collection
        // start task
         StartCoroutine(StoreRotations());
+        startedFirstTime = true;
     }
 
     private IEnumerator StoreRotations()
@@ -269,6 +283,7 @@ public class EmbodimentManager : MonoBehaviour
         StopRecording.gameObject.SetActive(false);
         Finish.gameObject.SetActive(false);
         gameManager.EnterNextPhase();
+        embodimentTrainingEnd = Time.time;
 
     }
 

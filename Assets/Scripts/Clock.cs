@@ -52,14 +52,14 @@ public class ClockManager : MonoBehaviour
                     //gameManager.TimeExceeded = true;
                     //TimeExceeded = true;
 
-
+                    
                     Debug.Log("Clock stopped after 45 seconds.");
                 }
             }
 
             // -- calculate pointer angles
             float rotationSeconds = (360.0f / 60.0f) * seconds; // Invert rotation for starting from the top
-
+           
 
             // -- draw pointers
             pointerSeconds.transform.localEulerAngles = new Vector3(0.0f, 0.0f, rotationSeconds);

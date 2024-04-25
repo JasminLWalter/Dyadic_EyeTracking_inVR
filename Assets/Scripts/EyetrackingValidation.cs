@@ -26,7 +26,8 @@ public class EyetrackingValidation : MonoBehaviour
     
     private int _validationId;
     private int _calibrationFreq;
-    
+    public int valCalCounter = 0;
+
     private string _participantId;
     private string _sessionId;
 
@@ -95,8 +96,7 @@ public class EyetrackingValidation : MonoBehaviour
 
     }
 
-
-    private Vector3 GetValidationError()
+    public Vector3 GetValidationError()
     {
         return _eyeValidationData.EyeValidationError;
     }
@@ -108,6 +108,8 @@ public class EyetrackingValidation : MonoBehaviour
 
         _validationId++;
 
+        valCalCounter++;
+
         fixationPoint.transform.parent = mainCamera.gameObject.transform;
 
         _hmdTransform = Camera.main.transform;
@@ -116,23 +118,7 @@ public class EyetrackingValidation : MonoBehaviour
 
         fixationPoint.transform.LookAt(_hmdTransform);
         
-       /* if (_isExperiment)
-        {
-            ExperimentManager.Instance.SetInstructionText(_instructions.ValidationInstruction);
 
-            yield return new WaitForSeconds(2);
-
-            ExperimentManager.Instance.SetInstructionText("");
-        }
-        else
-        {
-            ExplorationManager.Instance.SetInstructionText(_instructions.ValidationInstruction);
-
-            yield return new WaitForSeconds(2);
-
-            ExplorationManager.Instance.SetInstructionText("");
-        }*/
-        
         yield return new WaitForSeconds(.15f);
         
         fixationPoint.SetActive(true);
@@ -211,7 +197,7 @@ public class EyetrackingValidation : MonoBehaviour
             _eyeValidationData.EyeValidationError == Vector3.zero)
         {
  
-            //gameManager.SetValidationSuccessStatus(false);
+            gameManager.SetValidationSuccessStatus(false);
 
           }
           else
@@ -236,23 +222,6 @@ public class EyetrackingValidation : MonoBehaviour
 
         fixationPoint.transform.LookAt(_hmdTransform);
 
-       /* if (_isExperiment)
-        {
-            ExperimentManager.Instance.SetInstructionText(_instructions.ErrorCheckInstruction);
-
-            yield return new WaitForSeconds(2);
-
-            ExperimentManager.Instance.SetInstructionText("");
-        }
-        else
-        {
-            ExplorationManager.Instance.SetInstructionText(_instructions.ErrorCheckInstruction);
-
-            yield return new WaitForSeconds(2);
-
-            ExplorationManager.Instance.SetInstructionText("");
-        }
-       */
         
         yield return new WaitForSeconds(.15f);
 
@@ -369,11 +338,6 @@ public class EyetrackingValidation : MonoBehaviour
 
     #region Public methods
 
-   /* public void SetExperimentStatus(bool status)
-    {
-        _isExperiment = status;
-    }
-   */
     public void ValidateEyeTracking()
     {
         if(!_isValidationRunning) _runValidationCo = StartCoroutine(ValidateEyeTracker());
@@ -387,6 +351,7 @@ public class EyetrackingValidation : MonoBehaviour
     public void SetParticipantId(string id)
     {
         _participantId = id;
+
     }
     
     public void SetSessionId(string id)
@@ -405,10 +370,5 @@ public class EyetrackingValidation : MonoBehaviour
         return (System.DateTime.UtcNow - epochStart).TotalSeconds;
     }
 
-    /*   public void SetInstructions(Instructions instruct)
-       {
-           _instructions = instruct;
-       }
-    */
     #endregion
 }

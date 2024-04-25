@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("Stores the current condition of the experiment.")]
     [SerializeField] private int condition = 0;
     [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: First Condition (Experiment Room); Phase 4: Instructions Second Condition (UI Space); Phase 5: Second Condition (Experiment Room); Phase 6: End Phase (UI Space)")]
-    [SerializeField] private int phase = 0;
+    public int phase = 0;
     private Player player;
     private Player player2;
     private InputBindings _inputBindings;
@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour
     private bool _startedRound = false;
     private bool _selected = false;
     [SerializeField] private List<GameObject> boxes = null;
+
+    public int trialNumber = 0;
+    public int trialFailedCount = 0;
 
     private MenuManager menuManager;
     
@@ -88,6 +91,7 @@ public class GameManager : MonoBehaviour
             {   
                 if (_startedRound == false)
                     StartCoroutine(Condition1());
+                trialNumber++;
             } 
             else 
             {
@@ -107,6 +111,8 @@ public class GameManager : MonoBehaviour
             {   
                 if (_startedRound == false)
                     StartCoroutine(Condition2());
+                trialNumber++;
+
             } 
             else 
             {
@@ -244,6 +250,7 @@ public class GameManager : MonoBehaviour
                 Debug.LogError("Time Exceeded == true");
                 clock.gameObject.SetActive(false);
                 ShowTimeExceeded();
+                trialFailedCount++;
 
             }
         }
@@ -264,5 +271,6 @@ public class GameManager : MonoBehaviour
 
         // Hide the object after the duration
         TimeExceededTMP.gameObject.SetActive(false);
+        _selected = true;
     }
 }
