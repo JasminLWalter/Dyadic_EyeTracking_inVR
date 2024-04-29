@@ -264,6 +264,24 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""17302692-da41-4cae-bc97-f485c574f2d1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Unpause"",
+                    ""type"": ""Button"",
+                    ""id"": ""1a5d5fd3-b3f4-42bc-8cb3-688cba31f1cf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -442,6 +460,28 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""action"": ""Pressed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a68d540-deb9-4b60-9ce9-4d3f400143ee"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""169a7ed7-53bb-45d3-8e6d-a6e02502ef9d"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Unpause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -475,6 +515,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         m_UI_Calibration = m_UI.FindAction("Calibration", throwIfNotFound: true);
         m_UI_Validation = m_UI.FindAction("Validation", throwIfNotFound: true);
         m_UI_Pressed = m_UI.FindAction("Pressed", throwIfNotFound: true);
+        m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
+        m_UI_Unpause = m_UI.FindAction("Unpause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -640,6 +682,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Calibration;
     private readonly InputAction m_UI_Validation;
     private readonly InputAction m_UI_Pressed;
+    private readonly InputAction m_UI_Pause;
+    private readonly InputAction m_UI_Unpause;
     public struct UIActions
     {
         private @InputBindings m_Wrapper;
@@ -654,6 +698,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         public InputAction @Calibration => m_Wrapper.m_UI_Calibration;
         public InputAction @Validation => m_Wrapper.m_UI_Validation;
         public InputAction @Pressed => m_Wrapper.m_UI_Pressed;
+        public InputAction @Pause => m_Wrapper.m_UI_Pause;
+        public InputAction @Unpause => m_Wrapper.m_UI_Unpause;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -693,6 +739,12 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Pressed.started += instance.OnPressed;
             @Pressed.performed += instance.OnPressed;
             @Pressed.canceled += instance.OnPressed;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+            @Unpause.started += instance.OnUnpause;
+            @Unpause.performed += instance.OnUnpause;
+            @Unpause.canceled += instance.OnUnpause;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -727,6 +779,12 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Pressed.started -= instance.OnPressed;
             @Pressed.performed -= instance.OnPressed;
             @Pressed.canceled -= instance.OnPressed;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+            @Unpause.started -= instance.OnUnpause;
+            @Unpause.performed -= instance.OnUnpause;
+            @Unpause.canceled -= instance.OnUnpause;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -775,5 +833,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         void OnCalibration(InputAction.CallbackContext context);
         void OnValidation(InputAction.CallbackContext context);
         void OnPressed(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnUnpause(InputAction.CallbackContext context);
     }
 }

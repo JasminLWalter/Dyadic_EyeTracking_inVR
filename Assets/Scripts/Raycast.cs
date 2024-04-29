@@ -21,7 +21,6 @@ public class Raycast : MonoBehaviour
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
 
-
     }
 
     // Update is called once per frame
@@ -42,9 +41,9 @@ public class Raycast : MonoBehaviour
         {
 
             
-            /*
-            RaycastHit firstHit;
-            if (Physics.Raycast(eyePositionCombinedWorld, eyeDirectionCombinedWorld, out firstHit, Mathf.Infinity))
+            
+            /*RaycastHit firstHit;
+            if (Physics.Raycast(eyePositionCombinedWorld, eyeDirectionCombinedWorld, out firstHit, Mathf.Infinity, _layerMask))
             {
                 transform.position = firstHit.point;
 
@@ -95,7 +94,7 @@ public class Raycast : MonoBehaviour
                 _lastHit.gameObject.SendMessage("NotLongerStarredAt");
                 _lastHit = null;
             }
-        }
+        } 
 
     }  
 }

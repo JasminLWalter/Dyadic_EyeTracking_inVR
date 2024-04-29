@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     public int trialNumber = 0;
     public int trialFailedCount = 0;
 
+    Vector3 pauseRoom = new Vector3();
+
     private MenuManager menuManager;
     
 
@@ -130,6 +132,8 @@ public class GameManager : MonoBehaviour
             SRanipal_Eye_v2.LaunchEyeCalibration();
             _ValidationSuccessStatus = true;
         }
+
+        
     }
 
     
@@ -139,6 +143,33 @@ public class GameManager : MonoBehaviour
         player.Teleport(spaceLocations.ElementAt(phase));
     }
 
+    private int currentPhase = 0;
+   
+    public void EnterPausePhase()
+    {
+        pauseRoom = new Vector3(-50, -26, 1);
+        player.Teleport(pauseRoom);
+    }
+    public void ReturnToCurrentPhase()
+    {
+        currentPhase = GetCurrentPhase();
+        player.Teleport(spaceLocations.ElementAt(currentPhase));
+
+    }
+
+
+    /* public void EnterPausePhase()
+     {
+         if (_inputBindings.UI.Pause.triggered)
+         {
+             CurrentPhase = GetCurrentPhase();
+             player.Teleport(spaceLocations.ElementAt(0));
+             if (_inputBindings.UI.Unpause.triggered)
+             {
+                 player.Teleport(spaceLocations.ElementAt(CurrentPhase));
+             }
+         }
+     } */
     public int GetCurrentPhase()
     {
         return phase;
@@ -273,4 +304,6 @@ public class GameManager : MonoBehaviour
         TimeExceededTMP.gameObject.SetActive(false);
         _selected = true;
     }
+
+
 }

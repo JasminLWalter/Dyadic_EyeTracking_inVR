@@ -16,11 +16,11 @@ public class EyeTrackingManager : MonoBehaviour
 {
     
     public static EyeTrackingManager Instance { get; private set; }
-    private bool showGazeSphere = true;
-    
+    //    private bool showGazeSphere = true;
 
 
-    
+
+
 
     [SerializeField] private GameObject mainCamera;
  
@@ -90,7 +90,7 @@ public class EyeTrackingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        localGazeSphere = GameObject.Find("local_gazeSphere");
+       // localGazeSphere = GameObject.Find("local_gazeSphere");
         
 
     }
@@ -98,30 +98,24 @@ public class EyeTrackingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (showGazeSphere)
-        {
-            // StartRecording();
-            // testGazeSphere = false;
-            int layerGazeSphereLocal = 1 << LayerMask.NameToLayer("LocalGazeSphere");
 
-            Transform hmdTransform = GameObject.Find("Camera(eye)").transform;//Player.instance.hmdTransform;
-            SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData); 
-            var eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmdTransform.position;
-            Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1,  verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
-            var eyeDirectionCombinedWorld = hmdTransform.rotation * coordinateAdaptedGazeDirectionCombined;
-            
-            RaycastHit firstHit;
-            if (Physics.Raycast(eyePositionCombinedWorld, eyeDirectionCombinedWorld, out firstHit, Mathf.Infinity))
-            {
-                localGazeSphere.transform.position = firstHit.point;
-            
-            }
-        }
+
+        
     }
 
     #region RecordingData
 
-        
+
+    public void StartRecording()
+    {
+        StartCoroutine(RecordData());
+    }
+
+    public void EndRecording()
+    {
+        StopCoroutine(RecordData());
+    }
+
     // Get a timestamp 
     private double GetCurrentTimestampInSeconds()
     {
@@ -184,16 +178,16 @@ public class EyeTrackingManager : MonoBehaviour
             Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1,  verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
             dataPoint.eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmdTransform.position;
             dataPoint.eyeDirectionCombinedWorld = hmdTransform.rotation * coordinateAdaptedGazeDirectionCombined;
-            dataPoint.eyeDirectionCombinedLocal = coordinateAdaptedGazeDirectionCombined;
+            // dataPoint.eyeDirectionCombinedLocal = coordinateAdaptedGazeDirectionCombined;
             Vector3 coordinateAdaptedGazeDirectionLeft = new Vector3(verboseData.left.gaze_direction_normalized.x * -1,  verboseData.left.gaze_direction_normalized.y, verboseData.left.gaze_direction_normalized.z);
-            dataPoint.eyePositionLeftWorld = verboseData.left.gaze_origin_mm / 1000 + hmdTransform.position;
-            dataPoint.eyeDirectionLeftWorld = hmdTransform.rotation * coordinateAdaptedGazeDirectionLeft;
-            dataPoint.eyeDirectionLeftLocal = coordinateAdaptedGazeDirectionLeft;
+            //dataPoint.eyePositionLeftWorld = verboseData.left.gaze_origin_mm / 1000 + hmdTransform.position;
+            //dataPoint.eyeDirectionLeftWorld = hmdTransform.rotation * coordinateAdaptedGazeDirectionLeft;
+            //dataPoint.eyeDirectionLeftLocal = coordinateAdaptedGazeDirectionLeft;
             Vector3 coordinateAdaptedGazeDirectionRight = new Vector3(verboseData.right.gaze_direction_normalized.x * -1,  verboseData.right.gaze_direction_normalized.y, verboseData.right.gaze_direction_normalized.z);
-            dataPoint.eyePositionRightWorld = verboseData.right.gaze_origin_mm / 1000 + hmdTransform.position;
-            dataPoint.eyeDirectionRightWorld = hmdTransform.rotation * coordinateAdaptedGazeDirectionRight;
-            dataPoint.eyeDirectionRightLocal = coordinateAdaptedGazeDirectionRight;
-           
+            //dataPoint.eyePositionRightWorld = verboseData.right.gaze_origin_mm / 1000 + hmdTransform.position;
+            //dataPoint.eyeDirectionRightWorld = hmdTransform.rotation * coordinateAdaptedGazeDirectionRight;
+            //dataPoint.eyeDirectionRightLocal = coordinateAdaptedGazeDirectionRight;
+
             // RaycastHit firstHit;
             // if (Physics.Raycast(dataPoint.eyePositionCombinedWorld, dataPoint.eyeDirectionCombinedWorld, out firstHit, Mathf.Infinity))
             // {
@@ -201,9 +195,9 @@ public class EyeTrackingManager : MonoBehaviour
             //
             // }
 
-            
 
-            
+
+
             // Raycast combined eyes 
             RaycastHit[] raycastHitsCombined;
             raycastHitsCombined = Physics.RaycastAll(dataPoint.eyePositionCombinedWorld, dataPoint.eyeDirectionCombinedWorld,Mathf.Infinity);
@@ -234,74 +228,9 @@ public class EyeTrackingManager : MonoBehaviour
             
             
             
+            //RaycastHits
             
-            // ** If intended, ray cast for left and right eye individually as well 
-            if (rayCastLeftAndRightEye)
-            {
-                
-                // Raycast left eye, calculate all hits 
-                RaycastHit[] raycastHitsLeft;
-                raycastHitsLeft = Physics.RaycastAll(dataPoint.eyePositionLeftWorld, dataPoint.eyeDirectionLeftWorld,
-                    Mathf.Infinity);
-
-                // Make sure something was hit 
-                if (raycastHitsLeft.Length > 0)
-                {
-                    // Sort by distance
-                    raycastHitsLeft = raycastHitsLeft.OrderBy(x => x.distance).ToArray();
-                    
-                    // Use only the specified number of hits 
-                    if (numberOfRaycastHitsToSave > 0)
-                    {
-                        raycastHitsLeft = raycastHitsLeft.Take(Math.Min(numberOfRaycastHitsToSave,raycastHitsLeft.Length)).ToArray();
-                    }
-                    
-                    // Make data serializable and save 
-                    dataPoint.rayCastHitsLeftEye = makeRayCastListSerializable(raycastHitsLeft);
-
-                    // // Debug
-                    // if (activateDebugLineRenderers)
-                    // {
-                    //     Debug.Log("[EyeTrackingRecorder] Left eye first hit: " + raycastHitsLeft[0].collider.name);
-                    //     debugLineRendererLeft.SetPosition(0,dataPoint.eyePositionLeftWorld);
-                    //     debugLineRendererLeft.SetPosition(1, raycastHitsLeft[0].point);
-                    // }
-                }
-                
-                // Raycast right eye, calculate all hits 
-                RaycastHit[] raycastHitsRight;
-                raycastHitsRight = Physics.RaycastAll(dataPoint.eyePositionRightWorld, dataPoint.eyeDirectionRightWorld,
-                    Mathf.Infinity);
-
-                // Make sure something was hit 
-                if (raycastHitsRight.Length > 0)
-                {
-                    // Sort by distance
-                    raycastHitsRight = raycastHitsRight.OrderBy(x => x.distance).ToArray();
-
-                    // Use only the specified number of hits 
-                    if (numberOfRaycastHitsToSave > 0)
-                    {
-                        raycastHitsRight = raycastHitsRight.Take(Math.Min(numberOfRaycastHitsToSave,raycastHitsRight.Length)).ToArray();
-                    }
-                    
-                    // Make data serializable and save 
-                    dataPoint.rayCastHitsRightEye = makeRayCastListSerializable(raycastHitsRight);
-
-                    // // Debug
-                    // if (activateDebugLineRenderers)
-                    // {
-                    //    Debug.Log("[EyeTrackingRecorder] Right eye first hit: " + raycastHitsRight[0].collider.name);
-                    //    debugLineRendererRight.SetPosition(0,dataPoint.eyePositionRightWorld);
-                    //    debugLineRendererRight.SetPosition(1, raycastHitsRight[0].point);
-                    // }
-
-                }
-                
-            }
-            
-            
-            
+     
             
             // Eye Openness
             dataPoint.eyeOpennessLeft = verboseData.left.eye_openness;
@@ -372,6 +301,8 @@ public class EyeTrackingManager : MonoBehaviour
 
 
     }
+
+
     
     private List<SerializableRayCastHit> makeRayCastListSerializable(RaycastHit[] rayCastHits)
     {
@@ -435,21 +366,19 @@ public class ExperimentDataPoint
     public float pupilDiameterMillimetersRight;
     public Vector3 eyePositionCombinedWorld;
     public Vector3 eyeDirectionCombinedWorld;
-    public Vector3 eyeDirectionCombinedLocal;
-    public Vector3 eyePositionLeftWorld;
-    public Vector3 eyeDirectionLeftWorld;
-    public Vector3 eyeDirectionLeftLocal;
-    public Vector3 eyePositionRightWorld;
-    public Vector3 eyeDirectionRightWorld;
-    public Vector3 eyeDirectionRightLocal;
+    //public Vector3 eyeDirectionCombinedLocal;
+    //public Vector3 eyePositionLeftWorld;
+    //public Vector3 eyeDirectionLeftWorld;
+    //public Vector3 eyeDirectionLeftLocal;
+    //public Vector3 eyePositionRightWorld;
+    //public Vector3 eyeDirectionRightWorld;
+    //public Vector3 eyeDirectionRightLocal;
     public ulong leftGazeValidityBitmask;
     public ulong rightGazeValidityBitmask;
     public ulong combinedGazeValidityBitmask;
     
     // GazeRay hit object 
     public List<SerializableRayCastHit> rayCastHitsCombinedEyes;
-    public List<SerializableRayCastHit> rayCastHitsLeftEye;
-    public List<SerializableRayCastHit> rayCastHitsRightEye;
     
     // HMD 
     public Vector3 hmdPosition;
@@ -457,14 +386,6 @@ public class ExperimentDataPoint
     public Vector3 hmdDirectionRight;
     public Vector3 hmdRotation;
     public Vector3 hmdDirectionUp;
-    
-    
-    // Body
-    public Vector3 playerBodyPosition; 
-    
-    // Body Tracker 
-    public Vector3 bodyTrackerPosition;
-    public Vector3 bodyTrackerRotation;
 
 
 }

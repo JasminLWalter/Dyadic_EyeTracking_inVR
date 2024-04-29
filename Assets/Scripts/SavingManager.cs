@@ -42,7 +42,7 @@ public class SavingManager : MonoBehaviour
         embodimentTrainingEnd = embodimentManager.embodimentTrainingEnd;
         embodimentTrainingTime = embodimentTrainingEnd - embodimentTrainingStarted;
         trialNumber = gameManager.trialNumber;
-        //hitData = eyeRaycast.hitData;
+        //hitData = Raycast.hitData;
         trialFailedCount = gameManager.trialFailedCount;
 
     }

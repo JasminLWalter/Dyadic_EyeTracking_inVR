@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour
     public List<TMP_Text> TextsPhase2;
     public TMP_Text TextPhase4;
     public TMP_Text TextPhase6;
+    public TMP_Text Pause;
 
     public Player player;
     public GameManager gameManager;
@@ -34,6 +35,7 @@ public class MenuManager : MonoBehaviour
 
         TextPhase4.gameObject.SetActive(false);
         TextPhase6.gameObject.SetActive(false);
+        Pause.gameObject.SetActive(false);
 
         foreach (TMP_Text TextPhase0 in TextsPhase0)
         {
@@ -112,6 +114,19 @@ public class MenuManager : MonoBehaviour
         {
             TextPhase6.gameObject.SetActive(false);
 
+        }
+
+        if (_inputBindings.UI.Pause.triggered)
+        {
+            gameManager.EnterPausePhase();
+            Pause.gameObject.SetActive(true);
+
+        }
+
+        if (_inputBindings.UI.Unpause.triggered)
+        {
+            gameManager.ReturnToCurrentPhase();
+            Pause.gameObject.SetActive(false);
         }
 
     }
