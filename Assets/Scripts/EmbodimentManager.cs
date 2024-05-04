@@ -249,7 +249,10 @@ public class EmbodimentManager : MonoBehaviour
         // start task
         StartCoroutine(StoreRotations());
         startedFirstTime = true;
-
+        if (ShowedText3 && startedFirstTime)
+        {
+            ShowInstruction3till4();
+        }
     }
 
     private IEnumerator StoreRotations()
@@ -270,6 +273,11 @@ public class EmbodimentManager : MonoBehaviour
         ChangeColor(TV1, Screen_off);
         ChangeColor(TV2, Screen_off);
         StopButtonClicked = true;
+        if (ShowedText5 && StopButtonClicked)
+        {
+            InstructionText5.gameObject.SetActive(false);
+            InstructionText6.gameObject.SetActive(true); //Continue = Text 6
+        }
     }
 
     public void OnShowRecordingButtonClick()
@@ -278,7 +286,16 @@ public class EmbodimentManager : MonoBehaviour
         StartCoroutine(ApplyRotations());
         ChangeColor(TV1, Invisible);
         ChangeColor(TV2, Invisible);
+    }
 
+    public void OnFinishButtonClick()
+    {
+        End = true;
+        StartRecording.gameObject.SetActive(false);
+        StopRecording.gameObject.SetActive(false);
+        Finish.gameObject.SetActive(false);
+        gameManager.EnterNextPhase();
+        embodimentTrainingEnd = Time.time;
 
     }
 
@@ -301,39 +318,25 @@ public class EmbodimentManager : MonoBehaviour
         InstructionText1.gameObject.SetActive(true); //move head = Text 1
         yield return new WaitForSeconds(2f);
         InstructionText1.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
         InstructionText2.gameObject.SetActive(true); //head shouldn't be moved = Text 2
         yield return new WaitForSeconds(2f);
         InstructionText2.gameObject.SetActive(false);
+        yield return new WaitForSeconds(1f);
         InstructionText3.gameObject.SetActive(true); //press start = Text 3
         ShowedText3 = true;
-        if (ShowedText3 && startedFirstTime)
-        {
-            InstructionText3.gameObject.SetActive(false);
-            InstructionText4.gameObject.SetActive(true); //Look around = Text 4
-            yield return new WaitForSeconds(2f);
-            InstructionText4.gameObject.SetActive(false);
-            InstructionText5.gameObject.SetActive(true); //Press stop = Text 5
-            ShowedText5 = true;
-            if (ShowedText5 && StopButtonClicked)
-            {
-                InstructionText5.gameObject.SetActive(false);
-                InstructionText6.gameObject.SetActive(true); //Continue = Text 6
-            }
-
-        }
         Debug.LogError("showInstruction end");
     }
 
-        public void OnFinishButtonClick()
-        {
-            End = true;
-            StartRecording.gameObject.SetActive(false);
-            StopRecording.gameObject.SetActive(false);
-            Finish.gameObject.SetActive(false);
-            gameManager.EnterNextPhase();
-            embodimentTrainingEnd = Time.time;
-
-        }
+    private IEnumerator ShowInstruction3till4()
+    {
+        InstructionText3.gameObject.SetActive(false);
+        InstructionText4.gameObject.SetActive(true); //Look around = Text 4
+        yield return new WaitForSeconds(2f);
+        InstructionText4.gameObject.SetActive(false);
+        InstructionText5.gameObject.SetActive(true); //Press stop = Text 5
+        ShowedText5 = true;
+    }
 
 
         private void ChangeColor(GameObject obj, Material newMaterial)

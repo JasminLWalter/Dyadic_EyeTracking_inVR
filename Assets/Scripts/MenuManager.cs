@@ -25,6 +25,11 @@ public class MenuManager : MonoBehaviour
 
     private int currentTextIndex = 0;
 
+    public TMP_Text TestingText1;
+    public TMP_Text TestingText2;
+    public TMP_Text TestingText3;
+    public TMP_Text TestingText4;
+
 
     private void Start()
     {
@@ -68,6 +73,10 @@ public class MenuManager : MonoBehaviour
                 phase0CoroutineRunning = true;
             }
 
+        }
+        if (gameManager.GetCurrentPhase() == 1)
+        {
+            StartCoroutine(ShowTwoTexts(TestingText1, TestingText2));
         }
         if (gameManager.GetCurrentPhase() == 2 && !phase2CoroutineRunning)
         {
@@ -188,5 +197,16 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    public IEnumerator ShowTwoTexts(TMP_Text textObject1, TMP_Text textObject2)
+    {
+        yield return new WaitForSeconds(2f);
+        textObject1.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        textObject1.gameObject.SetActive(false);
+        yield return new WaitForSeconds(1f);
+        textObject2.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        textObject2.gameObject.SetActive(false);
+    }
 }
 

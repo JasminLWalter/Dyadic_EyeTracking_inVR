@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
     Vector3 pauseRoom = new Vector3();
 
     private MenuManager menuManager;
+
+    private bool firstSelectionMade = false;
     
 
 
@@ -190,6 +192,13 @@ public class GameManager : MonoBehaviour
         // wait for a certain amount of time / the signaller pressing a button
         yield return new WaitWhile(() => _inputBindings.UI.Select.triggered == false);
         player.Freeze();
+        if (!firstSelectionMade)
+        {
+            // Show the text
+            //StartCoroutine(menuManager.ShowTwoTexts(menuManager.TestingText3(), menuManager.TestingText4())); //might need to assign the TMP's to GameManager script
+            // Set the flag to true
+            firstSelectionMade = true;
+        }
         // player2.Unfreeze();
         // 4. Receiver chooses box 
         yield return new WaitWhile(() => _selected == false);
