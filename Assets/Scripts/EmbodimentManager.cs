@@ -10,6 +10,7 @@ public class EmbodimentManager : MonoBehaviour
 {
     public Transform leftControllerTransform; // Reference to the VR controller's transform
     public Transform rightControllerTransform;
+    public Transform preferredHandTransform;
     public float raycastDistance = 100f; // Maximum distance of the raycast
     public LayerMask UI; // Layer mask for UI buttons
 
@@ -29,7 +30,6 @@ public class EmbodimentManager : MonoBehaviour
     public GameManager gameManager;
 
     public GameObject playerEyes;
-
     public GameObject recordedEyes;
 
     private bool FinishedRecording = false;
@@ -43,13 +43,23 @@ public class EmbodimentManager : MonoBehaviour
     public float embodimentTrainingEnd;
 
     private Queue<Quaternion> storedRotations;
-    public UnityEventQueueSystem onPressed;
-    
+
+    public TMP_Text InstructionText1;
+    public TMP_Text InstructionText2;
+    public TMP_Text InstructionText3;
+    public TMP_Text InstructionText4;
+    public TMP_Text InstructionText5;
+    public TMP_Text InstructionText6;
+
+    private bool ShowedText3 = false;
+    private bool ShowedText5 = false;
+    private bool StopButtonClicked = false;
+
     //Test
     private InputBindings _inputBindings;
 
 
-    public Transform preferredHandTransform;
+
     void Start()
     {
         preferredHandTransform = rightControllerTransform;
@@ -59,21 +69,27 @@ public class EmbodimentManager : MonoBehaviour
         Finish.gameObject.SetActive(false);
         RecordingText.gameObject.SetActive(false);
         TV.gameObject.SetActive(false);
+        InstructionText1.gameObject.SetActive(false);
+        InstructionText2.gameObject.SetActive(false);
+        InstructionText3.gameObject.SetActive(false);
+        InstructionText4.gameObject.SetActive(false);
+        InstructionText5.gameObject.SetActive(false);
+        InstructionText6.gameObject.SetActive(false);
 
-        //StartRecording.onClick.AddListener(OnStartRecordingButtonClick);
-        //StopRecording.onClick.AddListener(OnStopRecordingButtonClick);
+        StartRecording.onClick.AddListener(OnStartRecordingButtonClick);
+        StopRecording.onClick.AddListener(OnStopRecordingButtonClick);
         ShowRecording.onClick.AddListener(OnShowRecordingButtonClick);
         Finish.onClick.AddListener(OnFinishButtonClick);
 
         storedRotations = new Queue<Quaternion>();
-        
-         ////////Test
+
+        ////////Test
         _inputBindings = new InputBindings();
         _inputBindings.UI.Enable();
 
     }
 
-    
+
     void Update()
     {
         // I think we are not using the internal ray for which the buttons are enabled to interact with
@@ -91,7 +107,7 @@ public class EmbodimentManager : MonoBehaviour
 
             if (button != null)
             {
-                
+
 
                 // Check which button was pressed based on its tag
                 if (hit.collider.tag == "StartRecording")
@@ -150,6 +166,7 @@ public class EmbodimentManager : MonoBehaviour
         }    */
         if (gameManager.GetCurrentPhase() == 1)
         {
+            ShowInstruction();
             if (!FinishedRecording || FinishedShow)
             {
                 StartRecording.gameObject.SetActive(true);
@@ -203,7 +220,7 @@ public class EmbodimentManager : MonoBehaviour
         // Check if the XR controller's collider overlaps with any UI buttons
         Collider[] colliders = Physics.OverlapSphere(preferredHandTransform.position, 50);
         foreach (Collider collider in colliders)
-        
+
         {
             // Check if the collider belongs to a UI button
             Button button = collider.GetComponent<Button>();
@@ -226,16 +243,17 @@ public class EmbodimentManager : MonoBehaviour
 
     public void OnStartRecordingButtonClick()
     {
-        
+
         RecordingText.gameObject.SetActive(true);
-       // start data collection
-       // start task
+        // start data collection
+        // start task
         StartCoroutine(StoreRotations());
         startedFirstTime = true;
+
     }
 
     private IEnumerator StoreRotations()
-    {   
+    {
         while (!FinishedRecording)
         {
             storedRotations.Enqueue(playerEyes.transform.rotation);
@@ -251,7 +269,7 @@ public class EmbodimentManager : MonoBehaviour
         TV.gameObject.SetActive(true);
         ChangeColor(TV1, Screen_off);
         ChangeColor(TV2, Screen_off);
-
+        StopButtonClicked = true;
     }
 
     public void OnShowRecordingButtonClick()
@@ -276,41 +294,72 @@ public class EmbodimentManager : MonoBehaviour
         Counter += 1;
     }
 
-    public void OnFinishButtonClick()
+    private IEnumerator ShowInstruction()
     {
-        End = true;
-        StartRecording.gameObject.SetActive(false);
-        StopRecording.gameObject.SetActive(false);
-        Finish.gameObject.SetActive(false);
-        gameManager.EnterNextPhase();
-        embodimentTrainingEnd = Time.time;
+        Debug.LogError("showInstruction");
+        yield return new WaitForSeconds(2f);
+        InstructionText1.gameObject.SetActive(true); //move head = Text 1
+        yield return new WaitForSeconds(2f);
+        InstructionText1.gameObject.SetActive(false);
+        InstructionText2.gameObject.SetActive(true); //head shouldn't be moved = Text 2
+        yield return new WaitForSeconds(2f);
+        InstructionText2.gameObject.SetActive(false);
+        InstructionText3.gameObject.SetActive(true); //press start = Text 3
+        ShowedText3 = true;
+        if (ShowedText3 && startedFirstTime)
+        {
+            InstructionText3.gameObject.SetActive(false);
+            InstructionText4.gameObject.SetActive(true); //Look around = Text 4
+            yield return new WaitForSeconds(2f);
+            InstructionText4.gameObject.SetActive(false);
+            InstructionText5.gameObject.SetActive(true); //Press stop = Text 5
+            ShowedText5 = true;
+            if (ShowedText5 && StopButtonClicked)
+            {
+                InstructionText5.gameObject.SetActive(false);
+                InstructionText6.gameObject.SetActive(true); //Continue = Text 6
+            }
 
+        }
+        Debug.LogError("showInstruction end");
     }
 
-    
-    private void ChangeColor(GameObject obj, Material newMaterial)
-    {
-        Renderer objectRenderer = obj.GetComponent<Renderer>();
-
-        if (objectRenderer != null)
+        public void OnFinishButtonClick()
         {
-            Material[] materials = objectRenderer.materials;
+            End = true;
+            StartRecording.gameObject.SetActive(false);
+            StopRecording.gameObject.SetActive(false);
+            Finish.gameObject.SetActive(false);
+            gameManager.EnterNextPhase();
+            embodimentTrainingEnd = Time.time;
 
-            if (materials.Length > 1)
+        }
+
+
+        private void ChangeColor(GameObject obj, Material newMaterial)
+        {
+            Renderer objectRenderer = obj.GetComponent<Renderer>();
+
+            if (objectRenderer != null)
             {
-                materials[1] = newMaterial; // Assuming you want to change the second material (index 1)
-                objectRenderer.materials = materials; // Assign the modified materials array back to the Renderer
+                Material[] materials = objectRenderer.materials;
+
+                if (materials.Length > 1)
+                {
+                    materials[1] = newMaterial; // Assuming you want to change the second material (index 1)
+                    objectRenderer.materials = materials; // Assign the modified materials array back to the Renderer
+                }
+                else
+                {
+                    Debug.LogError("Object does not have enough materials.");
+                }
             }
             else
             {
-                Debug.LogError("Object does not have enough materials.");
+                Debug.LogError("Object does not have a Renderer component.");
             }
         }
-        else
-        {
-            Debug.LogError("Object does not have a Renderer component.");
-        }
-    } 
 
 
+    
 }

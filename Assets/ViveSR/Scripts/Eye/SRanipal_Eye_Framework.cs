@@ -65,7 +65,6 @@ namespace ViveSR
 
                 public void StartFramework()
                 {
-                    Debug.LogError("entered startframework");
                     if (!EnableEye) return;
                     if (Status == FrameworkStatus.WORKING || Status == FrameworkStatus.NOT_SUPPORT) return;
 
