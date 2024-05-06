@@ -89,6 +89,15 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Freeze"",
+                    ""type"": ""Button"",
+                    ""id"": ""3065a89c-34ce-410f-8fc5-29fccb52420a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -150,7 +159,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""5d959c47-6ddd-407f-aacb-0d16de4e8427"",
-                    ""path"": ""<XRController>{LeftHand}/{Device}"",
+                    ""path"": ""<ViveController>{LeftHand}"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""VR"",
@@ -161,11 +170,33 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""83d3da9e-ffd3-428e-833e-d90482557b66"",
-                    ""path"": ""<XRController>{RightHand}/{Device}"",
+                    ""path"": ""<ViveController>{RightHand}"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""VR"",
                     ""action"": ""Right Controller Device"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""641cd10e-72fe-4bc9-8afb-8e25a41ef0e3"",
+                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/triggerpressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Freeze"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""179bd927-2edd-4263-a64c-34d3c59e3797"",
+                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/triggerpressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Freeze"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -282,6 +313,24 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Left Controller Device"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""33cffcc6-5567-4784-8e64-85ba037b324a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right Controller Device"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""9b28a7ee-b312-4ff8-955d-537daf01d6f4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -309,6 +358,28 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""90f7f2e1-93ff-4b6c-b3a0-8f60717a6291"",
+                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/trackpadclicked"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""566dc254-8bf7-43e0-871e-8ac659fe3cde"",
+                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/trackpadclicked"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""a47a8031-9228-44e9-a1b5-c2ad9758addc"",
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
@@ -322,6 +393,28 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""905a6251-40fe-4195-851e-e47d798602a8"",
                     ""path"": ""<ViveController>{LeftHand}/menu"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1299ee95-dfa5-4898-8beb-61e9f4e9f662"",
+                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/grippressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f798e75d-cda7-4729-b526-663c2565dc75"",
+                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/grippressed"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -482,6 +575,28 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""action"": ""Unpause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0032cd34-395b-4808-a5e2-4400346284de"",
+                    ""path"": ""<ViveController>{LeftHand}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""Left Controller Device"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""94751f00-c896-4c00-b6cb-0e4d592022fa"",
+                    ""path"": ""<ViveController>{RightHand}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""Right Controller Device"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -503,6 +618,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         m_Player_HeadRotation = m_Player.FindAction("HeadRotation", throwIfNotFound: true);
         m_Player_LeftControllerDevice = m_Player.FindAction("Left Controller Device", throwIfNotFound: true);
         m_Player_RightControllerDevice = m_Player.FindAction("Right Controller Device", throwIfNotFound: true);
+        m_Player_Freeze = m_Player.FindAction("Freeze", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Continue = m_UI.FindAction("Continue", throwIfNotFound: true);
@@ -517,6 +633,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         m_UI_Pressed = m_UI.FindAction("Pressed", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
         m_UI_Unpause = m_UI.FindAction("Unpause", throwIfNotFound: true);
+        m_UI_LeftControllerDevice = m_UI.FindAction("Left Controller Device", throwIfNotFound: true);
+        m_UI_RightControllerDevice = m_UI.FindAction("Right Controller Device", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -585,6 +703,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_HeadRotation;
     private readonly InputAction m_Player_LeftControllerDevice;
     private readonly InputAction m_Player_RightControllerDevice;
+    private readonly InputAction m_Player_Freeze;
     public struct PlayerActions
     {
         private @InputBindings m_Wrapper;
@@ -596,6 +715,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         public InputAction @HeadRotation => m_Wrapper.m_Player_HeadRotation;
         public InputAction @LeftControllerDevice => m_Wrapper.m_Player_LeftControllerDevice;
         public InputAction @RightControllerDevice => m_Wrapper.m_Player_RightControllerDevice;
+        public InputAction @Freeze => m_Wrapper.m_Player_Freeze;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -626,6 +746,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @RightControllerDevice.started += instance.OnRightControllerDevice;
             @RightControllerDevice.performed += instance.OnRightControllerDevice;
             @RightControllerDevice.canceled += instance.OnRightControllerDevice;
+            @Freeze.started += instance.OnFreeze;
+            @Freeze.performed += instance.OnFreeze;
+            @Freeze.canceled += instance.OnFreeze;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -651,6 +774,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @RightControllerDevice.started -= instance.OnRightControllerDevice;
             @RightControllerDevice.performed -= instance.OnRightControllerDevice;
             @RightControllerDevice.canceled -= instance.OnRightControllerDevice;
+            @Freeze.started -= instance.OnFreeze;
+            @Freeze.performed -= instance.OnFreeze;
+            @Freeze.canceled -= instance.OnFreeze;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -684,6 +810,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Pressed;
     private readonly InputAction m_UI_Pause;
     private readonly InputAction m_UI_Unpause;
+    private readonly InputAction m_UI_LeftControllerDevice;
+    private readonly InputAction m_UI_RightControllerDevice;
     public struct UIActions
     {
         private @InputBindings m_Wrapper;
@@ -700,6 +828,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         public InputAction @Pressed => m_Wrapper.m_UI_Pressed;
         public InputAction @Pause => m_Wrapper.m_UI_Pause;
         public InputAction @Unpause => m_Wrapper.m_UI_Unpause;
+        public InputAction @LeftControllerDevice => m_Wrapper.m_UI_LeftControllerDevice;
+        public InputAction @RightControllerDevice => m_Wrapper.m_UI_RightControllerDevice;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -745,6 +875,12 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Unpause.started += instance.OnUnpause;
             @Unpause.performed += instance.OnUnpause;
             @Unpause.canceled += instance.OnUnpause;
+            @LeftControllerDevice.started += instance.OnLeftControllerDevice;
+            @LeftControllerDevice.performed += instance.OnLeftControllerDevice;
+            @LeftControllerDevice.canceled += instance.OnLeftControllerDevice;
+            @RightControllerDevice.started += instance.OnRightControllerDevice;
+            @RightControllerDevice.performed += instance.OnRightControllerDevice;
+            @RightControllerDevice.canceled += instance.OnRightControllerDevice;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -785,6 +921,12 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Unpause.started -= instance.OnUnpause;
             @Unpause.performed -= instance.OnUnpause;
             @Unpause.canceled -= instance.OnUnpause;
+            @LeftControllerDevice.started -= instance.OnLeftControllerDevice;
+            @LeftControllerDevice.performed -= instance.OnLeftControllerDevice;
+            @LeftControllerDevice.canceled -= instance.OnLeftControllerDevice;
+            @RightControllerDevice.started -= instance.OnRightControllerDevice;
+            @RightControllerDevice.performed -= instance.OnRightControllerDevice;
+            @RightControllerDevice.canceled -= instance.OnRightControllerDevice;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -820,6 +962,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         void OnHeadRotation(InputAction.CallbackContext context);
         void OnLeftControllerDevice(InputAction.CallbackContext context);
         void OnRightControllerDevice(InputAction.CallbackContext context);
+        void OnFreeze(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -835,5 +978,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         void OnPressed(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnUnpause(InputAction.CallbackContext context);
+        void OnLeftControllerDevice(InputAction.CallbackContext context);
+        void OnRightControllerDevice(InputAction.CallbackContext context);
     }
 }

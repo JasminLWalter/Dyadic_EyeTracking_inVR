@@ -13,7 +13,7 @@ using static UnityEngine.GraphicsBuffer;
 public class Player : MonoBehaviour
 {
     [Tooltip("Either signaller or receiver.")]
-    public string role = null;
+    public string role = "";
 
     [SerializeField] private Camera playerCamera;
 
@@ -67,6 +67,38 @@ public class Player : MonoBehaviour
                 eyes.localRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
             }*/
         }
+
+ 
+
+        if (role != "")
+        {
+            if (role == "signaler")
+            {
+                // Functions for signaler:
+                // raycast from eyes to select box
+                // Freeze themselves when selected
+                if (_inputBindings.Player.Freeze.triggered)
+                {
+                    Freeze();
+                    // Debug.LogError("Freeze was triggered!");
+
+                    //TODO:
+                    // send current eye information to receiver
+                }
+                //TODO:
+                // or get frozen after certain time
+
+            }
+
+            if (role == "receiver")
+            {
+                // Functions for receiver:
+                // raycast from controller to select box
+                
+
+                // also: other role can see what receiver is doing (including eye + hand movement)
+            }
+        }
         
     }
     
@@ -81,6 +113,7 @@ public class Player : MonoBehaviour
     public void Freeze()
     {
         frozen = true;
+
     }
 
     // Make the eye gameobjects follow the participants' eye movements again.

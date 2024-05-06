@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17508891, g: 0.21904302, b: 0.30134195, a: 1}
+  m_IndirectSpecularColor: {r: 0.17508909, g: 0.21904358, b: 0.30134273, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2024,23 +2024,24 @@ MonoBehaviour:
   TimeExceededTMP: {fileID: 2075412513}
   roundsPerCondition: 5
   boxes:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 220224549}
+  - {fileID: 1230517313}
+  - {fileID: 1538859824}
+  - {fileID: 444842252}
+  - {fileID: 1490259436}
+  - {fileID: 1875879819}
+  - {fileID: 103348864}
   trialNumber: 0
   trialFailedCount: 0
   spaceLocations:
   - {x: -50, y: -26.5, z: 1}
-  - {x: -105, y: 1, z: 0}
+  - {x: -104.67, y: 2, z: 0}
   - {x: -50, y: -26.5, z: 1}
-  - {x: -5.5, y: 4, z: 0}
+  - {x: -5, y: 0, z: 0}
   - {x: -50, y: -26.5, z: 1}
   - {x: -5.5, y: 2, z: 0}
   - {x: -50, y: -26.5, z: 1}
+  - {x: 5.72, y: 2.28, z: 0.4}
   rewards: 000000000500000000000000050000000a000000000000000500000000000000
   clockManager: {fileID: 496483701}
   clock: {fileID: 496483700}
@@ -2055,7 +2056,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -4.45, y: 2.92, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 458433671}
@@ -3386,7 +3387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96e42ebf9c287ca48815600e9bb363c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  role: 
+  role: receiver
   playerCamera: {fileID: 1516416800}
   eyes: {fileID: 1483203751}
   frozen: 0
@@ -10482,6 +10483,10 @@ MonoBehaviour:
   Pause: {fileID: 1824544125}
   player: {fileID: 452463684}
   gameManager: {fileID: 171754634}
+  TestingText1: {fileID: 980921648}
+  TestingText2: {fileID: 825191839}
+  TestingText3: {fileID: 263224819}
+  TestingText4: {fileID: 21529636}
 --- !u!4 &1398317298
 Transform:
   m_ObjectHideFlags: 0

@@ -208,5 +208,6 @@ public class MenuManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         textObject2.gameObject.SetActive(false);
     }
+
 }
 

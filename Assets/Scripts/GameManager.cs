@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: First Condition (Experiment Room); Phase 4: Instructions Second Condition (UI Space); Phase 5: Second Condition (Experiment Room); Phase 6: End Phase (UI Space)")]
     public int phase = 0;
     private Player player;
-    private Player player2;
+    private Player player2; // don't need "player2" as we run it on two devices and only distinguish between roles, right?
     private InputBindings _inputBindings;
     
     private int score;
@@ -68,9 +68,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
-        { 
+        {
+            player.Teleport(spaceLocations.ElementAt(0));
+            player.role = "";
             Debug.Log("Phase 0");
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             // EnterNextPhase();
@@ -78,19 +81,29 @@ public class GameManager : MonoBehaviour
         // Phase 1: Embodiment (Embodiment Space)
         else if (phase == 1)
         {
-           // Debug.Log("Phase 1");
+            player.role = "";
+            // Debug.Log("Phase 1");
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             //EnterNextPhase();
         }
         // Phase 2: Instruction Testing (UI Space)
         else if (phase == 2)
         {
+            player.role = "";
             Debug.Log("Phase 2");
         }
         // Phase 3: First Condition (Experiment Room)
         else if (phase == 3)
         {
+            //assign role here?
+            player.role = "receiver";
             //Debug.Log("Phase 3");
+
+            if (player.role == "receiver")
+            {
+                player.Teleport(spaceLocations.ElementAt(7));
+            }
+
             if (_currentRound < roundsPerCondition)
             {   
                 if (_startedRound == false)
@@ -105,6 +118,7 @@ public class GameManager : MonoBehaviour
         // Phase 4: Second Condition Instructions (UI Space)
         else if (phase == 4)
         {
+           
             Debug.Log("Phase 4");
         }
         // Phase 5: Second Condition (Experiment Room)
