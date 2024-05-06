@@ -6,10 +6,10 @@ using LSL;
 public class LSLOutput : MonoBehaviour
 {
     private StreamOutlet outlet;
-    public string StreamType = "Position";
+    public string StreamType = "Position"; 
 
     private Coroutine positionCoroutine;
-    private float sampleRate = 1f/90f;
+    private double sampleRate = LSL.LSL.IRREGULAR_RATE;
 
     void Start()
     {
@@ -22,7 +22,7 @@ public class LSLOutput : MonoBehaviour
         chans.append_child("channel").append_child_value("label", "Z");
 
         outlet = new StreamOutlet(streamInfo);
-        positionCoroutine = StartCoroutine(PositionCoroutine());
+        // positionCoroutine = StartCoroutine(PositionCoroutine());
     }
 
     void FixedUpdate()
@@ -40,21 +40,21 @@ public class LSLOutput : MonoBehaviour
         outlet.push_sample(positionData);
     }
 
-    IEnumerator PositionCoroutine()
-    {
-        // Creating a new variable at each call in order to not populate the memory
-        WaitForSeconds wfsVariable = new WaitForSeconds(sampleRate);
-        while(true){
+    // IEnumerator PositionCoroutine()
+    // {
+    //     // Creating a new variable at each call in order to not populate the memory
+    //     WaitForSeconds wfsVariable = new WaitForSeconds(sampleRate);
+    //     while(true){
             
-            Vector3 position = transform.position;
+    //         Vector3 position = transform.position;
             
-            float[] positionData = new float[3];
-            positionData[0] = position.x;
-            positionData[1] = position.y;
-            positionData[2] = position.z;
+    //         float[] positionData = new float[3];
+    //         positionData[0] = position.x;
+    //         positionData[1] = position.y;
+    //         positionData[2] = position.z;
             
-            Debug.Log($"Position: {positionData[0]}, {positionData[1]}, {positionData[2]}");;
-            yield return wfsVariable;
-        }
-    }
+    //         Debug.Log($"Position: {positionData[0]}, {positionData[1]}, {positionData[2]}");
+    //         yield return wfsVariable;
+    //     }
+    // }
 }
