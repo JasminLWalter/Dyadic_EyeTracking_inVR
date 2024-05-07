@@ -27,8 +27,7 @@ public class MenuManager : MonoBehaviour
 
     public TMP_Text TestingText1;
     public TMP_Text TestingText2;
-    public TMP_Text TestingText3;
-    public TMP_Text TestingText4;
+
 
 
     private void Start()
@@ -41,6 +40,10 @@ public class MenuManager : MonoBehaviour
         TextPhase4.gameObject.SetActive(false);
         TextPhase6.gameObject.SetActive(false);
         Pause.gameObject.SetActive(false);
+
+        TestingText1.gameObject.SetActive(false);
+        TestingText2.gameObject.SetActive(false);
+        
 
         foreach (TMP_Text TextPhase0 in TextsPhase0)
         {
@@ -74,17 +77,18 @@ public class MenuManager : MonoBehaviour
             }
 
         }
-        if (gameManager.GetCurrentPhase() == 1)
-        {
-            StartCoroutine(ShowTwoTexts(TestingText1, TestingText2));
-        }
         if (gameManager.GetCurrentPhase() == 2 && !phase2CoroutineRunning)
         {
             StartCoroutine(ShowTexts(TextsPhase2, () => phase2CoroutineRunning = false));
             phase2CoroutineRunning = true;
         }
-        if (gameManager.GetCurrentPhase() == 4)
+        if (gameManager.GetCurrentPhase() == 3)
         {
+            StartCoroutine(ShowTwoTexts(TestingText1, TestingText2));
+        }
+            if (gameManager.GetCurrentPhase() == 4)
+        {
+            StartCoroutine(ShowTwoTexts(TestingText1, TestingText2));
             TextPhase4.gameObject.SetActive(true);
             if (_inputBindings.UI.Continue.triggered)
             {

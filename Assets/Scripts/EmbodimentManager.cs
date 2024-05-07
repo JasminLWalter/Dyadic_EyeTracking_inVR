@@ -166,7 +166,10 @@ public class EmbodimentManager : MonoBehaviour
         }    */
         if (gameManager.GetCurrentPhase() == 1)
         {
-            ShowInstruction();
+            if (ShowedText3 == false)
+            {
+                StartCoroutine(ShowInstruction());
+            }
             if (!FinishedRecording || FinishedShow)
             {
                 StartRecording.gameObject.SetActive(true);
@@ -243,16 +246,18 @@ public class EmbodimentManager : MonoBehaviour
 
     public void OnStartRecordingButtonClick()
     {
-
+        InstructionText3.gameObject.SetActive(false);
         RecordingText.gameObject.SetActive(true);
+        if (ShowedText3 && !startedFirstTime)
+        {
+            StartCoroutine(ShowInstruction3till4());
+            startedFirstTime = true;
+        }
         // start data collection
         // start task
         StartCoroutine(StoreRotations());
-        startedFirstTime = true;
-        if (ShowedText3 && startedFirstTime)
-        {
-            ShowInstruction3till4();
-        }
+        
+
     }
 
     private IEnumerator StoreRotations()
@@ -318,9 +323,9 @@ public class EmbodimentManager : MonoBehaviour
         InstructionText1.gameObject.SetActive(true); //move head = Text 1
         yield return new WaitForSeconds(2f);
         InstructionText1.gameObject.SetActive(false);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         InstructionText2.gameObject.SetActive(true); //head shouldn't be moved = Text 2
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
         InstructionText2.gameObject.SetActive(false);
         yield return new WaitForSeconds(1f);
         InstructionText3.gameObject.SetActive(true); //press start = Text 3
@@ -330,6 +335,7 @@ public class EmbodimentManager : MonoBehaviour
 
     private IEnumerator ShowInstruction3till4()
     {
+        Debug.LogError("showInstruction 3 till 4");
         InstructionText3.gameObject.SetActive(false);
         InstructionText4.gameObject.SetActive(true); //Look around = Text 4
         yield return new WaitForSeconds(2f);

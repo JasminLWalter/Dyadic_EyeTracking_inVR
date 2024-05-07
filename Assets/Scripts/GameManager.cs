@@ -37,8 +37,9 @@ public class GameManager : MonoBehaviour
     private MenuManager menuManager;
 
     private bool firstSelectionMade = false;
-    
 
+    public TMP_Text TestingText3;
+    public TMP_Text TestingText4;
 
     [Tooltip("The locations of the embodiment, start, condition 1, break, condition 2 and end space.")]
     [SerializeField] private List<Vector3> spaceLocations = null;
@@ -61,8 +62,9 @@ public class GameManager : MonoBehaviour
         score = 0;
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
-        
-        
+
+        TestingText3.gameObject.SetActive(false);
+        TestingText4.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -96,7 +98,7 @@ public class GameManager : MonoBehaviour
         else if (phase == 3)
         {
             //assign role here?
-            player.role = "receiver";
+           // player.role = "receiver";
             //Debug.Log("Phase 3");
 
             if (player.role == "receiver")
@@ -209,7 +211,7 @@ public class GameManager : MonoBehaviour
         if (!firstSelectionMade)
         {
             // Show the text
-            //StartCoroutine(menuManager.ShowTwoTexts(menuManager.TestingText3(), menuManager.TestingText4())); //might need to assign the TMP's to GameManager script
+            StartCoroutine(menuManager.ShowTwoTexts(TestingText3, TestingText4)); //might need to assign the TMP's to GameManager script
             // Set the flag to true
             firstSelectionMade = true;
         }
