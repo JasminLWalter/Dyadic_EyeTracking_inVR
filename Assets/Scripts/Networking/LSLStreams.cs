@@ -18,7 +18,7 @@ public class LSLStreams : MonoBehaviour
     public StreamOutlet lslOExperimentPhase;
     public StreamInfo lslIValidationError; 
     public StreamOutlet lslOValidationError; 
-    public StreamInfo lslIValidationErrorCounter
+    public StreamInfo lslIValidationErrorCounter;
     public StreamOutlet lslOValidationErrorCounter; 
     public StreamInfo lslICalibrationCounter;
     public StreamOutlet lslOCalibrationCounter;
@@ -26,8 +26,8 @@ public class LSLStreams : MonoBehaviour
     public StreamOutlet lslOEmbodimentTrainingTime;
     public StreamInfo lslIBoxSelectedBySignaler;
     public StreamOutlet lslOBoxSelectedBySignaler;
-    public StreamInfo lslIBoxSelectedbyReceiver
-    public StreamInfo lslOBoxSelectedbyReceiver
+    public StreamInfo lslIBoxSelectedByReceiver;
+    public StreamOutlet lslOBoxSelectedByReceiver;
 
     public StreamInfo lslIEyePosDirRot; 
     public StreamOutlet lslOEyePosDirRot;
