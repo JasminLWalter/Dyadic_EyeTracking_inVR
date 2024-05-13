@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int condition = 0;
     [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: First Condition (Experiment Room); Phase 4: Instructions Second Condition (UI Space); Phase 5: Second Condition (Experiment Room); Phase 6: End Phase (UI Space)")]
     public int phase = 0;
+    private int currentPhase = 0;
 
     private Player player;
     private Player player2; // don't need "player2" as we run it on two devices and only distinguish between roles, right?
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
+        #region Experimental process 
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
         {
@@ -154,18 +156,15 @@ public class GameManager : MonoBehaviour
             SRanipal_Eye_v2.LaunchEyeCalibration();
             _ValidationSuccessStatus = true;
         }
-
-        
+        #endregion
     }
 
-    
+    #region Phase functions
     public void EnterNextPhase()
     {
         phase += 1;
         player.Teleport(spaceLocations.ElementAt(phase));
     }
-
-    private int currentPhase = 0;
    
     public void EnterPausePhase()
     {
@@ -197,6 +196,7 @@ public class GameManager : MonoBehaviour
         return phase;
     }
 
+    #endregion
     private IEnumerator Condition1()
     {
         _startedRound = true;
@@ -268,6 +268,7 @@ public class GameManager : MonoBehaviour
         scoreDisplay.text = "Score: " + score;
         _currentRound += 1;
         _selected = true;
+        Debug.LogError("a box was selected" + _selected);
         _startedRound = false;
     }
 

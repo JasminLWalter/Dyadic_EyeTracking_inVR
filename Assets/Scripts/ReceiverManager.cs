@@ -10,18 +10,23 @@ using ViveSR.anipal.Lip;
 public class ReceiverManager : MonoBehaviour
 {
 
-    [SerializeField] private Camera playerCamera;
     private InputBindings _inputBindings;
-    private Ray _ray;
-    public Collider _lastHit;
+    private Collider _lastHit;
     private int _layerMask = 1 << 3;  // Only objects on Layer 3 should be considered
-    [SerializeField] private bool inVR = true;
 
-    public GameObject hmd;
     public Transform leftControllerTransform; // Reference to the VR controller's transform
     public Transform rightControllerTransform;
-    private int raycastDistance = 100;
-    Transform preferredHandTransform;
+    public Transform preferredHandTransform;
+
+    public Transform OriginTransform;
+
+    //  displaying the eye movement of the signaler
+    [SerializeField] private Transform combinedEyes;
+    [SerializeField] private Transform leftEye;
+    [SerializeField] private Transform rightEye;
+    private Vector3 rayOrigin;
+    private Vector3 rayDirection;
+
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +39,27 @@ public class ReceiverManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       /* // continuous eye movement for the receiver
+        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayOrigin, out rayDirection))
+        {
+            combinedEyes.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.Self);
+            //Debug.LogError("Direction x:" + rayDirection.x + "Direction y:" + rayDirection.y + "Direction z:" + rayDirection.z);
+        }
+
+        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out rayOrigin, out rayDirection))
+        {
+            leftEye.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.Self);
+            //Debug.LogError("Direction x:" + rayDirection.x + "Direction y:" + rayDirection.y + "Direction z:" + rayDirection.z);
+        }
+
+        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out rayOrigin, out rayDirection))
+        {
+            rightEye.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.Self);
+            //Debug.LogError("Direction x:" + rayDirection.x + "Direction y:" + rayDirection.y + "Direction z:" + rayDirection.z);
+        } */
+
+
+
         Ray ray = new Ray(preferredHandTransform.position, preferredHandTransform.forward);
         RaycastHit hit;
 
@@ -54,7 +80,6 @@ public class ReceiverManager : MonoBehaviour
             }
             else if (_inputBindings.Player.SelectBox.triggered)
             {
-                Debug.LogError("Selected");
                _lastHit.gameObject.SendMessage("Selected");
             }
         }
@@ -68,4 +93,10 @@ public class ReceiverManager : MonoBehaviour
             }
         }
     }
+    public void Teleport(Vector3 location)
+    {
+        Transform currentLocation = OriginTransform;
+        currentLocation.position = location;
+    }
+
 }

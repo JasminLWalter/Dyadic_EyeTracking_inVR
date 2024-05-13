@@ -44,7 +44,6 @@ public class BoxBehaviour : MonoBehaviour
     public void Selected()
     {
         gameManager.UpdateScore(int.Parse(rewardText.text));
-        Debug.LogError("a box was selected");
     }
 
     // When the box is not longer starred at (= when the x-ray does not collide with the box anymore)

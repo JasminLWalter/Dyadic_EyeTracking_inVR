@@ -17,8 +17,6 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Camera playerCamera;
 
-
-
     [SerializeField] private Transform eyes;
 
     public bool frozen = false;
@@ -26,7 +24,6 @@ public class Player : MonoBehaviour
     private InputBindings _inputBindings;
 
     private Vector3 rayOrigin;
-
     private Vector3 rayDirection;
 
 
@@ -34,8 +31,6 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        //hmdTransform = GameObject.Find("NameOfYourHMDObject").transform;
-        //hmdTransform = GetComponentInChildren<YourHMDComponent>().transform;
 
         playerCamera = GetComponent<Camera>();
         _inputBindings = new InputBindings();
