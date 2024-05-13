@@ -35,7 +35,7 @@ public class BoxBehaviour : MonoBehaviour
     }
 
     // When the box is starred at (= when the x-ray collides with the box)
-    public void StarredAt()
+    public void StaredAt()
     {
         gameObject.GetComponent<MeshRenderer>().material = highlightMaterial;
     }
@@ -44,10 +44,11 @@ public class BoxBehaviour : MonoBehaviour
     public void Selected()
     {
         gameManager.UpdateScore(int.Parse(rewardText.text));
+        Debug.LogError("a box was selected");
     }
 
     // When the box is not longer starred at (= when the x-ray does not collide with the box anymore)
-    public void NotLongerStarredAt()
+    public void NotLongerStaredAt()
     {
         gameObject.GetComponent<MeshRenderer>().material = defaultMaterial;
     }

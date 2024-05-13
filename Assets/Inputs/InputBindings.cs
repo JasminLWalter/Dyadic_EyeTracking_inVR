@@ -98,6 +98,15 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectBox"",
+                    ""type"": ""Button"",
+                    ""id"": ""40747b3e-4657-49ef-a27d-dc7bc5390b84"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -197,6 +206,39 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Freeze"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""49621591-10b5-4f52-ab4f-35f2484b276f"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectBox"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""890913c0-8c32-4a93-b7d2-2a514676ff3f"",
+                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/triggerpressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectBox"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14d09cc1-7aff-4392-b756-9a58931c7cdd"",
+                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/triggerpressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectBox"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -619,6 +661,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         m_Player_LeftControllerDevice = m_Player.FindAction("Left Controller Device", throwIfNotFound: true);
         m_Player_RightControllerDevice = m_Player.FindAction("Right Controller Device", throwIfNotFound: true);
         m_Player_Freeze = m_Player.FindAction("Freeze", throwIfNotFound: true);
+        m_Player_SelectBox = m_Player.FindAction("SelectBox", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Continue = m_UI.FindAction("Continue", throwIfNotFound: true);
@@ -704,6 +747,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_LeftControllerDevice;
     private readonly InputAction m_Player_RightControllerDevice;
     private readonly InputAction m_Player_Freeze;
+    private readonly InputAction m_Player_SelectBox;
     public struct PlayerActions
     {
         private @InputBindings m_Wrapper;
@@ -716,6 +760,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         public InputAction @LeftControllerDevice => m_Wrapper.m_Player_LeftControllerDevice;
         public InputAction @RightControllerDevice => m_Wrapper.m_Player_RightControllerDevice;
         public InputAction @Freeze => m_Wrapper.m_Player_Freeze;
+        public InputAction @SelectBox => m_Wrapper.m_Player_SelectBox;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -749,6 +794,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Freeze.started += instance.OnFreeze;
             @Freeze.performed += instance.OnFreeze;
             @Freeze.canceled += instance.OnFreeze;
+            @SelectBox.started += instance.OnSelectBox;
+            @SelectBox.performed += instance.OnSelectBox;
+            @SelectBox.canceled += instance.OnSelectBox;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -777,6 +825,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @Freeze.started -= instance.OnFreeze;
             @Freeze.performed -= instance.OnFreeze;
             @Freeze.canceled -= instance.OnFreeze;
+            @SelectBox.started -= instance.OnSelectBox;
+            @SelectBox.performed -= instance.OnSelectBox;
+            @SelectBox.canceled -= instance.OnSelectBox;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -963,6 +1014,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         void OnLeftControllerDevice(InputAction.CallbackContext context);
         void OnRightControllerDevice(InputAction.CallbackContext context);
         void OnFreeze(InputAction.CallbackContext context);
+        void OnSelectBox(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -71,14 +71,14 @@ public class Raycast : MonoBehaviour
             if (_lastHit == null)
             {
                 _lastHit = hitData.collider;
-                _lastHit.gameObject.SendMessage("StarredAt");
+                _lastHit.gameObject.SendMessage("StaredAt");
             }
             else if (_lastHit != null && _lastHit != hitData.collider)
             {
                 Debug.Log("Hit something new: " + hitData.collider.name);
-                _lastHit.gameObject.SendMessage("NotLongerStarredAt");
+                _lastHit.gameObject.SendMessage("NotLongerStaredAt");
                 _lastHit = hitData.collider;
-                _lastHit.gameObject.SendMessage("StarredAt");
+                _lastHit.gameObject.SendMessage("StaredAt");
             }
             else if (_inputBindings.UI.Select.triggered)
             {
@@ -91,7 +91,7 @@ public class Raycast : MonoBehaviour
             if (_lastHit != null)
             {
                 Debug.Log("Not longer starred at.");
-                _lastHit.gameObject.SendMessage("NotLongerStarredAt");
+                _lastHit.gameObject.SendMessage("NotLongerStaredAt");
                 _lastHit = null;
             }
         } 

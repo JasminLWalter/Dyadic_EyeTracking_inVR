@@ -14,8 +14,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int condition = 0;
     [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: First Condition (Experiment Room); Phase 4: Instructions Second Condition (UI Space); Phase 5: Second Condition (Experiment Room); Phase 6: End Phase (UI Space)")]
     public int phase = 0;
+
     private Player player;
     private Player player2; // don't need "player2" as we run it on two devices and only distinguish between roles, right?
+  //  private SignalerManager signalerManager;
+  //  private ReceiverManager receiverManager;
+    private MenuManager menuManager;
+
     private InputBindings _inputBindings;
     
     private int score;
@@ -34,7 +39,6 @@ public class GameManager : MonoBehaviour
 
     Vector3 pauseRoom = new Vector3();
 
-    private MenuManager menuManager;
 
     private bool firstSelectionMade = false;
 

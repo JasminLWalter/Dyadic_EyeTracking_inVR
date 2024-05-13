@@ -643,7 +643,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 63160878}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad9a240008ef7f5439ab4c60461eda6a, type: 3}
   m_Name: 
@@ -2031,10 +2031,17 @@ MonoBehaviour:
   - {fileID: 1490259436}
   - {fileID: 1875879819}
   - {fileID: 103348864}
+  - {fileID: 820441765}
+  - {fileID: 1037431555}
+  - {fileID: 1482222012}
+  - {fileID: 549369226}
+  - {fileID: 956426702}
+  - {fileID: 921615172}
+  - {fileID: 888846016}
   trialNumber: 0
   trialFailedCount: 0
-  TestingText3: {fileID: 0}
-  TestingText4: {fileID: 0}
+  TestingText3: {fileID: 263224819}
+  TestingText4: {fileID: 21529636}
   spaceLocations:
   - {x: -50, y: -26.5, z: 1}
   - {x: -104.67, y: 2, z: 0}
@@ -10487,8 +10494,6 @@ MonoBehaviour:
   gameManager: {fileID: 171754634}
   TestingText1: {fileID: 980921648}
   TestingText2: {fileID: 825191839}
-  TestingText3: {fileID: 263224819}
-  TestingText4: {fileID: 21529636}
 --- !u!4 &1398317298
 Transform:
   m_ObjectHideFlags: 0
@@ -13008,7 +13013,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1668280194
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16358,7 +16363,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2136688599
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19844,6 +19849,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4134505311631137542}
   - component: {fileID: 7313654230535762585}
+  - component: {fileID: 7313654230535762586}
   m_Layer: 0
   m_Name: Complete XR Origin Set Up
   m_TagString: Untagged
@@ -19858,7 +19864,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7313654230535762584}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bda820677e8e3374bb51b1531b17a6e7, type: 3}
   m_Name: 
@@ -19866,6 +19872,24 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   inVR: 1
   hmd: {fileID: 1516416796}
+--- !u!114 &7313654230535762586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7313654230535762584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc515671ee60774a977218babec865e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
+  _lastHit: {fileID: 0}
+  inVR: 1
+  hmd: {fileID: 0}
+  leftControllerTransform: {fileID: 9014170785090376802}
+  rightControllerTransform: {fileID: 9014170783538599043}
 --- !u!1 &7338137251389375888
 GameObject:
   m_ObjectHideFlags: 0

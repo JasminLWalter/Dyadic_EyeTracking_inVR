@@ -62,7 +62,7 @@ public class EmbodimentManager : MonoBehaviour
 
     void Start()
     {
-        preferredHandTransform = rightControllerTransform;
+        preferredHandTransform = rightControllerTransform; //default is right for now
         StartRecording.gameObject.SetActive(false);
         StopRecording.gameObject.SetActive(false);
         ShowRecording.gameObject.SetActive(false);
