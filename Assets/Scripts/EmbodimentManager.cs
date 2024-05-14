@@ -53,6 +53,7 @@ public class EmbodimentManager : MonoBehaviour
 
     private bool ShowedText3 = false;
     private bool ShowedText5 = false;
+    private bool ShowedText6 = false;
     private bool StopButtonClicked = false;
 
     //Test
@@ -278,10 +279,10 @@ public class EmbodimentManager : MonoBehaviour
         ChangeColor(TV1, Screen_off);
         ChangeColor(TV2, Screen_off);
         StopButtonClicked = true;
-        if (ShowedText5 && StopButtonClicked)
+        if (ShowedText5 && StopButtonClicked && !ShowedText6)
         {
-            InstructionText5.gameObject.SetActive(false);
-            InstructionText6.gameObject.SetActive(true); //Continue = Text 6
+            StartCoroutine(ShowInstruction5till6());
+            ShowedText6 = true;
         }
     }
 
@@ -344,8 +345,18 @@ public class EmbodimentManager : MonoBehaviour
         ShowedText5 = true;
     }
 
+    private IEnumerator ShowInstruction5till6()
 
-        private void ChangeColor(GameObject obj, Material newMaterial)
+    {
+
+        InstructionText5.gameObject.SetActive(false);
+        InstructionText6.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        InstructionText6.gameObject.SetActive(false);
+
+    }
+
+    private void ChangeColor(GameObject obj, Material newMaterial)
         {
             Renderer objectRenderer = obj.GetComponent<Renderer>();
 

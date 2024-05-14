@@ -22,6 +22,7 @@ public class MenuManager : MonoBehaviour
     private bool phase0CoroutineRunning = false;
     private bool phase2CoroutineRunning = false;
     private bool ShowedStart = false;
+    private bool ShowedText1 = false;
 
     private int currentTextIndex = 0;
 
@@ -79,7 +80,11 @@ public class MenuManager : MonoBehaviour
         }
         if (gameManager.GetCurrentPhase() == 2 && !phase2CoroutineRunning)
         {
-            StartCoroutine(ShowTexts(TextsPhase2, () => phase2CoroutineRunning = false));
+            if (!ShowedText1)
+            {
+                StartCoroutine(ShowTwoTexts(TestingText1, TestingText2));
+                ShowedText1 = true;
+            }
             phase2CoroutineRunning = true;
         }
         if (gameManager.GetCurrentPhase() == 3)

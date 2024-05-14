@@ -98,8 +98,6 @@ namespace ViveSR
                         if (result == Error.WORK)
                         {
                             Status = FrameworkStatus.WORKING;
-                            Debug.Log("[SRanipal] Initial Eye v2 success!");
-                            Debug.LogError("Framework started");
                         }
                         else
                         {

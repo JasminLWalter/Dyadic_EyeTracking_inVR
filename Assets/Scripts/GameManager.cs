@@ -168,7 +168,7 @@ public class GameManager : MonoBehaviour
    
     public void EnterPausePhase()
     {
-        pauseRoom = new Vector3(-50, -26, 1);
+        pauseRoom = new Vector3(0, -26, 55);
         player.Teleport(pauseRoom);
     }
     public void ReturnToCurrentPhase()
