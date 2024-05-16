@@ -27,11 +27,15 @@ public class ReceiverManager : MonoBehaviour
     private Vector3 rayOrigin;
     private Vector3 rayDirection;
 
+    public GameManager gameManager;
+    public bool boxSelected = false;
+
 
     // Start is called before the first frame update
     void Start()
     {
         preferredHandTransform = rightControllerTransform;
+         gameManager = FindObjectOfType<GameManager>();
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
     }
@@ -39,6 +43,8 @@ public class ReceiverManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+       
        /* // continuous eye movement for the receiver
         if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayOrigin, out rayDirection))
         {
@@ -81,6 +87,8 @@ public class ReceiverManager : MonoBehaviour
             else if (_inputBindings.Player.SelectBox.triggered)
             {
                _lastHit.gameObject.SendMessage("Selected");
+               boxSelected = true;
+               
             }
         }
         else

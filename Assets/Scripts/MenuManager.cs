@@ -86,10 +86,12 @@ public class MenuManager : MonoBehaviour
                 ShowedText1 = true;
             }
             phase2CoroutineRunning = true;
+            gameManager.EnterNextPhase();
         }
         if (gameManager.GetCurrentPhase() == 3)
         {
             StartCoroutine(ShowTwoTexts(TestingText1, TestingText2));
+            
         }
             if (gameManager.GetCurrentPhase() == 4)
         {
@@ -216,6 +218,8 @@ public class MenuManager : MonoBehaviour
         textObject2.gameObject.SetActive(true);
         yield return new WaitForSeconds(2f);
         textObject2.gameObject.SetActive(false);
+        Debug.LogError("Finished showing two texts");  
+        
     }
 
 }

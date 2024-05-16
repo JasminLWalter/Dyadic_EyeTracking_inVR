@@ -2982,6 +2982,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   condition: 0
   phase: 0
+  role: 
   scoreDisplay: {fileID: 458433672}
   roundsDisplay: {fileID: 105329750}
   TimeExceededTMP: {fileID: 2075412513}
@@ -3005,7 +3006,7 @@ MonoBehaviour:
   trialFailedCount: 0
   TestingText3: {fileID: 263224819}
   TestingText4: {fileID: 21529636}
-  spaceLocations:
+  spaceLocationsReceiver:
   - {x: 0, y: -26, z: 55}
   - {x: -99, y: 2, z: 8}
   - {x: 0, y: -26, z: 55}
@@ -3013,6 +3014,16 @@ MonoBehaviour:
   - {x: 0, y: -26, z: 55}
   - {x: -2.9, y: 2, z: 5.9}
   - {x: 0, y: -26, z: 55}
+  - {x: 0.83, y: 0, z: -5.9}
+  spaceLocationsSignaler:
+  - {x: 0, y: -26, z: 55}
+  - {x: -99, y: 2, z: 8}
+  - {x: 0, y: -26, z: 55}
+  - {x: -2.9, y: 2, z: 5.9}
+  - {x: 0, y: -26, z: 55}
+  - {x: -2.9, y: 2, z: 5.9}
+  - {x: 0, y: -26, z: 55}
+  - {x: 0.83, y: 0, z: -5.9}
   rewards: 000000000500000000000000050000000a000000000000000500000000000000
   clockManager: {fileID: 496483701}
   clock: {fileID: 496483700}
@@ -4908,7 +4919,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &279322122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4921,7 +4932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96e42ebf9c287ca48815600e9bb363c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  role: receiver
+  role: signaler
   playerCamera: {fileID: 1516416800}
   eyes: {fileID: 1483203751}
   frozen: 0
@@ -31225,6 +31236,8 @@ MonoBehaviour:
   combinedEyes: {fileID: 0}
   leftEye: {fileID: 0}
   rightEye: {fileID: 0}
+  gameManager: {fileID: 0}
+  boxSelected: 0
 --- !u!114 &7313654230535762587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31242,6 +31255,7 @@ MonoBehaviour:
   combinedEyes: {fileID: 0}
   leftEye: {fileID: 1173071851}
   rightEye: {fileID: 155936314}
+  gameManager: {fileID: 0}
   frozen: 0
 --- !u!1 &7338137251389375888
 GameObject:

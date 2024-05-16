@@ -20,11 +20,16 @@ public class GameManager : MonoBehaviour
     private Player player2; // don't need "player2" as we run it on two devices and only distinguish between roles, right?
   //  private SignalerManager signalerManager;
   //  private ReceiverManager receiverManager;
+    
+    private ReceiverManager receiverManager;
+    private SignalerManager signalerManager;
+    private BoxBehaviour boxBehaviour;
     private MenuManager menuManager;
 
     private InputBindings _inputBindings;
     
     private int score;
+    [SerializeField] private string role;
     [SerializeField] private TextMeshPro scoreDisplay;
     [SerializeField] private TextMeshPro roundsDisplay;
     [SerializeField] private TextMeshPro TimeExceededTMP;
@@ -46,8 +51,10 @@ public class GameManager : MonoBehaviour
     public TMP_Text TestingText3;
     public TMP_Text TestingText4;
 
-    [Tooltip("The locations of the embodiment, start, condition 1, break, condition 2 and end space.")]
-    [SerializeField] private List<Vector3> spaceLocations = null;
+    //[Tooltip("The locations of the embodiment, start, condition 1, break, condition 2 and end space.")]
+
+    [SerializeField] private List<Vector3> spaceLocationsReceiver = null;
+    [SerializeField] private List<Vector3> spaceLocationsSignaler = null;
 
     [Tooltip("There should be as many rewards as there are inner boxes.")]
     [SerializeField] private List<int> rewards;
@@ -64,7 +71,13 @@ public class GameManager : MonoBehaviour
     {
         menuManager = FindObjectOfType<MenuManager>();
         player = FindObjectOfType<Player>();
+        signalerManager = FindObjectOfType<SignalerManager>();
+        receiverManager = FindObjectOfType<ReceiverManager>();
+
+        role = "receiver";
+
         score = 0;
+
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
 
@@ -80,37 +93,34 @@ public class GameManager : MonoBehaviour
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
         {
-            player.Teleport(spaceLocations.ElementAt(0));
-            player.role = "";
-            Debug.Log("Phase 0");
+            //player.Teleport(spaceLocations.ElementAt(0));
+            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0));
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
+           // player.role = "";
+            
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             // EnterNextPhase();
         }
         // Phase 1: Embodiment (Embodiment Space)
         else if (phase == 1)
         {
-            player.role = "";
-            // Debug.Log("Phase 1");
+            //player.role = "";
+
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             //EnterNextPhase();
         }
         // Phase 2: Instruction Testing (UI Space)
         else if (phase == 2)
         {
-            player.role = "";
-            Debug.Log("Phase 2");
+           // player.role = "";
+
         }
         // Phase 3: First Condition (Experiment Room)
         else if (phase == 3)
         {
             //assign role here?
-           // player.role = "receiver";
+            //player.role = "receiver";
             //Debug.Log("Phase 3");
-
-            if (player.role == "receiver")
-            {
-                player.Teleport(spaceLocations.ElementAt(7));
-            }
 
             if (_currentRound < roundsPerCondition)
             {   
@@ -127,7 +137,6 @@ public class GameManager : MonoBehaviour
         else if (phase == 4)
         {
            
-            Debug.Log("Phase 4");
         }
         // Phase 5: Second Condition (Experiment Room)
         else if (phase == 5)
@@ -142,13 +151,13 @@ public class GameManager : MonoBehaviour
             } 
             else 
             {
-                EnterNextPhase();
+              //  EnterNextPhase();
             }
         }
         // Phase 6: End Phase (UI Space)
         else
         {
-            Debug.Log("Phase 6");
+           // Debug.Log("Phase 6");
         }
 
         if (_ValidationSuccessStatus == false) 
@@ -163,18 +172,44 @@ public class GameManager : MonoBehaviour
     public void EnterNextPhase()
     {
         phase += 1;
-        player.Teleport(spaceLocations.ElementAt(phase));
+        if (role == "receiver")
+        {
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase));
+        }
+        if (role == "signaler") 
+        {
+            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase));
+        }
+       // player.Teleport(spaceLocations.ElementAt(phase));
     }
    
     public void EnterPausePhase()
     {
         pauseRoom = new Vector3(0, -26, 55);
-        player.Teleport(pauseRoom);
+        if (role == "receiver")
+        {
+            receiverManager.Teleport(pauseRoom);
+        }
+        if (role == "signaler") 
+        {
+            signalerManager.Teleport(pauseRoom);
+        }
+
+        //player.Teleport(pauseRoom);
     }
     public void ReturnToCurrentPhase()
     {
         currentPhase = GetCurrentPhase();
-        player.Teleport(spaceLocations.ElementAt(currentPhase));
+
+        if (role == "receiver")
+        {
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(currentPhase));
+        }
+        if (role == "signaler") 
+        {
+            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(currentPhase));
+        }
+       // player.Teleport(spaceLocations.ElementAt(currentPhase));
 
     }
 
@@ -208,10 +243,10 @@ public class GameManager : MonoBehaviour
         // 2. Shuffle rewards
         ShuffleRewards();
         // 3. Unfreeze signaller
-        player.Unfreeze();
+       // signalerManager.Unfreeze();
         // wait for a certain amount of time / the signaller pressing a button
         yield return new WaitWhile(() => _inputBindings.UI.Select.triggered == false);
-        player.Freeze();
+       // signalerManager.Freeze();
         if (!firstSelectionMade)
         {
             // Show the text
@@ -219,8 +254,13 @@ public class GameManager : MonoBehaviour
             // Set the flag to true
             firstSelectionMade = true;
         }
-        // player2.Unfreeze();
+        // receiverManager.Unfreeze();
         // 4. Receiver chooses box 
+        if(receiverManager.boxSelected == true)
+        {
+           boxBehaviour.Selected();
+        }
+        
         yield return new WaitWhile(() => _selected == false);
         // Reward is added up
         
@@ -268,7 +308,6 @@ public class GameManager : MonoBehaviour
         scoreDisplay.text = "Score: " + score;
         _currentRound += 1;
         _selected = true;
-        Debug.LogError("a box was selected" + _selected);
         _startedRound = false;
     }
 

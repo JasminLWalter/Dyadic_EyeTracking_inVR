@@ -24,12 +24,14 @@ public class SignalerManager : MonoBehaviour
     private Vector3 rayDirection;
 
 
+    public GameManager gameManager;
     public bool frozen = false;
 
 
     // Start is called before the first frame update
     void Start()
     {
+         gameManager = FindObjectOfType<GameManager>();
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
 
