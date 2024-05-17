@@ -10,7 +10,6 @@ public class MenuManager : MonoBehaviour
     public List<TMP_Text> TextsPhase0;
     public TMP_Text TextPhase0;
     public List<TMP_Text> TextsPhase2;
-    public TMP_Text TextPhase4;
     public TMP_Text TextPhase6;
     public TMP_Text Pause;
 
@@ -29,6 +28,8 @@ public class MenuManager : MonoBehaviour
     public TMP_Text TestingText1;
     public TMP_Text TestingText2;
 
+    public GameObject xrOriginSetup;
+
 
 
     private void Start()
@@ -38,7 +39,6 @@ public class MenuManager : MonoBehaviour
         
         gameManager = FindObjectOfType<GameManager>();
 
-        TextPhase4.gameObject.SetActive(false);
         TextPhase6.gameObject.SetActive(false);
         Pause.gameObject.SetActive(false);
 
@@ -87,23 +87,18 @@ public class MenuManager : MonoBehaviour
             }
             phase2CoroutineRunning = true;
             gameManager.EnterNextPhase();
+            if (gameManager.role == "receiver")
+            {
+                xrOriginSetup.transform.rotation = Quaternion.Euler(0, 90, 0);
+            }
         }
         if (gameManager.GetCurrentPhase() == 3)
         {
             StartCoroutine(ShowTwoTexts(TestingText1, TestingText2));
             
         }
-            if (gameManager.GetCurrentPhase() == 4)
-        {
-            StartCoroutine(ShowTwoTexts(TestingText1, TestingText2));
-            TextPhase4.gameObject.SetActive(true);
-            if (_inputBindings.UI.Continue.triggered)
-            {
-                gameManager.EnterNextPhase();
-                TextPhase4.gameObject.SetActive(false);
-            }
-        }
-        if (gameManager.GetCurrentPhase() == 6)
+
+        if (gameManager.GetCurrentPhase() == 4)
         {
             TextPhase6.gameObject.SetActive(true);
         }
@@ -125,12 +120,6 @@ public class MenuManager : MonoBehaviour
         }
 
         if (gameManager.GetCurrentPhase() != 4)
-        {
-            TextPhase4.gameObject.SetActive(false);
-
-        }
-
-        if (gameManager.GetCurrentPhase() != 6)
         {
             TextPhase6.gameObject.SetActive(false);
 

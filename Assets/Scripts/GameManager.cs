@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 {
     [Tooltip("Stores the current condition of the experiment.")]
     [SerializeField] private int condition = 0;
-    [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: First Condition (Experiment Room); Phase 4: Instructions Second Condition (UI Space); Phase 5: Second Condition (Experiment Room); Phase 6: End Phase (UI Space)")]
+    [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: Testing Phase (Testing Space); Phase 4: End Phase (UI Space)")]
     public int phase = 0;
     private int currentPhase = 0;
 
@@ -25,11 +25,12 @@ public class GameManager : MonoBehaviour
     private SignalerManager signalerManager;
     private BoxBehaviour boxBehaviour;
     private MenuManager menuManager;
+    public GameObject xrOriginSetup;
 
     private InputBindings _inputBindings;
     
     private int score;
-    [SerializeField] private string role;
+    public string role;
     [SerializeField] private TextMeshPro scoreDisplay;
     [SerializeField] private TextMeshPro roundsDisplay;
     [SerializeField] private TextMeshPro TimeExceededTMP;
@@ -52,6 +53,10 @@ public class GameManager : MonoBehaviour
     public TMP_Text TestingText3;
     public TMP_Text TestingText4;
 
+    public GameObject milkyGlass;
+    
+    public GameObject clearGlass;
+
     //[Tooltip("The locations of the embodiment, start, condition 1, break, condition 2 and end space.")]
 
     [SerializeField] private List<Vector3> spaceLocationsReceiver = null;
@@ -67,9 +72,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject clock;
     public bool TimeExceeded = false;
 
-    public float _timeLimit = 10;
+    public float _timeLimit = 3;
     private float startTime;
     private float _startRoundTime = 0;
+
+    private float probabilityForOne = 0.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -80,8 +87,18 @@ public class GameManager : MonoBehaviour
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
 
-        //role = "signaler";
-        role = "receiver";
+        role = "signaler";
+        //role = "receiver";
+        if (role == "receiver") 
+        {
+            xrOriginSetup.GetComponent<ReceiverManager>().enabled = true;
+            xrOriginSetup.GetComponent<SignalerManager>().enabled = false;
+        }
+        if (role == "signaler")
+        {
+            xrOriginSetup.GetComponent<ReceiverManager>().enabled = false;
+            xrOriginSetup.GetComponent<SignalerManager>().enabled = true;
+        }
 
         score = 0;
 
@@ -143,31 +160,11 @@ public class GameManager : MonoBehaviour
                 EnterNextPhase();
             }
         }
-        // Phase 4: Second Condition Instructions (UI Space)
-        else if (phase == 4)
-        {
-           
-        }
-        // Phase 5: Second Condition (Experiment Room)
-        else if (phase == 5)
-        {
-            //Debug.Log("Phase 4");
-            if (_currentRound < roundsPerCondition)
-            {   
-                if (_startedRound == false)
-                    StartCoroutine(Condition2());
-                trialNumber++;
-
-            } 
-            else 
-            {
-              //  EnterNextPhase();
-            }
-        }
-        // Phase 6: End Phase (UI Space)
+       
+        // Phase 4: End Phase (UI Space)
         else
         {
-           // Debug.Log("Phase 6");
+           // Debug.Log("Phase 4");
         }
 
         if (_ValidationSuccessStatus == false) 
@@ -230,6 +227,8 @@ public class GameManager : MonoBehaviour
     #endregion
     private IEnumerator Condition1()
     {
+        
+        ShowMilkyGlassRandom();
         _startedRound = true;
         _selected = false;
         Timer();
@@ -244,10 +243,10 @@ public class GameManager : MonoBehaviour
         // signalerManager.Unfreeze();
         //Timer starts
         _startRoundTime = Time.time;
-        Debug.LogError("Timer started at "+ _startRoundTime);
+
         // 4. Signaler freezes themselves by button press or after the timer runs out
-        yield return new WaitWhile(() => (_inputBindings.UI.Select.triggered == false) || (Time.time - _startRoundTime < _timeLimit));
-        Debug.LogError("Button was pressed or timer ran out" + Time.time);
+        yield return new WaitWhile(() => ((_inputBindings.Player.Freeze.triggered == false)^(Time.time - _startRoundTime < _timeLimit)));
+
         //signalerManager.Freeze();
         if (!firstSelectionMade)
         {
@@ -271,15 +270,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitWhile(() => _selected == false);
         // Reward is added up
         
-    }
-
-    private IEnumerator Condition2()
-    {
-        _startedRound = true;
-        _selected = false;
-        roundsDisplay.text = "Round: " + _currentRound;
-        ShuffleRewards();
-        yield return new WaitWhile(() => _selected == false);
     }
 
 
@@ -381,5 +371,22 @@ public class GameManager : MonoBehaviour
         _selected = true;
     }
 
+    private void ShowMilkyGlassRandom()
+    {
+        float randomValue = Random.value;
+         
+         if(randomValue < probabilityForOne){
+            milkyGlass.SetActive(true);
+            clearGlass.SetActive(false);
+            Debug.LogError("ShowMilkyGlass");
+         } 
+         else 
+         {
+            clearGlass.SetActive(true);
+            milkyGlass.SetActive(false);
+            Debug.LogError("ShowClearGlass");
+         }
+
+    }
 
 }

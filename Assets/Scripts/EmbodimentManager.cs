@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEditor;
+using System;
 
 public class EmbodimentManager : MonoBehaviour
 {
@@ -36,6 +37,7 @@ public class EmbodimentManager : MonoBehaviour
     private bool FinishedShow = false;
     private bool End = false;
     private bool startedFirstTime = false;
+    private bool CoroutineRunning = false;
 
     private int Counter = 0;
 
@@ -44,17 +46,15 @@ public class EmbodimentManager : MonoBehaviour
 
     private Queue<Quaternion> storedRotations;
 
-    public TMP_Text InstructionText1;
-    public TMP_Text InstructionText2;
-    public TMP_Text InstructionText3;
-    public TMP_Text InstructionText4;
-    public TMP_Text InstructionText5;
-    public TMP_Text InstructionText6;
-
+    public TMP_Text EmbodimentInstruction0;
+    public List<TMP_Text> EmbodimentInstructions;
+    
+    private bool ShowedStartEM = false;
     private bool ShowedText3 = false;
-    private bool ShowedText5 = false;
+    private bool ShowedText4 = false;
     private bool ShowedText6 = false;
-    private bool StopButtonClicked = false;
+    //private bool StopButtonClicked = false;
+    private bool StartButtonClicked = false;
 
     //Test
     private InputBindings _inputBindings;
@@ -70,12 +70,12 @@ public class EmbodimentManager : MonoBehaviour
         Finish.gameObject.SetActive(false);
         RecordingText.gameObject.SetActive(false);
         TV.gameObject.SetActive(false);
-        InstructionText1.gameObject.SetActive(false);
-        InstructionText2.gameObject.SetActive(false);
-        InstructionText3.gameObject.SetActive(false);
-        InstructionText4.gameObject.SetActive(false);
-        InstructionText5.gameObject.SetActive(false);
-        InstructionText6.gameObject.SetActive(false);
+        
+        foreach (TMP_Text EmbodimentInstruction in EmbodimentInstructions)
+        {
+            EmbodimentInstruction.gameObject.SetActive(false);
+        }
+        EmbodimentInstruction0.gameObject.SetActive(false);
 
         StartRecording.onClick.AddListener(OnStartRecordingButtonClick);
         StopRecording.onClick.AddListener(OnStopRecordingButtonClick);
@@ -84,9 +84,11 @@ public class EmbodimentManager : MonoBehaviour
 
         storedRotations = new Queue<Quaternion>();
 
-        ////////Test
+
         _inputBindings = new InputBindings();
         _inputBindings.UI.Enable();
+
+        
 
     }
 
@@ -131,46 +133,15 @@ public class EmbodimentManager : MonoBehaviour
             embodimentTrainingStarted = Time.time;
         }
 
-
-        /*
-        Ray ray = new Ray(controllerTransform.position, controllerTransform.forward);
-        Debug.DrawRay(controllerTransform.position, controllerTransform.forward * 100, Color.yellow);
-
-        // Check for button hit
-        RaycastHit hit;
-
-        //if (Physics.Raycast(ray, out hit, raycastDistance, buttonLayer))
-
-        if (Physics.Raycast(ray, out hit))
-        {
-            // Check if the hit object is a UI button
-            if (hit.collider.CompareTag("Button"))
-            {
-                Debug.LogError("1");
-
-                // Check if the hit object has a Button component
-                Button button = hit.collider.GetComponent<Button>();
-                if (button != null)
-                {
-                    Debug.LogError("2");
-
-                    // Check for input to trigger the button click event
-                    if (_inputBindings.UI.Pressed.triggered) // Adjust the input as needed
-                    {
-                        Debug.LogError("3");
-
-                        // Trigger the button's click event programmatically
-                        button.onClick.Invoke();
-                    }
-                }
-            }
-        }    */
         if (gameManager.GetCurrentPhase() == 1)
         {
-            if (ShowedText3 == false)
+            if (ShowedStartEM == false)   
             {
-                StartCoroutine(ShowInstruction());
+                
+                StartCoroutine(ShowEmbodimentInstructions(EmbodimentInstructions, () => CoroutineRunning = false));
+                
             }
+           
             if (!FinishedRecording || FinishedShow)
             {
                 StartRecording.gameObject.SetActive(true);
@@ -199,77 +170,21 @@ public class EmbodimentManager : MonoBehaviour
             Finish.gameObject.SetActive(false);
             RecordingText.gameObject.SetActive(false);
         }
-        /* /Test/*
-        if (_inputBindings.UI.startrecordingtest.triggered)
-        {
-            OnStartRecordingButtonClick();
-            Debug.LogError("start");
-        }
-        
-        if (_inputBindings.UI.stoprecordingtest.triggered )
-        {
-            OnStopRecordingButtonClick();
-            Debug.LogError("stop");
-        }
-
-        if (_inputBindings.UI.showrecordingtest.triggered )
-        {
-            OnShowRecordingButtonClick();
-            Debug.LogError("show");
-        } */
     }
 
-    private void triggerButton()
-    {
-        // Check if the XR controller's collider overlaps with any UI buttons
-        Collider[] colliders = Physics.OverlapSphere(preferredHandTransform.position, 50);
-        foreach (Collider collider in colliders)
 
-        {
-            // Check if the collider belongs to a UI button
-            Button button = collider.GetComponent<Button>();
-            if (button != null)
-            {
-                Debug.LogError("2");
-                // Check for input to trigger the button click event
-                if (_inputBindings.UI.Pressed.triggered)
-                {
-                    // Trigger the button's click event programmatically
-                    button.onClick.Invoke();
-                    Debug.LogError("3");
-                }
-            }
-        }
-    }
 
 
 
 
     public void OnStartRecordingButtonClick()
     {
-        InstructionText3.gameObject.SetActive(false);
+        //InstructionText3.gameObject.SetActive(false);
         RecordingText.gameObject.SetActive(true);
-        if (ShowedText3 && !startedFirstTime)
-        {
-            StartCoroutine(ShowInstruction3till4());
-            startedFirstTime = true;
-        }
         // start data collection
         // start task
         StartCoroutine(StoreRotations());
-        
-
     }
-
-    private IEnumerator StoreRotations()
-    {
-        while (!FinishedRecording)
-        {
-            storedRotations.Enqueue(playerEyes.transform.rotation);
-            yield return new WaitForSeconds(0.02f);
-        }
-    }
-
     public void OnStopRecordingButtonClick()
     {
         RecordingText.gameObject.SetActive(false);
@@ -278,12 +193,6 @@ public class EmbodimentManager : MonoBehaviour
         TV.gameObject.SetActive(true);
         ChangeColor(TV1, Screen_off);
         ChangeColor(TV2, Screen_off);
-        StopButtonClicked = true;
-        if (ShowedText5 && StopButtonClicked && !ShowedText6)
-        {
-            StartCoroutine(ShowInstruction5till6());
-            ShowedText6 = true;
-        }
     }
 
     public void OnShowRecordingButtonClick()
@@ -304,7 +213,14 @@ public class EmbodimentManager : MonoBehaviour
         embodimentTrainingEnd = Time.time;
 
     }
-
+    private IEnumerator StoreRotations()
+    {
+        while (!FinishedRecording)
+        {
+            storedRotations.Enqueue(playerEyes.transform.rotation);
+            yield return new WaitForSeconds(0.02f);
+        }
+    }
     private IEnumerator ApplyRotations()
     {
         while (storedRotations.Count != 0)
@@ -315,45 +231,6 @@ public class EmbodimentManager : MonoBehaviour
         //when recording finished:
         FinishedShow = true;
         Counter += 1;
-    }
-
-    private IEnumerator ShowInstruction()
-    {
-        Debug.LogError("showInstruction");
-        yield return new WaitForSeconds(2f);
-        InstructionText1.gameObject.SetActive(true); //move head = Text 1
-        yield return new WaitForSeconds(2f);
-        InstructionText1.gameObject.SetActive(false);
-        yield return new WaitForSeconds(1f);
-        InstructionText2.gameObject.SetActive(true); //head shouldn't be moved = Text 2
-        yield return new WaitForSeconds(4f);
-        InstructionText2.gameObject.SetActive(false);
-        yield return new WaitForSeconds(1f);
-        InstructionText3.gameObject.SetActive(true); //press start = Text 3
-        ShowedText3 = true;
-        Debug.LogError("showInstruction end");
-    }
-
-    private IEnumerator ShowInstruction3till4()
-    {
-        Debug.LogError("showInstruction 3 till 4");
-        InstructionText3.gameObject.SetActive(false);
-        InstructionText4.gameObject.SetActive(true); //Look around = Text 4
-        yield return new WaitForSeconds(2f);
-        InstructionText4.gameObject.SetActive(false);
-        InstructionText5.gameObject.SetActive(true); //Press stop = Text 5
-        ShowedText5 = true;
-    }
-
-    private IEnumerator ShowInstruction5till6()
-
-    {
-
-        InstructionText5.gameObject.SetActive(false);
-        InstructionText6.gameObject.SetActive(true);
-        yield return new WaitForSeconds(2f);
-        InstructionText6.gameObject.SetActive(false);
-
     }
 
     private void ChangeColor(GameObject obj, Material newMaterial)
@@ -381,5 +258,49 @@ public class EmbodimentManager : MonoBehaviour
         }
 
 
+    IEnumerator ShowEmbodimentInstructions(List<TMP_Text> textComponents, Action coroutineFinishedCallback)
+    {
+                
+        EmbodimentInstruction0.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        EmbodimentInstruction0.gameObject.SetActive(false);
+        ShowedStartEM = true;
+        yield return new WaitWhile(() => !ShowedStartEM);
+
+        int currentTextIndex = 0;
+        
+        while (currentTextIndex < textComponents.Count)
+        {
+            textComponents[currentTextIndex].gameObject.SetActive(true);
+
+            if (_inputBindings.UI.Return.triggered && currentTextIndex > 0)
+            {
+                textComponents[currentTextIndex].gameObject.SetActive(false);
+                currentTextIndex -= 1;
+                textComponents[currentTextIndex].gameObject.SetActive(true);
+            }
+            else if (_inputBindings.UI.Continue.triggered)
+            {
+                Debug.LogError("ShowEmbodimentInstructions something triggered");
+                textComponents[currentTextIndex].gameObject.SetActive(false);
+                currentTextIndex += 1;
+
+                if (currentTextIndex < textComponents.Count)
+                {
+                    textComponents[currentTextIndex].gameObject.SetActive(true);
+                }
+                else
+                {
+                    // When the last text component is reached
+                    textComponents[textComponents.Count - 1].gameObject.SetActive(false);
+                    coroutineFinishedCallback?.Invoke(); // Callback to signal coroutine completion
+                }
+            }
+
+            yield return null;
+            CoroutineRunning = true;
+            
+        }
+    } 
     
 }
