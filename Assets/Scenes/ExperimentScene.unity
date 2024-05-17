@@ -2995,13 +2995,6 @@ MonoBehaviour:
   - {fileID: 1490259436}
   - {fileID: 1875879819}
   - {fileID: 103348864}
-  - {fileID: 820441765}
-  - {fileID: 1037431555}
-  - {fileID: 1482222012}
-  - {fileID: 549369226}
-  - {fileID: 956426702}
-  - {fileID: 921615172}
-  - {fileID: 888846016}
   trialNumber: 0
   trialFailedCount: 0
   TestingText3: {fileID: 263224819}
@@ -3028,6 +3021,7 @@ MonoBehaviour:
   clockManager: {fileID: 496483701}
   clock: {fileID: 496483700}
   TimeExceeded: 0
+  _timeLimit: 30
 --- !u!4 &171754635
 Transform:
   m_ObjectHideFlags: 0

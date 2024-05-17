@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     private bool _startedRound = false;
     private bool _selected = false;
     [SerializeField] private List<GameObject> boxes = null;
+    
 
     public int trialNumber = 0;
     public int trialFailedCount = 0;
@@ -66,14 +67,20 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject clock;
     public bool TimeExceeded = false;
 
+    public float _timeLimit = 10;
+    private float startTime;
+    private float _startRoundTime = 0;
+
     // Start is called before the first frame update
     void Start()
     {
+        startTime = Time.time;
         menuManager = FindObjectOfType<MenuManager>();
         player = FindObjectOfType<Player>();
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
 
+        //role = "signaler";
         role = "receiver";
 
         score = 0;
@@ -108,24 +115,27 @@ public class GameManager : MonoBehaviour
 
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             //EnterNextPhase();
+            Debug.LogError("Phase 1");
         }
         // Phase 2: Instruction Testing (UI Space)
         else if (phase == 2)
         {
            // player.role = "";
-
+            Debug.LogError("Phase 2");
         }
         // Phase 3: First Condition (Experiment Room)
         else if (phase == 3)
         {
             //assign role here?
             //player.role = "receiver";
-            //Debug.Log("Phase 3");
+            Debug.LogError("Phase 3");
 
             if (_currentRound < roundsPerCondition)
             {   
                 if (_startedRound == false)
+                {
                     StartCoroutine(Condition1());
+                }
                 trialNumber++;
             } 
             else 
@@ -195,7 +205,6 @@ public class GameManager : MonoBehaviour
             signalerManager.Teleport(pauseRoom);
         }
 
-        //player.Teleport(pauseRoom);
     }
     public void ReturnToCurrentPhase()
     {
@@ -209,23 +218,10 @@ public class GameManager : MonoBehaviour
         {
             signalerManager.Teleport(spaceLocationsSignaler.ElementAt(currentPhase));
         }
-       // player.Teleport(spaceLocations.ElementAt(currentPhase));
 
     }
 
 
-    /* public void EnterPausePhase()
-     {
-         if (_inputBindings.UI.Pause.triggered)
-         {
-             CurrentPhase = GetCurrentPhase();
-             player.Teleport(spaceLocations.ElementAt(0));
-             if (_inputBindings.UI.Unpause.triggered)
-             {
-                 player.Teleport(spaceLocations.ElementAt(CurrentPhase));
-             }
-         }
-     } */
     public int GetCurrentPhase()
     {
         return phase;
@@ -240,25 +236,36 @@ public class GameManager : MonoBehaviour
         Debug.Log("Timer started");
         roundsDisplay.text = "Round: " + _currentRound;
         // 1. Freeze receiver 
+            	// --> eye data is not sent to the signaler at this point
         // 2. Shuffle rewards
         ShuffleRewards();
-        // 3. Unfreeze signaller
-       // signalerManager.Unfreeze();
-        // wait for a certain amount of time / the signaller pressing a button
-        yield return new WaitWhile(() => _inputBindings.UI.Select.triggered == false);
-       // signalerManager.Freeze();
+        // 3. Unfreeze signaler
+            // --> signalers gaze is unlocked and can look around
+        // signalerManager.Unfreeze();
+        //Timer starts
+        _startRoundTime = Time.time;
+        Debug.LogError("Timer started at "+ _startRoundTime);
+        // 4. Signaler freezes themselves by button press or after the timer runs out
+        yield return new WaitWhile(() => (_inputBindings.UI.Select.triggered == false) || (Time.time - _startRoundTime < _timeLimit));
+        Debug.LogError("Button was pressed or timer ran out" + Time.time);
+        //signalerManager.Freeze();
         if (!firstSelectionMade)
         {
-            // Show the text
+            // Show the text 
+            // separate texts for signalers and receivers?
             StartCoroutine(menuManager.ShowTwoTexts(TestingText3, TestingText4)); //might need to assign the TMP's to GameManager script
             // Set the flag to true
             firstSelectionMade = true;
         }
         // receiverManager.Unfreeze();
-        // 4. Receiver chooses box 
+        // 5. Receiver chooses box 
         if(receiverManager.boxSelected == true)
         {
            boxBehaviour.Selected();
+        }
+
+        if (Time.time - _startRoundTime < _timeLimit){
+            Debug.LogError("Time exceeded. We're at the end of the round. Receiver did not select");
         }
         
         yield return new WaitWhile(() => _selected == false);
