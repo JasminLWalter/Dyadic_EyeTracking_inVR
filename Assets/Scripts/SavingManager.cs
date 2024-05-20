@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using LSL;
 
 public class SavingManager : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class SavingManager : MonoBehaviour
     private EyetrackingValidation eyetrackingValidation;
     private EmbodimentManager embodimentManager;
    // private EyeRaycast eyeRaycast;
+
+   private LSLStreams lslStreams;
+   private StreamOutlet lslOMetadata;
 
 
     private int phase;
@@ -35,21 +39,23 @@ public class SavingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         phase = gameManager.phase;
-        validationError = eyetrackingValidation.GetValidationError();
-        valCalCounter = eyetrackingValidation.valCalCounter;
-        embodimentTrainingStarted = embodimentManager.embodimentTrainingStarted;
-        embodimentTrainingEnd = embodimentManager.embodimentTrainingEnd;
-        embodimentTrainingTime = embodimentTrainingEnd - embodimentTrainingStarted;
-        trialNumber = gameManager.trialNumber;
-        //hitData = Raycast.hitData;
-        trialFailedCount = gameManager.trialFailedCount;
+        lslStreams = LSLStreams.Instance;
+        // validationError = eyetrackingValidation.GetValidationError();
+        // valCalCounter = eyetrackingValidation.valCalCounter;
+        // embodimentTrainingStarted = embodimentManager.embodimentTrainingStarted;
+        // embodimentTrainingEnd = embodimentManager.embodimentTrainingEnd;
+        // embodimentTrainingTime = embodimentTrainingEnd - embodimentTrainingStarted;
+        // trialNumber = gameManager.trialNumber;
+        // //hitData = Raycast.hitData;
+        // trialFailedCount = gameManager.trialFailedCount;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        lslStreams.lslOMetadata.push_sample(new int [] { phase });
     }
 }
