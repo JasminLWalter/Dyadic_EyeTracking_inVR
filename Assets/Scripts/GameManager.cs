@@ -46,12 +46,16 @@ public class GameManager : MonoBehaviour
     public int trialFailedCount = 0;
 
     Vector3 pauseRoom = new Vector3();
+    Vector3 pauseRoomReceiver = new Vector3();
 
 
     private bool firstSelectionMade = false;
 
     public TMP_Text TestingText3;
     public TMP_Text TestingText4;
+
+    public TMP_Text TestingText3Receiver;
+    public TMP_Text TestingText4Receiver;
 
     public GameObject milkyGlass;
     
@@ -104,6 +108,10 @@ public class GameManager : MonoBehaviour
 
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
+
+         _inputBindings = new InputBindings();
+        _inputBindings.UI.Enable();
+
 
         TestingText3.gameObject.SetActive(false);
         TestingText4.gameObject.SetActive(false);
@@ -193,9 +201,10 @@ public class GameManager : MonoBehaviour
     public void EnterPausePhase()
     {
         pauseRoom = new Vector3(0, -26, 55);
+        pauseRoomReceiver = new Vector3(-114, -27, 1);
         if (role == "receiver")
         {
-            receiverManager.Teleport(pauseRoom);
+            receiverManager.Teleport(pauseRoomReceiver);
         }
         if (role == "signaler") 
         {
@@ -246,20 +255,26 @@ public class GameManager : MonoBehaviour
 
         // 4. Signaler freezes themselves by button press or after the timer runs out
         yield return new WaitWhile(() => ((_inputBindings.Player.Freeze.triggered == false)^(Time.time - _startRoundTime < _timeLimit)));
-
+        if(_inputBindings.Player.Freeze.triggered && !firstSelectionMade)
+        {
+            Debug.LogError("firstSelectionMade");
+            firstSelectionMade = true;
+        }
+        
         //signalerManager.Freeze();
-        if (!firstSelectionMade)
+        if (firstSelectionMade) 
         {
             // Show the text 
             // separate texts for signalers and receivers?
-            StartCoroutine(menuManager.ShowTwoTexts(TestingText3, TestingText4)); //might need to assign the TMP's to GameManager script
-            // Set the flag to true
-            firstSelectionMade = true;
+            StartCoroutine(menuManager.ShowTwoTexts(TestingText3, TestingText4));
+
         }
         // receiverManager.Unfreeze();
         // 5. Receiver chooses box 
         if(receiverManager.boxSelected == true)
         {
+           StartCoroutine(menuManager.ShowTwoTexts(TestingText3Receiver, TestingText4Receiver));
+
            boxBehaviour.Selected();
         }
 
