@@ -16,11 +16,6 @@ public class GameManager : MonoBehaviour
     public int phase = 0;
     private int currentPhase = 0;
 
-    private Player player;
-    private Player player2; // don't need "player2" as we run it on two devices and only distinguish between roles, right?
-  //  private SignalerManager signalerManager;
-  //  private ReceiverManager receiverManager;
-    
     private ReceiverManager receiverManager;
     private SignalerManager signalerManager;
     private BoxBehaviour boxBehaviour;
@@ -58,7 +53,6 @@ public class GameManager : MonoBehaviour
     public TMP_Text TestingText4Receiver;
 
     public GameObject milkyGlass;
-    
     public GameObject clearGlass;
 
     //[Tooltip("The locations of the embodiment, start, condition 1, break, condition 2 and end space.")]
@@ -87,7 +81,6 @@ public class GameManager : MonoBehaviour
     {
         startTime = Time.time;
         menuManager = FindObjectOfType<MenuManager>();
-        player = FindObjectOfType<Player>();
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
 
@@ -97,11 +90,14 @@ public class GameManager : MonoBehaviour
         {
             xrOriginSetup.GetComponent<ReceiverManager>().enabled = true;
             xrOriginSetup.GetComponent<SignalerManager>().enabled = false;
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
+            
         }
         if (role == "signaler")
         {
             xrOriginSetup.GetComponent<ReceiverManager>().enabled = false;
             xrOriginSetup.GetComponent<SignalerManager>().enabled = true;
+            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0));
         }
 
         score = 0;
@@ -126,8 +122,8 @@ public class GameManager : MonoBehaviour
         if (phase == 0)
         {
             //player.Teleport(spaceLocations.ElementAt(0));
-            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0));
-            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
+            //signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0));
+            //receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
            // player.role = "";
             
             // TODO: let the function be called from the menu manager or an embodiment phase manager 

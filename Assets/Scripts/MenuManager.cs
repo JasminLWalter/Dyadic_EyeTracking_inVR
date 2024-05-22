@@ -134,36 +134,26 @@ public class MenuManager : MonoBehaviour
             }
 
         }
-        if (gameManager.GetCurrentPhase() == 2 && !phase2CoroutineRunning && !phase2CoroutineRunningReceiver)
+        if (gameManager.GetCurrentPhase() == 2)
         {
-            if (gameManager.role == "signaler")
-                if (!ShowedText1)
-                {
-                    StartCoroutine(ShowTwoTexts2(TestingText1, TestingText2));
-                    ShowedText1 = true;
-                }
-            if (gameManager.role == "receiver")
-            {
-                xrOriginSetup.transform.rotation = Quaternion.Euler(0, 90, 0);
 
-                if (!ShowedText1Receiver && gameManager.role == "receiver")
-                {
-                    StartCoroutine(ShowTwoTexts2(TestingText1Receiver, TestingText2Receiver));
-                    ShowedText1Receiver = true;
-                }
-            }
-            else 
+
+        }
+        if (gameManager.GetCurrentPhase() == 3 && !phase2CoroutineRunning && gameManager.role == "signaler") 
+        {
+            Debug.LogError("Phase 3 Signaler");
+            StartCoroutine(ShowTwoTexts2(TestingText1, TestingText2, () => phase2CoroutineRunning = false));
             phase2CoroutineRunning = true;
-            phase2CoroutineRunningReceiver = true;
-            gameManager.EnterNextPhase();
-
-        }
-        if (gameManager.GetCurrentPhase() == 3)
+        }       
+        if (gameManager.GetCurrentPhase() == 3 && !phase2CoroutineRunningReceiver && gameManager.role == "receiver") 
         {
-            StartCoroutine(ShowTwoTexts2(TestingText1, TestingText2));
-            
-        }
+            xrOriginSetup.transform.rotation = Quaternion.Euler(0, 90, 0);
 
+        
+            StartCoroutine(ShowTwoTexts2(TestingText1Receiver, TestingText2Receiver, () => phase2CoroutineRunningReceiver = false));
+            phase2CoroutineRunningReceiver = true;
+               
+        }
         if (gameManager.GetCurrentPhase() == 4)
         {
             TextPhase6.gameObject.SetActive(true);
@@ -225,7 +215,7 @@ public class MenuManager : MonoBehaviour
             {
                 textComponents[currentTextIndex].gameObject.SetActive(false);
                 currentTextIndex += 1;
-                Debug.LogError("Current text index: " + currentTextIndex);
+                
 
                 if (currentTextIndex < textComponents.Count)
                 {
@@ -236,7 +226,7 @@ public class MenuManager : MonoBehaviour
                     // When the last text component is reached
                     textComponents[textComponents.Count - 1].gameObject.SetActive(false);
                     gameManager.EnterNextPhase();
-                    coroutineFinishedCallback?.Invoke(); // Callback to signal coroutine completion
+                   
                 }
 
             }
@@ -245,7 +235,7 @@ public class MenuManager : MonoBehaviour
         }
     } 
 
-    private IEnumerator ShowStart(TMP_Text Text)
+    public IEnumerator ShowStart(TMP_Text Text)
     {
         Text.gameObject.SetActive(true);
         yield return new WaitForSeconds(3f);
@@ -283,7 +273,7 @@ public class MenuManager : MonoBehaviour
         }
     } 
 
-        public IEnumerator ShowTwoTexts2(TMP_Text textObject1, TMP_Text textObject2)
+    IEnumerator ShowTwoTexts2(TMP_Text textObject1, TMP_Text textObject2, Action coroutineFinishedCallback)
     {
         textObject1.gameObject.SetActive(true);
         textObject2.gameObject.SetActive(false);
@@ -294,12 +284,15 @@ public class MenuManager : MonoBehaviour
             textObject2.gameObject.SetActive(true);
             yield return new WaitForSeconds(5f);
             textObject2.gameObject.SetActive(false);
+            coroutineFinishedCallback?.Invoke();
+            
         }
         else if (_inputBindings.UI.Return.triggered)
         {
             textObject1.gameObject.SetActive(true);
             textObject2.gameObject.SetActive(false);
         }
+        yield return null;
     } 
 }
 
