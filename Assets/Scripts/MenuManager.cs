@@ -13,14 +13,14 @@ public class MenuManager : MonoBehaviour
     public List<TMP_Text> TextsPhase2;
     public TMP_Text TextPhase6;
     public TMP_Text Pause;
-
-    public TMP_Text TestingText1;
-    public TMP_Text TestingText2;
+    public List<TMP_Text> TextsPhase3;
 
     private bool phase0CoroutineRunning = false;
     private bool phase2CoroutineRunning = false;
+    private bool phase3CoroutineRunning = false;
     private bool ShowedStart = false;
     private bool ShowedText1 = false;
+    private bool didRun = false;
 
     //Receiver
     public List<TMP_Text> TextsPhase0Receiver;
@@ -28,14 +28,14 @@ public class MenuManager : MonoBehaviour
     public List<TMP_Text> TextsPhase2Receiver;
     public TMP_Text TextPhase6Receiver;
     public TMP_Text PauseReceiver;
-   
-    public TMP_Text TestingText1Receiver;
-    public TMP_Text TestingText2Receiver;
+    public List<TMP_Text> TextsPhase3Receiver;
 
     private bool ShowedStartReceiver = false;
     private bool ShowedText1Receiver = false;
     private bool phase0CoroutineRunningReceiver = false;
     private bool phase2CoroutineRunningReceiver = false;
+    private bool phase3CoroutineRunningReceiver = false;
+    private bool didRunReceiver = false;
 
 
     public Player player;
@@ -62,36 +62,38 @@ public class MenuManager : MonoBehaviour
         TextPhase6.gameObject.SetActive(false);
         Pause.gameObject.SetActive(false);
 
-        TestingText1.gameObject.SetActive(false);
-        TestingText2.gameObject.SetActive(false);
+        //TestingText1.gameObject.SetActive(false);
+        //TestingText2.gameObject.SetActive(false);
         
 
         foreach (TMP_Text TextPhase0 in TextsPhase0)
         {
             TextPhase0.gameObject.SetActive(false);
         }
-
         foreach (TMP_Text TextPhase2 in TextsPhase2)
         {
             TextPhase2.gameObject.SetActive(false);
+        }
+        foreach (TMP_Text TextPhase3 in TextsPhase3)
+        {
+            TextPhase3.gameObject.SetActive(false);
         }
 
         //Receiver
         TextPhase6Receiver.gameObject.SetActive(false);
         PauseReceiver.gameObject.SetActive(false);
-
-        TestingText1Receiver.gameObject.SetActive(false);
-        TestingText2Receiver.gameObject.SetActive(false);
         
-
         foreach (TMP_Text TextPhase0Receiver in TextsPhase0Receiver)
         {
             TextPhase0Receiver.gameObject.SetActive(false);
         }
-
         foreach (TMP_Text TextPhase2Receiver in TextsPhase2Receiver)
         {
             TextPhase2Receiver.gameObject.SetActive(false);
+        }
+        foreach (TMP_Text TextPhase3Receiver in TextsPhase3Receiver)
+        {
+            TextPhase3Receiver.gameObject.SetActive(false);
         }
 
         if (player == null)
@@ -103,9 +105,9 @@ public class MenuManager : MonoBehaviour
 
     void Update()
     {
-        if (gameManager.GetCurrentPhase() == 0 && !phase0CoroutineRunning && !phase0CoroutineRunningReceiver)
+        if (gameManager.GetCurrentPhase() == 0)
         {
-            if (gameManager.role == "signaler")
+            if (gameManager.role == "signaler" && !phase0CoroutineRunning)
             {
                 if (ShowedStart == false)
                 {
@@ -118,7 +120,7 @@ public class MenuManager : MonoBehaviour
                     phase0CoroutineRunning = true;
                 }
             }
-            if (gameManager.role == "receiver")
+            if (gameManager.role == "receiver" && !phase0CoroutineRunningReceiver)
             {
                 if (ShowedStartReceiver == false)
                 {
@@ -129,31 +131,40 @@ public class MenuManager : MonoBehaviour
                 {
                     StartCoroutine(ShowTexts(TextsPhase0Receiver, () => phase0CoroutineRunningReceiver = false));
                     phase0CoroutineRunningReceiver = true;
-                    //gameManager.EnterNextPhase();
                 }
             }
-
         }
         if (gameManager.GetCurrentPhase() == 2)
         {
 
 
         }
-        if (gameManager.GetCurrentPhase() == 3 && !phase2CoroutineRunning && gameManager.role == "signaler") 
+        if (gameManager.GetCurrentPhase() == 3)
         {
-            Debug.LogError("Phase 3 Signaler");
-            StartCoroutine(ShowTwoTexts2(TestingText1, TestingText2, () => phase2CoroutineRunning = false));
-            phase2CoroutineRunning = true;
-        }       
-        if (gameManager.GetCurrentPhase() == 3 && !phase2CoroutineRunningReceiver && gameManager.role == "receiver") 
-        {
-            xrOriginSetup.transform.rotation = Quaternion.Euler(0, 90, 0);
+            if (gameManager.role == "signaler" && !phase3CoroutineRunning)
+            {
+                if(!didRun)
+                {
+                    StartCoroutine(ShowTexts(TextsPhase3, () => phase3CoroutineRunning = false));
+                    phase3CoroutineRunning = true;
+                    didRun = true;
+                }
+                
+            }
+            if (gameManager.role == "receiver" && !phase3CoroutineRunningReceiver)
+            {
+                xrOriginSetup.transform.rotation = Quaternion.Euler(0, 90, 0);
 
-        
-            StartCoroutine(ShowTwoTexts2(TestingText1Receiver, TestingText2Receiver, () => phase2CoroutineRunningReceiver = false));
-            phase2CoroutineRunningReceiver = true;
-               
-        }
+                if(!didRunReceiver)
+                {
+                    Debug.LogError("hier");
+                    StartCoroutine(ShowTexts(TextsPhase3Receiver, () => phase3CoroutineRunningReceiver = false));
+                    phase3CoroutineRunningReceiver = true;
+                    didRunReceiver = true;
+                }
+                
+            }
+        }       
         if (gameManager.GetCurrentPhase() == 4)
         {
             TextPhase6.gameObject.SetActive(true);
@@ -197,7 +208,7 @@ public class MenuManager : MonoBehaviour
     }
     
 
-    IEnumerator ShowTexts(List<TMP_Text> textComponents, Action coroutineFinishedCallback)
+    public IEnumerator ShowTexts(List<TMP_Text> textComponents, Action coroutineFinishedCallback)
     {
         int currentTextIndex = 0;
         yield return new WaitForSeconds(3f);
@@ -225,12 +236,14 @@ public class MenuManager : MonoBehaviour
                 {
                     // When the last text component is reached
                     textComponents[textComponents.Count - 1].gameObject.SetActive(false);
-                    gameManager.EnterNextPhase();
-                   
+                    
+                    if (gameManager.GetCurrentPhase() == 0 || gameManager.GetCurrentPhase() == 2)
+                    {
+                        gameManager.EnterNextPhase();
+                    }
                 }
 
             }
-
             yield return null;
         }
     } 
@@ -240,7 +253,6 @@ public class MenuManager : MonoBehaviour
         Text.gameObject.SetActive(true);
         yield return new WaitForSeconds(3f);
         Text.gameObject.SetActive(false);
-        //Show = true;
     }
 
     void HideLists(List<TMP_Text> texts)
@@ -254,45 +266,5 @@ public class MenuManager : MonoBehaviour
             }
         }
     }
-
-    
-    public IEnumerator ShowTwoTexts(TMP_Text textObject1, TMP_Text textObject2)
-    {
-        textObject1.gameObject.SetActive(true);
-        if (_inputBindings.UI.Continue.triggered)
-        {
-            textObject1.gameObject.SetActive(false);
-            textObject2.gameObject.SetActive(true);
-            yield return new WaitForSeconds(5f);
-            textObject2.gameObject.SetActive(false);
-        }
-        else if (_inputBindings.UI.Return.triggered)
-        {
-            textObject1.gameObject.SetActive(true);
-            textObject2.gameObject.SetActive(false);
-        }
-    } 
-
-    IEnumerator ShowTwoTexts2(TMP_Text textObject1, TMP_Text textObject2, Action coroutineFinishedCallback)
-    {
-        textObject1.gameObject.SetActive(true);
-        textObject2.gameObject.SetActive(false);
-
-        if (_inputBindings.UI.Continue.triggered)
-        {
-            textObject1.gameObject.SetActive(false);
-            textObject2.gameObject.SetActive(true);
-            yield return new WaitForSeconds(5f);
-            textObject2.gameObject.SetActive(false);
-            coroutineFinishedCallback?.Invoke();
-            
-        }
-        else if (_inputBindings.UI.Return.triggered)
-        {
-            textObject1.gameObject.SetActive(true);
-            textObject2.gameObject.SetActive(false);
-        }
-        yield return null;
-    } 
 }
 

@@ -3483,10 +3483,12 @@ MonoBehaviour:
   - {fileID: 103348864}
   trialNumber: 0
   trialFailedCount: 0
-  TestingText3: {fileID: 263224819}
-  TestingText4: {fileID: 21529636}
-  TestingText3Receiver: {fileID: 2076410788}
-  TestingText4Receiver: {fileID: 1789295080}
+  TextsPhase3:
+  - {fileID: 263224819}
+  - {fileID: 21529636}
+  TextsPhase3Receiver:
+  - {fileID: 2076410788}
+  - {fileID: 1789295080}
   milkyGlass: {fileID: 1020737284}
   clearGlass: {fileID: 593205184}
   spaceLocationsReceiver:
@@ -9754,7 +9756,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Finish
+  m_text: Continue to Experiment
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9781,8 +9783,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -22105,8 +22107,9 @@ MonoBehaviour:
   - {fileID: 150570388}
   TextPhase6: {fileID: 783558477}
   Pause: {fileID: 1824544125}
-  TestingText1: {fileID: 980921648}
-  TestingText2: {fileID: 825191839}
+  TextsPhase3:
+  - {fileID: 980921648}
+  - {fileID: 825191839}
   TextsPhase0Receiver:
   - {fileID: 1511291105}
   - {fileID: 1982823038}
@@ -22117,8 +22120,9 @@ MonoBehaviour:
   - {fileID: 33511272}
   TextPhase6Receiver: {fileID: 1812784606}
   PauseReceiver: {fileID: 381270498}
-  TestingText1Receiver: {fileID: 980921648}
-  TestingText2Receiver: {fileID: 825191839}
+  TextsPhase3Receiver:
+  - {fileID: 739091957}
+  - {fileID: 1149598040}
   player: {fileID: 452463684}
   gameManager: {fileID: 171754634}
   xrOriginSetup: {fileID: 7313654230535762584}
@@ -31680,7 +31684,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Finish
+  m_text: Continue to Experiment
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -31707,8 +31711,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -33124,7 +33128,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 3.603, y: 4.641}
+  m_AnchoredPosition: {x: 2.31, y: 5}
   m_SizeDelta: {x: 644, y: 514}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1966964959
@@ -36019,8 +36023,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136688598}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: -1.9160259}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0.14}
   m_LocalScale: {x: 0.004492998, y: 0.004492998, z: 0.004492998}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -36029,10 +36033,10 @@ RectTransform:
   - {fileID: 263224818}
   - {fileID: 21529635}
   m_Father: {fileID: 742094808}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 3.6026382, y: 3.8176}
+  m_AnchoredPosition: {x: -2.88, y: 4.95}
   m_SizeDelta: {x: 644, y: 514}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2136688600

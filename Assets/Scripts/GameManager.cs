@@ -43,14 +43,12 @@ public class GameManager : MonoBehaviour
     Vector3 pauseRoom = new Vector3();
     Vector3 pauseRoomReceiver = new Vector3();
 
-
+    private bool phase3CoroutineRunning = false;
+    private bool phase3CoroutineRunningReceiver = false;
     private bool firstSelectionMade = false;
 
-    public TMP_Text TestingText3;
-    public TMP_Text TestingText4;
-
-    public TMP_Text TestingText3Receiver;
-    public TMP_Text TestingText4Receiver;
+    public List<TMP_Text> TextsPhase3;
+    public List<TMP_Text> TextsPhase3Receiver;
 
     public GameObject milkyGlass;
     public GameObject clearGlass;
@@ -84,8 +82,8 @@ public class GameManager : MonoBehaviour
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
 
-        role = "signaler";
-        //role = "receiver";
+        //role = "signaler";
+        role = "receiver";
         if (role == "receiver") 
         {
             xrOriginSetup.GetComponent<ReceiverManager>().enabled = true;
@@ -108,9 +106,14 @@ public class GameManager : MonoBehaviour
          _inputBindings = new InputBindings();
         _inputBindings.UI.Enable();
 
-
-        TestingText3.gameObject.SetActive(false);
-        TestingText4.gameObject.SetActive(false);
+        foreach (TMP_Text TextPhase3 in TextsPhase3)
+        {
+            TextPhase3.gameObject.SetActive(false);
+        }
+        foreach (TMP_Text TextPhase3Receiver in TextsPhase3Receiver)
+        {
+            TextPhase3Receiver.gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -260,18 +263,27 @@ public class GameManager : MonoBehaviour
         //signalerManager.Freeze();
         if (firstSelectionMade) 
         {
+            Debug.LogError("Signaler freezes"); 
             // Show the text 
             // separate texts for signalers and receivers?
-            StartCoroutine(menuManager.ShowTwoTexts(TestingText3, TestingText4));
+            if(phase3CoroutineRunning == false)
+            {
+                StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => phase3CoroutineRunning = false));
+                phase3CoroutineRunning = true;
+            }
 
         }
         // receiverManager.Unfreeze();
         // 5. Receiver chooses box 
         if(receiverManager.boxSelected == true)
         {
-           StartCoroutine(menuManager.ShowTwoTexts(TestingText3Receiver, TestingText4Receiver));
-
-           boxBehaviour.Selected();
+            boxBehaviour.Selected();
+            Debug.LogError("Receiver freezes"); 
+            if(phase3CoroutineRunningReceiver == false)
+            {
+                StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => phase3CoroutineRunningReceiver = false));
+                phase3CoroutineRunningReceiver = true;
+            }
         }
 
         if (Time.time - _startRoundTime < _timeLimit){
