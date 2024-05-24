@@ -9,7 +9,6 @@ public class MenuManager : MonoBehaviour
 {
     //Signaler
     public List<TMP_Text> TextsPhase0;
-    public TMP_Text TextPhase0;
     public List<TMP_Text> TextsPhase2;
     public TMP_Text TextPhase6;
     public TMP_Text Pause;
@@ -24,7 +23,6 @@ public class MenuManager : MonoBehaviour
 
     //Receiver
     public List<TMP_Text> TextsPhase0Receiver;
-    public TMP_Text TextPhase0Receiver;
     public List<TMP_Text> TextsPhase2Receiver;
     public TMP_Text TextPhase6Receiver;
     public TMP_Text PauseReceiver;
@@ -40,6 +38,8 @@ public class MenuManager : MonoBehaviour
 
     public Player player;
     public GameManager gameManager;
+    public EyetrackingValidation eyetrackingValidation;
+    //public SRanipal_Eye_v2 sRanipal_Eye_v2;
     private InputBindings _inputBindings;
     private int currentTextIndex = 0;
 
@@ -58,12 +58,12 @@ public class MenuManager : MonoBehaviour
         _inputBindings.UI.Enable();
         
         gameManager = FindObjectOfType<GameManager>();
+        eyetrackingValidation = FindObjectOfType<EyetrackingValidation>();
+        //sRanipal_Eye_v2 = FindObjectOfType<SRanipal_Eye_v2>();
+        
 
         TextPhase6.gameObject.SetActive(false);
         Pause.gameObject.SetActive(false);
-
-        //TestingText1.gameObject.SetActive(false);
-        //TestingText2.gameObject.SetActive(false);
         
 
         foreach (TMP_Text TextPhase0 in TextsPhase0)
@@ -109,34 +109,28 @@ public class MenuManager : MonoBehaviour
         {
             if (gameManager.role == "signaler" && !phase0CoroutineRunning)
             {
-                if (ShowedStart == false)
-                {
-                    StartCoroutine(ShowStart(TextPhase0));
-                    ShowedStart = true;
-                }
-                else if (ShowedStart == true)
-                {
                     StartCoroutine(ShowTexts(TextsPhase0, () => phase0CoroutineRunning = false));
                     phase0CoroutineRunning = true;
-                }
+                    
             }
             if (gameManager.role == "receiver" && !phase0CoroutineRunningReceiver)
             {
-                if (ShowedStartReceiver == false)
-                {
-                    StartCoroutine(ShowStart(TextPhase0Receiver));
-                    ShowedStartReceiver = true;
-                }
-                else if (ShowedStartReceiver == true)
-                {
                     StartCoroutine(ShowTexts(TextsPhase0Receiver, () => phase0CoroutineRunningReceiver = false));
                     phase0CoroutineRunningReceiver = true;
-                }
             }
         }
         if (gameManager.GetCurrentPhase() == 2)
         {
-
+            if (gameManager.role == "signaler" && !phase2CoroutineRunning)
+            {
+                    StartCoroutine(ShowTexts(TextsPhase2, () => phase2CoroutineRunning = false));
+                    phase2CoroutineRunning = true;
+            }
+            if (gameManager.role == "receiver" && !phase2CoroutineRunningReceiver)
+            {
+                    StartCoroutine(ShowTexts(TextsPhase2Receiver, () => phase2CoroutineRunningReceiver = false));
+                    phase2CoroutineRunningReceiver = true;
+            }
 
         }
         if (gameManager.GetCurrentPhase() == 3)
@@ -157,7 +151,6 @@ public class MenuManager : MonoBehaviour
 
                 if(!didRunReceiver)
                 {
-                    Debug.LogError("hier");
                     StartCoroutine(ShowTexts(TextsPhase3Receiver, () => phase3CoroutineRunningReceiver = false));
                     phase3CoroutineRunningReceiver = true;
                     didRunReceiver = true;
@@ -167,7 +160,14 @@ public class MenuManager : MonoBehaviour
         }       
         if (gameManager.GetCurrentPhase() == 4)
         {
-            TextPhase6.gameObject.SetActive(true);
+            if (gameManager.role == "signaler")
+            {
+                TextPhase6.gameObject.SetActive(true);
+            }
+            if (gameManager.role == "receiver")
+            {
+                TextPhase6Receiver.gameObject.SetActive(true);
+            }
         }
         if (_inputBindings.UI.Skip.triggered)
         {
@@ -177,7 +177,6 @@ public class MenuManager : MonoBehaviour
         //Hides everything if wrong phase
         if (gameManager.GetCurrentPhase() != 0)
         {
-            TextPhase0.gameObject.SetActive(false);
             HideLists(TextsPhase0);
         }
 
@@ -211,7 +210,7 @@ public class MenuManager : MonoBehaviour
     public IEnumerator ShowTexts(List<TMP_Text> textComponents, Action coroutineFinishedCallback)
     {
         int currentTextIndex = 0;
-        yield return new WaitForSeconds(3f);
+        //yield return new WaitForSeconds(3f);
         while (currentTextIndex < textComponents.Count)
         {
             textComponents[currentTextIndex].gameObject.SetActive(true);
@@ -239,7 +238,13 @@ public class MenuManager : MonoBehaviour
                     
                     if (gameManager.GetCurrentPhase() == 0 || gameManager.GetCurrentPhase() == 2)
                     {
-                        gameManager.EnterNextPhase();
+                        //sRanipal_Eye_v2.LaunchEyeCalibration();
+                        eyetrackingValidation.ValidateEyeTracking();
+                        if(gameManager._ValidationSuccessStatus == true) //could cause problems because _ValidationSuccessStatus is initiated as true
+                        {
+                            gameManager.EnterNextPhase();
+                        }
+                        
                     }
                 }
 
@@ -247,13 +252,6 @@ public class MenuManager : MonoBehaviour
             yield return null;
         }
     } 
-
-    public IEnumerator ShowStart(TMP_Text Text)
-    {
-        Text.gameObject.SetActive(true);
-        yield return new WaitForSeconds(3f);
-        Text.gameObject.SetActive(false);
-    }
 
     void HideLists(List<TMP_Text> texts)
     {

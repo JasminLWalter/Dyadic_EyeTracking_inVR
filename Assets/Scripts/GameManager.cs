@@ -43,12 +43,10 @@ public class GameManager : MonoBehaviour
     Vector3 pauseRoom = new Vector3();
     Vector3 pauseRoomReceiver = new Vector3();
 
-    private bool phase3CoroutineRunning = false;
-    private bool phase3CoroutineRunningReceiver = false;
     private bool firstSelectionMade = false;
 
-    public List<TMP_Text> TextsPhase3;
-    public List<TMP_Text> TextsPhase3Receiver;
+    private int countdownTime = 3;
+    public TextMeshProUGUI  countdownText;
 
     public GameObject milkyGlass;
     public GameObject clearGlass;
@@ -61,12 +59,13 @@ public class GameManager : MonoBehaviour
     [Tooltip("There should be as many rewards as there are inner boxes.")]
     [SerializeField] private List<int> rewards;
 
-    private bool _ValidationSuccessStatus = true;
+    public bool _ValidationSuccessStatus = true;
     
     //Jojo Timer/Clock 
     public ClockManager clockManager;
     [SerializeField] private GameObject clock;
     public bool TimeExceeded = false;
+    public bool countdownRunning = false;
 
     public float _timeLimit = 3;
     private float startTime;
@@ -82,8 +81,8 @@ public class GameManager : MonoBehaviour
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
 
-        //role = "signaler";
-        role = "receiver";
+        role = "signaler";
+        //role = "receiver";
         if (role == "receiver") 
         {
             xrOriginSetup.GetComponent<ReceiverManager>().enabled = true;
@@ -105,15 +104,6 @@ public class GameManager : MonoBehaviour
 
          _inputBindings = new InputBindings();
         _inputBindings.UI.Enable();
-
-        foreach (TMP_Text TextPhase3 in TextsPhase3)
-        {
-            TextPhase3.gameObject.SetActive(false);
-        }
-        foreach (TMP_Text TextPhase3Receiver in TextsPhase3Receiver)
-        {
-            TextPhase3Receiver.gameObject.SetActive(false);
-        }
     }
 
     // Update is called once per frame
@@ -140,6 +130,7 @@ public class GameManager : MonoBehaviour
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             //EnterNextPhase();
             Debug.LogError("Phase 1");
+            
         }
         // Phase 2: Instruction Testing (UI Space)
         else if (phase == 2)
@@ -153,6 +144,12 @@ public class GameManager : MonoBehaviour
             //assign role here?
             //player.role = "receiver";
             Debug.LogError("Phase 3");
+            if(receiverManager.phase3CoroutineRunningReceiver == true && !countdownRunning)//&& signalerManager.phase3CoroutineRunning)
+            {
+                Debug.LogError("counting");
+                StartCoroutine(Countdown());
+                countdownRunning = true;
+            }
 
             if (_currentRound < roundsPerCondition)
             {   
@@ -263,14 +260,6 @@ public class GameManager : MonoBehaviour
         //signalerManager.Freeze();
         if (firstSelectionMade) 
         {
-            Debug.LogError("Signaler freezes"); 
-            // Show the text 
-            // separate texts for signalers and receivers?
-            if(phase3CoroutineRunning == false)
-            {
-                StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => phase3CoroutineRunning = false));
-                phase3CoroutineRunning = true;
-            }
 
         }
         // receiverManager.Unfreeze();
@@ -278,12 +267,6 @@ public class GameManager : MonoBehaviour
         if(receiverManager.boxSelected == true)
         {
             boxBehaviour.Selected();
-            Debug.LogError("Receiver freezes"); 
-            if(phase3CoroutineRunningReceiver == false)
-            {
-                StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => phase3CoroutineRunningReceiver = false));
-                phase3CoroutineRunningReceiver = true;
-            }
         }
 
         if (Time.time - _startRoundTime < _timeLimit){
@@ -410,6 +393,22 @@ public class GameManager : MonoBehaviour
             Debug.LogError("ShowClearGlass");
          }
 
+    }
+    IEnumerator Countdown()
+    {
+        Debug.LogError("within count");
+        int count = countdownTime;
+
+        while (count > 0)
+        {
+            countdownText.text = count.ToString();
+            yield return new WaitForSeconds(1);
+            count--;
+        }
+
+        countdownText.text = "Go!";
+        yield return new WaitForSeconds(1);
+        countdownText.gameObject.SetActive(false);
     }
 
 }

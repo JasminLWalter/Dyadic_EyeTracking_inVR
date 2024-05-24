@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.UIElements;
 using ViveSR.anipal.Eye;
@@ -23,17 +24,27 @@ public class SignalerManager : MonoBehaviour
     private Vector3 rayOrigin;
     private Vector3 rayDirection;
 
-
+    public MenuManager menuManager;
     public GameManager gameManager;
-    public bool frozen = false;
 
+    public List<TMP_Text> TextsPhase3;
+
+    public bool frozen = false;
+    public bool phase3CoroutineRunning = false;
 
     // Start is called before the first frame update
     void Start()
     {
          gameManager = FindObjectOfType<GameManager>();
+         menuManager = FindObjectOfType<MenuManager>();
+
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
+
+        foreach (TMP_Text TextPhase3 in TextsPhase3)
+        {
+            TextPhase3.gameObject.SetActive(false);
+        }
 
     }
 
@@ -120,6 +131,12 @@ public class SignalerManager : MonoBehaviour
         if (_inputBindings.Player.Freeze.triggered)
         {
             Freeze();
+            Debug.LogError("Freeze Signaler Manager");
+            if(phase3CoroutineRunning == false)
+            {
+                StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => phase3CoroutineRunning = false));
+                phase3CoroutineRunning = true;
+            }
         }
 
     }

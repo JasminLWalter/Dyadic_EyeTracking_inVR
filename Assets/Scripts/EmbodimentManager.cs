@@ -19,8 +19,7 @@ public class EmbodimentManager : MonoBehaviour
 
     private Queue<Quaternion> storedRotations;
 
-    public TMP_Text EmbodimentInstruction0;
-    public List<TMP_Text> EmbodimentInstructions;
+    
     
     private InputBindings _inputBindings;
 
@@ -29,6 +28,8 @@ public class EmbodimentManager : MonoBehaviour
 
     public GameObject playerEyes;
     public GameObject recordedEyes;
+
+
 
     //Signaler
     public float embodimentTrainingStartedSignaler;
@@ -49,7 +50,7 @@ public class EmbodimentManager : MonoBehaviour
     public Material Screen_off;
 
     public TMP_Text RecordingText;
-
+    public List<TMP_Text> EmbodimentInstructions;
     
     private bool FinishedRecording = false;
     private bool FinishedShow = false;
@@ -79,7 +80,6 @@ public class EmbodimentManager : MonoBehaviour
     public GameObject readySignReceiver;
 
     public TMP_Text RecordingTextReceiver;
-    public TMP_Text EmbodimentInstruction0Receiver;
     public List<TMP_Text> EmbodimentInstructionsReceiver;
 
     private bool FinishedRecordingReceiver = false;
@@ -106,7 +106,6 @@ public class EmbodimentManager : MonoBehaviour
         {
             EmbodimentInstruction.gameObject.SetActive(false);
         }
-        EmbodimentInstruction0.gameObject.SetActive(false);
 
         StartRecording.onClick.AddListener(OnStartRecordingButtonClick);
         StopRecording.onClick.AddListener(OnStopRecordingButtonClick);
@@ -121,7 +120,6 @@ public class EmbodimentManager : MonoBehaviour
         {
             EmbodimentInstructionReceiver.gameObject.SetActive(false);
         }
-        EmbodimentInstruction0Receiver.gameObject.SetActive(false);
 
         StartRecordingReceiver.onClick.AddListener(OnStartRecordingButtonClick);
         StopRecordingReceiver.onClick.AddListener(OnStopRecordingButtonClick);
@@ -179,12 +177,7 @@ public class EmbodimentManager : MonoBehaviour
             if (gameManager.role == "signaler")
             {
 
-                if (!showStartEM && !CoroutineRunning)   
-                {
-                    StartCoroutine(menuManager.ShowStart(EmbodimentInstruction0));
-                    showStartEM = true;
-                }
-                else if(showStartEM && !didRun && !CoroutineRunning)
+                if (!didRun && !CoroutineRunning)
                 {  
                     StartCoroutine(ShowEmbodimentInstructions(EmbodimentInstructions, () => CoroutineRunning = false));
                     CoroutineRunning = true;
@@ -214,12 +207,7 @@ public class EmbodimentManager : MonoBehaviour
             }
             else if (gameManager.role == "receiver")
             {
-                if (!showStartEMReceiver && !CoroutineRunningReceiver)   
-                {
-                    StartCoroutine(menuManager.ShowStart(EmbodimentInstruction0Receiver));
-                    showStartEMReceiver = true;
-                }
-                else if(showStartEMReceiver && !didRunReceiver && !CoroutineRunningReceiver)
+                if (!didRunReceiver && !CoroutineRunningReceiver)
                 {   
                     StartCoroutine(ShowEmbodimentInstructions(EmbodimentInstructionsReceiver, () => CoroutineRunningReceiver = false));
                     CoroutineRunningReceiver = true;
@@ -275,8 +263,7 @@ public class EmbodimentManager : MonoBehaviour
             ShowRecordingReceiver.gameObject.SetActive(false);
             FinishReceiver.gameObject.SetActive(false);
             RecordingTextReceiver.gameObject.SetActive(false);
-        }
-            
+        }   
     }
 
 
@@ -352,9 +339,13 @@ public class EmbodimentManager : MonoBehaviour
             StartRecording.gameObject.SetActive(false);
             StopRecording.gameObject.SetActive(false);
             Finish.gameObject.SetActive(false);
-            gameManager.EnterNextPhase();
             embodimentTrainingEndSignaler = Time.time;
             signalerReady = true;
+            Debug.LogError(""+ receiverReady);
+            if(receiverReady)
+            {
+                gameManager.EnterNextPhase();
+            }
         }
         if (gameManager.role == "receiver")
         {
@@ -362,9 +353,13 @@ public class EmbodimentManager : MonoBehaviour
             StartRecordingReceiver.gameObject.SetActive(false);
             StopRecordingReceiver.gameObject.SetActive(false);
             FinishReceiver.gameObject.SetActive(false);
-            gameManager.EnterNextPhase();
             embodimentTrainingEndReceiver = Time.time;
             receiverReady = true;
+            Debug.LogError(""+ signalerReady);
+            if(signalerReady)
+            {
+                gameManager.EnterNextPhase();
+            }
         }
 
     }
@@ -415,7 +410,6 @@ public class EmbodimentManager : MonoBehaviour
         StopRecordingReceiver.interactable = false;
 
         int currentTextIndex = 0;
-        yield return new WaitForSeconds(3f);
         while (currentTextIndex < textComponents.Count)
         {
             textComponents[currentTextIndex].gameObject.SetActive(true);

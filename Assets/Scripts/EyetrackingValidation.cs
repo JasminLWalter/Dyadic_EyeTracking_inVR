@@ -13,6 +13,8 @@ public class EyetrackingValidation : MonoBehaviour
     #region Fields
     public bool startCal = false;
     public bool startVal = false;
+    public bool validationFinished = false;
+    
 
     [Space] [Header("Eye-tracker validation field")]
     [SerializeField] private GameObject mainCamera;
@@ -171,6 +173,7 @@ public class EyetrackingValidation : MonoBehaviour
                 
                 yield return new WaitForEndOfFrame();
                 timeDiff = Time.time - startTime;
+                validationFinished = true;
             }
         }
 

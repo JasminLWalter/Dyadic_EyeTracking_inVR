@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 using ViveSR.anipal.Eye;
@@ -28,16 +29,26 @@ public class ReceiverManager : MonoBehaviour
     private Vector3 rayDirection;
 
     public GameManager gameManager;
+    public MenuManager menuManager;
     public bool boxSelected = false;
+    public bool phase3CoroutineRunningReceiver = false;
+
+    public List<TMP_Text> TextsPhase3Receiver;
 
 
     // Start is called before the first frame update
     void Start()
     {
         preferredHandTransform = rightControllerTransform;
-         gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindObjectOfType<GameManager>();
+        menuManager = FindObjectOfType<MenuManager>();
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
+
+        foreach (TMP_Text TextPhase3Receiver in TextsPhase3Receiver)
+        {
+            TextPhase3Receiver.gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -88,6 +99,12 @@ public class ReceiverManager : MonoBehaviour
             {
                _lastHit.gameObject.SendMessage("Selected");
                boxSelected = true;
+               Debug.LogError("Receiver freezes"); 
+                if(phase3CoroutineRunningReceiver == false)
+                {
+                    StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => phase3CoroutineRunningReceiver = false));
+                    phase3CoroutineRunningReceiver = true;
+                }
                
             }
         }
