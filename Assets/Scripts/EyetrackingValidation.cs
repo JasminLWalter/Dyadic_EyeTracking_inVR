@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -173,7 +173,7 @@ public class EyetrackingValidation : MonoBehaviour
                 
                 yield return new WaitForEndOfFrame();
                 timeDiff = Time.time - startTime;
-                validationFinished = true;
+                
             }
         }
 

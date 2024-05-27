@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     private int countdownTime = 3;
     public TextMeshProUGUI  countdownText;
+    public TextMeshProUGUI  countdownTextReceiver;
 
     public GameObject milkyGlass;
     public GameObject clearGlass;
@@ -65,7 +66,6 @@ public class GameManager : MonoBehaviour
     public ClockManager clockManager;
     [SerializeField] private GameObject clock;
     public bool TimeExceeded = false;
-    public bool countdownRunning = false;
 
     public float _timeLimit = 3;
     private float startTime;
@@ -144,12 +144,6 @@ public class GameManager : MonoBehaviour
             //assign role here?
             //player.role = "receiver";
             Debug.LogError("Phase 3");
-            if(receiverManager.phase3CoroutineRunningReceiver == true && !countdownRunning)//&& signalerManager.phase3CoroutineRunning)
-            {
-                Debug.LogError("counting");
-                StartCoroutine(Countdown());
-                countdownRunning = true;
-            }
 
             if (_currentRound < roundsPerCondition)
             {   
@@ -173,7 +167,7 @@ public class GameManager : MonoBehaviour
 
         if (_ValidationSuccessStatus == false) 
         {
-            SRanipal_Eye_v2.LaunchEyeCalibration();
+            //SRanipal_Eye_v2.LaunchEyeCalibration();
             _ValidationSuccessStatus = true;
         }
         #endregion
@@ -394,21 +388,38 @@ public class GameManager : MonoBehaviour
          }
 
     }
-    IEnumerator Countdown()
+    public IEnumerator Countdown()
     {
-        Debug.LogError("within count");
         int count = countdownTime;
+        yield return new WaitForSeconds(3);
 
-        while (count > 0)
+        if (role == "signaler")
         {
-            countdownText.text = count.ToString();
+            while (count > 0)
+            {
+                countdownText.text = count.ToString();
+                yield return new WaitForSeconds(1);
+                count--;
+            }
+
+            countdownText.text = "Go!";
             yield return new WaitForSeconds(1);
-            count--;
+            countdownText.gameObject.SetActive(false);
+            
         }
+        if (role == "receiver")
+        {
+            while (count > 0)
+            {
+                countdownTextReceiver.text = count.ToString();
+                yield return new WaitForSeconds(1);
+                count--;
+            }
 
-        countdownText.text = "Go!";
-        yield return new WaitForSeconds(1);
-        countdownText.gameObject.SetActive(false);
+            countdownTextReceiver.text = "Go!";
+            yield return new WaitForSeconds(1);
+            countdownTextReceiver.gameObject.SetActive(false);
+            
+        }
     }
-
 }

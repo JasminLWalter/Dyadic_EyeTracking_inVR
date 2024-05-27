@@ -34,10 +34,14 @@ public class MenuManager : MonoBehaviour
     private bool phase2CoroutineRunningReceiver = false;
     private bool phase3CoroutineRunningReceiver = false;
     private bool didRunReceiver = false;
+    private bool countdownRunning = false;
+
 
 
     public Player player;
     public GameManager gameManager;
+    private ReceiverManager receiverManager;
+    private SignalerManager signalerManager;
     public EyetrackingValidation eyetrackingValidation;
     //public SRanipal_Eye_v2 sRanipal_Eye_v2;
     private InputBindings _inputBindings;
@@ -59,6 +63,8 @@ public class MenuManager : MonoBehaviour
         
         gameManager = FindObjectOfType<GameManager>();
         eyetrackingValidation = FindObjectOfType<EyetrackingValidation>();
+        receiverManager = FindObjectOfType<ReceiverManager>();
+        signalerManager = FindObjectOfType<SignalerManager>();
         //sRanipal_Eye_v2 = FindObjectOfType<SRanipal_Eye_v2>();
         
 
@@ -231,21 +237,36 @@ public class MenuManager : MonoBehaviour
                 {
                     textComponents[currentTextIndex].gameObject.SetActive(true);
                 }
-                else 
+                else if (currentTextIndex >= textComponents.Count)
                 {
-                    // When the last text component is reached
+                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.phase3CoroutineRunning == true && !countdownRunning)//&& receiverManager.phase3CoroutineRunningReceiver == true
+                    {
+                        StartCoroutine(gameManager.Countdown());
+                        countdownRunning = true;
+                    }
+                    else if (gameManager.GetCurrentPhase() == 0 || gameManager.GetCurrentPhase() == 2)
+                    {
+                        gameManager.EnterNextPhase();
+
+
+                    }/*                    // When the last text component is reached
                     textComponents[textComponents.Count - 1].gameObject.SetActive(false);
-                    
-                    if (gameManager.GetCurrentPhase() == 0 || gameManager.GetCurrentPhase() == 2)
+                    if (gameManager.GetCurrentPhase() == 3) 
+                    {
+                        Debug.LogError("start countdown ");
+                        gameManager.Countdown();
+                    }
+                    else if (gameManager.GetCurrentPhase() == 0 || gameManager.GetCurrentPhase() == 2)
                     {
                         //sRanipal_Eye_v2.LaunchEyeCalibration();
-                        eyetrackingValidation.ValidateEyeTracking();
-                        if(gameManager._ValidationSuccessStatus == true) //could cause problems because _ValidationSuccessStatus is initiated as true
-                        {
+                        //eyetrackingValidation.ValidateEyeTracking();
+                        //if(gameManager._ValidationSuccessStatus == true) //could cause problems because _ValidationSuccessStatus is initiated as true
+                        //{
                             gameManager.EnterNextPhase();
-                        }
+                        //}
                         
-                    }
+                    }*/
+
                 }
 
             }
