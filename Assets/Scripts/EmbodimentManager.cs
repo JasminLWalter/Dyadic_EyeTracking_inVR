@@ -94,6 +94,7 @@ public class EmbodimentManager : MonoBehaviour
 
     void Start()
     {
+        
         preferredHandTransform = rightControllerTransform; //default is right for now
         StartRecording.gameObject.SetActive(false);
         StopRecording.gameObject.SetActive(false);
@@ -304,6 +305,8 @@ public class EmbodimentManager : MonoBehaviour
     {
         if (gameManager.role == "signaler")
         {
+            receiverReady = true; //to be changed  as soon as networking works
+            signalerReady = true; //to be changed  as soon as networking works
             RecordingText.gameObject.SetActive(false);
             FinishedRecording = true;
             FinishedShow = false;
@@ -313,6 +316,8 @@ public class EmbodimentManager : MonoBehaviour
         }
         if (gameManager.role == "receiver")
         {
+            receiverReady = true; //to be changed  as soon as networking works
+            signalerReady = true; //to be changed  as soon as networking works
             Debug.LogError("Receiver OnStopRecordingButtonClick");
             RecordingTextReceiver.gameObject.SetActive(false);
             FinishedRecordingReceiver = true;
@@ -342,6 +347,7 @@ public class EmbodimentManager : MonoBehaviour
             embodimentTrainingEndSignaler = Time.time;
             signalerReady = true;
             Debug.LogError(""+ receiverReady);
+            Debug.LogError(""+ signalerReady);
             if(receiverReady)
             {
                 gameManager.EnterNextPhase();

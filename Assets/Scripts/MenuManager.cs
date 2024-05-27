@@ -239,7 +239,7 @@ public class MenuManager : MonoBehaviour
                 }
                 else if (currentTextIndex >= textComponents.Count)
                 {
-                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.phase3CoroutineRunning == true && !countdownRunning)//&& receiverManager.phase3CoroutineRunningReceiver == true
+                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.phase3CoroutineRunning == true && !countdownRunning && receiverManager.phase3CoroutineRunningReceiver == false)
                     {
                         StartCoroutine(gameManager.Countdown());
                         countdownRunning = true;
@@ -249,15 +249,7 @@ public class MenuManager : MonoBehaviour
                         gameManager.EnterNextPhase();
 
 
-                    }/*                    // When the last text component is reached
-                    textComponents[textComponents.Count - 1].gameObject.SetActive(false);
-                    if (gameManager.GetCurrentPhase() == 3) 
-                    {
-                        Debug.LogError("start countdown ");
-                        gameManager.Countdown();
-                    }
-                    else if (gameManager.GetCurrentPhase() == 0 || gameManager.GetCurrentPhase() == 2)
-                    {
+                    }/*  
                         //sRanipal_Eye_v2.LaunchEyeCalibration();
                         //eyetrackingValidation.ValidateEyeTracking();
                         //if(gameManager._ValidationSuccessStatus == true) //could cause problems because _ValidationSuccessStatus is initiated as true

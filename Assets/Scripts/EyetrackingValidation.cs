@@ -106,6 +106,7 @@ public class EyetrackingValidation : MonoBehaviour
     private IEnumerator ValidateEyeTracker(float delay=2)
     {
         if (_isValidationRunning) yield break;
+
         _isValidationRunning = true;
 
         _validationId++;
