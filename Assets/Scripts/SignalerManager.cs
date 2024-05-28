@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.UIElements;
 using ViveSR.anipal.Eye;
@@ -30,8 +31,8 @@ public class SignalerManager : MonoBehaviour
     public List<TMP_Text> TextsPhase3;
 
     public bool frozen = false;
-    public bool phase3CoroutineRunning = false;
-
+    public bool phase3SecondPartCoroutineRunning = false;
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -128,14 +129,14 @@ public class SignalerManager : MonoBehaviour
             }
         }
 
-        if (_inputBindings.Player.Freeze.triggered)
+        if (_inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)
         {
             Freeze();
             Debug.LogError("Freeze Signaler Manager");
-            if(phase3CoroutineRunning == false)
+            if(phase3SecondPartCoroutineRunning == false)
             {
-                StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => phase3CoroutineRunning = false));
-                phase3CoroutineRunning = true;
+                StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => phase3SecondPartCoroutineRunning = false));
+                phase3SecondPartCoroutineRunning = true;
             }
         }
 

@@ -31,7 +31,7 @@ public class ReceiverManager : MonoBehaviour
     public GameManager gameManager;
     public MenuManager menuManager;
     public bool boxSelected = false;
-    public bool phase3CoroutineRunningReceiver = false;
+    public bool phase3SecondPartCoroutineRunningReceiver = false;
 
     public List<TMP_Text> TextsPhase3Receiver;
 
@@ -95,15 +95,15 @@ public class ReceiverManager : MonoBehaviour
                 _lastHit = hit.collider;
                 _lastHit.gameObject.SendMessage("StaredAt");
             }
-            else if (_inputBindings.Player.SelectBox.triggered)
+            else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3)
             {
                _lastHit.gameObject.SendMessage("Selected");
                boxSelected = true;
                Debug.LogError("Receiver freezes"); 
-                if(phase3CoroutineRunningReceiver == false)
+                if(phase3SecondPartCoroutineRunningReceiver == false)
                 {
-                    StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => phase3CoroutineRunningReceiver = false));
-                    phase3CoroutineRunningReceiver = true;
+                    StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => phase3SecondPartCoroutineRunningReceiver = false));
+                    phase3SecondPartCoroutineRunningReceiver = true;
                 }
                
             }

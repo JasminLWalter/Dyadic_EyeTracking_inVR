@@ -34,7 +34,7 @@ public class MenuManager : MonoBehaviour
     private bool phase2CoroutineRunningReceiver = false;
     private bool phase3CoroutineRunningReceiver = false;
     private bool didRunReceiver = false;
-    private bool countdownRunning = false;
+    public bool countdownRunning = false;
 
 
 
@@ -238,13 +238,13 @@ public class MenuManager : MonoBehaviour
                     textComponents[currentTextIndex].gameObject.SetActive(true);
                 }
                 else if (currentTextIndex >= textComponents.Count)
-                {
-                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.phase3CoroutineRunning == true && !countdownRunning && receiverManager.phase3CoroutineRunningReceiver == false)
+                { 
+                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.phase3SecondPartCoroutineRunning == true && !countdownRunning && receiverManager.phase3SecondPartCoroutineRunningReceiver == false)
                     {
                         StartCoroutine(gameManager.Countdown());
                         countdownRunning = true;
-                    }
-                    else if (gameManager.GetCurrentPhase() == 0 || gameManager.GetCurrentPhase() == 2)
+                    } 
+                    if (gameManager.GetCurrentPhase() == 0 || gameManager.GetCurrentPhase() == 2)
                     {
                         gameManager.EnterNextPhase();
 

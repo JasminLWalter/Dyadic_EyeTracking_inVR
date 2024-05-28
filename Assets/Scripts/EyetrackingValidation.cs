@@ -113,14 +113,19 @@ public class EyetrackingValidation : MonoBehaviour
 
         valCalCounter++;
 
+        fixationPoint.transform.SetParent(null, true);
+
         fixationPoint.transform.parent = mainCamera.gameObject.transform;
 
-        _hmdTransform = Camera.main.transform;
+        
 
-        fixationPoint.transform.position = _hmdTransform.position + _hmdTransform.rotation * new Vector3(0,0,10);
+        _hmdTransform = Camera.main.transform;
+        Debug.Log("Initial camera position: " + _hmdTransform.position);
+        fixationPoint.transform.position = _hmdTransform.position + _hmdTransform.rotation * new Vector3(0,0,30);
 
         fixationPoint.transform.LookAt(_hmdTransform);
         
+        Debug.Log("Initial fixation point position: " + fixationPoint.transform.position);
 
         yield return new WaitForSeconds(.15f);
         
@@ -141,6 +146,7 @@ public class EyetrackingValidation : MonoBehaviour
             {
                 fixationPoint.transform.position = _hmdTransform.position + _hmdTransform.rotation * Vector3.Lerp(keyPositions[i-1], keyPositions[i], timeDiff / 1f);   
                 fixationPoint.transform.LookAt(_hmdTransform);
+                Debug.Log("Fixation point position during movement: " + fixationPoint.transform.position);
                 yield return new WaitForEndOfFrame();
                 timeDiff = Time.time - startTime;
             }
@@ -153,6 +159,8 @@ public class EyetrackingValidation : MonoBehaviour
             {
                 fixationPoint.transform.position = _hmdTransform.position + _hmdTransform.rotation * keyPositions[i] ;
                 fixationPoint.transform.LookAt(_hmdTransform);
+                Debug.Log("Fixation point position during hold: " + fixationPoint.transform.position);
+
                 EyeValidationData validationData = GetEyeValidationData();
                 
                 if (validationData != null)

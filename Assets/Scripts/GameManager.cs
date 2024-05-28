@@ -421,5 +421,6 @@ public class GameManager : MonoBehaviour
             countdownTextReceiver.gameObject.SetActive(false);
             
         }
+        
     }
 }
