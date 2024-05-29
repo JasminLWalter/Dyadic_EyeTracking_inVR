@@ -10,9 +10,7 @@ public class SavingManager : MonoBehaviour
     private EmbodimentManager embodimentManager;
    // private EyeRaycast eyeRaycast;
 
-   private LSLStreams lslStreams;
-   private StreamOutlet lslOMetadata;
-
+    private LSLStreams lslStreams;
 
     private int phase;
     private Vector3 validationError;
@@ -40,8 +38,8 @@ public class SavingManager : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        // lslStreams = GameObject.Find("LSLStreams").GetComponent<LSLStreams>();
         phase = gameManager.phase;
-        lslStreams = LSLStreams.Instance;
         // validationError = eyetrackingValidation.GetValidationError();
         // valCalCounter = eyetrackingValidation.valCalCounter;
         // embodimentTrainingStarted = embodimentManager.embodimentTrainingStarted;
@@ -56,6 +54,6 @@ public class SavingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        lslStreams.lslOMetadata.push_sample(new int [] { phase });
+        // lslStreams.lslOMetadata.push_sample(new int [] { phase });
     }
 }
