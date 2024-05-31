@@ -32,6 +32,8 @@ public class SignalerManager : MonoBehaviour
 
     public bool frozen = false;
     public bool phase3SecondPartCoroutineRunning = false;
+
+    public GameObject invisibleObject;
    
     // Start is called before the first frame update
     void Start()
@@ -93,13 +95,14 @@ public class SignalerManager : MonoBehaviour
 
         var eyeDirectionCombinedWorld = hmd.transform.rotation * coordinateAdaptedGazeDirectionCombined;
 
-
-
+        invisibleObject.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 500);
 
 
         RaycastHit hitData;
         if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _layerMask))
         {
+
+            
             if (_lastHit == null)
             {
                 _lastHit = hitData.collider;

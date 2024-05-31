@@ -212,6 +212,7 @@ namespace ViveSR
                     //     // avoid too narrow gaze by looking at local gaze sphere
                     //     EyesModels[i].LookAt(localGazeSphere);
                     // }
+
                 }
 
                 public void UpdateEyeShapes(Dictionary<EyeShape_v2, float> eyeWeightings)
@@ -230,28 +231,30 @@ namespace ViveSR
 
                         if (eyeShape == EyeShape_v2.Eye_Left_Blink || eyeShape == EyeShape_v2.Eye_Right_Blink)
                         {
-                            eyeShapeTable.skinnedMeshRenderer.SetBlendShapeWeight(i, weighting[eyeShape] * 100f);
+                            eyeShapeTable.skinnedMeshRenderer.SetBlendShapeWeight(i, weighting[eyeShape] * 10f);
+                            Debug.LogError("Blink detected");
                         }
                         else
                         {
                             AnimationCurve curve = EyebrowAnimationCurves[(int)eyeShape];
-                            eyeShapeTable.skinnedMeshRenderer.SetBlendShapeWeight(i, curve.Evaluate(weighting[eyeShape]) * 100f);
+                            eyeShapeTable.skinnedMeshRenderer.SetBlendShapeWeight(i, curve.Evaluate(weighting[eyeShape]) * 10f);
+                            Debug.LogError("No Blink detected");
                         }
                     }
-
-                    eyeShapePart1_local.x = weighting[eyeShapeTable.eyeShapes[9]];
-                    eyeShapePart1_local.y = weighting[eyeShapeTable.eyeShapes[10]];
-                    eyeShapePart1_local.z = weighting[eyeShapeTable.eyeShapes[11]];
-                    eyeShapePart1_local.w = weighting[eyeShapeTable.eyeShapes[12]];
-                    eyeShapePart2_local.x = weighting[eyeShapeTable.eyeShapes[13]];
-                    eyeShapePart2_local.y = weighting[eyeShapeTable.eyeShapes[14]];
-                    eyeShapePart2_local.z = weighting[eyeShapeTable.eyeShapes[15]];
-                    eyeShapePart2_local.w = weighting[eyeShapeTable.eyeShapes[16]];
-                    eyeShapePart3_local.x = weighting[eyeShapeTable.eyeShapes[17]];
-                    eyeShapePart3_local.y = weighting[eyeShapeTable.eyeShapes[18]];
-                    eyeShapePart3_local.z = weighting[eyeShapeTable.eyeShapes[19]];
-                    eyeShapePart3_local.w = weighting[eyeShapeTable.eyeShapes[20]];
-                    
+                    /*
+                    eyeShapePart1_local.x = weighting[eyeShapeTable.eyeShapes[7]];
+                    eyeShapePart1_local.y = weighting[eyeShapeTable.eyeShapes[8]];
+                    eyeShapePart1_local.z = weighting[eyeShapeTable.eyeShapes[23]];
+                    eyeShapePart1_local.w = weighting[eyeShapeTable.eyeShapes[24]];
+                    eyeShapePart2_local.x = weighting[eyeShapeTable.eyeShapes[25]];
+                    eyeShapePart2_local.y = weighting[eyeShapeTable.eyeShapes[26]];
+                    eyeShapePart2_local.z = weighting[eyeShapeTable.eyeShapes[27]];
+                    eyeShapePart2_local.w = weighting[eyeShapeTable.eyeShapes[28]];
+                    eyeShapePart3_local.x = weighting[eyeShapeTable.eyeShapes[29]];
+                    eyeShapePart3_local.y = weighting[eyeShapeTable.eyeShapes[30]];
+                    eyeShapePart3_local.z = weighting[eyeShapeTable.eyeShapes[50]];
+                    eyeShapePart3_local.w = weighting[eyeShapeTable.eyeShapes[51]];
+                    */
 
 
                 }
