@@ -38,7 +38,7 @@ public class SavingManager : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        // lslStreams = GameObject.Find("LSLStreams").GetComponent<LSLStreams>();
+        lslStreams = GameObject.Find("LSLStreams").GetComponent<LSLStreams>();
         phase = gameManager.phase;
         // validationError = eyetrackingValidation.GetValidationError();
         // valCalCounter = eyetrackingValidation.valCalCounter;
@@ -54,6 +54,6 @@ public class SavingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // lslStreams.lslOMetadata.push_sample(new int [] { phase });
+        lslStreams.lslOExperimentPhase.push_sample(new int [] { phase });
     }
 }
