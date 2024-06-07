@@ -8,9 +8,12 @@ public class SavingManager : MonoBehaviour
     private GameManager gameManager;
     private EyetrackingValidation eyetrackingValidation;
     private EmbodimentManager embodimentManager;
+    private SignalerManager signalerManager;
+    private ReceiverManager receiverManager;
    // private EyeRaycast eyeRaycast;
 
     private LSLStreams lslStreams;
+    public float sampleRate = 90.0f;
 
     private int phase;
     private Vector3 validationError;
@@ -39,21 +42,37 @@ public class SavingManager : MonoBehaviour
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         lslStreams = GameObject.Find("LSLStreams").GetComponent<LSLStreams>();
-        phase = gameManager.phase;
-        // validationError = eyetrackingValidation.GetValidationError();
-        // valCalCounter = eyetrackingValidation.valCalCounter;
-        // embodimentTrainingStarted = embodimentManager.embodimentTrainingStarted;
-        // embodimentTrainingEnd = embodimentManager.embodimentTrainingEnd;
-        // embodimentTrainingTime = embodimentTrainingEnd - embodimentTrainingStarted;
-        // trialNumber = gameManager.trialNumber;
-        // //hitData = Raycast.hitData;
-        // trialFailedCount = gameManager.trialFailedCount;
+        eyetrackingValidation = GameObject.Find("EyetrackingValidation").GetComponent<EyetrackingValidation>();
+        embodimentManager = GameObject.Find("EmbodimentManager").GetComponent<EmbodimentManager>();
+        signalerManager = GameObject.Find("SignalerManager").GetComponent<SignalerManager>();
+        receiverManager = GameObject.Find("ReceiverManager").GetComponent<ReceiverManager>();
 
+        // //hitData = Raycast.hitData;
+
+        StartCoroutine(SendData());
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator SendData()
     {
-        lslStreams.lslOExperimentPhase.push_sample(new int [] { phase });
+        phase = gameManager.phase;
+        trialNumber = gameManager.trialNumber;
+        trialFailedCount = gameManager.trialFailedCount;
+        validationError = eyetrackingValidation.GetValidationError();
+        valCalCounter = eyetrackingValidation.valCalCounter;
+        embodimentTrainingStarted = embodimentManager.embodimentTrainingStarted;
+        embodimentTrainingEnd = embodimentManager.embodimentTrainingEnd;
+        embodimentTrainingTime = embodimentTrainingEnd - embodimentTrainingStarted;
+
+        float interval = 1.0f / sampleRate;
+        while (true)
+        {
+            lslStreams.lslOExperimentPhase.push_sample(new int [] { phase });
+            lslStreams.lslOTrialNumber.push_sample(new int [] { trialNumber });
+            lslStreams.lslOFailedTrialCounter.push_sample(new int [] { trialFailedCount });
+
+            yield return new WaitForSeconds(interval);
+        
+        }
     }
 }
+

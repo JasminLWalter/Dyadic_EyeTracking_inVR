@@ -326,40 +326,39 @@ public class LSLStreamsSignaler : MonoBehaviour
         lslIBreak.desc().append_child("Break start time");
         lslIBreak.desc().append_child("Break end time");
         lslOBreak = new StreamOutlet(lslIBreak);
-
     }
 
-    void Update()
-    {
-        List<StreamInfo> receiverStreamInfos = new List<StreamInfo>
-        {
-            new StreamInfo("EyePosDirRotReceiver", "Markers", 9, NominalRate, channel_format_t.cf_float32),
-            new StreamInfo("EyeOpennessLRReceiver", "Markers", 2, NominalRate, channel_format_t.cf_float32),
-            new StreamInfo("PupilDiameterLRReceiver", "Markers", 2, NominalRate, channel_format_t.cf_float32),
-            new StreamInfo("HMDPosDirRotReceiver", "Markers", 15, NominalRate, channel_format_t.cf_float32),
-            new StreamInfo("HandPosDirRotReceiver", "Markers", 30, NominalRate, channel_format_t.cf_float32),
-            new StreamInfo("PreferredHandReceiver", "Markers", 1, NominalRate, channel_format_t.cf_string),
-            new StreamInfo("BreakReceiver", "Markers", 2, NominalRate, channel_format_t.cf_string),
-            new StreamInfo("ReceiverFinished", "Markers", 1, NominalRate, channel_format_t.cf_string),
-            new StreamInfo("BoxSelectedByReceiver", "Markers", 4, NominalRate, channel_format_t.cf_float32),
-            new StreamInfo("TimestampsReceiver", "Markers", 2, NominalRate, channel_format_t.cf_double64),
-            new StreamInfo("ReceiverReady", "Markers", 1, NominalRate, channel_format_t.cf_string)
-        };
+    // void Update()
+    // {
+    //     List<StreamInfo> receiverStreamInfos = new List<StreamInfo>
+    //     {
+    //         new StreamInfo("EyePosDirRotReceiver", "Markers", 9, NominalRate, channel_format_t.cf_float32),
+    //         new StreamInfo("EyeOpennessLRReceiver", "Markers", 2, NominalRate, channel_format_t.cf_float32),
+    //         new StreamInfo("PupilDiameterLRReceiver", "Markers", 2, NominalRate, channel_format_t.cf_float32),
+    //         new StreamInfo("HMDPosDirRotReceiver", "Markers", 15, NominalRate, channel_format_t.cf_float32),
+    //         new StreamInfo("HandPosDirRotReceiver", "Markers", 30, NominalRate, channel_format_t.cf_float32),
+    //         new StreamInfo("PreferredHandReceiver", "Markers", 1, NominalRate, channel_format_t.cf_string),
+    //         new StreamInfo("BreakReceiver", "Markers", 2, NominalRate, channel_format_t.cf_string),
+    //         new StreamInfo("ReceiverFinished", "Markers", 1, NominalRate, channel_format_t.cf_string),
+    //         new StreamInfo("BoxSelectedByReceiver", "Markers", 4, NominalRate, channel_format_t.cf_float32),
+    //         new StreamInfo("TimestampsReceiver", "Markers", 2, NominalRate, channel_format_t.cf_double64),
+    //         new StreamInfo("ReceiverReady", "Markers", 1, NominalRate, channel_format_t.cf_string)
+    //     };
 
-        // List to hold the stream inlets
-        List<StreamInlet> receiverStreamInlets = new List<StreamInlet>();
+    //     // List to hold the stream inlets
+    //     List<StreamInlet> receiverStreamInlets = new List<StreamInlet>();
 
-        // Iterate through the stream information and create/open inlets
-        foreach (var streamInfo in receiverStreamInfos)
-        {
-            // Create the inlet from the stream info
-            var inlet = new StreamInlet(streamInfo);
-            // Open the stream inlet
-            inlet.open_stream();
-            // Add the inlet to the list
-            receiverStreamInlets.Add(inlet);
-        }
+    //     // Iterate through the stream information and create/open inlets
+    //     foreach (var streamInfo in receiverStreamInfos)
+    //     {
+    //         // Create the inlet from the stream info
+    //         var inlet = new StreamInlet(streamInfo);
+    //         // Open the stream inlet
+    //         inlet.open_stream();
+    //         // Add the inlet to the list
+    //         receiverStreamInlets.Add(inlet);
+    //     }
 
-    }
+    // }
 
 }

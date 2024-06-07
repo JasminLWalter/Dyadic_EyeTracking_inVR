@@ -340,33 +340,33 @@ public class LSLStreamsReceiver : MonoBehaviour
         lslOBreak = new StreamOutlet(lslIBreak);
 
     }
-    void Update()
-    {
-        List<StreamInfo> signalerStreamInfos = new List<StreamInfo>
-        {
-            new StreamInfo("EyePosDirRotSignaler", "Markers", 9, NominalRate, channel_format_t.cf_float32),
-            new StreamInfo("EyeOpennessLRSignaler", "Markers", 2, NominalRate, channel_format_t.cf_float32),
-            new StreamInfo("PupilDiameterLRSignaler", "Markers", 2, NominalRate, channel_format_t.cf_float32),
-            new StreamInfo("HMDPosDirRotSignaler", "Markers", 15, NominalRate, channel_format_t.cf_float32),
-            new StreamInfo("HandPosDirRotSignaler", "Markers", 30, NominalRate, channel_format_t.cf_float32),
-            new StreamInfo("PreferredHandSignaler", "Markers", 1, NominalRate, channel_format_t.cf_string),
-            new StreamInfo("FrozenGazeSignaler", "Markers", 1, NominalRate, channel_format_t.cf_string),
-            new StreamInfo("BreakSignaler", "Markers", 2, NominalRate, channel_format_t.cf_string),
-            new StreamInfo("BoxSelectedBySignaler", "Markers", 4, NominalRate, channel_format_t.cf_float32),
-            new StreamInfo("TimestampsSignaler", "Markers", 2, NominalRate, channel_format_t.cf_double64),
-            new StreamInfo("SignalerReady", "Markers", 1, NominalRate, channel_format_t.cf_string)
-        };
+    // void Update()
+    // {
+    //     List<StreamInfo> signalerStreamInfos = new List<StreamInfo>
+    //     {
+    //         new StreamInfo("EyePosDirRotSignaler", "Markers", 9, NominalRate, channel_format_t.cf_float32),
+    //         new StreamInfo("EyeOpennessLRSignaler", "Markers", 2, NominalRate, channel_format_t.cf_float32),
+    //         new StreamInfo("PupilDiameterLRSignaler", "Markers", 2, NominalRate, channel_format_t.cf_float32),
+    //         new StreamInfo("HMDPosDirRotSignaler", "Markers", 15, NominalRate, channel_format_t.cf_float32),
+    //         new StreamInfo("HandPosDirRotSignaler", "Markers", 30, NominalRate, channel_format_t.cf_float32),
+    //         new StreamInfo("PreferredHandSignaler", "Markers", 1, NominalRate, channel_format_t.cf_string),
+    //         new StreamInfo("FrozenGazeSignaler", "Markers", 1, NominalRate, channel_format_t.cf_string),
+    //         new StreamInfo("BreakSignaler", "Markers", 2, NominalRate, channel_format_t.cf_string),
+    //         new StreamInfo("BoxSelectedBySignaler", "Markers", 4, NominalRate, channel_format_t.cf_float32),
+    //         new StreamInfo("TimestampsSignaler", "Markers", 2, NominalRate, channel_format_t.cf_double64),
+    //         new StreamInfo("SignalerReady", "Markers", 1, NominalRate, channel_format_t.cf_string)
+    //     };
 
-        // List to hold the stream inlets
-        List<StreamInlet> signalerStreamInlets = new List<StreamInlet>();
+    //     // List to hold the stream inlets
+    //     List<StreamInlet> signalerStreamInlets = new List<StreamInlet>();
 
-        // Iterate through the stream information and create/open inlets
-        foreach (var streamInfo in signalerStreamInfos)
-        {
-            var inlet = new StreamInlet(streamInfo);
-            inlet.open_stream();
-            signalerStreamInlets.Add(inlet);
-        }
-    }
+    //     // Iterate through the stream information and create/open inlets
+    //     foreach (var streamInfo in signalerStreamInfos)
+    //     {
+    //         var inlet = new StreamInlet(streamInfo);
+    //         inlet.open_stream();
+    //         signalerStreamInlets.Add(inlet);
+    //     }
+    // }
 
 }
