@@ -59,6 +59,11 @@ public class LSLStreamsReceiver : MonoBehaviour
     public StreamInfo lslIEndTime;
     public StreamOutlet lslOEndTime;
 
+    float[] sample;
+    private int channelCount = 0;
+    StreamInfo[] streamInfos;
+    public StreamInlet streamInlet;
+
     void Start()
     {
         // // Metadata
@@ -340,21 +345,21 @@ public class LSLStreamsReceiver : MonoBehaviour
         lslOBreak = new StreamOutlet(lslIBreak);
 
     }
-    // void Update()
-    // {
+    void Update()
+    {
     //     List<StreamInfo> signalerStreamInfos = new List<StreamInfo>
     //     {
-    //         new StreamInfo("EyePosDirRotSignaler", "Markers", 9, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("EyeOpennessLRSignaler", "Markers", 2, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("PupilDiameterLRSignaler", "Markers", 2, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("HMDPosDirRotSignaler", "Markers", 15, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("HandPosDirRotSignaler", "Markers", 30, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("PreferredHandSignaler", "Markers", 1, NominalRate, channel_format_t.cf_string),
-    //         new StreamInfo("FrozenGazeSignaler", "Markers", 1, NominalRate, channel_format_t.cf_string),
-    //         new StreamInfo("BreakSignaler", "Markers", 2, NominalRate, channel_format_t.cf_string),
-    //         new StreamInfo("BoxSelectedBySignaler", "Markers", 4, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("TimestampsSignaler", "Markers", 2, NominalRate, channel_format_t.cf_double64),
-    //         new StreamInfo("SignalerReady", "Markers", 1, NominalRate, channel_format_t.cf_string)
+    //         LSL.LSL.resolve_stream("name","EyePosDirRotSignaler", 9, NominalRate)
+    // //         new StreamInfo("EyeOpennessLRSignaler", "Markers", 2, NominalRate, channel_format_t.cf_float32),
+    // //         new StreamInfo("PupilDiameterLRSignaler", "Markers", 2, NominalRate, channel_format_t.cf_float32),
+    // //         new StreamInfo("HMDPosDirRotSignaler", "Markers", 15, NominalRate, channel_format_t.cf_float32),
+    // //         new StreamInfo("HandPosDirRotSignaler", "Markers", 30, NominalRate, channel_format_t.cf_float32),
+    // //         new StreamInfo("PreferredHandSignaler", "Markers", 1, NominalRate, channel_format_t.cf_string),
+    // //         new StreamInfo("FrozenGazeSignaler", "Markers", 1, NominalRate, channel_format_t.cf_string),
+    // //         new StreamInfo("BreakSignaler", "Markers", 2, NominalRate, channel_format_t.cf_string),
+    // //         new StreamInfo("BoxSelectedBySignaler", "Markers", 4, NominalRate, channel_format_t.cf_float32),
+    // //         new StreamInfo("TimestampsSignaler", "Markers", 2, NominalRate, channel_format_t.cf_double64),
+    // //         new StreamInfo("SignalerReady", "Markers", 1, NominalRate, channel_format_t.cf_string)
     //     };
 
     //     // List to hold the stream inlets
@@ -368,5 +373,32 @@ public class LSLStreamsReceiver : MonoBehaviour
     //         signalerStreamInlets.Add(inlet);
     //     }
     // }
+
+    
+    if (streamInlet == null)
+        {
+            // Resolve the LSL stream with the specified type
+            streamInfos = LSL.LSL.resolve_stream("name", "ExperimentPhase", 1, 0.0);
+            
+            if (streamInfos.Length > 0)
+            {
+                // Create a stream inlet for the first resolved stream
+                streamInlet = new StreamInlet(streamInfos[0]);
+                channelCount = streamInlet.info().channel_count();
+                streamInlet.open_stream();
+            }
+        }
+
+        if (streamInlet != null)
+        {
+            sample = new float[channelCount];
+            double lastTimeStamp = streamInlet.pull_sample(sample, 0.0f);
+            float experimentPhase = sample[0];
+            // Debug.Log(lastTimeStamp);
+            Debug.LogWarning(experimentPhase);
+        }
+    }    
+
+
 
 }

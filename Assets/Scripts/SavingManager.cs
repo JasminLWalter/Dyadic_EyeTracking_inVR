@@ -43,36 +43,56 @@ public class SavingManager : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         lslStreams = GameObject.Find("LSLStreams").GetComponent<LSLStreams>();
         eyetrackingValidation = GameObject.Find("EyetrackingValidation").GetComponent<EyetrackingValidation>();
-        embodimentManager = GameObject.Find("EmbodimentManager").GetComponent<EmbodimentManager>();
-        signalerManager = GameObject.Find("SignalerManager").GetComponent<SignalerManager>();
-        receiverManager = GameObject.Find("ReceiverManager").GetComponent<ReceiverManager>();
+        // embodimentManager = GameObject.Find("EmbodimentManager").GetComponent<EmbodimentManager>();
+        // signalerManager = GameObject.Find("SignalerManager").GetComponent<SignalerManager>();
+        // receiverManager = GameObject.Find("ReceiverManager").GetComponent<ReceiverManager>();
 
         // //hitData = Raycast.hitData;
 
-        StartCoroutine(SendData());
+        // StartCoroutine(SendData());
     }
 
-    private IEnumerator SendData()
+    void Update()
     {
         phase = gameManager.phase;
         trialNumber = gameManager.trialNumber;
-        trialFailedCount = gameManager.trialFailedCount;
-        validationError = eyetrackingValidation.GetValidationError();
-        valCalCounter = eyetrackingValidation.valCalCounter;
-        embodimentTrainingStarted = embodimentManager.embodimentTrainingStarted;
-        embodimentTrainingEnd = embodimentManager.embodimentTrainingEnd;
-        embodimentTrainingTime = embodimentTrainingEnd - embodimentTrainingStarted;
+        // trialFailedCount = gameManager.trialFailedCount;
+        // validationError = eyetrackingValidation.GetValidationError();
+        // valCalCounter = eyetrackingValidation.valCalCounter;
+        // embodimentTrainingStarted = embodimentManager.embodimentTrainingStarted;
+        // embodimentTrainingEnd = embodimentManager.embodimentTrainingEnd;
+        // embodimentTrainingTime = embodimentTrainingEnd - embodimentTrainingStarted;
 
         float interval = 1.0f / sampleRate;
-        while (true)
-        {
-            lslStreams.lslOExperimentPhase.push_sample(new int [] { phase });
-            lslStreams.lslOTrialNumber.push_sample(new int [] { trialNumber });
-            lslStreams.lslOFailedTrialCounter.push_sample(new int [] { trialFailedCount });
-
-            yield return new WaitForSeconds(interval);
         
-        }
+        lslStreams.lslOExperimentPhase.push_sample(new int [] { phase });
+        lslStreams.lslOTrialNumber.push_sample(new int [] { trialNumber });
+        // lslStreams.lslOFailedTrialCounter.push_sample(new int [] { trialFailedCount });
+
+        
     }
+
+    // private IEnumerator SendData()
+    // {
+    //     while (true)
+    //     {
+    //         phase = gameManager.phase;
+    //         trialNumber = gameManager.trialNumber;
+    //         // trialFailedCount = gameManager.trialFailedCount;
+    //         // validationError = eyetrackingValidation.GetValidationError();
+    //         // valCalCounter = eyetrackingValidation.valCalCounter;
+    //         // embodimentTrainingStarted = embodimentManager.embodimentTrainingStarted;
+    //         // embodimentTrainingEnd = embodimentManager.embodimentTrainingEnd;
+    //         // embodimentTrainingTime = embodimentTrainingEnd - embodimentTrainingStarted;
+
+    //         float interval = 1.0f / sampleRate;
+            
+    //         lslStreams.lslOExperimentPhase.push_sample(new int [] { phase });
+    //         lslStreams.lslOTrialNumber.push_sample(new int [] { trialNumber });
+    //         // lslStreams.lslOFailedTrialCounter.push_sample(new int [] { trialFailedCount });
+
+    //         yield return new WaitForSeconds(1.0f / sampleRate);
+    //     }
+    // }
 }
 
