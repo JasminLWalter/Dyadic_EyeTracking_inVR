@@ -15,4 +15,4 @@ MonoBehaviour:
   Subdomain: study-project-dyadic-eye-tracking-in-vr
   AppId: 6656f9e4d616c9ec07a17ecb
   EnableLogging: 0
-  EnableAnalytics: 0
+  EnableAnalytics: 1
