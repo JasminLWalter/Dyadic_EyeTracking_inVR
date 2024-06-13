@@ -35,6 +35,10 @@ public class ReceiverManager : MonoBehaviour
 
     public List<TMP_Text> TextsPhase3Receiver;
 
+    public GameObject avatar;
+
+    private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
+
 
     // Start is called before the first frame update
     void Start()
@@ -120,8 +124,10 @@ public class ReceiverManager : MonoBehaviour
     }
     public void Teleport(Vector3 location)
     {
+
         Transform currentLocation = OriginTransform;
         currentLocation.position = location;
+        avatar.transform.position = location +   offset;
     }
 
 }

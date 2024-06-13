@@ -1142,6 +1142,7 @@ Transform:
   m_Children:
   - {fileID: 1612599380}
   - {fileID: 1563344799}
+  - {fileID: 1005449141}
   m_Father: {fileID: 1443232802774792923}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &68411486
@@ -3241,6 +3242,8 @@ MonoBehaviour:
   clock: {fileID: 496483700}
   TimeExceeded: 0
   _timeLimit: 30
+  avatar: {fileID: 7646968462962455489}
+  mainCamera: {fileID: 1516416800}
 --- !u!4 &171754635
 Transform:
   m_ObjectHideFlags: 0
@@ -3287,7 +3290,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 172060970}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3c116879cc3afb0408ea8bd239bbfc45, type: 3}
   m_Name: 
@@ -5729,6 +5732,14 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
+  - m_Transform: {fileID: 1005449141}
+    m_Style:
+      shape: {fileID: 4300000, guid: c6793350c150f456688e39a81f97364a, type: 2}
+      color: {r: 1, g: 0, b: 0, a: 0.5}
+      size: 0.1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    m_Visible: 1
 --- !u!4 &303394778
 Transform:
   m_ObjectHideFlags: 0
@@ -5744,7 +5755,6 @@ Transform:
   m_Children:
   - {fileID: 678969995}
   - {fileID: 1867523333}
-  - {fileID: 1005449141}
   m_Father: {fileID: 1443232802774792923}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &309899742
@@ -15080,12 +15090,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1005449140}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.029977756, y: 0.00002613987, z: -0.00000078397335, w: 0.9995506}
+  m_LocalPosition: {x: -0.25, y: 0.37, z: -3.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 303394778}
+  m_Father: {fileID: 68411485}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1005449142
 MonoBehaviour:
@@ -31577,7 +31587,7 @@ PrefabInstance:
     - target: {fileID: 5533625321553106606, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: bea63b6083163f247878bb28fe8da8be, type: 2}
+      objectReference: {fileID: 9100000, guid: 24983e298b1fdc04f9bba25c1344fd60, type: 2}
     - target: {fileID: 5533625321553106606, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 1
@@ -31659,10 +31669,10 @@ PrefabInstance:
       addedObject: {fileID: 7646968462962455493}
     - targetCorrespondingSourceObject: {fileID: 1970928214426170920, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7646968462962455494}
+      addedObject: {fileID: 7646968462962455502}
     - targetCorrespondingSourceObject: {fileID: 1970928214426170920, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7646968462962455499}
+      addedObject: {fileID: 7646968462962455503}
     - targetCorrespondingSourceObject: {fileID: 5889483161799468849, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
       insertIndex: -1
       addedObject: {fileID: 172060973}
@@ -34474,6 +34484,7 @@ MonoBehaviour:
   TextsPhase3Receiver:
   - {fileID: 2076410788}
   - {fileID: 1789295080}
+  avatar: {fileID: 0}
 --- !u!114 &7313654230535762587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34499,6 +34510,7 @@ MonoBehaviour:
   frozen: 0
   phase3SecondPartCoroutineRunning: 0
   invisibleObject: {fileID: 573866243}
+  avatar: {fileID: 7646968462962455489}
 --- !u!114 &7313654230535762588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34659,42 +34671,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   NeededToGetData: 1
---- !u!114 &7646968462962455494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7646968462962455489}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f1ca2d8c6e18af4a954c62d592a3c5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnSmoothness: 1
-  head:
-    vrTarget: {fileID: 1516416797}
-    rigTarget: {fileID: 1005449141}
-    trackingPositionOffset: {x: 0, y: 0, z: 0}
-    trackingRotationOffset: {x: 0, y: 0, z: 0}
-  bodyHip:
-    vrTarget: {fileID: 0}
-    rigTarget: {fileID: 0}
-    trackingPositionOffset: {x: 0, y: 0, z: 0}
-    trackingRotationOffset: {x: 0, y: 0, z: 0}
-  leftHand:
-    vrTarget: {fileID: 6586105915391030313}
-    rigTarget: {fileID: 1119991459}
-    trackingPositionOffset: {x: 0, y: 0, z: 0}
-    trackingRotationOffset: {x: 0, y: 0, z: 0}
-  rightHand:
-    vrTarget: {fileID: 5726331493521705737}
-    rigTarget: {fileID: 2088963402}
-    trackingPositionOffset: {x: 0, y: 0, z: 0}
-    trackingRotationOffset: {x: 0, y: 0, z: 0}
-  headConstraint: {fileID: 1005449141}
-  bodyConstraint: {fileID: 0}
-  headBodyOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &7646968462962455495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34708,17 +34684,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RigLayers:
-  - m_Rig: {fileID: 303394777}
-    m_Active: 1
   - m_Rig: {fileID: 68411486}
     m_Active: 1
+  - m_Rig: {fileID: 303394777}
+    m_Active: 0
   m_Effectors:
   - m_Transform: {fileID: 1443232802774792923}
     m_Style:
       shape: {fileID: 4300000, guid: c6793350c150f456688e39a81f97364a, type: 2}
       color: {r: 1, g: 0, b: 0, a: 0.5}
-      size: 0.1
-      position: {x: 0, y: 0, z: 0}
+      size: 1
+      position: {x: 0, y: 5.5, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
 --- !u!114 &7646968462962455496
@@ -34807,7 +34783,43 @@ MonoBehaviour:
   - {fileID: 1131257142}
   - {fileID: 31585546}
   - {fileID: 1868232962}
---- !u!114 &7646968462962455499
+--- !u!114 &7646968462962455502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7646968462962455489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f1ca2d8c6e18af4a954c62d592a3c5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnSmoothness: 1
+  head:
+    vrTarget: {fileID: 1516416797}
+    rigTarget: {fileID: 1005449141}
+    trackingPositionOffset: {x: 0, y: 0, z: 0}
+    trackingRotationOffset: {x: 0, y: 0, z: 0}
+  bodyHip:
+    vrTarget: {fileID: 0}
+    rigTarget: {fileID: 0}
+    trackingPositionOffset: {x: 0, y: 0, z: 0}
+    trackingRotationOffset: {x: 0, y: 0, z: 0}
+  leftHand:
+    vrTarget: {fileID: 6586105915391030313}
+    rigTarget: {fileID: 1119991459}
+    trackingPositionOffset: {x: 0, y: 0, z: 0}
+    trackingRotationOffset: {x: 0, y: 0, z: 0}
+  rightHand:
+    vrTarget: {fileID: 5726331493521705737}
+    rigTarget: {fileID: 2088963402}
+    trackingPositionOffset: {x: 0, y: 0, z: 0}
+    trackingRotationOffset: {x: 0, y: 0, z: 0}
+  headConstraint: {fileID: 1005449141}
+  bodyConstraint: {fileID: 0}
+  headBodyOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &7646968462962455503
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

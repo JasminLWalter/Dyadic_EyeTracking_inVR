@@ -9,9 +9,11 @@ public class VRMap
     public Transform rigTarget;
     public Vector3 trackingPositionOffset;
     public Vector3 trackingRotationOffset;
+    private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
 
     public void Map()
     {
+
         rigTarget.position = vrTarget.TransformPoint(trackingPositionOffset);
         rigTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingRotationOffset);
     }
@@ -28,6 +30,7 @@ public class VRRig : MonoBehaviour
     public Transform bodyConstraint;
 
     public Vector3 headBodyOffset;
+ 
     
     
     // Start is called before the first frame update

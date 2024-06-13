@@ -34,6 +34,9 @@ public class SignalerManager : MonoBehaviour
     public bool phase3SecondPartCoroutineRunning = false;
 
     public GameObject invisibleObject;
+
+    public GameObject avatar;
+    private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
    
     // Start is called before the first frame update
     void Start()
@@ -149,6 +152,12 @@ public class SignalerManager : MonoBehaviour
     {
         Transform currentLocation = OriginTransform;
         currentLocation.position = location;
+        //Debug.LogError("location"  + location);
+        //Debug.LogError("avatar position before" + avatar.transform.position);
+        //avatar.transform.position = location + offset;
+        //Debug.LogError("avatar position after" + avatar.transform.position);
+
+
     }
 
     // Prevent the eye gameobjects from moving according to the EyeTracking data.

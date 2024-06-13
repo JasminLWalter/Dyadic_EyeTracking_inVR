@@ -73,6 +73,9 @@ public class GameManager : MonoBehaviour
 
     private float probabilityForOne = 0.5f;
 
+    public GameObject avatar;
+    public Camera mainCamera;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -80,6 +83,8 @@ public class GameManager : MonoBehaviour
         menuManager = FindObjectOfType<MenuManager>();
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
+
+
 
         role = "signaler";
         //role = "receiver";
@@ -110,6 +115,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
+        Debug.LogError(avatar.transform.position - mainCamera.transform.position); 
         #region Experimental process 
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
