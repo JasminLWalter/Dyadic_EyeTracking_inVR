@@ -2,9 +2,9 @@ using UnityEngine;
 using LSL;
 using System.Collections;
 
-public class MultiStreamDataReceiver : MonoBehaviour
+public class LSLReceiverInlets : MonoBehaviour
 {
-    private string[] streamNames = { "ExperimentPhase", "TrialNumber", "TimestampsSignaler", "SignalerReady", "BoxSelectedBySignaler" };
+    private string[] streamNames = { "ExperimentPhase", "TimestampsSignaler", "SignalerReady", "BoxSelectedBySignaler", "EyePosDirRotSignaler", "EyeOpennessLRSignaler", "PupilDiameterLRSignaler", "HMDPosDirRotSignaler", "HandPosDirRotSignaler", "PreferredHandSignaler", "FrozenGazeSignaler", "BreakSignaler" };
     private StreamInlet[] streamInlets;
     private int[] channelCounts;
     private float[][] samples;
@@ -99,22 +99,29 @@ public class MultiStreamDataReceiver : MonoBehaviour
                 float experimentPhase = sample[0];
                 // Handle experimentPhase data
                 break;
-            case "TrialNumber":
-                float trialNumber = sample[0];
+            case "TimestampsSignaler":
                 // Handle trial number data
                 break;
-            // case "TimestampsSignaler":
-            //     float timestamp = sample[0];
-            //     // Handle timestamp data
-            //     break;
-            // case "SignalerReady":
-            //     float signalerReady = sample[0];
-            //     // Handle signalerReady data
-            //     break;
-            // case "BoxSelectedBySignaler":
-            //     float boxSelected = sample[0];
-            //     // Handle boxSelected data
-            //     break;
+            case "SignalerReady":
+                break;
+            case "BoxSelectedBySignaler":
+                break;
+            case "EyePosDirRotSignaler":
+                break;
+            case "EyeOpennessLRSignaler":
+                break;
+            case "PupilDiameterLRSignaler":
+                break;
+            case "HMDPosDirRotSignaler":
+                break;
+            case "HandPosDirRotSignaler":
+                break;
+            case "PreferredHandSignaler":
+                break;
+            case "FrozenGazeSignaler":
+                break;
+            case "BreakSignaler":
+                break;
         }
     }
 }

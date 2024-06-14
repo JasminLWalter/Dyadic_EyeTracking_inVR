@@ -939,7 +939,7 @@ MonoBehaviour:
   recordedEyes: {fileID: 1512724218}
   embodimentTrainingStarted: 0
   embodimentTrainingEnd: 0
-  EmbodimentInstruction0: {fileID: 2014488039}
+  EmbodimentInstruction0: {fileID: 0}
   EmbodimentInstructions:
   - {fileID: 1152787037}
   - {fileID: 1499515092}
@@ -2995,8 +2995,8 @@ MonoBehaviour:
   - {fileID: 103348864}
   trialNumber: 0
   trialFailedCount: 0
-  TestingText3: {fileID: 263224819}
-  TestingText4: {fileID: 21529636}
+  TestingText3: {fileID: 0}
+  TestingText4: {fileID: 0}
   milkyGlass: {fileID: 1020737284}
   clearGlass: {fileID: 593205184}
   spaceLocationsReceiver:
@@ -10555,51 +10555,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 797243848}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &801364516
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 801364517}
-  - component: {fileID: 801364518}
-  m_Layer: 0
-  m_Name: LSLInlets
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &801364517
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 801364516}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.00000834465, y: 4.2311435, z: 0.14281511}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &801364518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 801364516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de8cf7048a2054a4ab9c0d380c5d2a92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sampleInterval: 0.001
 --- !u!1 &820441765 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4c6389a0b1b3f314fb0a244c99d13a56, type: 3}
@@ -16861,7 +16816,7 @@ MonoBehaviour:
   TextsPhase0:
   - {fileID: 940860878}
   - {fileID: 1982337119}
-  TextPhase0: {fileID: 1828011886}
+  TextPhase0: {fileID: 0}
   TextsPhase2:
   - {fileID: 1541335213}
   - {fileID: 205792063}
@@ -16870,8 +16825,8 @@ MonoBehaviour:
   Pause: {fileID: 1824544125}
   player: {fileID: 452463684}
   gameManager: {fileID: 171754634}
-  TestingText1: {fileID: 980921648}
-  TestingText2: {fileID: 825191839}
+  TestingText1: {fileID: 0}
+  TestingText2: {fileID: 0}
   xrOriginSetup: {fileID: 7313654230535762584}
 --- !u!4 &1398317298
 Transform:
@@ -33149,4 +33104,3 @@ SceneRoots:
   - {fileID: 279322123}
   - {fileID: 1650410754}
   - {fileID: 1704791953}
-  - {fileID: 801364517}

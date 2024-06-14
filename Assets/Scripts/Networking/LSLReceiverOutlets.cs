@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using LSL;
 
-public class LSLStreamsSignaler : MonoBehaviour
+public class LSLReceiverOutlets : MonoBehaviour
 {
     private string participantUID; 
     private const double NominalRate = LSL.LSL.IRREGULAR_RATE; // irregular sampling rate
@@ -12,8 +12,6 @@ public class LSLStreamsSignaler : MonoBehaviour
     // public StreamOutlet lslOMetadata; 
     public StreamInfo lslITimestamps;
     public StreamOutlet lslOTimestamps;
-    public StreamInfo lslISignalerReady;
-    public StreamOutlet lslOSignalerReady;
     // public StreamInfo lslIExperimentPhase;
     // public StreamOutlet lslOExperimentPhase;
     // public StreamInfo lslIValidationError; 
@@ -24,15 +22,17 @@ public class LSLStreamsSignaler : MonoBehaviour
     // public StreamOutlet lslOCalibrationCounter;
     // public StreamInfo lslIEmbodimentTrainingTime;
     // public StreamOutlet lslOEmbodimentTrainingTime;
-    public StreamInfo lslIBoxSelectedBySignaler;
-    public StreamOutlet lslOBoxSelectedBySignaler;
-    // public StreamInfo lslIBoxSelectedByReceiver;
-    // public StreamOutlet lslOBoxSelectedByReceiver;
+    public StreamInfo lslIReceiverReady;
+    public StreamOutlet lslOReceiverReady;
+    // public StreamInfo lslIBoxSelectedBySignaler;
+    // public StreamOutlet lslOBoxSelectedBySignaler;
+    public StreamInfo lslIBoxSelectedByReceiver;
+    public StreamOutlet lslOBoxSelectedByReceiver;
 
     public StreamInfo lslIEyePosDirRot; 
     public StreamOutlet lslOEyePosDirRot;
-    public StreamInfo lslIRaycastHit; 
-    public StreamOutlet lslORaycastHit;
+    // public StreamInfo lslIRaycastHit; 
+    // public StreamOutlet lslORaycastHit;
     public StreamInfo lslIEyeOpennessLR; 
     public StreamOutlet lslOEyeOpennessLR;
     public StreamInfo lslIPupilDiameterLR; 
@@ -43,18 +43,26 @@ public class LSLStreamsSignaler : MonoBehaviour
     public StreamOutlet lslOHandPosDirRot;
     public StreamInfo lslIPreferredHand;
     public StreamOutlet lslOPreferredHand;
-    public StreamInfo lslIFrozenGaze;
-    public StreamOutlet lslOFrozenGaze;
+    // public StreamInfo lslIFrozenGaze;
+    // public StreamOutlet lslOFrozenGaze;
     // public StreamInfo lslITrialNumber;
     // public StreamOutlet lslOTrialNumber;
     // public StreamInfo lslIFailTrial;
     // public StreamOutlet lslOFailTrial;
     // public StreamInfo lslIFailedTrialCounter;
     // public StreamOutlet lslOFailedTrialCounter;
+    public StreamInfo lslIReceiverFinished;
+    public StreamOutlet lslOReceiverFinished;
+
     public StreamInfo lslIBreak;
     public StreamOutlet lslOBreak;
     public StreamInfo lslIEndTime;
     public StreamOutlet lslOEndTime;
+
+    float[] sample;
+    private int channelCount = 0;
+    StreamInfo[] streamInfos;
+    public StreamInlet streamInlet;
 
     void Start()
     {
@@ -73,22 +81,20 @@ public class LSLStreamsSignaler : MonoBehaviour
         
         // Timestamps
         lslITimestamps = new StreamInfo(
-            "TimestampsSignaler",
-            "Markers",
-            2,
-            NominalRate,
-            LSL.channel_format_t.cf_double64);
-        lslITimestamps.desc().append_child("Timestamp Signaler");
-        lslITimestamps.desc().append_child("Timestamp Receiver");
-        lslOTimestamps = new StreamOutlet(lslITimestamps);
-
-        // Signaler Ready
-        lslISignalerReady = new StreamInfo(
-            "SignalerReady",
+            "TimestampsReceiver",
             "Markers",
             1,
             NominalRate,
-            LSL.channel_format_t.cf_string);
+            LSL.channel_format_t.cf_double64);
+        lslOTimestamps = new StreamOutlet(lslITimestamps);
+
+        // Receiver Ready
+        lslIReceiverReady = new StreamInfo(
+            "ReceiverReady",
+            "Markers",
+            1,
+            NominalRate,
+            LSL.channel_format_t.cf_int32);
 
         // // Experiment Phase
         // lslIExperimentPhase = new StreamInfo(
@@ -142,34 +148,34 @@ public class LSLStreamsSignaler : MonoBehaviour
         // lslOEmbodimentTrainingTime = new StreamOutlet(lslIEmbodimentTrainingTime);
 
         // Box Selected by Signaler
-        lslIBoxSelectedBySignaler = new StreamInfo(
-            "BoxSelectedBySignaler",
-            "Markers",
-            4,
-            NominalRate,
-            LSL.channel_format_t.cf_float32);
-        lslIBoxSelectedBySignaler.desc().append_child("BoxPosX");
-        lslIBoxSelectedBySignaler.desc().append_child("BoxPosY");
-        lslIBoxSelectedBySignaler.desc().append_child("BoxPosZ");
-        lslIBoxSelectedBySignaler.desc().append_child("Associated Reward");
-        lslOBoxSelectedBySignaler = new StreamOutlet(lslIBoxSelectedBySignaler);
-
-        // // Box Selected by Receiver
-        // lslIBoxSelectedByReceiver = new StreamInfo(
-        //     "BoxSelectedByReceiver",
+        // lslIBoxSelectedBySignaler = new StreamInfo(
+        //     "BoxSelectedBySignaler",
         //     "Markers",
         //     4,
         //     NominalRate,
         //     LSL.channel_format_t.cf_float32);
-        // lslIBoxSelectedByReceiver.desc().append_child("BoxPosX");
-        // lslIBoxSelectedByReceiver.desc().append_child("BoxPosY");
-        // lslIBoxSelectedByReceiver.desc().append_child("BoxPosZ");
-        // lslIBoxSelectedByReceiver.desc().append_child("Reward Received");
-        // lslOBoxSelectedByReceiver = new StreamOutlet(lslIBoxSelectedByReceiver);
+        // lslIBoxSelectedBySignaler.desc().append_child("BoxPosX");
+        // lslIBoxSelectedBySignaler.desc().append_child("BoxPosY");
+        // lslIBoxSelectedBySignaler.desc().append_child("BoxPosZ");
+        // lslIBoxSelectedBySignaler.desc().append_child("Associated Reward");
+        // lslOBoxSelectedBySignaler = new StreamOutlet(lslIBoxSelectedBySignaler);
+
+        // Box Selected by Receiver
+        lslIBoxSelectedByReceiver = new StreamInfo(
+            "BoxSelectedByReceiver",
+            "Markers",
+            4,
+            NominalRate,
+            LSL.channel_format_t.cf_float32);
+        lslIBoxSelectedByReceiver.desc().append_child("BoxPosX");
+        lslIBoxSelectedByReceiver.desc().append_child("BoxPosY");
+        lslIBoxSelectedByReceiver.desc().append_child("BoxPosZ");
+        lslIBoxSelectedByReceiver.desc().append_child("Reward Received");
+        lslOBoxSelectedByReceiver = new StreamOutlet(lslIBoxSelectedByReceiver);
 
         // Eye Position, Direction, Rotation
         lslIEyePosDirRot = new StreamInfo(
-            "EyePosDirRotSignaler",
+            "EyePosDirRotReceiver",
             "Markers",
             9,
             NominalRate,
@@ -187,7 +193,7 @@ public class LSLStreamsSignaler : MonoBehaviour
 
         // Eye Openness
         lslIEyeOpennessLR = new StreamInfo(
-            "EyeOpennessLRSignaler",
+            "EyeOpennessLRReceiver",
             "Markers",
             2,
             NominalRate,
@@ -198,7 +204,7 @@ public class LSLStreamsSignaler : MonoBehaviour
 
         // Pupil Diameter
         lslIPupilDiameterLR = new StreamInfo(
-            "PupilDiameterLRSignaler",
+            "PupilDiameterLRReceiver",
             "Markers",
             2,
             NominalRate,
@@ -209,7 +215,7 @@ public class LSLStreamsSignaler : MonoBehaviour
 
         // HMD Position, Direction, Rotation
         lslIhmdPosDirRot = new StreamInfo(
-            "HMDPosDirRotSignaler",
+            "HMDPosDirRotReceiver",
             "Markers",
             15,
             NominalRate,
@@ -233,7 +239,7 @@ public class LSLStreamsSignaler : MonoBehaviour
 
         // Hand Position, Direction, Rotation
         lslIHandPosDirRot = new StreamInfo(
-            "HandPosDirRotSignaler",
+            "HandPosDirRotReceiver",
             "Markers",
             30,
             NominalRate,
@@ -272,7 +278,7 @@ public class LSLStreamsSignaler : MonoBehaviour
 
         // Preferred Hand
         lslIPreferredHand = new StreamInfo(
-            "PreferredHandSignaler",
+            "PreferredHandReceiver",
             "Markers",
             1,
             NominalRate,
@@ -280,13 +286,13 @@ public class LSLStreamsSignaler : MonoBehaviour
         lslOPreferredHand = new StreamOutlet(lslIPreferredHand);
 
         // Frozen Gaze
-        lslIFrozenGaze = new StreamInfo(
-            "FrozenGazeSignaler",
-            "Markers",
-            1,
-            NominalRate,
-            LSL.channel_format_t.cf_string);
-        lslOFrozenGaze = new StreamOutlet(lslIFrozenGaze);
+        // lslIFrozenGaze = new StreamInfo(
+        //     "FrozenGazeReceiver",
+        //     "Markers",
+        //     1,
+        //     NominalRate,
+        //     LSL.channel_format_t.cf_string);
+        // lslOFrozenGaze = new StreamOutlet(lslIFrozenGaze);
 
         // // Trial Number
         // lslITrialNumber = new StreamInfo(
@@ -316,9 +322,18 @@ public class LSLStreamsSignaler : MonoBehaviour
         // lslIFailedTrialCounter.desc().append_child("Count");
         // lslOFailedTrialCounter = new StreamOutlet(lslIFailedTrialCounter);
 
+        // Receiver Finished
+        lslIReceiverFinished = new StreamInfo(
+                "ReceiverFinished",
+                "Markers",
+                1,
+                NominalRate,
+                LSL.channel_format_t.cf_string);
+        lslOReceiverFinished = new StreamOutlet(lslIReceiverFinished);
+
         // Break
         lslIBreak = new StreamInfo(
-                "BreakSignaler",
+                "BreakReceiver",
                 "Markers",
                 2,
                 NominalRate,
@@ -326,39 +341,62 @@ public class LSLStreamsSignaler : MonoBehaviour
         lslIBreak.desc().append_child("Break start time");
         lslIBreak.desc().append_child("Break end time");
         lslOBreak = new StreamOutlet(lslIBreak);
-    }
 
-    // void Update()
-    // {
-    //     List<StreamInfo> receiverStreamInfos = new List<StreamInfo>
+    }
+    void Update()
+    {
+    //     List<StreamInfo> signalerStreamInfos = new List<StreamInfo>
     //     {
-    //         new StreamInfo("EyePosDirRotReceiver", "Markers", 9, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("EyeOpennessLRReceiver", "Markers", 2, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("PupilDiameterLRReceiver", "Markers", 2, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("HMDPosDirRotReceiver", "Markers", 15, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("HandPosDirRotReceiver", "Markers", 30, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("PreferredHandReceiver", "Markers", 1, NominalRate, channel_format_t.cf_string),
-    //         new StreamInfo("BreakReceiver", "Markers", 2, NominalRate, channel_format_t.cf_string),
-    //         new StreamInfo("ReceiverFinished", "Markers", 1, NominalRate, channel_format_t.cf_string),
-    //         new StreamInfo("BoxSelectedByReceiver", "Markers", 4, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("TimestampsReceiver", "Markers", 2, NominalRate, channel_format_t.cf_double64),
-    //         new StreamInfo("ReceiverReady", "Markers", 1, NominalRate, channel_format_t.cf_string)
+    //         LSL.LSL.resolve_stream("name","EyePosDirRotSignaler", 9, NominalRate)
+    // //         new StreamInfo("EyeOpennessLRSignaler", "Markers", 2, NominalRate, channel_format_t.cf_float32),
+    // //         new StreamInfo("PupilDiameterLRSignaler", "Markers", 2, NominalRate, channel_format_t.cf_float32),
+    // //         new StreamInfo("HMDPosDirRotSignaler", "Markers", 15, NominalRate, channel_format_t.cf_float32),
+    // //         new StreamInfo("HandPosDirRotSignaler", "Markers", 30, NominalRate, channel_format_t.cf_float32),
+    // //         new StreamInfo("PreferredHandSignaler", "Markers", 1, NominalRate, channel_format_t.cf_string),
+    // //         new StreamInfo("FrozenGazeSignaler", "Markers", 1, NominalRate, channel_format_t.cf_string),
+    // //         new StreamInfo("BreakSignaler", "Markers", 2, NominalRate, channel_format_t.cf_string),
+    // //         new StreamInfo("BoxSelectedBySignaler", "Markers", 4, NominalRate, channel_format_t.cf_float32),
+    // //         new StreamInfo("TimestampsSignaler", "Markers", 2, NominalRate, channel_format_t.cf_double64),
+    // //         new StreamInfo("SignalerReady", "Markers", 1, NominalRate, channel_format_t.cf_string)
     //     };
 
     //     // List to hold the stream inlets
-    //     List<StreamInlet> receiverStreamInlets = new List<StreamInlet>();
+    //     List<StreamInlet> signalerStreamInlets = new List<StreamInlet>();
 
     //     // Iterate through the stream information and create/open inlets
-    //     foreach (var streamInfo in receiverStreamInfos)
+    //     foreach (var streamInfo in signalerStreamInfos)
     //     {
-    //         // Create the inlet from the stream info
     //         var inlet = new StreamInlet(streamInfo);
-    //         // Open the stream inlet
     //         inlet.open_stream();
-    //         // Add the inlet to the list
-    //         receiverStreamInlets.Add(inlet);
+    //         signalerStreamInlets.Add(inlet);
+    //     }
+    // }
+
+    
+    // if (streamInlet == null)
+    //     {
+    //         // Resolve the LSL stream with the specified type
+    //         streamInfos = LSL.LSL.resolve_stream("name", "ExperimentPhase", 1, 0.0);
+            
+    //         if (streamInfos.Length > 0)
+    //         {
+    //             // Create a stream inlet for the first resolved stream
+    //             streamInlet = new StreamInlet(streamInfos[0]);
+    //             channelCount = streamInlet.info().channel_count();
+    //             streamInlet.open_stream();
+    //         }
     //     }
 
-    // }
+    //     if (streamInlet != null)
+    //     {
+    //         sample = new float[channelCount];
+    //         double lastTimeStamp = streamInlet.pull_sample(sample, 0.0f);
+    //         float experimentPhase = sample[0];
+    //         // Debug.Log(lastTimeStamp);
+    //         Debug.LogWarning(experimentPhase);
+    //     }
+    }    
+
+
 
 }
