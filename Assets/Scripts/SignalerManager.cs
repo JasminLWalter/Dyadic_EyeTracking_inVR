@@ -150,8 +150,11 @@ public class SignalerManager : MonoBehaviour
 
     public void Teleport(Vector3 location)
     {
-        Transform currentLocation = OriginTransform;
-        currentLocation.position = location;
+        avatar.transform.position = location;
+        OriginTransform.transform.position = location + new Vector3(-0.4f, 3.8f, -0.7f);
+        //currentLocation.position = location;
+
+
         //Debug.LogError("location"  + location);
         //Debug.LogError("avatar position before" + avatar.transform.position);
         //avatar.transform.position = location + offset;

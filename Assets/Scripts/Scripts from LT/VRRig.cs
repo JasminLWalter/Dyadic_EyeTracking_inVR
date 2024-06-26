@@ -37,17 +37,18 @@ public class VRRig : MonoBehaviour
     void Start()
     {
         //headBodyOffset = transform.position - headConstraint.position;
-
+        transform.position = headConstraint.position + headBodyOffset;
+        transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(headConstraint.forward, Vector3.up).normalized, Time.deltaTime*turnSmoothness);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         transform.position = headConstraint.position + headBodyOffset;
-        // transform.rotation = headConstraint.up;
-        // transform.forward = Vector3.ProjectOnPlane(headConstraint.forward, Vector3.up).normalized;
-        // transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(headConstraint.up, Vector3.up).normalized, Time.deltaTime*turnSmoothness);
-        transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(headConstraint.forward, Vector3.up).normalized, Time.deltaTime*turnSmoothness);
+        //transform.rotation = headConstraint.up;
+        //transform.forward = Vector3.ProjectOnPlane(headConstraint.forward, Vector3.up).normalized;
+        //transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(headConstraint.up, Vector3.up).normalized, Time.deltaTime*turnSmoothness);
+        //transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(headConstraint.forward, Vector3.up).normalized, Time.deltaTime*turnSmoothness);
 
 
         head.Map();

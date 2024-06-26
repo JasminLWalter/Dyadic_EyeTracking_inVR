@@ -125,9 +125,8 @@ public class ReceiverManager : MonoBehaviour
     public void Teleport(Vector3 location)
     {
 
-        Transform currentLocation = OriginTransform;
-        currentLocation.position = location;
-        avatar.transform.position = location +   offset;
+        avatar.transform.position = location;
+        OriginTransform.transform.position = location;
     }
 
 }

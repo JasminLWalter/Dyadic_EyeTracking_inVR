@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     private BoxBehaviour boxBehaviour;
     private MenuManager menuManager;
     public GameObject xrOriginSetup;
+    public GameObject avatar;
 
     private InputBindings _inputBindings;
     
@@ -72,10 +73,8 @@ public class GameManager : MonoBehaviour
     private float _startRoundTime = 0;
 
     private float probabilityForOne = 0.5f;
-
-    public GameObject avatar;
     public Camera mainCamera;
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -87,6 +86,7 @@ public class GameManager : MonoBehaviour
 
 
         role = "signaler";
+        xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
         //role = "receiver";
         if (role == "receiver") 
         {
@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
         if (phase == 0)
         {
             //player.Teleport(spaceLocations.ElementAt(0));
-            //signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0));
+            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0));
             //receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
            // player.role = "";
             
