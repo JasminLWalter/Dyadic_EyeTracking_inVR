@@ -106,21 +106,21 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _IOR: -0.043
-    - _Metallic: 0.138
+    - _IOR: -0.1
+    - _Metallic: 0
     - _NormalStrength: 0.349
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.163
+    - _Smoothness: 0.023
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _Transparency: 0.068
+    - _Transparency: 0
     - _WorkflowMode: 1
     - _ZTest: 4
     - _ZWrite: 0

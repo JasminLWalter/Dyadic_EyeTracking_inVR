@@ -16,16 +16,12 @@ public class GameManager : MonoBehaviour
     public int phase = 0;
     private int currentPhase = 0;
 
-    private Player player;
-    private Player player2; // don't need "player2" as we run it on two devices and only distinguish between roles, right?
-  //  private SignalerManager signalerManager;
-  //  private ReceiverManager receiverManager;
-    
     private ReceiverManager receiverManager;
     private SignalerManager signalerManager;
     private BoxBehaviour boxBehaviour;
     private MenuManager menuManager;
     public GameObject xrOriginSetup;
+    public GameObject avatar;
 
     private InputBindings _inputBindings;
     
@@ -46,15 +42,15 @@ public class GameManager : MonoBehaviour
     public int trialFailedCount = 0;
 
     Vector3 pauseRoom = new Vector3();
-
+    Vector3 pauseRoomReceiver = new Vector3();
 
     private bool firstSelectionMade = false;
 
-    public TMP_Text TestingText3;
-    public TMP_Text TestingText4;
+    private int countdownTime = 3;
+    public TextMeshProUGUI  countdownText;
+    public TextMeshProUGUI  countdownTextReceiver;
 
     public GameObject milkyGlass;
-    
     public GameObject clearGlass;
 
     //[Tooltip("The locations of the embodiment, start, condition 1, break, condition 2 and end space.")]
@@ -65,7 +61,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("There should be as many rewards as there are inner boxes.")]
     [SerializeField] private List<int> rewards;
 
-    private bool _ValidationSuccessStatus = true;
+    public bool _ValidationSuccessStatus = true;
     
     //Jojo Timer/Clock 
     public ClockManager clockManager;
@@ -77,27 +73,33 @@ public class GameManager : MonoBehaviour
     private float _startRoundTime = 0;
 
     private float probabilityForOne = 0.5f;
-
+    public Camera mainCamera;
+    
     // Start is called before the first frame update
     void Start()
     {
         startTime = Time.time;
         menuManager = FindObjectOfType<MenuManager>();
-        player = FindObjectOfType<Player>();
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
 
+
+
         role = "signaler";
+        xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
         //role = "receiver";
         if (role == "receiver") 
         {
             xrOriginSetup.GetComponent<ReceiverManager>().enabled = true;
             xrOriginSetup.GetComponent<SignalerManager>().enabled = false;
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
+            
         }
         if (role == "signaler")
         {
             xrOriginSetup.GetComponent<ReceiverManager>().enabled = false;
             xrOriginSetup.GetComponent<SignalerManager>().enabled = true;
+            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0));
         }
 
         score = 0;
@@ -105,21 +107,22 @@ public class GameManager : MonoBehaviour
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
 
-        TestingText3.gameObject.SetActive(false);
-        TestingText4.gameObject.SetActive(false);
+         _inputBindings = new InputBindings();
+        _inputBindings.UI.Enable();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+        Debug.LogError(avatar.transform.position - mainCamera.transform.position); 
         #region Experimental process 
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
         {
             //player.Teleport(spaceLocations.ElementAt(0));
             signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0));
-            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
+            //receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
            // player.role = "";
             
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
@@ -133,6 +136,7 @@ public class GameManager : MonoBehaviour
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             //EnterNextPhase();
             Debug.LogError("Phase 1");
+            
         }
         // Phase 2: Instruction Testing (UI Space)
         else if (phase == 2)
@@ -169,7 +173,7 @@ public class GameManager : MonoBehaviour
 
         if (_ValidationSuccessStatus == false) 
         {
-            SRanipal_Eye_v2.LaunchEyeCalibration();
+            //SRanipal_Eye_v2.LaunchEyeCalibration();
             _ValidationSuccessStatus = true;
         }
         #endregion
@@ -193,9 +197,10 @@ public class GameManager : MonoBehaviour
     public void EnterPausePhase()
     {
         pauseRoom = new Vector3(0, -26, 55);
+        pauseRoomReceiver = new Vector3(-114, -27, 1);
         if (role == "receiver")
         {
-            receiverManager.Teleport(pauseRoom);
+            receiverManager.Teleport(pauseRoomReceiver);
         }
         if (role == "signaler") 
         {
@@ -246,21 +251,22 @@ public class GameManager : MonoBehaviour
 
         // 4. Signaler freezes themselves by button press or after the timer runs out
         yield return new WaitWhile(() => ((_inputBindings.Player.Freeze.triggered == false)^(Time.time - _startRoundTime < _timeLimit)));
-
-        //signalerManager.Freeze();
-        if (!firstSelectionMade)
+        if(_inputBindings.Player.Freeze.triggered && !firstSelectionMade)
         {
-            // Show the text 
-            // separate texts for signalers and receivers?
-            StartCoroutine(menuManager.ShowTwoTexts(TestingText3, TestingText4)); //might need to assign the TMP's to GameManager script
-            // Set the flag to true
+            Debug.LogError("firstSelectionMade");
             firstSelectionMade = true;
+        }
+        
+        //signalerManager.Freeze();
+        if (firstSelectionMade) 
+        {
+
         }
         // receiverManager.Unfreeze();
         // 5. Receiver chooses box 
         if(receiverManager.boxSelected == true)
         {
-           boxBehaviour.Selected();
+            boxBehaviour.Selected();
         }
 
         if (Time.time - _startRoundTime < _timeLimit){
@@ -388,5 +394,39 @@ public class GameManager : MonoBehaviour
          }
 
     }
+    public IEnumerator Countdown()
+    {
+        int count = countdownTime;
+        yield return new WaitForSeconds(3);
 
+        if (role == "signaler")
+        {
+            while (count > 0)
+            {
+                countdownText.text = count.ToString();
+                yield return new WaitForSeconds(1);
+                count--;
+            }
+
+            countdownText.text = "Go!";
+            yield return new WaitForSeconds(1);
+            countdownText.gameObject.SetActive(false);
+            
+        }
+        if (role == "receiver")
+        {
+            while (count > 0)
+            {
+                countdownTextReceiver.text = count.ToString();
+                yield return new WaitForSeconds(1);
+                count--;
+            }
+
+            countdownTextReceiver.text = "Go!";
+            yield return new WaitForSeconds(1);
+            countdownTextReceiver.gameObject.SetActive(false);
+            
+        }
+        
+    }
 }

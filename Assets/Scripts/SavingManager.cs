@@ -18,9 +18,12 @@ public class SavingManager : MonoBehaviour
     private int phase;
     private Vector3 validationError;
     private int valCalCounter;
-    private float embodimentTrainingStarted;
-    private float embodimentTrainingEnd;
-    private float embodimentTrainingTime;
+    private float embodimentTrainingStartedSignaler;
+    private float embodimentTrainingEndSignaler;
+    private float embodimentTrainingTimeSignaler;
+    private float embodimentTrainingStartedReceiver;
+    private float embodimentTrainingEndReceiver;
+    private float embodimentTrainingTimeReceiver;
     private int trialNumber;
     private int trialFailedCount;
     private RaycastHit hitData;

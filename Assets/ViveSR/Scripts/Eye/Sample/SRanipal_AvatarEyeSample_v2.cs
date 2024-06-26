@@ -209,11 +209,11 @@ namespace ViveSR
                         if (eyeShape > EyeShape_v2.Max || eyeShape < 0) continue;
 
                         if (eyeShape == EyeShape_v2.Eye_Left_Blink || eyeShape == EyeShape_v2.Eye_Right_Blink)
-                            eyeShapeTable.skinnedMeshRenderer.SetBlendShapeWeight(i, weighting[eyeShape] * 100f);
+                            eyeShapeTable.skinnedMeshRenderer.SetBlendShapeWeight(i, weighting[eyeShape]);
                         else
                         {
                             AnimationCurve curve = EyebrowAnimationCurves[(int)eyeShape];
-                            eyeShapeTable.skinnedMeshRenderer.SetBlendShapeWeight(i, curve.Evaluate(weighting[eyeShape]) * 100f);
+                            eyeShapeTable.skinnedMeshRenderer.SetBlendShapeWeight(i, curve.Evaluate(weighting[eyeShape]));
                         }
                     }
                 }

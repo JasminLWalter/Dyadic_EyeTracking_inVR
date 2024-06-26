@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 using ViveSR.anipal.Eye;
@@ -28,16 +29,30 @@ public class ReceiverManager : MonoBehaviour
     private Vector3 rayDirection;
 
     public GameManager gameManager;
+    public MenuManager menuManager;
     public bool boxSelected = false;
+    public bool phase3SecondPartCoroutineRunningReceiver = false;
+
+    public List<TMP_Text> TextsPhase3Receiver;
+
+    public GameObject avatar;
+
+    private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
 
 
     // Start is called before the first frame update
     void Start()
     {
         preferredHandTransform = rightControllerTransform;
-         gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindObjectOfType<GameManager>();
+        menuManager = FindObjectOfType<MenuManager>();
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
+
+        foreach (TMP_Text TextPhase3Receiver in TextsPhase3Receiver)
+        {
+            TextPhase3Receiver.gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -84,10 +99,16 @@ public class ReceiverManager : MonoBehaviour
                 _lastHit = hit.collider;
                 _lastHit.gameObject.SendMessage("StaredAt");
             }
-            else if (_inputBindings.Player.SelectBox.triggered)
+            else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3)
             {
                _lastHit.gameObject.SendMessage("Selected");
                boxSelected = true;
+               Debug.LogError("Receiver freezes"); 
+                if(phase3SecondPartCoroutineRunningReceiver == false)
+                {
+                    StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => phase3SecondPartCoroutineRunningReceiver = false));
+                    phase3SecondPartCoroutineRunningReceiver = true;
+                }
                
             }
         }
@@ -103,8 +124,9 @@ public class ReceiverManager : MonoBehaviour
     }
     public void Teleport(Vector3 location)
     {
-        Transform currentLocation = OriginTransform;
-        currentLocation.position = location;
+
+        avatar.transform.position = location;
+        OriginTransform.transform.position = location;
     }
 
 }

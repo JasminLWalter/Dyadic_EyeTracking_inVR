@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.UIElements;
 using ViveSR.anipal.Eye;
@@ -23,17 +25,32 @@ public class SignalerManager : MonoBehaviour
     private Vector3 rayOrigin;
     private Vector3 rayDirection;
 
-
+    public MenuManager menuManager;
     public GameManager gameManager;
+
+    public List<TMP_Text> TextsPhase3;
+
     public bool frozen = false;
+    public bool phase3SecondPartCoroutineRunning = false;
 
+    public GameObject invisibleObject;
 
+    public GameObject avatar;
+    private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
+   
     // Start is called before the first frame update
     void Start()
     {
          gameManager = FindObjectOfType<GameManager>();
+         menuManager = FindObjectOfType<MenuManager>();
+
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
+
+        foreach (TMP_Text TextPhase3 in TextsPhase3)
+        {
+            TextPhase3.gameObject.SetActive(false);
+        }
 
     }
 
@@ -81,13 +98,14 @@ public class SignalerManager : MonoBehaviour
 
         var eyeDirectionCombinedWorld = hmd.transform.rotation * coordinateAdaptedGazeDirectionCombined;
 
-
-
+        invisibleObject.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 500);
 
 
         RaycastHit hitData;
         if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _layerMask))
         {
+
+            
             if (_lastHit == null)
             {
                 _lastHit = hitData.collider;
@@ -117,17 +135,32 @@ public class SignalerManager : MonoBehaviour
             }
         }
 
-        if (_inputBindings.Player.Freeze.triggered)
+        if (_inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)
         {
             Freeze();
+            Debug.LogError("Freeze Signaler Manager");
+            if(phase3SecondPartCoroutineRunning == false)
+            {
+                StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => phase3SecondPartCoroutineRunning = false));
+                phase3SecondPartCoroutineRunning = true;
+            }
         }
 
     }
 
     public void Teleport(Vector3 location)
     {
-        Transform currentLocation = OriginTransform;
-        currentLocation.position = location;
+        avatar.transform.position = location;
+        OriginTransform.transform.position = location + new Vector3(-0.4f, 3.8f, -0.7f);
+        //currentLocation.position = location;
+
+
+        //Debug.LogError("location"  + location);
+        //Debug.LogError("avatar position before" + avatar.transform.position);
+        //avatar.transform.position = location + offset;
+        //Debug.LogError("avatar position after" + avatar.transform.position);
+
+
     }
 
     // Prevent the eye gameobjects from moving according to the EyeTracking data.
