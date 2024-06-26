@@ -3226,15 +3226,15 @@ MonoBehaviour:
   milkyGlass: {fileID: 1020737284}
   clearGlass: {fileID: 593205184}
   spaceLocationsReceiver:
-  - {x: -114.5, y: -27, z: 1.2}
-  - {x: -98.5, y: 1.7, z: -50.6}
-  - {x: -114.5, y: -27, z: 1.2}
+  - {x: -114.5, y: -29, z: 1.2}
+  - {x: -98.5, y: 20, z: -50.6}
+  - {x: -114.5, y: -29, z: 1.2}
   - {x: -2.4, y: 2.7, z: -4.2}
-  - {x: -114.5, y: -27, z: 1.2}
+  - {x: -114.5, y: -29, z: 1.2}
   spaceLocationsSignaler:
   - {x: 0, y: -29, z: 55}
-  - {x: -99, y: 2, z: 8}
-  - {x: 0, y: -26, z: 55}
+  - {x: -99, y: -1, z: 8}
+  - {x: 0, y: -29, z: 55}
   - {x: -2.9, y: 2, z: 5.9}
   - {x: 0, y: -26, z: 55}
   rewards: 000000000500000000000000050000000a000000000000000500000000000000
@@ -34501,7 +34501,7 @@ MonoBehaviour:
   TextsPhase3Receiver:
   - {fileID: 2076410788}
   - {fileID: 1789295080}
-  avatar: {fileID: 0}
+  avatar: {fileID: 7646968462962455489}
 --- !u!114 &7313654230535762587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34835,7 +34835,7 @@ MonoBehaviour:
     trackingRotationOffset: {x: 0, y: 0, z: 0}
   headConstraint: {fileID: 1005449141}
   bodyConstraint: {fileID: 0}
-  headBodyOffset: {x: 0, y: -30, z: 0}
+  headBodyOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &7646968462962455503
 MonoBehaviour:
   m_ObjectHideFlags: 0

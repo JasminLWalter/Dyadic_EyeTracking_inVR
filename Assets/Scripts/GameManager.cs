@@ -120,11 +120,14 @@ public class GameManager : MonoBehaviour
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
         {
-            //player.Teleport(spaceLocations.ElementAt(0));
-            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0));
-            //receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
-           // player.role = "";
-            
+            if (role == "receiver")
+            {
+                receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase));
+            }
+            if (role == "signaler") 
+            {
+                signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase));
+            }
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             // EnterNextPhase();
         }
