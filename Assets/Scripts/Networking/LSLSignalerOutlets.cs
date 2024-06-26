@@ -8,6 +8,13 @@ public class LSLSignalerOutlets : MonoBehaviour
     private string participantUID; 
     private const double NominalRate = LSL.LSL.IRREGULAR_RATE; // irregular sampling rate
     
+    // Variables to be accessed from other scripts
+
+    private SignalerManager signalerManager;
+
+
+    // Strams
+
     // public StreamInfo lslIMetadata;
     // public StreamOutlet lslOMetadata; 
     public StreamInfo lslITimestamps;
@@ -58,6 +65,11 @@ public class LSLSignalerOutlets : MonoBehaviour
 
     void Start()
     {
+        signalerManager = GameObject.Find("Complete XR Origin Set Up").GetComponent<SignalerManager>();
+
+
+
+
         // // Metadata
         // lslIMetadata = new StreamInfo(
         //     "Metadata",
@@ -327,37 +339,21 @@ public class LSLSignalerOutlets : MonoBehaviour
     }
 
 
-    // void Update()
-    // {
-    //     List<StreamInfo> receiverStreamInfos = new List<StreamInfo>
-    //     {
-    //         new StreamInfo("EyePosDirRotReceiver", "Markers", 9, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("EyeOpennessLRReceiver", "Markers", 2, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("PupilDiameterLRReceiver", "Markers", 2, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("HMDPosDirRotReceiver", "Markers", 15, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("HandPosDirRotReceiver", "Markers", 30, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("PreferredHandReceiver", "Markers", 1, NominalRate, channel_format_t.cf_string),
-    //         new StreamInfo("BreakReceiver", "Markers", 2, NominalRate, channel_format_t.cf_string),
-    //         new StreamInfo("ReceiverFinished", "Markers", 1, NominalRate, channel_format_t.cf_string),
-    //         new StreamInfo("BoxSelectedByReceiver", "Markers", 4, NominalRate, channel_format_t.cf_float32),
-    //         new StreamInfo("TimestampsReceiver", "Markers", 2, NominalRate, channel_format_t.cf_double64),
-    //         new StreamInfo("ReceiverReady", "Markers", 1, NominalRate, channel_format_t.cf_string)
-    //     };
+    void Update()
+    {
+        // Prepare the eye data to be sent through LSL
+        float[] eyeData = new float[9];
+        eyeData[0] = signalerManager.eyePositionCombinedWorld.x;
+        eyeData[1] = signalerManager.eyePositionCombinedWorld.y;
+        eyeData[2] = signalerManager.eyePositionCombinedWorld.z;
+        eyeData[3] = signalerManager.eyeDirectionCombinedWorld.x;
+        eyeData[4] = signalerManager.eyeDirectionCombinedWorld.y;
+        eyeData[5] = signalerManager.eyeDirectionCombinedWorld.z;
+        eyeData[6] = signalerManager.eyeRotationCombinedWorld.x;
+        eyeData[7] = signalerManager.eyeRotationCombinedWorld.y;
+        eyeData[8] = signalerManager.eyeRotationCombinedWorld.z;
 
-    //     // List to hold the stream inlets
-    //     List<StreamInlet> receiverStreamInlets = new List<StreamInlet>();
-
-    //     // Iterate through the stream information and create/open inlets
-    //     foreach (var streamInfo in receiverStreamInfos)
-    //     {
-    //         // Create the inlet from the stream info
-    //         var inlet = new StreamInlet(streamInfo);
-    //         // Open the stream inlet
-    //         inlet.open_stream();
-    //         // Add the inlet to the list
-    //         receiverStreamInlets.Add(inlet);
-    //     }
-
-    // }
+        lslOEyePosDirRot.push_sample(eyeData);
+    }
 
 }

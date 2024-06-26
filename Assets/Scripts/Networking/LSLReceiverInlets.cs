@@ -107,6 +107,7 @@ public class LSLReceiverInlets : MonoBehaviour
             case "BoxSelectedBySignaler":
                 break;
             case "EyePosDirRotSignaler":
+                Debug.LogWarning("Received EyePosDirRotSignaler data: " + string.Join(", ", sample));
                 break;
             case "EyeOpennessLRSignaler":
                 break;
