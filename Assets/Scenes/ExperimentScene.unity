@@ -34839,7 +34839,7 @@ MonoBehaviour:
   leftHand:
     vrTargets: {fileID: 6586105915391030313}
     ikTarget: {fileID: 1119991459}
-    trackingPositionsOffset: {x: 0, y: 0, z: 0}
+    trackingPositionsOffset: {x: 0, y: -2, z: 0}
     trackingRotationOffset: {x: 0, y: 0, z: 0}
   rightHand:
     vrTargets: {fileID: 5726331493521705737}
