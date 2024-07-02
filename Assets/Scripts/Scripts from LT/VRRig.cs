@@ -36,15 +36,16 @@ public class VRRig : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //headBodyOffset = transform.position - headConstraint.position;
+        headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,1.22000003f);
         transform.position = headConstraint.position + headBodyOffset;
         transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(headConstraint.forward, Vector3.up).normalized, Time.deltaTime*turnSmoothness);
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         transform.position = headConstraint.position + headBodyOffset;
+        Debug.LogError("HeadBodyOffset" + headBodyOffset);
         //transform.rotation = headConstraint.up;
         //transform.forward = Vector3.ProjectOnPlane(headConstraint.forward, Vector3.up).normalized;
         //transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(headConstraint.up, Vector3.up).normalized, Time.deltaTime*turnSmoothness);

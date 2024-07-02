@@ -18,10 +18,19 @@ public class GameManager : MonoBehaviour
 
     private ReceiverManager receiverManager;
     private SignalerManager signalerManager;
+    private EmbodimentManager embodimentManager;
     private BoxBehaviour boxBehaviour;
     private MenuManager menuManager;
+
+    public VRRig vRRig;
     public GameObject xrOriginSetup;
+    public GameObject signaler;
     public GameObject avatar;
+    public GameObject invisibleObject;
+    public Material invisible;
+
+    public Material color;
+
 
     private InputBindings _inputBindings;
     
@@ -82,7 +91,7 @@ public class GameManager : MonoBehaviour
         menuManager = FindObjectOfType<MenuManager>();
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
-
+        embodimentManager = FindObjectOfType<EmbodimentManager>();
 
 
         role = "signaler";
@@ -90,7 +99,7 @@ public class GameManager : MonoBehaviour
         //role = "receiver";
         if (role == "receiver") 
         {
-            xrOriginSetup.GetComponent<ReceiverManager>().enabled = true;
+            //signaler.GetComponent<ReceiverManager>().enabled = true;
             xrOriginSetup.GetComponent<SignalerManager>().enabled = false;
             receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
             
@@ -98,10 +107,11 @@ public class GameManager : MonoBehaviour
         if (role == "signaler")
         {
             xrOriginSetup.GetComponent<ReceiverManager>().enabled = false;
-            xrOriginSetup.GetComponent<SignalerManager>().enabled = true;
+            signaler.GetComponent<SignalerManager>().enabled = true;
             signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0));
         }
 
+        embodimentManager.ChangeColor(invisibleObject, invisible);
         score = 0;
 
         _inputBindings = new InputBindings();
@@ -153,6 +163,17 @@ public class GameManager : MonoBehaviour
             //assign role here?
             //player.role = "receiver";
             Debug.LogError("Phase 3");
+            if (role == "receiver")
+            {
+                vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,-0.94f);
+                xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 270, 0));
+                avatar.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
+            }
+            if (role == "signaler")
+            {
+                embodimentManager.ChangeColor(invisibleObject, color);
+                Debug.LogError("color changed");
+            }
 
             if (_currentRound < roundsPerCondition)
             {   
@@ -164,7 +185,9 @@ public class GameManager : MonoBehaviour
             } 
             else 
             {
+                
                 EnterNextPhase();
+                
             }
         }
        
@@ -172,6 +195,14 @@ public class GameManager : MonoBehaviour
         else
         {
            // Debug.Log("Phase 4");
+           if (role == "receiver")
+           {
+            embodimentManager.ChangeColor(invisibleObject, invisible);
+            vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,1.22000003f);
+            xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
+            avatar.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0));
+            Debug.LogError("turn around");
+           }
         }
 
         if (_ValidationSuccessStatus == false) 

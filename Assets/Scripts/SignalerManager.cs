@@ -98,7 +98,7 @@ public class SignalerManager : MonoBehaviour
 
         var eyeDirectionCombinedWorld = hmd.transform.rotation * coordinateAdaptedGazeDirectionCombined;
 
-        invisibleObject.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 500);
+        invisibleObject.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
 
 
         RaycastHit hitData;
@@ -150,8 +150,10 @@ public class SignalerManager : MonoBehaviour
 
     public void Teleport(Vector3 location)
     {
-        avatar.transform.position = location;
-        OriginTransform.transform.position = location; // + new Vector3(-0.4f, 5f, -0.7f);
+        Debug.LogError("avatar position before" + avatar.transform.position);
+       // avatar.transform.position = location;
+        Debug.LogError("avatar position after" + avatar.transform.position);
+        OriginTransform.transform.position = location;// + new Vector3(-0.4f, 5f, -0.7f);
         //currentLocation.position = location;
 
 
@@ -161,6 +163,12 @@ public class SignalerManager : MonoBehaviour
         //Debug.LogError("avatar position after" + avatar.transform.position);
 
 
+    }
+
+    public void TeleportRoom(GameObject oldRoom, GameObject newRoom)
+    {
+        oldRoom.transform.position = new Vector3(30f, 30f, 30f);
+        newRoom.transform.position = new Vector3(0f, 0f, 0f);
     }
 
     // Prevent the eye gameobjects from moving according to the EyeTracking data.

@@ -391,7 +391,7 @@ public class EmbodimentManager : MonoBehaviour
         CounterReceiver += 1;
     }
 
-    private void ChangeColor(GameObject obj, Material newMaterial)
+    public void ChangeColor(GameObject obj, Material newMaterial)
     {
         Renderer objectRenderer = obj.GetComponent<Renderer>();
 

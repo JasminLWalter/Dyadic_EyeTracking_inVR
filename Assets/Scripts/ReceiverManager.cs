@@ -125,9 +125,7 @@ public class ReceiverManager : MonoBehaviour
     public void Teleport(Vector3 location)
     {
 
-        avatar.transform.position = location;
-        OriginTransform.transform.position = location + new Vector3(-0.4f, 6.8f, -0.7f);
-        Debug.LogError("teleport receiver");
+        OriginTransform.transform.position = location;
     }
 
 }
