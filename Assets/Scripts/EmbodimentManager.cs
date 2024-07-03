@@ -405,6 +405,7 @@ public class EmbodimentManager : MonoBehaviour
                 objectRenderer.materials = materials; // Assign the modified materials array back to the Renderer
             }
         }
+        Debug.LogError("color changed");
     }
 
     private IEnumerator ShowEmbodimentInstructions(List<TMP_Text> textComponents, Action coroutineFinishedCallback)

@@ -18,6 +18,8 @@ public class SignalerManager : MonoBehaviour
     public GameObject hmd;
     public Transform OriginTransform;
 
+    public Material color;
+
     //  for displaying the eye movement of the signaler
     [SerializeField] private Transform combinedEyes;
     [SerializeField] private Transform leftEye;
@@ -27,6 +29,8 @@ public class SignalerManager : MonoBehaviour
 
     public MenuManager menuManager;
     public GameManager gameManager;
+
+    private EmbodimentManager embodimentManager;
 
     public List<TMP_Text> TextsPhase3;
 
@@ -43,6 +47,7 @@ public class SignalerManager : MonoBehaviour
     {
          gameManager = FindObjectOfType<GameManager>();
          menuManager = FindObjectOfType<MenuManager>();
+         embodimentManager = FindObjectOfType<EmbodimentManager>();
 
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
@@ -104,7 +109,7 @@ public class SignalerManager : MonoBehaviour
         RaycastHit hitData;
         if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _layerMask))
         {
-
+            
             
             if (_lastHit == null)
             {
@@ -144,6 +149,12 @@ public class SignalerManager : MonoBehaviour
                 StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => phase3SecondPartCoroutineRunning = false));
                 phase3SecondPartCoroutineRunning = true;
             }
+            if(phase3SecondPartCoroutineRunning == false)
+            {
+                embodimentManager.ChangeColor(invisibleObject, color);
+            }
+
+            
         }
 
     }

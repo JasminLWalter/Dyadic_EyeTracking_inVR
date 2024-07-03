@@ -125,7 +125,6 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
-        Debug.LogError(avatar.transform.position - mainCamera.transform.position); 
         #region Experimental process 
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
@@ -171,8 +170,8 @@ public class GameManager : MonoBehaviour
             }
             if (role == "signaler")
             {
-                embodimentManager.ChangeColor(invisibleObject, color);
-                Debug.LogError("color changed");
+                //embodimentManager.ChangeColor(invisibleObject, color);
+                
             }
 
             if (_currentRound < roundsPerCondition)
