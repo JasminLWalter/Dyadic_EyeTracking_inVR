@@ -163,7 +163,7 @@ public class SignalerManager : MonoBehaviour
     {
         Debug.LogError("avatar position before" + avatar.transform.position);
        // avatar.transform.position = location;
-        Debug.LogError("avatar position after" + avatar.transform.position);
+        Debug.LogError("avatar: " + avatar);
         avatar.transform.position = location;// + new Vector3(-0.4f, 5f, -0.7f);
         //currentLocation.position = location;
 
@@ -175,13 +175,12 @@ public class SignalerManager : MonoBehaviour
 
 
     }
-
-    public void TeleportRoom(GameObject oldRoom, GameObject newRoom)
+/*    public void TeleportRoom(GameObject oldRoom, GameObject newRoom)
     {
         oldRoom.transform.position = new Vector3(30f, 30f, 30f);
         newRoom.transform.position = new Vector3(0f, 0f, 0f);
     }
-
+*/
     // Prevent the eye gameobjects from moving according to the EyeTracking data.
     public void Freeze()
     {
