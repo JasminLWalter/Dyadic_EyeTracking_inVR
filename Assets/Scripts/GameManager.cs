@@ -315,25 +315,90 @@ public class GameManager : MonoBehaviour
 
     // Shuffles the reward values and assigns them to the boxes.
     private void ShuffleRewards()
-    {   
+    {
         Debug.Log("Inside ShuffleRewards");
-        // Shuffle the rewards of the inner boxes
-        List<int> shuffledRewards = new List<int>();
-    
-        while (rewards.Count > 0)
+
+        // Ensure there are 8 boxes
+        // if (boxes.Count != 8)
+        // {
+        //     Debug.LogError("There must be exactly 8 boxes.");
+        //     return;
+        // }
+
+        // Initialize the rewards list
+
+        rewards = new List<int> { 100, 0, 0, 0, 0, 0, -25, -25 };
+
+        // Console.WriteLine("Original rewards: " + string.Join(", ", rewards));
+
+        // Initialize the random number generator
+        System.Random rng = new System.Random();
+
+        // Create a new list with 8 elements, all initialized to -1 (a placeholder value)
+        List<int> shuffledRewards = Enumerable.Repeat(-1, 8).ToList();
+
+        // Increase the range to include the edges but with a small probability
+        int mainRewardIndex;
+        double probability = rng.NextDouble();
+
+        if (probability < 0.1) // 10% chance for the main reward to be on the edges
         {
-            int index = Random.Range(0, rewards.Count - 1); 
-            shuffledRewards.Add(rewards.ElementAt(index));
-            rewards.RemoveAt(index);
+            mainRewardIndex = (rng.Next(2) == 0) ? 0 : 7;
+        }
+        else
+        {
+            mainRewardIndex = rng.Next(1, 7); // 90% chance for the main reward to be between 1 and 5
+        }
+       
+        // Insert the main reward (100) at the generated index
+        shuffledRewards[mainRewardIndex] = 100;
+
+        // Remove the main reward from the original list
+        rewards.Remove(100);
+
+        // Shuffle the remaining rewards and insert them into the shuffledRewards list
+        foreach (int reward in rewards)
+        {
+            int index;
+            do
+            {
+                index = rng.Next(shuffledRewards.Count);
+            } while (shuffledRewards[index] != -1); // Ensure we place only in empty slots
+
+            shuffledRewards[index] = reward;
         }
 
-        rewards = shuffledRewards;
 
+
+        // rewards = new List<int> { 100, 0, 0, 0, 0, 0, -25 };
+        
+        // Debug.Log("Shuffled rewards: " + string.Join(", ", rewards));
+
+        // // Shuffle rewards except for the main reward (100)
+        // List<int> shuffledRewards = new List<int>();
+        // Debug.Log("Shuffled rewards: " + string.Join(", ", shuffledRewards));
+
+        // System.Random rng = new System.Random();
+        // Debug.Log("Shuffled rewards: " + shuffledRewards);
+        // // Ensure the main reward is not on the edges (index 0 or 7)
+        // int mainRewardIndex = rng.Next(1, 6); // Generate a random index between 1 and 6 for the main reward
+        // shuffledRewards.
+        // // Shuffle the remaining rewards
+        // rewards.Remove(100); // Remove the main reward from the original list
+
+        // while (rewards.Count > 0)
+        // {
+        //     int index = rng.Next(rewards.Count);
+        //     shuffledRewards.Add(rewards.ElementAt(index));
+        //     rewards.RemoveAt(index);
+        // }
+
+        Debug.Log("Shuffled rewards: " + string.Join(", ", shuffledRewards));
         // Assign the shuffled rewards to the boxes
-        for (int i = 0; i < boxes.Count; i++) 
+        for (int i = 0; i < boxes.Count; i++)
         {
             BoxBehaviour currentBox = boxes.ElementAt(i).GetComponent<BoxBehaviour>();
-            currentBox.ChangeReward(rewards.ElementAt(i));
+            currentBox.ChangeReward(shuffledRewards.ElementAt(i));
         }
     }
 

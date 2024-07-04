@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using LSL;
 
 public class SavingManager : MonoBehaviour
 {
     private GameManager gameManager;
     private EyetrackingValidation eyetrackingValidation;
     private EmbodimentManager embodimentManager;
+    private SignalerManager signalerManager;
+    private ReceiverManager receiverManager;
    // private EyeRaycast eyeRaycast;
 
+    private LSLStreams lslStreams;
+    public float sampleRate = 90.0f;
 
     private int phase;
     private Vector3 validationError;
@@ -38,24 +43,59 @@ public class SavingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        phase = gameManager.phase;
-        validationError = eyetrackingValidation.GetValidationError();
-        valCalCounter = eyetrackingValidation.valCalCounter;
-        embodimentTrainingStartedSignaler = embodimentManager.embodimentTrainingStartedSignaler;
-        embodimentTrainingEndSignaler = embodimentManager.embodimentTrainingEndSignaler;
-        embodimentTrainingTimeSignaler = embodimentTrainingEndSignaler - embodimentTrainingStartedSignaler;
-        embodimentTrainingStartedReceiver = embodimentManager.embodimentTrainingStartedReceiver;
-        embodimentTrainingEndReceiver = embodimentManager.embodimentTrainingEndReceiver;
-        embodimentTrainingTimeReceiver = embodimentTrainingEndReceiver - embodimentTrainingStartedReceiver;
-        trialNumber = gameManager.trialNumber;
-        //hitData = Raycast.hitData;
-        trialFailedCount = gameManager.trialFailedCount;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        lslStreams = GameObject.Find("LSLStreams").GetComponent<LSLStreams>();
+        eyetrackingValidation = GameObject.Find("EyetrackingValidation").GetComponent<EyetrackingValidation>();
+        // embodimentManager = GameObject.Find("EmbodimentManager").GetComponent<EmbodimentManager>();
+        // signalerManager = GameObject.Find("SignalerManager").GetComponent<SignalerManager>();
+        // receiverManager = GameObject.Find("ReceiverManager").GetComponent<ReceiverManager>();
 
+        // //hitData = Raycast.hitData;
+
+        // StartCoroutine(SendData());
     }
 
-    // Update is called once per frame
     void Update()
     {
+        phase = gameManager.phase;
+        trialNumber = gameManager.trialNumber;
+        // trialFailedCount = gameManager.trialFailedCount;
+        // validationError = eyetrackingValidation.GetValidationError();
+        // valCalCounter = eyetrackingValidation.valCalCounter;
+        // embodimentTrainingStarted = embodimentManager.embodimentTrainingStarted;
+        // embodimentTrainingEnd = embodimentManager.embodimentTrainingEnd;
+        // embodimentTrainingTime = embodimentTrainingEnd - embodimentTrainingStarted;
+
+        float interval = 1.0f / sampleRate;
+        
+        lslStreams.lslOExperimentPhase.push_sample(new int [] { phase });
+        lslStreams.lslOTrialNumber.push_sample(new int [] { trialNumber });
+        // lslStreams.lslOFailedTrialCounter.push_sample(new int [] { trialFailedCount });
+
         
     }
+
+    // private IEnumerator SendData()
+    // {
+    //     while (true)
+    //     {
+    //         phase = gameManager.phase;
+    //         trialNumber = gameManager.trialNumber;
+    //         // trialFailedCount = gameManager.trialFailedCount;
+    //         // validationError = eyetrackingValidation.GetValidationError();
+    //         // valCalCounter = eyetrackingValidation.valCalCounter;
+    //         // embodimentTrainingStarted = embodimentManager.embodimentTrainingStarted;
+    //         // embodimentTrainingEnd = embodimentManager.embodimentTrainingEnd;
+    //         // embodimentTrainingTime = embodimentTrainingEnd - embodimentTrainingStarted;
+
+    //         float interval = 1.0f / sampleRate;
+            
+    //         lslStreams.lslOExperimentPhase.push_sample(new int [] { phase });
+    //         lslStreams.lslOTrialNumber.push_sample(new int [] { trialNumber });
+    //         // lslStreams.lslOFailedTrialCounter.push_sample(new int [] { trialFailedCount });
+
+    //         yield return new WaitForSeconds(1.0f / sampleRate);
+    //     }
+    // }
 }
+

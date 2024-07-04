@@ -25,6 +25,10 @@ public class SignalerManager : MonoBehaviour
     private Vector3 rayOrigin;
     private Vector3 rayDirection;
 
+    public Vector3 eyePositionCombinedWorld;
+    public Vector3 eyeDirectionCombinedWorld;
+    public Quaternion eyeRotationCombinedWorld;
+
     public MenuManager menuManager;
     public GameManager gameManager;
 
@@ -99,10 +103,11 @@ public class SignalerManager : MonoBehaviour
 
         //  gaze data of the signaler
         SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
-        var eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmd.transform.position;
+        eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmd.transform.position;
         Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1, verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
 
-        var eyeDirectionCombinedWorld = hmd.transform.rotation * coordinateAdaptedGazeDirectionCombined;
+        eyeDirectionCombinedWorld = hmd.transform.rotation * coordinateAdaptedGazeDirectionCombined;
+        eyeRotationCombinedWorld = hmd.transform.rotation;
 
         invisibleObject.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
 
