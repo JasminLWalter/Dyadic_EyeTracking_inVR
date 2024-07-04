@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         Debug.LogError("avatar position secondary" + avatarSecondary.transform.position);
-        signalerManager.Teleport(new Vector3(-99.5999985f,-97f,66.6399994f), avatarSecondary);
+        signalerManager.Teleport(new Vector3(-99.5999985f,-99f,66.6399994f), avatarSecondary);
         #region Experimental process 
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
