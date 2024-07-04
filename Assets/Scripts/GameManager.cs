@@ -21,17 +21,16 @@ public class GameManager : MonoBehaviour
     private EmbodimentManager embodimentManager;
     private BoxBehaviour boxBehaviour;
     private MenuManager menuManager;
+    private SimpleCrosshair simpleCrosshair;
 
     public VRRig vRRig;
     public GameObject xrOriginSetup;
     public GameObject signaler;
     public GameObject avatar;
+    public GameObject avatarSecondary;
     public GameObject invisibleObject;
+    public GameObject crosshair;
     public Material invisible;
-
-    public Material color;
-
-
     private InputBindings _inputBindings;
     
     private int score;
@@ -92,6 +91,7 @@ public class GameManager : MonoBehaviour
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
         embodimentManager = FindObjectOfType<EmbodimentManager>();
+        simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
 
 
         role = "signaler";
@@ -108,10 +108,13 @@ public class GameManager : MonoBehaviour
         {
             xrOriginSetup.GetComponent<ReceiverManager>().enabled = false;
             signaler.GetComponent<SignalerManager>().enabled = true;
-            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0));
+            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
+            signalerManager.Teleport(new Vector3(-99.5999985f,-105.760002f,66.6399994f), avatarSecondary);
         }
 
-        embodimentManager.ChangeColor(invisibleObject, invisible);
+        
+        
+        
         score = 0;
 
         _inputBindings = new InputBindings();
@@ -135,7 +138,7 @@ public class GameManager : MonoBehaviour
             }
             if (role == "signaler") 
             {
-                signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase));
+                signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
             }
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             // EnterNextPhase();
@@ -168,12 +171,6 @@ public class GameManager : MonoBehaviour
                 xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 270, 0));
                 avatar.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
             }
-            if (role == "signaler")
-            {
-                //embodimentManager.ChangeColor(invisibleObject, color);
-                
-            }
-
             if (_currentRound < roundsPerCondition)
             {   
                 if (_startedRound == false)
@@ -196,11 +193,15 @@ public class GameManager : MonoBehaviour
            // Debug.Log("Phase 4");
            if (role == "receiver")
            {
-            embodimentManager.ChangeColor(invisibleObject, invisible);
+            
             vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,1.22000003f);
             xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
             avatar.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0));
             Debug.LogError("turn around");
+           }
+           if (role == "signaler")
+           {
+            signalerManager.invisibleObject = invisibleObject;
            }
         }
 
@@ -222,7 +223,7 @@ public class GameManager : MonoBehaviour
         }
         if (role == "signaler") 
         {
-            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase));
+            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
         }
        // player.Teleport(spaceLocations.ElementAt(phase));
     }
@@ -237,7 +238,7 @@ public class GameManager : MonoBehaviour
         }
         if (role == "signaler") 
         {
-            signalerManager.Teleport(pauseRoom);
+            signalerManager.Teleport(pauseRoom, xrOriginSetup);
         }
 
     }
@@ -251,7 +252,7 @@ public class GameManager : MonoBehaviour
         }
         if (role == "signaler") 
         {
-            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(currentPhase));
+            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(currentPhase), xrOriginSetup);
         }
 
     }
@@ -444,6 +445,7 @@ public class GameManager : MonoBehaviour
             countdownText.text = "Go!";
             yield return new WaitForSeconds(1);
             countdownText.gameObject.SetActive(false);
+            signalerManager.invisibleObject = crosshair;
             
         }
         if (role == "receiver")
@@ -458,6 +460,7 @@ public class GameManager : MonoBehaviour
             countdownTextReceiver.text = "Go!";
             yield return new WaitForSeconds(1);
             countdownTextReceiver.gameObject.SetActive(false);
+            
             
         }
         

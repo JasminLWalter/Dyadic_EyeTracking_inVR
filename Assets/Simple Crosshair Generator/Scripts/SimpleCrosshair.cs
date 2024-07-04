@@ -37,6 +37,9 @@ public class Crosshair
 
 public class SimpleCrosshair : MonoBehaviour
 {
+    [SerializeField]
+private Material invisible;
+
     [SerializeField, Tooltip("Contains properties that Specify how the crosshair looks.")]
     private Crosshair m_crosshair = null;
 
@@ -250,20 +253,44 @@ public class SimpleCrosshair : MonoBehaviour
             }
         }
     }
+    //newColor;
 
-    public void MakeInvisible()
+    public Renderer rend; // Reference to the Renderer component
+
+    // Function to assign a material
+    public void AssignMaterial()
     {
+        if (rend != null)
+        {
+            rend.material = invisible;
+            Debug.Log("Material assigned: ");
+        }
+    }
 
+public void MakeInvisible()
+{
+    if (m_crosshairImage != null)
+    {
+        Color newColor = m_crosshairImage.color;
         newColor.a = 0f; // Make the image fully transparent
-        
         m_crosshairImage.color = newColor;
+        Debug.Log("Crosshair image made invisible");
     }
+}
 
-    public void MakeRed()
+public void MakeRed()
+{
+    if (m_crosshair != null)
     {
-
-        m_crosshairImage.color = RED;
+        // Update the color to red
+        Color newColor = m_crosshairImage.color;
+        newColor.a = 1f; // Make the image fully opaque
+        m_crosshairImage.color = newColor;
+        Debug.Log("Crosshair image made visible");
     }
+}
+
+
 
 
     #endregion

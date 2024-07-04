@@ -148,6 +148,11 @@ public class MenuManager : MonoBehaviour
                     StartCoroutine(ShowTexts(TextsPhase3, () => phase3CoroutineRunning = false));
                     phase3CoroutineRunning = true;
                     didRun = true;
+
+                    foreach (TMP_Text TextPhase3Receiver in receiverManager.TextsPhase3Receiver)
+                    {
+                        TextPhase3Receiver.gameObject.SetActive(false);
+                    }
                 }
                 
             }
@@ -160,6 +165,11 @@ public class MenuManager : MonoBehaviour
                     StartCoroutine(ShowTexts(TextsPhase3Receiver, () => phase3CoroutineRunningReceiver = false));
                     phase3CoroutineRunningReceiver = true;
                     didRunReceiver = true;
+
+                    foreach (TMP_Text TextPhase3 in signalerManager.TextsPhase3)
+                    {
+                        TextPhase3.gameObject.SetActive(false);
+                    }
                 }
                 
             }
