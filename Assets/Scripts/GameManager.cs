@@ -442,26 +442,27 @@ public class GameManager : MonoBehaviour
     
     private void Timer()
     { 
-        if (_startedRound && !_selected)
-        {
+        
+        //if (_startedRound && !_selected)
+        //{
             
             clock.gameObject.SetActive(true);
-            clockManager.isRunning = true;
-
+            clockManager.StartClock();
+            
             if (TimeExceeded == true)
             {
                 Debug.LogError("Time Exceeded == true");
                 clock.gameObject.SetActive(false);
-                ShowTimeExceeded();
+                StartCoroutine(ShowTimeExceeded());
                 trialFailedCount++;
 
             }
-        }
+        /*}
         else
         {
             clock.gameObject.SetActive(false);
 
-        }
+        }*/
     }
 
     public IEnumerator ShowTimeExceeded()
@@ -526,6 +527,7 @@ public class GameManager : MonoBehaviour
             countdownTextReceiver.text = "Go!";
             yield return new WaitForSeconds(1);
             countdownTextReceiver.gameObject.SetActive(false);
+            Timer();
             
             
         }

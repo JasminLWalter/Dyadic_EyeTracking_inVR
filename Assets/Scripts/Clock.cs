@@ -1,68 +1,56 @@
 using UnityEngine;
 using Wave.Essence;
+using System.Collections;
 
 public class ClockManager : MonoBehaviour
 {
     private int seconds = 0;
-
-
     public GameObject pointerSeconds;
-
     [SerializeField] private GameObject clock;
     public GameManager gameManager;
-
-    // -- time speed factor
     private float clockSpeed = 12f; // 1.0f = realtime, < 1.0f = slower, > 1.0f = faster
-
-    // -- internal vars
     float msecs = 0;
-    public bool isRunning = false; // Flag to control whether the clock is running or not
-    //public bool TimeExceeded = false;
-    float totalSeconds = 0; // Total seconds elapsed
+    public bool isRunning = false;
+    float totalSeconds = 0;
 
     void Start()
     {
         clock.gameObject.SetActive(false);
-        Debug.Log("Start in clockManager");
-
+        Debug.Log("Start in ClockManager");
     }
 
     void Update()
     {
-        if (isRunning)
-        {
-            // -- calculate time
+    }
+
+    public void StartClock()
+    {
+        // Start the coroutine to run the clock
+        StartCoroutine(RunClock());
+    }
+
+    IEnumerator RunClock()
+    {
             msecs += Time.deltaTime * clockSpeed;
             if (msecs >= 1.0f)
             {
+                Debug.LogError("Timer started startclock");
                 msecs -= 1.0f;
                 seconds++;
                 totalSeconds++;
-                /*
-                if (seconds >= 60)
-                {
-                    seconds = 0;
-                }
-                */
-                // -- Stop the clock after 45 seconds
+
                 if (totalSeconds >= 60)
                 {
                     isRunning = false;
                     gameManager.StartCoroutine(gameManager.ShowTimeExceeded());
-                    //gameManager.TimeExceeded = true;
-                    //TimeExceeded = true;
-
-                    
-                    Debug.Log("Clock stopped after 45 seconds.");
+                    Debug.Log("Clock stopped after 60 seconds.");
                 }
+
+                float rotationSeconds = (360.0f / 60.0f) * seconds;
+                pointerSeconds.transform.localEulerAngles = new Vector3(0.0f, 0.0f, rotationSeconds);
             }
 
-            // -- calculate pointer angles
-            float rotationSeconds = (360.0f / 60.0f) * seconds; // Invert rotation for starting from the top
-           
-
-            // -- draw pointers
-            pointerSeconds.transform.localEulerAngles = new Vector3(0.0f, 0.0f, rotationSeconds);
-        }
+            yield return null;
+        
     }
 }
