@@ -149,11 +149,18 @@ public class SignalerManager : MonoBehaviour
         if (_inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)
         {
             Freeze();
+            gameManager.firstFreeze = true;
             Debug.LogError("Freeze Signaler Manager");
             if(phase3SecondPartCoroutineRunning == false)
             {
                 StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => phase3SecondPartCoroutineRunning = false));
                 phase3SecondPartCoroutineRunning = true;
+            }
+            
+            if(gameManager.firstFreeze)
+            {
+                gameManager.StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownTextReceiver));
+                
             }
         }
 

@@ -35,7 +35,7 @@ public class BoxBehaviour : MonoBehaviour
     }
 
     // When the box is starred at (= when the x-ray collides with the box)
-    public void StaredAt()
+    public void StaredAtReceiver()
     {
         gameObject.GetComponent<MeshRenderer>().material = highlightMaterial;
     }

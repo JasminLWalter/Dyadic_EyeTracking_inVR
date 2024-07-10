@@ -20,6 +20,7 @@ public class MenuManager : MonoBehaviour
     private bool ShowedStart = false;
     private bool ShowedText1 = false;
     private bool didRun = false;
+    
 
     //Receiver
     public List<TMP_Text> TextsPhase0Receiver;
@@ -33,8 +34,9 @@ public class MenuManager : MonoBehaviour
     private bool phase0CoroutineRunningReceiver = false;
     private bool phase2CoroutineRunningReceiver = false;
     private bool phase3CoroutineRunningReceiver = false;
-    private bool didRunReceiver = false;
+    public bool didRunReceiver = false;
     public bool countdownRunning = false;
+    
 
 
 
@@ -166,12 +168,12 @@ public class MenuManager : MonoBehaviour
                     phase3CoroutineRunningReceiver = true;
                     didRunReceiver = true;
 
-                    foreach (TMP_Text TextPhase3 in signalerManager.TextsPhase3)
+                    foreach (TMP_Text TextPhase3 in TextsPhase3)
                     {
                         TextPhase3.gameObject.SetActive(false);
                     }
+
                 }
-                
             }
         }       
         if (gameManager.GetCurrentPhase() == 4)

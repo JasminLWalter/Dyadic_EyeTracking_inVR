@@ -30,9 +30,10 @@ public class ReceiverManager : MonoBehaviour
 
     public GameManager gameManager;
     public MenuManager menuManager;
+    public SignalerManager signalerManager;
     public bool boxSelected = false;
     public bool phase3SecondPartCoroutineRunningReceiver = false;
-
+    public bool didRunSecondPartReceiver = false;
     public List<TMP_Text> TextsPhase3Receiver;
 
     public GameObject avatar;
@@ -46,6 +47,7 @@ public class ReceiverManager : MonoBehaviour
         preferredHandTransform = rightControllerTransform;
         gameManager = FindObjectOfType<GameManager>();
         menuManager = FindObjectOfType<MenuManager>();
+        signalerManager = FindObjectOfType<SignalerManager>();
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
 
@@ -90,7 +92,7 @@ public class ReceiverManager : MonoBehaviour
             if (_lastHit == null)
             {
                 _lastHit = hit.collider;
-                _lastHit.gameObject.SendMessage("StaredAt");
+                _lastHit.gameObject.SendMessage("StaredAtReceiver");
             }
             else if (_lastHit != null && _lastHit != hit.collider)
             {
@@ -103,12 +105,22 @@ public class ReceiverManager : MonoBehaviour
             {
                _lastHit.gameObject.SendMessage("Selected");
                boxSelected = true;
-               Debug.LogError("Receiver freezes"); 
-                if(phase3SecondPartCoroutineRunningReceiver == false)
+               
+                if(menuManager.didRunReceiver && !phase3SecondPartCoroutineRunningReceiver)
                 {
                     StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => phase3SecondPartCoroutineRunningReceiver = false));
                     phase3SecondPartCoroutineRunningReceiver = true;
-                }
+                    
+                    foreach (TMP_Text TextPhase3 in signalerManager.TextsPhase3)
+                    {
+                        TextPhase3.gameObject.SetActive(false);
+                    }
+                }/*
+                if(gameManager.firstFreezeReceiver)
+                {
+                    Debug.LogError("Receiver freezes"); 
+                    StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownText));
+                }*/
                
             }
         }
