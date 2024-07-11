@@ -223,12 +223,12 @@ public class EmbodimentManager : MonoBehaviour
                 }
                 if (!FinishedRecordingReceiver || FinishedShowReceiver)
                 {
-                    Debug.Log("b");
                     StartRecordingReceiver.gameObject.SetActive(true);
                     StopRecordingReceiver.gameObject.SetActive(true);
                     ShowRecordingReceiver.gameObject.SetActive(false);
                     TVReceiver.gameObject.SetActive(false);
                 }
+
                 else 
                 {
                     StartRecordingReceiver.gameObject.SetActive(false);
@@ -277,6 +277,7 @@ public class EmbodimentManager : MonoBehaviour
 
             //InstructionText3.gameObject.SetActive(false);
             RecordingText.gameObject.SetActive(true);
+            RecordingTextReceiver.gameObject.SetActive(true);
             // start data collection
             // start task
             StartCoroutine(StoreRotations());
@@ -323,8 +324,8 @@ public class EmbodimentManager : MonoBehaviour
             FinishedRecordingReceiver = true;
             FinishedShowReceiver = false;
             TVReceiver.gameObject.SetActive(true);
-            ChangeColor(TV1, Screen_off);
-            ChangeColor(TV2, Screen_off);
+            ChangeColor(TV1Receiver, Screen_off);
+            ChangeColor(TV2Receiver, Screen_off);
         }
     }
 
@@ -332,8 +333,20 @@ public class EmbodimentManager : MonoBehaviour
     {
         //show data simulation...
         StartCoroutine(ApplyRotations());
-        ChangeColor(TV1, Invisible);
-        ChangeColor(TV2, Invisible);
+        if (gameManager.role == "signaler")
+        {        
+            ChangeColor(TV1, Invisible);
+            ChangeColor(TV2, Invisible);
+            //ShowRecording.gameObject.SetActive(false);
+
+            }
+        if (gameManager.role == "receiver")
+        {
+            ChangeColor(TV1Receiver, Invisible);
+            ChangeColor(TV2Receiver, Invisible);
+            //ShowRecordingReceiver.gameObject.SetActive(false);
+        }
+
     }
 
     public void OnFinishButtonClick()

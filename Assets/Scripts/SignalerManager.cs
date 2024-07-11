@@ -160,7 +160,7 @@ public class SignalerManager : MonoBehaviour
                 phase3SecondPartCoroutineRunning = true;
             }
             
-            if(freezeCounter > 1)
+            if(freezeCounter > 2)
             {
                 gameManager.StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownTextReceiver));
                 

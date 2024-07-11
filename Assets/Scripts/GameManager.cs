@@ -101,12 +101,13 @@ public class GameManager : MonoBehaviour
 
         trainingSign.gameObject.SetActive(false);
 
-        role = "signaler";
+        //role = "signaler";
         xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
-        //role = "receiver";
+        role = "receiver";
         if (role == "receiver") 
         {
             //signaler.GetComponent<ReceiverManager>().enabled = true;
+            xrOriginSetup.GetComponent<ReceiverManager>().enabled = true;
             xrOriginSetup.GetComponent<SignalerManager>().enabled = false;
             receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
             
@@ -560,7 +561,7 @@ public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
     int count = 10;
     while (count > 0)
     {
-        if ((signalerManager.frozen && signalerManager.freezeCounter > 1)  || (_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 1))
+        if ((signalerManager.frozen && signalerManager.freezeCounter > 2)  || (_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 2))
         {
             CDT.text = string.Empty; 
             Debug.LogError("stopped everything");
