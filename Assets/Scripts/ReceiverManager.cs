@@ -31,6 +31,7 @@ public class ReceiverManager : MonoBehaviour
     public GameManager gameManager;
     public MenuManager menuManager;
     public SignalerManager signalerManager;
+    public ReceiverManager receiverManager;
     public bool boxSelected = false;
     public bool phase3SecondPartCoroutineRunningReceiver = false;
     public bool didRunSecondPartReceiver = false;
@@ -39,7 +40,7 @@ public class ReceiverManager : MonoBehaviour
     public GameObject avatar;
 
     private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
-
+    public int selectCounter = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -105,6 +106,7 @@ public class ReceiverManager : MonoBehaviour
             {
                _lastHit.gameObject.SendMessage("Selected");
                boxSelected = true;
+               selectCounter++;
                
                 if(menuManager.didRunReceiver && !phase3SecondPartCoroutineRunningReceiver)
                 {

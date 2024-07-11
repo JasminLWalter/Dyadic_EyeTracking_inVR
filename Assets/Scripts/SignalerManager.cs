@@ -44,6 +44,8 @@ public class SignalerManager : MonoBehaviour
 
     public GameObject avatar;
     private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
+
+    public int freezeCounter = 0;
    
     // Start is called before the first frame update
     void Start()
@@ -149,6 +151,7 @@ public class SignalerManager : MonoBehaviour
         if (_inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)
         {
             Freeze();
+            freezeCounter += 1;
             gameManager.firstFreeze = true;
             Debug.LogError("Freeze Signaler Manager");
             if(phase3SecondPartCoroutineRunning == false)
@@ -157,7 +160,7 @@ public class SignalerManager : MonoBehaviour
                 phase3SecondPartCoroutineRunning = true;
             }
             
-            if(gameManager.firstFreeze)
+            if(freezeCounter > 1)
             {
                 gameManager.StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownTextReceiver));
                 

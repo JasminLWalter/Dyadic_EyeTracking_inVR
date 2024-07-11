@@ -515,7 +515,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator Countdown()
     {
         int count = countdownTime;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
 
         if (role == "signaler")
         {
@@ -560,7 +560,7 @@ public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
     int count = 10;
     while (count > 0)
     {
-        if ((signalerManager.frozen && firstFreeze)  || (_inputBindings.Player.SelectBox.triggered && firstFreeze))
+        if ((signalerManager.frozen && signalerManager.freezeCounter > 1)  || (_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 1))
         {
             CDT.text = string.Empty; 
             Debug.LogError("stopped everything");
