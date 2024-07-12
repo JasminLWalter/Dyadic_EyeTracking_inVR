@@ -31,14 +31,19 @@ public class GameManager : MonoBehaviour
     public GameObject invisibleObject;
     public GameObject crosshair;
     public GameObject trainingSign;
+    public GameObject trainingSignReceiver;
     public Material invisible;
     private InputBindings _inputBindings;
     
     private int score;
     public string role;
-    [SerializeField] private TextMeshPro scoreDisplay;
-    [SerializeField] private TextMeshPro roundsDisplay;
-    [SerializeField] private TextMeshPro TimeExceededTMP;
+    [SerializeField] private TextMeshProUGUI  scoreDisplay;
+    [SerializeField] private TextMeshProUGUI roundsDisplay;
+    [SerializeField] private TextMeshProUGUI  scoreDisplayReceiver;
+    [SerializeField] private TextMeshProUGUI roundsDisplayReceiver;
+    [SerializeField] private GameObject TimeExceededTMP;
+
+    [SerializeField] private GameObject TimeExceededTMPReceiver;
 
     [SerializeField] private int roundsPerCondition = 0;
     private int _currentRound = 0;
@@ -76,9 +81,6 @@ public class GameManager : MonoBehaviour
 
     public bool _ValidationSuccessStatus = true;
     
-    //Jojo Timer/Clock 
-    public ClockManager clockManager;
-    [SerializeField] private GameObject clock;
     public bool TimeExceeded = false;
     
 
@@ -100,6 +102,13 @@ public class GameManager : MonoBehaviour
         simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
 
         trainingSign.gameObject.SetActive(false);
+        trainingSignReceiver.gameObject.SetActive(false);
+        TimeExceededTMP.gameObject.SetActive(false);
+        TimeExceededTMPReceiver.gameObject.SetActive(false);
+        scoreDisplay.gameObject.SetActive(false);
+        roundsDisplay.gameObject.SetActive(false);
+        scoreDisplayReceiver.gameObject.SetActive(false);
+        roundsDisplayReceiver.gameObject.SetActive(false);
 
         //role = "signaler";
         xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
@@ -180,9 +189,42 @@ public class GameManager : MonoBehaviour
                 xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 270, 0));
                 avatar.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
             }
+            if(role == "signaler")
+            {
+                roundsDisplay.gameObject.SetActive(true);
+                roundsDisplay.text = "Round: " + _currentRound;
+            }
+            if(role == "receiver")
+            {
+                roundsDisplayReceiver.gameObject.SetActive(true);
+                roundsDisplayReceiver.text = "Round: " + _currentRound;
+            }
+            if (_currentRound > 0 && _currentRound < 4)
+            {
+                if (role == "signaler")
+                {
+                    trainingSign.gameObject.SetActive(true);
+                }   
+                if (role == "receiver")
+                {
+                    trainingSignReceiver.gameObject.SetActive(true);
+                }
+            }          
+            if (_currentRound == 4)
+            {    
+                ResetScoreRound();
+                if (role == "signaler")
+                {
+                    trainingSign.gameObject.SetActive(false);
+                }   
+                if (role == "receiver")
+                {
+                    trainingSignReceiver.gameObject.SetActive(false);
+                }
+            }
             if (_currentRound < roundsPerCondition)
             {   
-                if (_startedRound == false && firstFreeze == true)
+                if (_startedRound == false && signalerManager.freezeCounter > 1)
                 {
                     StartCoroutine(Condition1());
                     StartCoroutine(CountdownTimer(timerCountdownText));
@@ -276,21 +318,14 @@ public class GameManager : MonoBehaviour
     #endregion
     private IEnumerator Condition1()
     {
-        if (_currentRound > 0 && _currentRound < 4)
-        {
-            trainingSign.gameObject.SetActive(true);
-        }
-        else
-        {
-            trainingSign.gameObject.SetActive(false);
-        }
+
         ShowMilkyGlassRandom();
         _startedRound = true;
         _selected = false;
         //Timer();
         
         Debug.Log("Timer started");
-        roundsDisplay.text = "Round: " + _currentRound;
+
         // 1. Freeze receiver 
             	// --> eye data is not sent to the signaler at this point
         // 2. Shuffle rewards
@@ -303,7 +338,7 @@ public class GameManager : MonoBehaviour
 
         // 4. Signaler freezes themselves by button press or after the timer runs out
         yield return new WaitWhile(() => ((_inputBindings.Player.Freeze.triggered == false)^(Time.time - _startRoundTime < _timeLimit)));
-        if(_inputBindings.Player.Freeze.triggered && !firstSelectionMade)
+        if(role == "signaler" && _inputBindings.Player.Freeze.triggered && !firstSelectionMade)
         {
             Debug.LogError("firstSelectionMade");
             firstSelectionMade = true;
@@ -425,10 +460,37 @@ public class GameManager : MonoBehaviour
     public void UpdateScore(int reward)
     {
         score += reward;
-        scoreDisplay.text = "Score: " + score;
+        if(role == "signaler")
+        {
+            scoreDisplay.gameObject.SetActive(true);
+            scoreDisplay.text = "Score: " + score;
+        }
+        if(role == "receiver")
+        {
+            scoreDisplayReceiver.gameObject.SetActive(true);
+            scoreDisplayReceiver.text = "Score: " + score;
+        }
+        
         _currentRound += 1;
         _selected = true;
         _startedRound = false;
+
+    }
+
+    public void ResetScoreRound()
+    {
+        score = 0;
+        _currentRound = 0;
+        if(role == "signaler")
+        {
+            scoreDisplay.text = "Score: " + score;
+            roundsDisplay.text = "Round: " + _currentRound;
+        }
+        if(role == "receiver")
+        {
+            scoreDisplayReceiver.text = "Score: " + score;
+            roundsDisplayReceiver.text = "Round: " + _currentRound;
+        }
 
     }
 
@@ -458,42 +520,23 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    private void Timer()
-    { 
-        
-        //if (_startedRound && !_selected)
-        //{
-            
-            clock.gameObject.SetActive(true);
-            clockManager.StartClock();
-            
-            if (TimeExceeded == true)
-            {
-                Debug.LogError("Time Exceeded == true");
-                clock.gameObject.SetActive(false);
-                StartCoroutine(ShowTimeExceeded());
-                trialFailedCount++;
-
-            }
-        /*}
-        else
-        {
-            clock.gameObject.SetActive(false);
-
-        }*/
-    }
 
     public IEnumerator ShowTimeExceeded()
     {
-        // Show the object
-        TimeExceededTMP.gameObject.SetActive(true);
-        Debug.LogError("ShowTimeExceeded");
-        // Wait for the specified duration
-        yield return new WaitForSeconds(2);
-
-        // Hide the object after the duration
-        TimeExceededTMP.gameObject.SetActive(false);
-        _selected = true;
+        Debug.Log("ShowTimeExceeded");
+        if(role == "signaler")
+        {
+            TimeExceededTMP.gameObject.SetActive(true);
+            yield return new WaitForSeconds(2);
+            TimeExceededTMP.gameObject.SetActive(false);
+        }
+        if(role == "receiver")
+        {
+            TimeExceededTMPReceiver.gameObject.SetActive(true);
+            yield return new WaitForSeconds(2);
+            TimeExceededTMPReceiver.gameObject.SetActive(false);
+        }
+        
     }
 
     private void ShowMilkyGlassRandom()
@@ -558,10 +601,10 @@ public class GameManager : MonoBehaviour
 public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
 {
     yield return new WaitForSeconds(1);
-    int count = 10;
+    int count = 3;
     while (count > 0)
     {
-        if ((signalerManager.frozen && signalerManager.freezeCounter > 2)  || (_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 2))
+        if ((signalerManager.frozen && signalerManager.freezeCounter > 1)  || (_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 1))
         {
             CDT.text = string.Empty; 
             Debug.LogError("stopped everything");
@@ -583,8 +626,6 @@ public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
     StartCoroutine(ShowTimeExceeded());
     trialFailedCount++;
     UpdateScore(-20);
-    
-    //firstFreezeReceiver = true;
 }
 
 }

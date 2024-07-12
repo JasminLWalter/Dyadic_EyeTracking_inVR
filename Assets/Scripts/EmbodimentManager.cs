@@ -344,6 +344,7 @@ public class EmbodimentManager : MonoBehaviour
         {
             ChangeColor(TV1Receiver, Invisible);
             ChangeColor(TV2Receiver, Invisible);
+            Debug.LogError("show clicked");
             //ShowRecordingReceiver.gameObject.SetActive(false);
         }
 
@@ -402,6 +403,7 @@ public class EmbodimentManager : MonoBehaviour
         FinishedShowReceiver = true;
         Counter += 1;
         CounterReceiver += 1;
+        Debug.LogError("FinishedShowReceiver"+  FinishedShowReceiver); //Somehow this doesnt work for the receiver, might change automatically as soon as we included the correct ApplyRotation function
     }
 
     public void ChangeColor(GameObject obj, Material newMaterial)
@@ -418,7 +420,7 @@ public class EmbodimentManager : MonoBehaviour
                 objectRenderer.materials = materials; // Assign the modified materials array back to the Renderer
             }
         }
-        Debug.LogError("color changed");
+        
     }
 
     private IEnumerator ShowEmbodimentInstructions(List<TMP_Text> textComponents, Action coroutineFinishedCallback)

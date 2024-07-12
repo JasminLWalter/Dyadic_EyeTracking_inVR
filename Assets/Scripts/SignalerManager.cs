@@ -142,25 +142,23 @@ public class SignalerManager : MonoBehaviour
         {
             if (_lastHit != null)
             {
-                Debug.Log("Not longer starred at.");
                 _lastHit.gameObject.SendMessage("NotLongerStaredAt");
                 _lastHit = null;
             }
         }
 
-        if (_inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)
+        if (gameManager.role == "signaler" && _inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)
         {
             Freeze();
             freezeCounter += 1;
             gameManager.firstFreeze = true;
-            Debug.LogError("Freeze Signaler Manager");
             if(phase3SecondPartCoroutineRunning == false)
             {
                 StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => phase3SecondPartCoroutineRunning = false));
                 phase3SecondPartCoroutineRunning = true;
             }
             
-            if(freezeCounter > 2)
+            if(freezeCounter > 1)
             {
                 gameManager.StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownTextReceiver));
                 
@@ -171,26 +169,9 @@ public class SignalerManager : MonoBehaviour
 
     public void Teleport(Vector3 location, GameObject avatar)
     {
-        Debug.LogError("avatar position before" + avatar.transform.position);
-       // avatar.transform.position = location;
-        Debug.LogError("avatar: " + avatar);
         avatar.transform.position = location;// + new Vector3(-0.4f, 5f, -0.7f);
-        //currentLocation.position = location;
-
-
-        Debug.LogError("teleport signaler");
-        //Debug.LogError("avatar position before" + avatar.transform.position);
-        //avatar.transform.position = location + offset;
-        //Debug.LogError("avatar position after" + avatar.transform.position);
-
-
     }
-/*    public void TeleportRoom(GameObject oldRoom, GameObject newRoom)
-    {
-        oldRoom.transform.position = new Vector3(30f, 30f, 30f);
-        newRoom.transform.position = new Vector3(0f, 0f, 0f);
-    }
-*/
+
     // Prevent the eye gameobjects from moving according to the EyeTracking data.
     public void Freeze()
     {
