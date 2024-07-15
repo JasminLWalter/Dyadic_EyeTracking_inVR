@@ -123,16 +123,29 @@ namespace ViveSR.anipal.Eye
                     EyeShape_v2 eyeShape = table.eyeShapes[i];
                     if (eyeShape == EyeShape_v2.Eye_Left_Blink)
                     {
-                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, leftBlink ? 100.0f : 0.0f);
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[6]);
                     }
                     else if (eyeShape == EyeShape_v2.Eye_Right_Blink)
                     {
-                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, rightBlink ? 100.0f : 0.0f);
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[7]);
                     }
-                    else if (sample.Length > 8 + i)
+                    else if(eyeShape == EyeShape_v2.Eye_Left_Wide)
                     {
-                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[8 + i] * 100.0f);
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[8]);
                     }
+                    else if(eyeShape == EyeShape_v2.Eye_Right_Wide)
+                    {
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[9]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Left_Squeeze)
+                    {
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[10]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Right_Squeeze)
+                    {
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[11]);
+                    }
+
                 }
             }
         }

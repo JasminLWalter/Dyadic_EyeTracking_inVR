@@ -30,6 +30,11 @@ public class EyeDataSender : MonoBehaviour
             float leftBlink = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Blink) ? eyeWeightings[EyeShape_v2.Eye_Left_Blink] : 0.0f;
             float rightBlink = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Blink) ? eyeWeightings[EyeShape_v2.Eye_Right_Blink] : 0.0f;
 
+            float leftWide = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Wide) ? eyeWeightings[EyeShape_v2.Eye_Left_Wide] : 0.0f;
+            float rightWide = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Wide) ? eyeWeightings[EyeShape_v2.Eye_Right_Wide] : 0.0f;
+            float leftSqueeze = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Left_Squeeze] : 0.0f;
+            float rightSqueeze = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Right_Squeeze] : 0.0f;
+
             // Prepare LSL sample
             float[] sample = new float[16];
             sample[0] = leftGazeDirection.x;
@@ -40,6 +45,11 @@ public class EyeDataSender : MonoBehaviour
             sample[5] = rightGazeDirection.z;
             sample[6] = leftBlink;
             sample[7] = rightBlink;
+            sample[8] = 0;
+            sample[9] = 0;
+            sample[10] = leftSqueeze;
+            sample[11] = rightSqueeze;
+
 
             // Include additional eye weightings if necessary
             int index = 8;
