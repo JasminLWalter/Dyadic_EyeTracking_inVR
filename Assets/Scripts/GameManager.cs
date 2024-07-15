@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     public VRRig vRRig;
     public GameObject xrOriginSetup;
     public GameObject signaler;
+
+    public GameObject receiver;
     public GameObject avatar;
     public GameObject avatarSecondary;
     public GameObject invisibleObject;
@@ -116,14 +118,14 @@ public class GameManager : MonoBehaviour
         if (role == "receiver") 
         {
             //signaler.GetComponent<ReceiverManager>().enabled = true;
-            xrOriginSetup.GetComponent<ReceiverManager>().enabled = true;
-            xrOriginSetup.GetComponent<SignalerManager>().enabled = false;
+            receiver.GetComponent<ReceiverManager>().enabled = true;
+            signaler.GetComponent<SignalerManager>().enabled = false;
             receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
             
         }
         if (role == "signaler")
         {
-            xrOriginSetup.GetComponent<ReceiverManager>().enabled = false;
+            receiver.GetComponent<ReceiverManager>().enabled = false;
             signaler.GetComponent<SignalerManager>().enabled = true;
             signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
             signalerManager.Teleport(new Vector3(-99.5999985f,-105.760002f,66.6399994f), avatarSecondary);

@@ -333,6 +333,15 @@ public class EmbodimentManager : MonoBehaviour
     {
         //show data simulation...
         StartCoroutine(ApplyRotations());
+
+         if (showStartEM == true || showStartEMReceiver == true)
+             {
+                ShowRecordingReceiver.gameObject.SetActive(false);
+                Debug.LogError("Does not show!");
+            }
+
+        else ShowRecordingReceiver.gameObject.SetActive(true);
+
         if (gameManager.role == "signaler")
         {        
             ChangeColor(TV1, Invisible);
@@ -345,7 +354,9 @@ public class EmbodimentManager : MonoBehaviour
             ChangeColor(TV1Receiver, Invisible);
             ChangeColor(TV2Receiver, Invisible);
             Debug.LogError("show clicked");
-            //ShowRecordingReceiver.gameObject.SetActive(false);
+            
+
+            
         }
 
     }
@@ -393,8 +404,12 @@ public class EmbodimentManager : MonoBehaviour
     }
     private IEnumerator ApplyRotations()
     {
-        while (storedRotations.Count != 0)
+        showStartEM = true;
+        showStartEMReceiver = true;
+        
+        while (storedRotations.Count > 0)
         {
+            Debug.LogError("showStartEMReceiver"+ showStartEMReceiver);
             recordedEyes.transform.localRotation = storedRotations.Dequeue();
             yield return new WaitForSeconds(0.02f);
         }
@@ -404,6 +419,10 @@ public class EmbodimentManager : MonoBehaviour
         Counter += 1;
         CounterReceiver += 1;
         Debug.LogError("FinishedShowReceiver"+  FinishedShowReceiver); //Somehow this doesnt work for the receiver, might change automatically as soon as we included the correct ApplyRotation function
+        
+        showStartEM = false;
+        showStartEMReceiver = false;    
+        
     }
 
     public void ChangeColor(GameObject obj, Material newMaterial)

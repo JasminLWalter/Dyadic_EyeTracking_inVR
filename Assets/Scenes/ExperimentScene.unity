@@ -3370,6 +3370,7 @@ MonoBehaviour:
   vRRig: {fileID: 7646968462962455502}
   xrOriginSetup: {fileID: 7313654230535762584}
   signaler: {fileID: 777719401}
+  receiver: {fileID: 1740773029}
   avatar: {fileID: 7646968462962455489}
   avatarSecondary: {fileID: 1980098680}
   invisibleObject: {fileID: 1068163931}
@@ -26047,6 +26048,69 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!1 &1740773029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1740773031}
+  - component: {fileID: 1740773030}
+  m_Layer: 0
+  m_Name: Receiver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1740773030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1740773029}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc515671ee60774a977218babec865e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftControllerTransform: {fileID: 9014170785090376802}
+  rightControllerTransform: {fileID: 9014170783538599043}
+  preferredHandTransform: {fileID: 9014170783538599043}
+  OriginTransform: {fileID: 4134505311631137542}
+  combinedEyes: {fileID: 0}
+  leftEye: {fileID: 1173071851}
+  rightEye: {fileID: 668277752}
+  gameManager: {fileID: 171754634}
+  menuManager: {fileID: 0}
+  signalerManager: {fileID: 0}
+  receiverManager: {fileID: 0}
+  boxSelected: 0
+  phase3SecondPartCoroutineRunningReceiver: 0
+  didRunSecondPartReceiver: 0
+  TextsPhase3Receiver:
+  - {fileID: 2076410788}
+  - {fileID: 1789295080}
+  avatar: {fileID: 7646968462962455489}
+  selectCounter: 0
+--- !u!4 &1740773031
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1740773029}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.0028734, y: -2.296103, z: -0.20630646}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1743956257
 GameObject:
   m_ObjectHideFlags: 0
@@ -38132,7 +38196,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4134505311631137542}
   - component: {fileID: 7313654230535762585}
-  - component: {fileID: 7313654230535762586}
   - component: {fileID: 7313654230535762587}
   - component: {fileID: 7313654230535762588}
   m_Layer: 0
@@ -38157,37 +38220,6 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   inVR: 1
   hmd: {fileID: 1516416796}
---- !u!114 &7313654230535762586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7313654230535762584}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fc515671ee60774a977218babec865e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftControllerTransform: {fileID: 9014170785090376802}
-  rightControllerTransform: {fileID: 9014170783538599043}
-  preferredHandTransform: {fileID: 9014170783538599043}
-  OriginTransform: {fileID: 4134505311631137542}
-  combinedEyes: {fileID: 0}
-  leftEye: {fileID: 1173071851}
-  rightEye: {fileID: 668277752}
-  gameManager: {fileID: 171754634}
-  menuManager: {fileID: 0}
-  signalerManager: {fileID: 0}
-  receiverManager: {fileID: 0}
-  boxSelected: 0
-  phase3SecondPartCoroutineRunningReceiver: 0
-  didRunSecondPartReceiver: 0
-  TextsPhase3Receiver:
-  - {fileID: 2076410788}
-  - {fileID: 1789295080}
-  avatar: {fileID: 7646968462962455489}
-  selectCounter: 0
 --- !u!114 &7313654230535762587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40614,3 +40646,4 @@ SceneRoots:
   - {fileID: 279322123}
   - {fileID: 1068163935}
   - {fileID: 1989596893}
+  - {fileID: 1740773031}
