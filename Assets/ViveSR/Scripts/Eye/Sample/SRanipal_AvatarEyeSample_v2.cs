@@ -21,6 +21,7 @@ namespace ViveSR.anipal.Eye
         // LSL variables
         private StreamInlet inlet;
         private float[] sample = new float[16];
+        // public GameObject invisibleObjectSecondary;
 
         private void Start()
         {
@@ -39,6 +40,8 @@ namespace ViveSR.anipal.Eye
             // Initialize LSL inlet
             StreamInfo[] results = LSL.LSL.resolve_stream("name", "EyeTracking",1,0.0);
             inlet = new StreamInlet(results[0]);
+
+            // invisibleObjectSecondary = GameObject.Find("invisibleObjectSecondary").GetComponent<invisibleObjectSecondary>();
         }
 
         private void Update()
@@ -53,6 +56,8 @@ namespace ViveSR.anipal.Eye
             bool leftBlink = sample[6] > 0.5f;
             bool rightBlink = sample[7] > 0.5f;
 
+            // invisibleObjectSecondary.transform.position = new Vector3(sample[12], sample[13], sample[14]);
+            // Debug.Log("Invisible Object Secondary Position: " + invisibleObjectSecondary.transform.position);
             // Debug.Log("Left Gaze Direction: " + leftGazeDirection);
             // Debug.Log("Right Gaze Direction: " + rightGazeDirection);
             // Update gaze and eye shapes based on received data

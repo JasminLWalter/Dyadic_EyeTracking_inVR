@@ -9,16 +9,22 @@ public class EyeDataSender : MonoBehaviour
     private Dictionary<EyeShape_v2, float> eyeWeightings = new Dictionary<EyeShape_v2, float>();
     private EyeData_v2 eyeData = new EyeData_v2();
 
+    private SignalerManager signalerManager;
+    // private GameObject invisibleObject;
+
     void Start()
     {
         StreamInfo streamInfo = new StreamInfo("EyeTracking", "Gaze", 16, 0, channel_format_t.cf_float32, "eyeTracking12345");
         outlet = new StreamOutlet(streamInfo);
+        signalerManager = FindObjectOfType<SignalerManager>();
     }
 
     void Update()
     {
         if (SRanipal_Eye_v2.GetEyeWeightings(out eyeWeightings))
         {
+            // invisibleObject = signalerManager.invisibleObject;
+            
             Vector3 leftGazeDirection, rightGazeDirection;
             Vector3 gazeOrigin;
 
@@ -36,6 +42,8 @@ public class EyeDataSender : MonoBehaviour
             float rightSqueeze = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Right_Squeeze] : 0.0f;
 
             // Prepare LSL sample
+            Debug.Log("Invisible Object: " + signalerManager.invisibleObject.transform.position);
+
             float[] sample = new float[16];
             sample[0] = leftGazeDirection.x;
             sample[1] = leftGazeDirection.y;
@@ -49,11 +57,14 @@ public class EyeDataSender : MonoBehaviour
             sample[9] = rightWide;
             sample[10] = leftSqueeze;
             sample[11] = rightSqueeze;
+            sample[12] = signalerManager.invisibleObject.transform.position.x;
+            sample[13] = signalerManager.invisibleObject.transform.position.y;
+            sample[14] = signalerManager.invisibleObject.transform.position.z;
 
             Debug.Log("Sending Sample: " + string.Join(", ", sample));
 
             // Include additional eye weightings if necessary
-            int index = 12;
+            int index = 15;
             foreach (var weighting in eyeWeightings)
             {
                 sample[index] = weighting.Value;
