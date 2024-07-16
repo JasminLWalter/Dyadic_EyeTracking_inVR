@@ -50,9 +50,10 @@ public class EyeDataSender : MonoBehaviour
             sample[10] = leftSqueeze;
             sample[11] = rightSqueeze;
 
+            Debug.Log("Sending Sample: " + string.Join(", ", sample));
 
             // Include additional eye weightings if necessary
-            int index = 8;
+            int index = 12;
             foreach (var weighting in eyeWeightings)
             {
                 sample[index] = weighting.Value;
