@@ -37,7 +37,7 @@ namespace ViveSR.anipal.Eye
             SetEyeShapeAnimationCurves(curves);
 
             // Initialize LSL inlet
-            StreamInfo[] results = LSL.LSL.resolve_stream("name", "EyeTracking");
+            StreamInfo[] results = LSL.LSL.resolve_stream("name", "EyeTracking",1,0.0);
             inlet = new StreamInlet(results[0]);
         }
 

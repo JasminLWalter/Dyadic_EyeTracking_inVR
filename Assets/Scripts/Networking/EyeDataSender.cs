@@ -45,8 +45,8 @@ public class EyeDataSender : MonoBehaviour
             sample[5] = rightGazeDirection.z;
             sample[6] = leftBlink;
             sample[7] = rightBlink;
-            sample[8] = 0;
-            sample[9] = 0;
+            sample[8] = leftWide;
+            sample[9] = rightWide;
             sample[10] = leftSqueeze;
             sample[11] = rightSqueeze;
 
