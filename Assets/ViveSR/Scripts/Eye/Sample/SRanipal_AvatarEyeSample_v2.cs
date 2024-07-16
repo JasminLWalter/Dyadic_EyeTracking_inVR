@@ -45,14 +45,16 @@ namespace ViveSR.anipal.Eye
         {
             // Receive data from LSL
             inlet.pull_sample(sample, 0.0f);
+            Debug.Log("Receiving Sample: " + string.Join(", ", sample));
+
 
             Vector3 leftGazeDirection = new Vector3(sample[0], sample[1], sample[2]);
             Vector3 rightGazeDirection = new Vector3(sample[3], sample[4], sample[5]);
             bool leftBlink = sample[6] > 0.5f;
             bool rightBlink = sample[7] > 0.5f;
 
-            Debug.Log("Left Gaze Direction: " + leftGazeDirection);
-            Debug.Log("Right Gaze Direction: " + rightGazeDirection);
+            // Debug.Log("Left Gaze Direction: " + leftGazeDirection);
+            // Debug.Log("Right Gaze Direction: " + rightGazeDirection);
             // Update gaze and eye shapes based on received data
             UpdateGazeRay(leftGazeDirection, rightGazeDirection);
             UpdateEyeShapes(leftBlink, rightBlink, sample);
