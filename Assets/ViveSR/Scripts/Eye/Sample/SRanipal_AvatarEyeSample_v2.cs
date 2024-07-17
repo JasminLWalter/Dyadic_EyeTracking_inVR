@@ -20,8 +20,9 @@ namespace ViveSR.anipal.Eye
 
         // LSL variables
         private StreamInlet inlet;
-        private float[] sample = new float[16];
-        // public GameObject invisibleObjectSecondary;
+        private float[] sample = new float[27];
+        public GameObject invisibleObjectSecondary;
+        public GameObject headConstraintSecondary;
 
         private void Start()
         {
@@ -51,17 +52,19 @@ namespace ViveSR.anipal.Eye
             Debug.Log("Receiving Sample: " + string.Join(", ", sample));
 
 
-            Vector3 leftGazeDirection = new Vector3(sample[0], sample[1], sample[2]);
+            Vector3 combinedGazeDirection = new Vector3(sample[0], sample[1], sample[2]);
             Vector3 rightGazeDirection = new Vector3(sample[3], sample[4], sample[5]);
             bool leftBlink = sample[6] > 0.5f;
             bool rightBlink = sample[7] > 0.5f;
 
-            // invisibleObjectSecondary.transform.position = new Vector3(sample[12], sample[13], sample[14]);
-            // Debug.Log("Invisible Object Secondary Position: " + invisibleObjectSecondary.transform.position);
+            invisibleObjectSecondary.transform.position = new Vector3(sample[20], sample[21], sample[22]);
+            headConstraintSecondary.transform.rotation =  new Quaternion(sample[23], sample[24], sample[25],sample[26]);
+            //Debug.Log("invisibleObjectSecondary Position: " + invisibleObjectSecondary.transform.position);
+            Debug.Log("headConstraintSecondary Position: " + headConstraintSecondary.transform.position);
             // Debug.Log("Left Gaze Direction: " + leftGazeDirection);
             // Debug.Log("Right Gaze Direction: " + rightGazeDirection);
             // Update gaze and eye shapes based on received data
-            UpdateGazeRay(leftGazeDirection, rightGazeDirection);
+            UpdateGazeRay(combinedGazeDirection);
             UpdateEyeShapes(leftBlink, rightBlink, sample);
         }
 
@@ -112,11 +115,14 @@ namespace ViveSR.anipal.Eye
                 EyebrowAnimationCurves = eyebrowAnimationCurves;
         }
 
-        public void UpdateGazeRay(Vector3 leftGazeDirection, Vector3 rightGazeDirection)
+        // public void UpdateGazeRay(Vector3 leftGazeDirection, Vector3 rightGazeDirection)
+        public void UpdateGazeRay(Vector3 combinedGazeDirection)
+
         {
             for (int i = 0; i < EyesModels.Length; ++i)
             {
-                Vector3 target = EyeAnchors[i].transform.TransformPoint(i == 0 ? leftGazeDirection : rightGazeDirection);
+                // Vector3 target = EyeAnchors[i].transform.TransformPoint(i == 0 ? leftGazeDirection : rightGazeDirection);
+                Vector3 target = EyeAnchors[i].transform.TransformPoint(combinedGazeDirection);
                 EyesModels[i].LookAt(target);
             }
         }
@@ -152,8 +158,32 @@ namespace ViveSR.anipal.Eye
                     {
                         table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[11]);
                     }
-
+                    else if(eyeShape == EyeShape_v2.Eye_Left_Up){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[12]);
+                    } 
+                    else if(eyeShape == EyeShape_v2.Eye_Left_Down){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[13]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Left_Left){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[14]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Left_Right){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[15]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Right_Up){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[16]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Right_Down){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[17]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Right_Left){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[18]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Right_Right){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[19]);
+                    }
                 }
+
             }
         }
 
