@@ -1,249 +1,212 @@
-﻿//========= Copyright 2018, HTC Corporation. All rights reserved. ===========
+﻿using UnityEngine;
+using LSL;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using UnityEngine;
-using UnityEngine.Assertions;
+using ViveSR.anipal.Eye;
 
-namespace ViveSR
+namespace ViveSR.anipal.Eye
 {
-    namespace anipal
+    public class SRanipal_AvatarEyeSample_v2 : MonoBehaviour
     {
-        namespace Eye
+        [SerializeField] private Transform[] EyesModels = new Transform[0];
+        [SerializeField] private List<EyeShapeTable_v2> EyeShapeTables;
+        [SerializeField] private AnimationCurve EyebrowAnimationCurveUpper;
+        [SerializeField] private AnimationCurve EyebrowAnimationCurveLower;
+        [SerializeField] private AnimationCurve EyebrowAnimationCurveHorizontal;
+
+        private Dictionary<EyeShape_v2, float> EyeWeightings = new Dictionary<EyeShape_v2, float>();
+        private AnimationCurve[] EyebrowAnimationCurves = new AnimationCurve[(int)EyeShape_v2.Max];
+        private GameObject[] EyeAnchors;
+        private const int NUM_OF_EYES = 2;
+
+        // LSL variables
+        private StreamInlet inlet;
+        private float[] sample = new float[27];
+        public GameObject invisibleObjectSecondary;
+        public GameObject headConstraintSecondary;
+
+        private void Start()
         {
-            public class SRanipal_AvatarEyeSample_v2 : MonoBehaviour
+            SetEyesModels(EyesModels[0], EyesModels[1]);
+            SetEyeShapeTables(EyeShapeTables);
+
+            AnimationCurve[] curves = new AnimationCurve[(int)EyeShape_v2.Max];
+            for (int i = 0; i < EyebrowAnimationCurves.Length; ++i)
             {
-                [SerializeField] private Transform[] EyesModels = new Transform[0];
-                [SerializeField] private List<EyeShapeTable_v2> EyeShapeTables;
-                /// <summary>
-                /// Customize this curve to fit the blend shapes of your avatar.
-                /// </summary>
-                [SerializeField] private AnimationCurve EyebrowAnimationCurveUpper;
-                /// <summary>
-                /// Customize this curve to fit the blend shapes of your avatar.
-                /// </summary>
-                [SerializeField] private AnimationCurve EyebrowAnimationCurveLower;
-                /// <summary>
-                /// Customize this curve to fit the blend shapes of your avatar.
-                /// </summary>
-                [SerializeField] private AnimationCurve EyebrowAnimationCurveHorizontal;
+                if (i == (int)EyeShape_v2.Eye_Left_Up || i == (int)EyeShape_v2.Eye_Right_Up) curves[i] = EyebrowAnimationCurveUpper;
+                else if (i == (int)EyeShape_v2.Eye_Left_Down || i == (int)EyeShape_v2.Eye_Right_Down) curves[i] = EyebrowAnimationCurveLower;
+                else curves[i] = EyebrowAnimationCurveHorizontal;
+            }
+            SetEyeShapeAnimationCurves(curves);
 
-                public bool NeededToGetData = true;
-                private Dictionary<EyeShape_v2, float> EyeWeightings = new Dictionary<EyeShape_v2, float>();
-                private AnimationCurve[] EyebrowAnimationCurves = new AnimationCurve[(int)EyeShape_v2.Max];
-                private GameObject[] EyeAnchors;
-                private const int NUM_OF_EYES = 2;
-                private static EyeData_v2 eyeData = new EyeData_v2();
-                private bool eye_callback_registered = false;
-                private void Start()
+            // Initialize LSL inlet
+            StreamInfo[] results = LSL.LSL.resolve_stream("name", "EyeTracking",1,0.0);
+            inlet = new StreamInlet(results[0]);
+
+            // invisibleObjectSecondary = GameObject.Find("invisibleObjectSecondary").GetComponent<invisibleObjectSecondary>();
+        }
+
+        private void Update()
+        {
+            // Receive data from LSL
+            inlet.pull_sample(sample, 0.0f);
+            Debug.Log("Receiving Sample: " + string.Join(", ", sample));
+
+
+            Vector3 combinedGazeDirection = new Vector3(sample[0], sample[1], sample[2]);
+            Vector3 rightGazeDirection = new Vector3(sample[3], sample[4], sample[5]);
+            bool leftBlink = sample[6] > 0.5f;
+            bool rightBlink = sample[7] > 0.5f;
+
+            invisibleObjectSecondary.transform.position = new Vector3(sample[20], sample[21], sample[22]);
+            headConstraintSecondary.transform.rotation =  new Quaternion(sample[23], sample[24], sample[25],sample[26]);
+            //Debug.Log("invisibleObjectSecondary Position: " + invisibleObjectSecondary.transform.position);
+            Debug.Log("headConstraintSecondary Position: " + headConstraintSecondary.transform.position);
+            // Debug.Log("Left Gaze Direction: " + leftGazeDirection);
+            // Debug.Log("Right Gaze Direction: " + rightGazeDirection);
+            // Update gaze and eye shapes based on received data
+            UpdateGazeRay(combinedGazeDirection);
+            UpdateEyeShapes(leftBlink, rightBlink, sample);
+        }
+
+        public void SetEyesModels(Transform leftEye, Transform rightEye)
+        {
+            if (leftEye != null && rightEye != null)
+            {
+                EyesModels = new Transform[NUM_OF_EYES] { leftEye, rightEye };
+                DestroyEyeAnchors();
+                CreateEyeAnchors();
+            }
+        }
+
+        public void SetEyeShapeTables(List<EyeShapeTable_v2> eyeShapeTables)
+        {
+            bool valid = true;
+            if (eyeShapeTables == null)
+            {
+                valid = false;
+            }
+            else
+            {
+                for (int table = 0; table < eyeShapeTables.Count; ++table)
                 {
-                    if (!SRanipal_Eye_Framework.Instance.EnableEye)
-                    {
-                        enabled = false;
-                        return;
-                    }
-
-                    SetEyesModels(EyesModels[0], EyesModels[1]);
-                    SetEyeShapeTables(EyeShapeTables);
-
-                    AnimationCurve[] curves = new AnimationCurve[(int)EyeShape_v2.Max];
-                    for (int i = 0; i < EyebrowAnimationCurves.Length; ++i)
-                    {
-                        if (i == (int)EyeShape_v2.Eye_Left_Up || i == (int)EyeShape_v2.Eye_Right_Up) curves[i] = EyebrowAnimationCurveUpper;
-                        else if (i == (int)EyeShape_v2.Eye_Left_Down || i == (int)EyeShape_v2.Eye_Right_Down) curves[i] = EyebrowAnimationCurveLower;
-                        else curves[i] = EyebrowAnimationCurveHorizontal;
-                    }
-                    SetEyeShapeAnimationCurves(curves);
-                }
-
-                private void Update()
-                {
-                    if (SRanipal_Eye_Framework.Status != SRanipal_Eye_Framework.FrameworkStatus.WORKING &&
-                        SRanipal_Eye_Framework.Status != SRanipal_Eye_Framework.FrameworkStatus.NOT_SUPPORT) return;
-
-                    if (NeededToGetData)
-                    {
-                        if (SRanipal_Eye_Framework.Instance.EnableEyeDataCallback == true && eye_callback_registered == false)
-                        {
-                            SRanipal_Eye_v2.WrapperRegisterEyeDataCallback(Marshal.GetFunctionPointerForDelegate((SRanipal_Eye_v2.CallbackBasic)EyeCallback));
-                            eye_callback_registered = true;
-                        }
-                        else if (SRanipal_Eye_Framework.Instance.EnableEyeDataCallback == false && eye_callback_registered == true)
-                        {
-                            SRanipal_Eye_v2.WrapperUnRegisterEyeDataCallback(Marshal.GetFunctionPointerForDelegate((SRanipal_Eye_v2.CallbackBasic)EyeCallback));
-                            eye_callback_registered = false;
-                        }
-                        else if (SRanipal_Eye_Framework.Instance.EnableEyeDataCallback == false)
-                            SRanipal_Eye_API.GetEyeData_v2(ref eyeData);
-
-                        bool isLeftEyeActive = false;
-                        bool isRightEyeAcitve = false;
-                        if (SRanipal_Eye_Framework.Status == SRanipal_Eye_Framework.FrameworkStatus.WORKING)
-                        {
-                            isLeftEyeActive = eyeData.no_user; 
-                            isRightEyeAcitve = eyeData.no_user;
-                        }
-                        else if (SRanipal_Eye_Framework.Status == SRanipal_Eye_Framework.FrameworkStatus.NOT_SUPPORT)
-                        {
-                            isLeftEyeActive = true;
-                            isRightEyeAcitve = true;
-                        }
-
-                        if (isLeftEyeActive || isRightEyeAcitve)
-                        {
-                            if (eye_callback_registered == true)
-                                SRanipal_Eye_v2.GetEyeWeightings(out EyeWeightings, eyeData);
-                            else
-                                SRanipal_Eye_v2.GetEyeWeightings(out EyeWeightings);
-                            UpdateEyeShapes(EyeWeightings);
-                        }
-                        else
-                        {
-                            for (int i = 0; i < (int)EyeShape_v2.Max; ++i)
-                            {
-                                bool isBlink = ((EyeShape_v2)i == EyeShape_v2.Eye_Left_Blink || (EyeShape_v2)i == EyeShape_v2.Eye_Right_Blink);
-                                EyeWeightings[(EyeShape_v2)i] = isBlink ? 1 : 0;
-                            }
-
-                            UpdateEyeShapes(EyeWeightings);
-
-                            return;
-                        }
-
-                        Vector3 GazeOriginCombinedLocal, GazeDirectionCombinedLocal = Vector3.zero;
-                        if (eye_callback_registered == true)
-                        {
-                            if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out GazeOriginCombinedLocal, out GazeDirectionCombinedLocal, eyeData)) { }
-                            else if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out GazeOriginCombinedLocal, out GazeDirectionCombinedLocal, eyeData)) { }
-                            else if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out GazeOriginCombinedLocal, out GazeDirectionCombinedLocal, eyeData)) { }
-                        }
-                        else
-                        {
-                            if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out GazeOriginCombinedLocal, out GazeDirectionCombinedLocal)) { }
-                            else if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out GazeOriginCombinedLocal, out GazeDirectionCombinedLocal)) { }
-                            else if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out GazeOriginCombinedLocal, out GazeDirectionCombinedLocal)) { }
-
-                        }
-                        UpdateGazeRay(GazeDirectionCombinedLocal);
-                    }
-                }
-                private void Release()
-                {
-                    if (eye_callback_registered == true)
-                    {
-                        SRanipal_Eye_v2.WrapperUnRegisterEyeDataCallback(Marshal.GetFunctionPointerForDelegate((SRanipal_Eye_v2.CallbackBasic)EyeCallback));
-                        eye_callback_registered = false;
-                    }
-                }
-                private void OnDestroy()
-                {
-                    DestroyEyeAnchors();
-                }
-
-                public void SetEyesModels(Transform leftEye, Transform rightEye)
-                {
-                    if (leftEye != null && rightEye != null)
-                    {
-                        EyesModels = new Transform[NUM_OF_EYES] { leftEye, rightEye };
-                        DestroyEyeAnchors();
-                        CreateEyeAnchors();
-                    }
-                }
-
-                public void SetEyeShapeTables(List<EyeShapeTable_v2> eyeShapeTables)
-                {
-                    bool valid = true;
-                    if (eyeShapeTables == null)
+                    if (eyeShapeTables[table].skinnedMeshRenderer == null)
                     {
                         valid = false;
+                        break;
                     }
-                    else
+                    for (int shape = 0; shape < eyeShapeTables[table].eyeShapes.Length; ++shape)
                     {
-                        for (int table = 0; table < eyeShapeTables.Count; ++table)
+                        EyeShape_v2 eyeShape = eyeShapeTables[table].eyeShapes[shape];
+                        if (eyeShape > EyeShape_v2.Max || eyeShape < 0)
                         {
-                            if (eyeShapeTables[table].skinnedMeshRenderer == null)
-                            {
-                                valid = false;
-                                break;
-                            }
-                            for (int shape = 0; shape < eyeShapeTables[table].eyeShapes.Length; ++shape)
-                            {
-                                EyeShape_v2 eyeShape = eyeShapeTables[table].eyeShapes[shape];
-                                if (eyeShape > EyeShape_v2.Max || eyeShape < 0)
-                                {
-                                    valid = false;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    if (valid)
-                        EyeShapeTables = eyeShapeTables;
-                }
-
-                public void SetEyeShapeAnimationCurves(AnimationCurve[] eyebrowAnimationCurves)
-                {
-                    if (eyebrowAnimationCurves.Length == (int)EyeShape_v2.Max)
-                        EyebrowAnimationCurves = eyebrowAnimationCurves;
-                }
-
-                public void UpdateGazeRay(Vector3 gazeDirectionCombinedLocal)
-                {
-                    for (int i = 0; i < EyesModels.Length; ++i)
-                    {
-                        Vector3 target = EyeAnchors[i].transform.TransformPoint(gazeDirectionCombinedLocal);
-                        EyesModels[i].LookAt(target);
-                    }
-                }
-
-                public void UpdateEyeShapes(Dictionary<EyeShape_v2, float> eyeWeightings)
-                {
-                    foreach (var table in EyeShapeTables)
-                        RenderModelEyeShape(table, eyeWeightings);
-                }
-
-                private void RenderModelEyeShape(EyeShapeTable_v2 eyeShapeTable, Dictionary<EyeShape_v2, float> weighting)
-                {
-                    for (int i = 0; i < eyeShapeTable.eyeShapes.Length; ++i)
-                    {
-                        EyeShape_v2 eyeShape = eyeShapeTable.eyeShapes[i];
-                        if (eyeShape > EyeShape_v2.Max || eyeShape < 0) continue;
-
-                        if (eyeShape == EyeShape_v2.Eye_Left_Blink || eyeShape == EyeShape_v2.Eye_Right_Blink)
-                            eyeShapeTable.skinnedMeshRenderer.SetBlendShapeWeight(i, weighting[eyeShape]);
-                        else
-                        {
-                            AnimationCurve curve = EyebrowAnimationCurves[(int)eyeShape];
-                            eyeShapeTable.skinnedMeshRenderer.SetBlendShapeWeight(i, curve.Evaluate(weighting[eyeShape]));
+                            valid = false;
+                            break;
                         }
                     }
                 }
+            }
+            if (valid)
+                EyeShapeTables = eyeShapeTables;
+        }
 
-                private void CreateEyeAnchors()
+        public void SetEyeShapeAnimationCurves(AnimationCurve[] eyebrowAnimationCurves)
+        {
+            if (eyebrowAnimationCurves.Length == (int)EyeShape_v2.Max)
+                EyebrowAnimationCurves = eyebrowAnimationCurves;
+        }
+
+        // public void UpdateGazeRay(Vector3 leftGazeDirection, Vector3 rightGazeDirection)
+        public void UpdateGazeRay(Vector3 combinedGazeDirection)
+
+        {
+            for (int i = 0; i < EyesModels.Length; ++i)
+            {
+                // Vector3 target = EyeAnchors[i].transform.TransformPoint(i == 0 ? leftGazeDirection : rightGazeDirection);
+                Vector3 target = EyeAnchors[i].transform.TransformPoint(combinedGazeDirection);
+                EyesModels[i].LookAt(target);
+            }
+        }
+
+        public void UpdateEyeShapes(bool leftBlink, bool rightBlink, float[] sample)
+        {
+            foreach (var table in EyeShapeTables)
+            {
+                for (int i = 0; i < table.eyeShapes.Length; ++i)
                 {
-                    EyeAnchors = new GameObject[NUM_OF_EYES];
-                    for (int i = 0; i < NUM_OF_EYES; ++i)
+                    EyeShape_v2 eyeShape = table.eyeShapes[i];
+                    if (eyeShape == EyeShape_v2.Eye_Left_Blink)
                     {
-                        EyeAnchors[i] = new GameObject();
-                        EyeAnchors[i].name = "EyeAnchor_" + i;
-                        EyeAnchors[i].transform.SetParent(gameObject.transform);
-                        EyeAnchors[i].transform.localPosition = EyesModels[i].localPosition;
-                        EyeAnchors[i].transform.localRotation = EyesModels[i].localRotation;
-                        EyeAnchors[i].transform.localScale = EyesModels[i].localScale;
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[6]);
+                    }
+                    else if (eyeShape == EyeShape_v2.Eye_Right_Blink)
+                    {
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[7]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Left_Wide)
+                    {
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[8]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Right_Wide)
+                    {
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[9]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Left_Squeeze)
+                    {
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[10]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Right_Squeeze)
+                    {
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[11]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Left_Up){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[12]);
+                    } 
+                    else if(eyeShape == EyeShape_v2.Eye_Left_Down){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[13]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Left_Left){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[14]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Left_Right){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[15]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Right_Up){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[16]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Right_Down){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[17]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Right_Left){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[18]);
+                    }
+                    else if(eyeShape == EyeShape_v2.Eye_Right_Right){
+                        table.skinnedMeshRenderer.SetBlendShapeWeight(i, sample[19]);
                     }
                 }
 
-                private void DestroyEyeAnchors()
+            }
+        }
+
+        private void DestroyEyeAnchors()
+        {
+            if (EyeAnchors != null)
+            {
+                foreach (var anchor in EyeAnchors)
                 {
-                    if (EyeAnchors != null)
-                    {
-                        foreach (var obj in EyeAnchors)
-                            if (obj != null) Destroy(obj);
-                    }
+                    if (anchor != null) Destroy(anchor);
                 }
-                private static void EyeCallback(ref EyeData_v2 eye_data)
-                {
-                    eyeData = eye_data;
-                }
+            }
+        }
+
+        private void CreateEyeAnchors()
+        {
+            EyeAnchors = new GameObject[NUM_OF_EYES];
+            for (int i = 0; i < EyesModels.Length; ++i)
+            {
+                EyeAnchors[i] = new GameObject("EyeAnchor_" + i);
+                EyeAnchors[i].transform.SetParent(EyesModels[i], false);
+                EyeAnchors[i].transform.localPosition = Vector3.zero;
+                EyeAnchors[i].transform.localRotation = Quaternion.identity;
             }
         }
     }
