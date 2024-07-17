@@ -373,6 +373,24 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Receiver "",
+                    ""type"": ""Button"",
+                    ""id"": ""0751d9af-e83c-4b06-b6f8-d1d5b173b3bb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Signaler "",
+                    ""type"": ""Button"",
+                    ""id"": ""c1229aff-5d05-42e9-a5c6-3985516b166a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -639,6 +657,28 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""action"": ""Right Controller Device"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ba05f75-2d9a-4df5-be34-9cd8dfb4f1d3"",
+                    ""path"": ""<Keyboard>/numpad6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Receiver "",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d2eed0c-5f3f-41bf-b62c-e9c9975b231a"",
+                    ""path"": ""<Keyboard>/numpad4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Signaler "",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -678,6 +718,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         m_UI_Unpause = m_UI.FindAction("Unpause", throwIfNotFound: true);
         m_UI_LeftControllerDevice = m_UI.FindAction("Left Controller Device", throwIfNotFound: true);
         m_UI_RightControllerDevice = m_UI.FindAction("Right Controller Device", throwIfNotFound: true);
+        m_UI_Receiver = m_UI.FindAction("Receiver ", throwIfNotFound: true);
+        m_UI_Signaler = m_UI.FindAction("Signaler ", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -863,6 +905,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Unpause;
     private readonly InputAction m_UI_LeftControllerDevice;
     private readonly InputAction m_UI_RightControllerDevice;
+    private readonly InputAction m_UI_Receiver;
+    private readonly InputAction m_UI_Signaler;
     public struct UIActions
     {
         private @InputBindings m_Wrapper;
@@ -881,6 +925,8 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         public InputAction @Unpause => m_Wrapper.m_UI_Unpause;
         public InputAction @LeftControllerDevice => m_Wrapper.m_UI_LeftControllerDevice;
         public InputAction @RightControllerDevice => m_Wrapper.m_UI_RightControllerDevice;
+        public InputAction @Receiver => m_Wrapper.m_UI_Receiver;
+        public InputAction @Signaler => m_Wrapper.m_UI_Signaler;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -932,6 +978,12 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @RightControllerDevice.started += instance.OnRightControllerDevice;
             @RightControllerDevice.performed += instance.OnRightControllerDevice;
             @RightControllerDevice.canceled += instance.OnRightControllerDevice;
+            @Receiver.started += instance.OnReceiver;
+            @Receiver.performed += instance.OnReceiver;
+            @Receiver.canceled += instance.OnReceiver;
+            @Signaler.started += instance.OnSignaler;
+            @Signaler.performed += instance.OnSignaler;
+            @Signaler.canceled += instance.OnSignaler;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -978,6 +1030,12 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             @RightControllerDevice.started -= instance.OnRightControllerDevice;
             @RightControllerDevice.performed -= instance.OnRightControllerDevice;
             @RightControllerDevice.canceled -= instance.OnRightControllerDevice;
+            @Receiver.started -= instance.OnReceiver;
+            @Receiver.performed -= instance.OnReceiver;
+            @Receiver.canceled -= instance.OnReceiver;
+            @Signaler.started -= instance.OnSignaler;
+            @Signaler.performed -= instance.OnSignaler;
+            @Signaler.canceled -= instance.OnSignaler;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1032,5 +1090,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         void OnUnpause(InputAction.CallbackContext context);
         void OnLeftControllerDevice(InputAction.CallbackContext context);
         void OnRightControllerDevice(InputAction.CallbackContext context);
+        void OnReceiver(InputAction.CallbackContext context);
+        void OnSignaler(InputAction.CallbackContext context);
     }
 }

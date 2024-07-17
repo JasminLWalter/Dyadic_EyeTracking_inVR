@@ -15,18 +15,23 @@ public class ReceiverManager : MonoBehaviour
     private Collider _lastHit;
     private int _layerMask = 1 << 3;  // Only objects on Layer 3 should be considered
 
-    public Transform leftControllerTransform; // Reference to the VR controller's transform
-    public Transform rightControllerTransform;
-    public Transform preferredHandTransform;
-
+    public GameObject hmd;
     public Transform OriginTransform;
 
-    //  displaying the eye movement of the signaler
+    //  for displaying the eye movement of the signaler
     [SerializeField] private Transform combinedEyes;
     [SerializeField] private Transform leftEye;
     [SerializeField] private Transform rightEye;
     private Vector3 rayOrigin;
     private Vector3 rayDirection;
+
+    public Vector3 eyePositionCombinedWorld;
+    public Vector3 eyeDirectionCombinedWorld;
+    public Quaternion eyeRotationCombinedWorld;
+
+    public Transform leftControllerTransform; // Reference to the VR controller's transform
+    public Transform rightControllerTransform;
+    public Transform preferredHandTransform;
 
     public GameManager gameManager;
     public MenuManager menuManager;
@@ -38,6 +43,8 @@ public class ReceiverManager : MonoBehaviour
     public List<TMP_Text> TextsPhase3Receiver;
 
     public GameObject avatar;
+
+    public GameObject invisibleObjectReceiver;
 
     private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
     public int selectCounter = 0;
@@ -61,27 +68,48 @@ public class ReceiverManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (countdownRunning)
+        {
+            StartCoroutine(gameManager.Countdown());
+        }
         
-       
-       /* // continuous eye movement for the receiver
-        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayOrigin, out rayDirection))
+        SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
+        eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmd.transform.position;
+        Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1, verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
+
+        eyeDirectionCombinedWorld = hmd.transform.rotation * coordinateAdaptedGazeDirectionCombined;
+        eyeRotationCombinedWorld = hmd.transform.rotation;
+
+        invisibleObjectReceiver.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
+
+
+        RaycastHit hitData;
+        if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _layerMask))
         {
-            combinedEyes.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.Self);
-            //Debug.LogError("Direction x:" + rayDirection.x + "Direction y:" + rayDirection.y + "Direction z:" + rayDirection.z);
+            
+            
+            if (_lastHit == null)
+            {
+                _lastHit = hitData.collider;
+                _lastHit.gameObject.SendMessage("StaredAt");
+            }
+            else if (_lastHit != null && _lastHit != hitData.collider)
+            {
+                Debug.Log("Hit something new: " + hitData.collider.name);
+                _lastHit.gameObject.SendMessage("NotLongerStaredAt");
+                _lastHit = hitData.collider;
+                _lastHit.gameObject.SendMessage("StaredAt");
+            }
         }
 
-        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out rayOrigin, out rayDirection))
+        else
         {
-            leftEye.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.Self);
-            //Debug.LogError("Direction x:" + rayDirection.x + "Direction y:" + rayDirection.y + "Direction z:" + rayDirection.z);
+            if (_lastHit != null)
+            {
+                _lastHit.gameObject.SendMessage("NotLongerStaredAt");
+                _lastHit = null;
+            }
         }
-
-        if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out rayOrigin, out rayDirection))
-        {
-            rightEye.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.Self);
-            //Debug.LogError("Direction x:" + rayDirection.x + "Direction y:" + rayDirection.y + "Direction z:" + rayDirection.z);
-        } */
-
 
 
         Ray ray = new Ray(preferredHandTransform.position, preferredHandTransform.forward);

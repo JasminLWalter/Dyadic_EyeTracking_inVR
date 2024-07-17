@@ -60,7 +60,7 @@ public class EmbodimentManager : MonoBehaviour
     private bool startButtonClicked = false;
     private bool showStartEM = false;
     private bool didRun = false;
-    public bool signalerReady = true;
+    public bool signalerReady = true; //needs to be set to false as soon as we start game as two-person game
     
 
     //Receiver
@@ -77,7 +77,7 @@ public class EmbodimentManager : MonoBehaviour
     public GameObject TVReceiver;
     public GameObject TV1Receiver;
     public GameObject TV2Receiver;
-    public GameObject readySignReceiver;
+    public GameObject readySignReceiver; //needs to be set to false as soon as we start game as two-person game
 
     public TMP_Text RecordingTextReceiver;
     public List<TMP_Text> EmbodimentInstructionsReceiver;

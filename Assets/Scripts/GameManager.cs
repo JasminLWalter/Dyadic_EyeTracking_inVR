@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     private int currentPhase = 0;
 
     private ReceiverManager receiverManager;
+    private LSLSignalerOutlets lSLSignalerOutlets;
     private SignalerManager signalerManager;
     private EmbodimentManager embodimentManager;
     private BoxBehaviour boxBehaviour;
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviour
     public GameObject signaler;
 
     public GameObject receiver;
-    public GameObject avatar;
+    public GameObject avatarMain;
     public GameObject avatarSecondary;
     public GameObject invisibleObject;
     public GameObject crosshair;
@@ -94,8 +95,21 @@ public class GameManager : MonoBehaviour
     public Camera mainCamera;
     //private bool startedTimer = false;
     // Start is called before the first frame update
+
+    private bool roleAssigned = false;
     void Start()
     {
+        _inputBindings = new InputBindings();
+        _inputBindings.Player.Enable();
+
+        _inputBindings = new InputBindings();
+        _inputBindings.UI.Enable();
+        //  if (!roleAssigned)
+        // {
+        //     AssignRole();
+            
+        // }
+
         startTime = Time.time;
         menuManager = FindObjectOfType<MenuManager>();
         signalerManager = FindObjectOfType<SignalerManager>();
@@ -111,42 +125,79 @@ public class GameManager : MonoBehaviour
         roundsDisplay.gameObject.SetActive(false);
         scoreDisplayReceiver.gameObject.SetActive(false);
         roundsDisplayReceiver.gameObject.SetActive(false);
-
-        //role = "signaler";
+        
         xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
-        role = "receiver";
-        if (role == "receiver") 
-        {
-            //signaler.GetComponent<ReceiverManager>().enabled = true;
-            receiver.GetComponent<ReceiverManager>().enabled = true;
-            signaler.GetComponent<SignalerManager>().enabled = false;
-            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
-            
-        }
-        if (role == "signaler")
-        {
-            receiver.GetComponent<ReceiverManager>().enabled = false;
-            signaler.GetComponent<SignalerManager>().enabled = true;
-            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
-            signalerManager.Teleport(new Vector3(-99.5999985f,-105.760002f,66.6399994f), avatarSecondary);
-        }
-
-        
-        
         
         score = 0;
 
-        _inputBindings = new InputBindings();
-        _inputBindings.Player.Enable();
 
-         _inputBindings = new InputBindings();
-        _inputBindings.UI.Enable();
     }
+
+    // void AssignRole()
+    // {
+    //     if (_inputBindings.UI.Signaler.triggered) // 4 on keyboard
+    //     {
+    //         role = "signaler";
+    //         receiver.GetComponent<ReceiverManager>().enabled = false;
+    //         signaler.GetComponent<SignalerManager>().enabled = true;
+    //         signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
+    //         signalerManager.Teleport(new Vector3(-99.5999985f, -105.760002f, 66.6399994f), avatarSecondary);
+            
+    //         // LSL Streams
+    //         avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
+    //         avatarMain.GetComponent<LSLSignalerInlets>().enabled = true;
+    //         avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = true;
+    //         avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = true;
+            
+    //     }
+    //     else if (_inputBindings.UI.Receiver.triggered) // 6 on keyboard
+    //     {
+    //         role = "receiver";
+    //         receiver.GetComponent<ReceiverManager>().enabled = true;
+    //         signaler.GetComponent<SignalerManager>().enabled = false;
+    //         receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
+
+    //         // LSL Streams
+    //         avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
+    //         avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = true;
+    //         avatarMain.GetComponent<LSLReceiverInlets>().enabled = true;
+    //         avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;
+    //     }
+    //     roleAssigned = true;
+    // }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.LogError("avatar position secondary" + avatarSecondary.transform.position);
+        if (_inputBindings.UI.Signaler.triggered) // 4 on keyboard
+        {
+            role = "signaler";
+            receiver.GetComponent<ReceiverManager>().enabled = false;
+            signaler.GetComponent<SignalerManager>().enabled = true;
+            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
+            signalerManager.Teleport(new Vector3(-99.5999985f, -105.760002f, 66.6399994f), avatarSecondary);
+            
+            // LSL Streams
+            avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
+            avatarMain.GetComponent<LSLSignalerInlets>().enabled = true;
+            avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = true;
+            avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = true;
+        }
+        if (_inputBindings.UI.Receiver.triggered) // 6 on keyboard
+        {
+            role = "receiver";
+            receiver.GetComponent<ReceiverManager>().enabled = true;
+            signaler.GetComponent<SignalerManager>().enabled = false;
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
+
+            // LSL Streams
+            avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
+            avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = true;
+            Debug.Log("LSL receiver inlet when pressed 6:" + avatarMain.GetComponent<LSLReceiverInlets>().enabled);
+            avatarMain.GetComponent<LSLReceiverInlets>().enabled = true;
+            avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;
+        }
+        Debug.LogError("avatarMain position secondary" + avatarSecondary.transform.position);
         signalerManager.Teleport(new Vector3(-99.5999985f,-99f,66.6399994f), avatarSecondary);
         #region Experimental process 
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
@@ -189,7 +240,7 @@ public class GameManager : MonoBehaviour
             {
                 vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,-0.94f);
                 xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 270, 0));
-                avatar.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
+                avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
             }
             if(role == "signaler")
             {
@@ -211,8 +262,20 @@ public class GameManager : MonoBehaviour
                 {
                     trainingSignReceiver.gameObject.SetActive(true);
                 }
+            } 
+            if (_currentRound < roundsPerCondition)
+            {   
+                Debug.Log("first layer of if condition" + _currentRound + " " + roundsPerCondition);
+                if (_startedRound == false && signalerManager.freezeCounter > 1)
+                {
+                    Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
+
+                    StartCoroutine(Condition1());
+                    StartCoroutine(CountdownTimer(timerCountdownText));
+                }
+                trialNumber++;
             }          
-            if (_currentRound == 4)
+            if (_currentRound == 4) //this order could cause problems
             {    
                 ResetScoreRound();
                 if (role == "signaler")
@@ -224,16 +287,8 @@ public class GameManager : MonoBehaviour
                     trainingSignReceiver.gameObject.SetActive(false);
                 }
             }
-            if (_currentRound < roundsPerCondition)
-            {   
-                if (_startedRound == false && signalerManager.freezeCounter > 1)
-                {
-                    StartCoroutine(Condition1());
-                    StartCoroutine(CountdownTimer(timerCountdownText));
-                }
-                trialNumber++;
-            } 
-            else 
+            
+            else if (_currentRound == roundsPerCondition)
             {
                 
                 EnterNextPhase();
@@ -250,7 +305,7 @@ public class GameManager : MonoBehaviour
             
             vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,1.22000003f);
             xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
-            avatar.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0));
+            avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0));
             Debug.LogError("turn around");
            }
            if (role == "signaler")

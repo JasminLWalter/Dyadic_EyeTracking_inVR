@@ -351,6 +351,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Receiver ",
+                    "type": "Button",
+                    "id": "0751d9af-e83c-4b06-b6f8-d1d5b173b3bb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Signaler ",
+                    "type": "Button",
+                    "id": "c1229aff-5d05-42e9-a5c6-3985516b166a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -615,6 +633,28 @@
                     "processors": "",
                     "groups": "VR",
                     "action": "Right Controller Device",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7ba05f75-2d9a-4df5-be34-9cd8dfb4f1d3",
+                    "path": "<Keyboard>/numpad6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Receiver ",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2d2eed0c-5f3f-41bf-b62c-e9c9975b231a",
+                    "path": "<Keyboard>/numpad4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Signaler ",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
