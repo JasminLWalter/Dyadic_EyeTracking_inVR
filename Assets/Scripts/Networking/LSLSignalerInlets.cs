@@ -8,6 +8,7 @@ public class LSLSignalerInlets : MonoBehaviour
     private string[] streamNames = { "ExperimentPhase", "TimestampsReceiver", "ReceiverReady", "BoxSelectedByReceiver", "EyePosDirRotReceiver", "EyeOpennessLRReceiver", "PupilDiameterLRReceiver", "HMDPosDirRotReceiver", "HandPosDirRotReceiver", "PreferredHandReceiver", "ReceiverFinished", "BreakReceiver" };
     private StreamInlet[] streamInlets;
     private int[] channelCounts;
+    private int[][] intSamples;
     private float[][] floatSamples;
     private string[][] stringSamples;
     public float sampleInterval = 0.0001f;
@@ -22,6 +23,7 @@ public class LSLSignalerInlets : MonoBehaviour
         int streamCount = streamNames.Length;
         streamInlets = new StreamInlet[streamCount];
         channelCounts = new int[streamCount];
+        intSamples = new int[streamCount][];
         floatSamples = new float[streamCount][];
         stringSamples = new string[streamCount][];
 
@@ -47,7 +49,7 @@ public class LSLSignalerInlets : MonoBehaviour
                     }
                     else if (streamInlets[i].info().channel_format() == channel_format_t.cf_int32)
                     {
-                        PullAndProcessIntSample(streamInlets[i], ref floatSamples[i], channelCounts[i], streamNames[i]);
+                        PullAndProcessIntSample(streamInlets[i], ref intSamples[i], channelCounts[i], streamNames[i]);
                     }
                     else if (streamInlets[i].info().channel_format() == channel_format_t.cf_string)
                     {
@@ -142,15 +144,13 @@ public class LSLSignalerInlets : MonoBehaviour
                 // Handle ReceiverReady stream
                 break;
             case "BoxSelectedByReceiver":
-                float reward = sample[3];
+                int reward = (int)sample[3];
                 gameManager.UpdateScore(reward);
                 break;
             case "HMDPosDirRotReceiver":
                 // Handle HMDPosDirRotReceiver stream
                 break;
-            case "ReceiverFinished":
-                receiverManager.boxSelected = sample[0] > 0 ? "true" : "false";
-                break;
+            
             case "BreakReceiver":
                 // Handle BreakReceiver stream
                 break;
@@ -165,9 +165,8 @@ public class LSLSignalerInlets : MonoBehaviour
         // Example: Handling specific string stream data
         switch (streamName)
         {
-            case "ExperimentPhase":
-                string phase = sample[0];
-                // Process the experiment phase data
+            case "ReceiverFinished":
+                receiverManager.boxSelected = true ? sample[0]=="true" : sample[0]=="false";
                 break;
             // Add additional cases for other streams as needed
         }
