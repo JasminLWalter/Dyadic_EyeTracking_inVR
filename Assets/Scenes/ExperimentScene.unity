@@ -3371,7 +3371,7 @@ MonoBehaviour:
   xrOriginSetup: {fileID: 7313654230535762584}
   signaler: {fileID: 777719401}
   receiver: {fileID: 1740773029}
-  avatar: {fileID: 7646968462962455489}
+  avatarMain: {fileID: 7646968462962455489}
   avatarSecondary: {fileID: 1980098680}
   invisibleObject: {fileID: 1068163931}
   crosshair: {fileID: 1054162038}
@@ -3415,7 +3415,7 @@ MonoBehaviour:
   - {x: 0, y: -29, z: 55}
   - {x: -99, y: -100, z: 80}
   - {x: 0, y: -29, z: 55}
-  - {x: -2.9, y: 2, z: 5.9}
+  - {x: -2.9, y: 2, z: 6.7}
   - {x: 0, y: -29, z: 55}
   rewards: 000000000500000000000000050000000a000000000000000500000000000000
   _ValidationSuccessStatus: 1
@@ -10908,7 +10908,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4c6389a0b1b3f314fb0a244c99d13a56, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.54
+      value: -4.48
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4c6389a0b1b3f314fb0a244c99d13a56, type: 3}
       propertyPath: m_LocalRotation.w
@@ -15478,7 +15478,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &980921648
 MonoBehaviour:
@@ -15500,8 +15500,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: In front of you, there are boxes. Try to signal a box with your gaze and
-    press the trigger button when you are ready.
+  m_text: "In front of you, there are boxes. \n\nTry to signal a box with your gaze
+    and press the trigger button when you are ready."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -30480,7 +30480,7 @@ RectTransform:
   m_GameObject: {fileID: 1911593874}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 9.192801}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1054162041}
@@ -34691,7 +34691,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136688598}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0.14}
+  m_LocalPosition: {x: 0, y: 0, z: 0.21}
   m_LocalScale: {x: 0.004492998, y: 0.004492998, z: 0.004492998}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -34704,7 +34704,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -2.88, y: 4.95}
+  m_AnchoredPosition: {x: -0.72, y: 5.27}
   m_SizeDelta: {x: 644, y: 514}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2136688600

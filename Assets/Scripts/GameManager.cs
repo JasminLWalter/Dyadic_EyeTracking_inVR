@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private int currentPhase = 0;
 
     private ReceiverManager receiverManager;
+
+    private EyetrackingValidation eyetrackingValidation;
     private LSLSignalerOutlets lSLSignalerOutlets;
     private SignalerManager signalerManager;
     private EmbodimentManager embodimentManager;
@@ -115,6 +117,7 @@ public class GameManager : MonoBehaviour
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
         embodimentManager = FindObjectOfType<EmbodimentManager>();
+        eyetrackingValidation = FindObjectOfType<EyetrackingValidation>();
         simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
 
         trainingSign.gameObject.SetActive(false);
@@ -182,6 +185,11 @@ public class GameManager : MonoBehaviour
             avatarMain.GetComponent<LSLSignalerInlets>().enabled = true;
             avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = true;
             avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = true;
+
+            avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = false;
+            avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = false;   
+            avatarMain.GetComponent<LSLReceiverInlets>().enabled = false;
+            avatarMain.GetComponent<LSLReceiverOutlets>().enabled = false;
         }
         if (_inputBindings.UI.Receiver.triggered) // 6 on keyboard
         {
@@ -192,10 +200,14 @@ public class GameManager : MonoBehaviour
 
             // LSL Streams
             avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
-            avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = true;
-            Debug.Log("LSL receiver inlet when pressed 6:" + avatarMain.GetComponent<LSLReceiverInlets>().enabled);
+            avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = true;   
             avatarMain.GetComponent<LSLReceiverInlets>().enabled = true;
             avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;
+
+            avatarMain.GetComponent<LSLSignalerOutlets>().enabled = false;
+            avatarMain.GetComponent<LSLSignalerInlets>().enabled = false;
+            avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = false;
+            avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = false;
         }
         Debug.LogError("avatarMain position secondary" + avatarSecondary.transform.position);
         signalerManager.Teleport(new Vector3(-99.5999985f,-99f,66.6399994f), avatarSecondary);
@@ -527,7 +539,12 @@ public class GameManager : MonoBehaviour
             scoreDisplayReceiver.gameObject.SetActive(true);
             scoreDisplayReceiver.text = "Score: " + score;
         }
-        
+        if(_currentRound == 10 ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
+        {
+            SRanipal_Eye_v2.LaunchEyeCalibration();
+            EnterPausePhase();
+            eyetrackingValidation.ValidateEyeTracking();
+        }
         _currentRound += 1;
         _selected = true;
         _startedRound = false;
@@ -658,7 +675,7 @@ public class GameManager : MonoBehaviour
 public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
 {
     yield return new WaitForSeconds(1);
-    int count = 3;
+    int count = 20;
     while (count > 0)
     {
         if ((signalerManager.frozen && signalerManager.freezeCounter > 1)  || (_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 1))

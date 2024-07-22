@@ -46,6 +46,7 @@ public class SignalerManager : MonoBehaviour
     private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
 
     public int freezeCounter = 0;
+    public  Vector3 frozenPosition;
    
     // Start is called before the first frame update
     void Start()
@@ -149,6 +150,7 @@ public class SignalerManager : MonoBehaviour
 
         if (gameManager.role == "signaler" && _inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)
         {
+            // frozenPosition = signalerOutletScript.invisibleObject.transform.position;
             Freeze();
             freezeCounter += 1;
             gameManager.firstFreeze = true;

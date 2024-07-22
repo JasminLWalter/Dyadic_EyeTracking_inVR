@@ -216,7 +216,7 @@ public class EyetrackingValidation : MonoBehaviour
           {
             gameManager.SetValidationSuccessStatus(true); //originally GameManager.Instance.SetValidationSuccessStatus(true)
         }
-        
+        gameManager.ReturnToCurrentPhase();
     }
     
     private IEnumerator CheckErrorEyeTracker(float delay=5)
