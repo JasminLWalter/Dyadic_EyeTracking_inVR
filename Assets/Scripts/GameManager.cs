@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     private InputBindings _inputBindings;
     
     private int score;
+    private List<int> shuffledRewards;
     public string role;
     [SerializeField] private TextMeshProUGUI  scoreDisplay;
     [SerializeField] private TextMeshProUGUI roundsDisplay;
@@ -54,7 +55,7 @@ public class GameManager : MonoBehaviour
     private bool _selected = false;
     public bool firstFreeze = false;
     public bool firstFreezeReceiver = false;
-    [SerializeField] private List<GameObject> boxes = null;
+    [SerializeField] public List<GameObject> boxes = null;
     
 
     public int trialNumber = 0;
@@ -445,7 +446,7 @@ public class GameManager : MonoBehaviour
         System.Random rng = new System.Random();
 
         // Create a new list with 8 elements, all initialized to -1 (a placeholder value)
-        List<int> shuffledRewards = Enumerable.Repeat(-1, 8).ToList();
+        shuffledRewards = Enumerable.Repeat(-1, 8).ToList();
 
         // Increase the range to include the edges but with a small probability
         int mainRewardIndex;
@@ -477,31 +478,6 @@ public class GameManager : MonoBehaviour
 
             shuffledRewards[index] = reward;
         }
-
-
-
-        // rewards = new List<int> { 100, 0, 0, 0, 0, 0, -25 };
-        
-        // Debug.Log("Shuffled rewards: " + string.Join(", ", rewards));
-
-        // // Shuffle rewards except for the main reward (100)
-        // List<int> shuffledRewards = new List<int>();
-        // Debug.Log("Shuffled rewards: " + string.Join(", ", shuffledRewards));
-
-        // System.Random rng = new System.Random();
-        // Debug.Log("Shuffled rewards: " + shuffledRewards);
-        // // Ensure the main reward is not on the edges (index 0 or 7)
-        // int mainRewardIndex = rng.Next(1, 6); // Generate a random index between 1 and 6 for the main reward
-        // shuffledRewards.
-        // // Shuffle the remaining rewards
-        // rewards.Remove(100); // Remove the main reward from the original list
-
-        // while (rewards.Count > 0)
-        // {
-        //     int index = rng.Next(rewards.Count);
-        //     shuffledRewards.Add(rewards.ElementAt(index));
-        //     rewards.RemoveAt(index);
-        // }
 
         Debug.Log("Shuffled rewards: " + string.Join(", ", shuffledRewards));
         // Assign the shuffled rewards to the boxes

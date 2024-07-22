@@ -1,40 +1,33 @@
 using UnityEngine;
 using LSL;
 using System.Collections;
+using System.Linq;
 
 public class LSLSignalerInlets : MonoBehaviour
 {
     private string[] streamNames = { "ExperimentPhase", "TimestampsReceiver", "ReceiverReady", "BoxSelectedByReceiver", "EyePosDirRotReceiver", "EyeOpennessLRReceiver", "PupilDiameterLRReceiver", "HMDPosDirRotReceiver", "HandPosDirRotReceiver", "PreferredHandReceiver", "ReceiverFinished", "BreakReceiver" };
     private StreamInlet[] streamInlets;
     private int[] channelCounts;
-    private float[][] samples;
+    private float[][] floatSamples;
+    private string[][] stringSamples;
     public float sampleInterval = 0.0001f;
+    private ReceiverManager receiverManager;
+    private GameManager gameManager;
 
     void Start()
     {
+        receiverManager = GameObject.Find("ReceiverManager").GetComponent<ReceiverManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         int streamCount = streamNames.Length;
         streamInlets = new StreamInlet[streamCount];
         channelCounts = new int[streamCount];
-        samples = new float[streamCount][];
+        floatSamples = new float[streamCount][];
+        stringSamples = new string[streamCount][];
 
         StartCoroutine(ResolveAndProcessStreams());
     }
 
-
-    // void Update()
-    // {
-    //     for (int i = 0; i < streamNames.Length; i++)
-    //     {
-    //         if (streamInlets[i] == null)
-    //         {
-    //             ResolveStream(streamNames[i], ref streamInlets[i], ref channelCounts[i]);
-    //         }
-    //         if (streamInlets[i] != null)
-    //         {
-    //             PullAndProcessSample(streamInlets[i], ref samples[i], channelCounts[i], streamNames[i]);
-    //         }
-    //     }
-    // }
     private IEnumerator ResolveAndProcessStreams()
     {
         while (true)
@@ -48,81 +41,135 @@ public class LSLSignalerInlets : MonoBehaviour
 
                 if (streamInlets[i] != null)
                 {
-                    PullAndProcessSample(streamInlets[i], ref samples[i], channelCounts[i], streamNames[i]);
+                    if (streamInlets[i].info().channel_format() == channel_format_t.cf_float32)
+                    {
+                        PullAndProcessFloatSample(streamInlets[i], ref floatSamples[i], channelCounts[i], streamNames[i]);
+                    }
+                    else if (streamInlets[i].info().channel_format() == channel_format_t.cf_int32)
+                    {
+                        PullAndProcessIntSample(streamInlets[i], ref floatSamples[i], channelCounts[i], streamNames[i]);
+                    }
+                    else if (streamInlets[i].info().channel_format() == channel_format_t.cf_string)
+                    {
+                        PullAndProcessStringSample(streamInlets[i], ref stringSamples[i], channelCounts[i], streamNames[i]);
+                    }
                 }
             }
 
-            // Wait for the specified interval before repeating the loop
             yield return new WaitForSeconds(sampleInterval);
         }
     }
 
     private void ResolveStream(string streamName, ref StreamInlet inlet, ref int channelCount)
     {
-        // Resolve the LSL stream with the specified name
         StreamInfo[] streamInfos = LSL.LSL.resolve_stream("name", streamName, 1, 0.0);
 
         if (streamInfos.Length > 0)
         {
-            // Create a stream inlet for the first resolved stream
             inlet = new StreamInlet(streamInfos[0]);
             channelCount = inlet.info().channel_count();
             inlet.open_stream();
         }
     }
 
-    private void PullAndProcessSample(StreamInlet inlet, ref float[] sample, int channelCount, string streamName)
+    private void PullAndProcessIntSample(StreamInlet inlet, ref int[] sample, int channelCount, string streamName)
+    {
+        if (sample == null || sample.Length != channelCount)
+        {
+            sample = new int[channelCount];
+        }
+
+        double lastTimeStamp = inlet.pull_sample(sample, 0.0f);
+
+        if (lastTimeStamp != 0.0)
+        {
+            ProcessIntSample(sample, lastTimeStamp, streamName);
+        }
+    }
+
+
+    private void PullAndProcessFloatSample(StreamInlet inlet, ref float[] sample, int channelCount, string streamName)
     {
         if (sample == null || sample.Length != channelCount)
         {
             sample = new float[channelCount];
         }
-        
+
         double lastTimeStamp = inlet.pull_sample(sample, 0.0f);
 
         if (lastTimeStamp != 0.0)
         {
-            // Process the received data
-            ProcessSample(sample, lastTimeStamp, streamName);
+            ProcessFloatSample(sample, lastTimeStamp, streamName);
         }
     }
 
-    private void ProcessSample(float[] sample, double timeStamp, string streamName)
+    private void PullAndProcessStringSample(StreamInlet inlet, ref string[] sample, int channelCount, string streamName)
     {
-        // Implement your data processing logic here
-        Debug.LogWarning($"Received sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+        if (sample == null || sample.Length != channelCount)
+        {
+            sample = new string[channelCount];
+        }
 
-        // Example: Handling specific stream data
+        double lastTimeStamp = inlet.pull_sample(sample, 0.0f);
+
+        if (lastTimeStamp != 0.0)
+        {
+            ProcessStringSample(sample, lastTimeStamp, streamName);
+        }
+    }
+
+
+    private void ProcessIntSample(int[] sample, double timeStamp, string streamName)
+    {
+        Debug.LogWarning($"Received int sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+
+        switch (streamName)
+
+        {
+            case "ExperimentPhase":
+                // Handle ExperimentPhase stream
+                break;
+        }
+    }
+
+    private void ProcessFloatSample(float[] sample, double timeStamp, string streamName)
+    {
+        Debug.LogWarning($"Received float sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+
+        switch (streamName)
+        {
+            case "ReceiverReady":
+                // Handle ReceiverReady stream
+                break;
+            case "BoxSelectedByReceiver":
+                float reward = sample[3];
+                gameManager.UpdateScore(reward);
+                break;
+            case "HMDPosDirRotReceiver":
+                // Handle HMDPosDirRotReceiver stream
+                break;
+            case "ReceiverFinished":
+                receiverManager.boxSelected = sample[0] > 0 ? "true" : "false";
+                break;
+            case "BreakReceiver":
+                // Handle BreakReceiver stream
+                break;
+            // Add additional cases for other streams as needed
+        }
+    }
+
+    private void ProcessStringSample(string[] sample, double timeStamp, string streamName)
+    {
+        Debug.LogWarning($"Received string sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+
+        // Example: Handling specific string stream data
         switch (streamName)
         {
             case "ExperimentPhase":
-                float experimentPhase = sample[0];
-                // Handle experimentPhase data
+                string phase = sample[0];
+                // Process the experiment phase data
                 break;
-            case "TimestampsReceiver":
-                break;
-            case "ReceiverReady":
-                break;
-            case "BoxSelectedByReceiver":
-                float boxSelectedByReceiver = sample[0];
-                break;
-            case "EyePosDirRotReceiver":
-                break;
-            case "EyeOpennessLRReceiver":
-                break;
-            case "PupilDiameterLRReceiver":
-                break;
-            case "HMDPosDirRotReceiver":
-                break;
-            case "HandPosDirRotReceiver":
-                break;
-            case "PreferredHandReceiver":
-                break;
-            case "ReceiverFinished":
-                break;
-            case "BreakReceiver":
-                break;
-
+            // Add additional cases for other streams as needed
         }
     }
 }

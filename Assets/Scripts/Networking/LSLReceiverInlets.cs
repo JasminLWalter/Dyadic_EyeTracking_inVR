@@ -4,14 +4,18 @@ using System.Collections;
 
 public class LSLReceiverInlets : MonoBehaviour
 {
-    private string[] streamNames = { "ExperimentPhase", "TimestampsSignaler", "SignalerReady", "BoxSelectedBySignaler", "EyePosDirRotSignaler", "EyeOpennessLRSignaler", "PupilDiameterLRSignaler", "HMDPosDirRotSignaler", "HandPosDirRotSignaler", "PreferredHandSignaler", "FrozenGazeSignaler", "BreakSignaler" };
+    private string[] streamNames = { "ExperimentPhase", "TimestampsSignaler", "SignalerReady", "BoxSelectedBySignaler", "Rewards", "EyePosDirRotSignaler", "EyeOpennessLRSignaler", "PupilDiameterLRSignaler", "HMDPosDirRotSignaler", "HandPosDirRotSignaler", "PreferredHandSignaler", "FrozenGazeSignaler", "BreakSignaler" };
     private StreamInlet[] streamInlets;
     private int[] channelCounts;
     private float[][] samples;
     public float sampleInterval = 0.0001f;
+    private GameManager gameManager;
+
 
     void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         int streamCount = streamNames.Length;
         streamInlets = new StreamInlet[streamCount];
         channelCounts = new int[streamCount];
@@ -95,29 +99,34 @@ public class LSLReceiverInlets : MonoBehaviour
         // Example: Handling specific stream data
         switch (streamName)
         {
-            case "ExperimentPhase":
-                float experimentPhase = sample[0];
-                // Handle experimentPhase data
-                break;
-            case "TimestampsSignaler":
-                // Handle trial number data
-                break;
+            // case "ExperimentPhase":
+            //     float experimentPhase = sample[0];
+            //     break;
+            // case "TimestampsSignaler":
+            //     break;
             case "SignalerReady":
                 break;
-            case "BoxSelectedBySignaler":
-                break;
-            case "EyePosDirRotSignaler":
-                Debug.LogWarning("Received EyePosDirRotSignaler data: " + string.Join(", ", sample));
-                break;
-            case "EyeOpennessLRSignaler":
-                break;
-            case "PupilDiameterLRSignaler":
-                break;
+            // case "BoxSelectedBySignaler":
+            //     break;
+            // case "EyePosDirRotSignaler":
+            //     Debug.LogWarning("Received EyePosDirRotSignaler data: " + string.Join(", ", sample));
+            //     break;
+            // case "EyeOpennessLRSignaler":
+            //     break;
+            // case "PupilDiameterLRSignaler":
+            //     break;
             case "HMDPosDirRotSignaler":
                 break;
-            case "HandPosDirRotSignaler":
-                break;
-            case "PreferredHandSignaler":
+            // case "HandPosDirRotSignaler":
+            //     break;
+            // case "PreferredHandSignaler":
+            //     break;
+            case "Rewards":
+                for (int i = 0; i < gameManager.boxes.Count; i++)
+                    {
+                        BoxBehaviour currentBox = gameManager.boxes.ElementAt(i).GetComponent<BoxBehaviour>();
+                        currentBox.ChangeReward(sample.ElementAt(i));
+                    }
                 break;
             case "FrozenGazeSignaler":
                 break;
