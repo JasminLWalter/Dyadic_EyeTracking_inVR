@@ -238,43 +238,43 @@ public class LSLReceiverOutlets : MonoBehaviour
         lslOhmdPosDirRot = new StreamOutlet(lslIhmdPosDirRot);
 
         // Hand Position, Direction, Rotation
-        lslIHandPosDirRot = new StreamInfo(
-            "HandPosDirRotReceiver",
-            "Markers",
-            30,
-            NominalRate,
-            LSL.channel_format_t.cf_float32);
-        lslIHandPosDirRot.desc().append_child("LeftPosX");
-        lslIHandPosDirRot.desc().append_child("LeftPosY");
-        lslIHandPosDirRot.desc().append_child("LeftPosZ");
-        lslIHandPosDirRot.desc().append_child("LeftDirForwardX");
-        lslIHandPosDirRot.desc().append_child("LeftDirForwardY");
-        lslIHandPosDirRot.desc().append_child("LeftDirForwardZ");
-        lslIHandPosDirRot.desc().append_child("LeftDirVerticalX");
-        lslIHandPosDirRot.desc().append_child("LeftDirVerticalY");
-        lslIHandPosDirRot.desc().append_child("LeftDirVerticalZ");
-        lslIHandPosDirRot.desc().append_child("LeftDirHorizontalX");
-        lslIHandPosDirRot.desc().append_child("LeftDirHorizontalY");
-        lslIHandPosDirRot.desc().append_child("LeftDirHorizontalZ");
-        lslIHandPosDirRot.desc().append_child("LeftRotX");
-        lslIHandPosDirRot.desc().append_child("LeftRotY");
-        lslIHandPosDirRot.desc().append_child("LeftRotZ");
-        lslIHandPosDirRot.desc().append_child("RightPosX");
-        lslIHandPosDirRot.desc().append_child("RightPosY");
-        lslIHandPosDirRot.desc().append_child("RightPosZ");
-        lslIHandPosDirRot.desc().append_child("RightDirForwardX");
-        lslIHandPosDirRot.desc().append_child("RightDirForwardY");
-        lslIHandPosDirRot.desc().append_child("RightDirForwardZ");
-        lslIHandPosDirRot.desc().append_child("RightDirVerticalX");
-        lslIHandPosDirRot.desc().append_child("RightDirVerticalY");
-        lslIHandPosDirRot.desc().append_child("RightDirVerticalZ");
-        lslIHandPosDirRot.desc().append_child("RightDirHorizontalX");
-        lslIHandPosDirRot.desc().append_child("RightDirHorizontalY");
-        lslIHandPosDirRot.desc().append_child("RightDirHorizontalZ");
-        lslIHandPosDirRot.desc().append_child("RightRotX");
-        lslIHandPosDirRot.desc().append_child("RightRotY");
-        lslIHandPosDirRot.desc().append_child("RightRotZ");
-        lslOHandPosDirRot = new StreamOutlet(lslIHandPosDirRot);
+        // lslIHandPosDirRot = new StreamInfo(
+        //     "HandPosDirRotReceiver",
+        //     "Markers",
+        //     30,
+        //     NominalRate,
+        //     LSL.channel_format_t.cf_float32);
+        // lslIHandPosDirRot.desc().append_child("LeftPosX");
+        // lslIHandPosDirRot.desc().append_child("LeftPosY");
+        // lslIHandPosDirRot.desc().append_child("LeftPosZ");
+        // lslIHandPosDirRot.desc().append_child("LeftDirForwardX");
+        // lslIHandPosDirRot.desc().append_child("LeftDirForwardY");
+        // lslIHandPosDirRot.desc().append_child("LeftDirForwardZ");
+        // lslIHandPosDirRot.desc().append_child("LeftDirVerticalX");
+        // lslIHandPosDirRot.desc().append_child("LeftDirVerticalY");
+        // lslIHandPosDirRot.desc().append_child("LeftDirVerticalZ");
+        // lslIHandPosDirRot.desc().append_child("LeftDirHorizontalX");
+        // lslIHandPosDirRot.desc().append_child("LeftDirHorizontalY");
+        // lslIHandPosDirRot.desc().append_child("LeftDirHorizontalZ");
+        // lslIHandPosDirRot.desc().append_child("LeftRotX");
+        // lslIHandPosDirRot.desc().append_child("LeftRotY");
+        // lslIHandPosDirRot.desc().append_child("LeftRotZ");
+        // lslIHandPosDirRot.desc().append_child("RightPosX");
+        // lslIHandPosDirRot.desc().append_child("RightPosY");
+        // lslIHandPosDirRot.desc().append_child("RightPosZ");
+        // lslIHandPosDirRot.desc().append_child("RightDirForwardX");
+        // lslIHandPosDirRot.desc().append_child("RightDirForwardY");
+        // lslIHandPosDirRot.desc().append_child("RightDirForwardZ");
+        // lslIHandPosDirRot.desc().append_child("RightDirVerticalX");
+        // lslIHandPosDirRot.desc().append_child("RightDirVerticalY");
+        // lslIHandPosDirRot.desc().append_child("RightDirVerticalZ");
+        // lslIHandPosDirRot.desc().append_child("RightDirHorizontalX");
+        // lslIHandPosDirRot.desc().append_child("RightDirHorizontalY");
+        // lslIHandPosDirRot.desc().append_child("RightDirHorizontalZ");
+        // lslIHandPosDirRot.desc().append_child("RightRotX");
+        // lslIHandPosDirRot.desc().append_child("RightRotY");
+        // lslIHandPosDirRot.desc().append_child("RightRotZ");
+        // lslOHandPosDirRot = new StreamOutlet(lslIHandPosDirRot);
 
         // Preferred Hand
         lslIPreferredHand = new StreamInfo(

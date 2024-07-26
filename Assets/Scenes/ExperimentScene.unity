@@ -12284,6 +12284,7 @@ MonoBehaviour:
   invisibleObject: {fileID: 1068163931}
   avatar: {fileID: 7646968462962455489}
   freezeCounter: 0
+  frozenPosition: {x: 0, y: 0, z: 0}
 --- !u!4 &777719403
 Transform:
   m_ObjectHideFlags: 0
@@ -31281,6 +31282,12 @@ PrefabInstance:
       addedObject: {fileID: 1980098753}
     - targetCorrespondingSourceObject: {fileID: 1970928214426170920, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1980098761}
+    - targetCorrespondingSourceObject: {fileID: 1970928214426170920, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1980098760}
+    - targetCorrespondingSourceObject: {fileID: 1970928214426170920, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1980098752}
     - targetCorrespondingSourceObject: {fileID: 1970928214426170920, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
       insertIndex: -1
@@ -31729,7 +31736,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1980098680}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2872c722b18f6d043ad0dbae08561d64, type: 3}
   m_Name: 
@@ -31976,6 +31983,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sampleInterval: 0.0001
+--- !u!114 &1980098760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980098680}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 453f31c61b878c74db88f66b7573078f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headConstraint: {fileID: 0}
+--- !u!114 &1980098761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980098680}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8518aaab093f3942b2ba86a460fa6f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EyesModels: []
+  EyeShapeTables: []
+  EyebrowAnimationCurveUpper:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  EyebrowAnimationCurveLower:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  EyebrowAnimationCurveHorizontal:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  NeededToGetData: 1
 --- !u!1 &1982337117
 GameObject:
   m_ObjectHideFlags: 0
@@ -35605,6 +35658,12 @@ PrefabInstance:
       addedObject: {fileID: 7646968462962455493}
     - targetCorrespondingSourceObject: {fileID: 1970928214426170920, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 7646968462962455509}
+    - targetCorrespondingSourceObject: {fileID: 1970928214426170920, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7646968462962455508}
+    - targetCorrespondingSourceObject: {fileID: 1970928214426170920, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 7646968462962455502}
     - targetCorrespondingSourceObject: {fileID: 1970928214426170920, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
       insertIndex: -1
@@ -38435,6 +38494,7 @@ MonoBehaviour:
   invisibleObject: {fileID: 1068163931}
   avatar: {fileID: 7646968462962455489}
   freezeCounter: 0
+  frozenPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &7313654230535762588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38511,7 +38571,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7646968462962455489}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2872c722b18f6d043ad0dbae08561d64, type: 3}
   m_Name: 
@@ -38824,6 +38884,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sampleInterval: 0.0001
+--- !u!114 &7646968462962455508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7646968462962455489}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 453f31c61b878c74db88f66b7573078f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headConstraint: {fileID: 0}
+--- !u!114 &7646968462962455509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7646968462962455489}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8518aaab093f3942b2ba86a460fa6f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EyesModels: []
+  EyeShapeTables: []
+  EyebrowAnimationCurveUpper:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  EyebrowAnimationCurveLower:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  EyebrowAnimationCurveHorizontal:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  NeededToGetData: 1
 --- !u!4 &7696548424182836572
 Transform:
   m_ObjectHideFlags: 0

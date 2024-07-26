@@ -181,6 +181,15 @@ public class GameManager : MonoBehaviour
             signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
             signalerManager.Teleport(new Vector3(-99.5999985f, -105.760002f, 66.6399994f), avatarSecondary);
             
+            // Eye data scripts
+            avatarMain.GetComponent<SRanipal_AvatarEyeSample>().enabled = true;
+            avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
+            avatarMain.GetComponent<EyeDataSender>().enabled = false;
+            
+            avatarSecondary.GetComponent<SRanipal_AvatarEyeSample>().enabled = false;
+            avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
+            avatarSecondary.GetComponent<EyeDataSender>().enabled = true;
+
             // LSL Streams
             avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
             avatarMain.GetComponent<LSLSignalerInlets>().enabled = true;
@@ -198,6 +207,15 @@ public class GameManager : MonoBehaviour
             receiver.GetComponent<ReceiverManager>().enabled = true;
             signaler.GetComponent<SignalerManager>().enabled = false;
             receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
+
+            // Eye data scripts
+            avatarMain.GetComponent<SRanipal_AvatarEyeSample>().enabled = false;
+            avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
+            avatarMain.GetComponent<EyeDataSender>().enabled = true;
+            
+            avatarSecondary.GetComponent<SRanipal_AvatarEyeSample>().enabled = true;
+            avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
+            avatarSecondary.GetComponent<EyeDataSender>().enabled = false;
 
             // LSL Streams
             avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
