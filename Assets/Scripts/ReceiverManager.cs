@@ -13,6 +13,7 @@ public class ReceiverManager : MonoBehaviour
 
     private InputBindings _inputBindings;
     private Collider _lastHit;
+    private Collider _lastHitController;
     private int _layerMask = 1 << 3;  // Only objects on Layer 3 should be considered
 
     public GameObject hmd;
@@ -39,7 +40,7 @@ public class ReceiverManager : MonoBehaviour
     public SignalerManager signalerManager;
     public ReceiverManager receiverManager;
     public bool boxSelected = false;
-    public bool phase3SecondPartCoroutineRunningReceiver = false;
+    public bool phase3SecondPartCoroutineRunningReceiver = true;
     public bool didRunSecondPartReceiver = false;
     public List<TMP_Text> TextsPhase3Receiver;
 
@@ -73,16 +74,16 @@ public class ReceiverManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (signalerManager.phase3SecondPartCoroutineRunning && phase3SecondPartCoroutineRunningReceiver)
+        if (signalerManager.phase3SecondPartCoroutineRunning == false && phase3SecondPartCoroutineRunningReceiver) //signalerManager.phase3SecondPartCoroutineRunning == true as soon as two-player-mode
         {
             StartCoroutine(gameManager.Countdown());
         }
-        if (signalerManager.frozen)
+        if (signalerManager.frozen && gameManager.countdownRunning == false)
         {
             gameManager.StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownTextReceiver));
         }
 
-        
+        /*
         SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
         eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmd.transform.position;
         Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1, verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
@@ -92,7 +93,7 @@ public class ReceiverManager : MonoBehaviour
 
         invisibleObjectReceiver.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
 
-
+/*
         if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _layerMask))
         {
             
@@ -100,14 +101,14 @@ public class ReceiverManager : MonoBehaviour
             if (_lastHit == null)
             {
                 _lastHit = hitData.collider;
-                _lastHit.gameObject.SendMessage("StaredAt");
+              //  _lastHit.gameObject.SendMessage("StaredAt");
             }
             else if (_lastHit != null && _lastHit != hitData.collider)
             {
                 Debug.Log("Hit something new: " + hitData.collider.name);
-                _lastHit.gameObject.SendMessage("NotLongerStaredAt");
+              //  _lastHit.gameObject.SendMessage("NotLongerStaredAt");
                 _lastHit = hitData.collider;
-                _lastHit.gameObject.SendMessage("StaredAt");
+                //_lastHit.gameObject.SendMessage("StaredAt");
             }
         }
 
@@ -115,11 +116,14 @@ public class ReceiverManager : MonoBehaviour
         {
             if (_lastHit != null)
             {
-                _lastHit.gameObject.SendMessage("NotLongerStaredAt");
+              //  _lastHit.gameObject.SendMessage("NotLongerStaredAt");
                 _lastHit = null;
             }
-        }
+        }*/
 
+        if (_inputBindings.Player.SelectBox.triggered==true){
+            Debug.LogError("Pressed Select Box");
+        }
 
         Ray ray = new Ray(preferredHandTransform.position, preferredHandTransform.forward);
         RaycastHit hit;
@@ -127,21 +131,22 @@ public class ReceiverManager : MonoBehaviour
         // Check if the ray hits any UI buttons
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, _layerMask))
         {
-            if (_lastHit == null)
+            if (_lastHitController == null)
             {
-                _lastHit = hit.collider;
-                _lastHit.gameObject.SendMessage("StaredAtReceiver");
+                _lastHitController = hit.collider;
+                _lastHitController.gameObject.SendMessage("StaredAtReceiver");
             }
-            else if (_lastHit != null && _lastHit != hit.collider)
+            else if (_lastHitController != null && _lastHitController != hit.collider)
             {
                 Debug.Log("Hit something new: " + hit.collider.name);
-                _lastHit.gameObject.SendMessage("NotLongerStaredAt");
-                _lastHit = hit.collider;
-                _lastHit.gameObject.SendMessage("StaredAt");
+                _lastHitController.gameObject.SendMessage("NotLongerStaredAt");
+                _lastHitController = hit.collider;
+                _lastHitController.gameObject.SendMessage("StaredAtReceiver");
             }
             else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3)
             {
-               _lastHit.gameObject.SendMessage("Selected");
+                Debug.LogError("SelectBox");
+               _lastHitController.gameObject.SendMessage("Selected");
                boxSelected = true;
                selectCounter++;
                
@@ -168,11 +173,11 @@ public class ReceiverManager : MonoBehaviour
         }
         else
         {
-            if (_lastHit != null)
+            if (_lastHitController != null)
             {
                 Debug.Log("Not longer stared at.");
-                _lastHit.gameObject.SendMessage("NotLongerStaredAt");
-                _lastHit = null;
+                _lastHitController.gameObject.SendMessage("NotLongerStaredAt");
+                _lastHitController = null;
             }
         }
     }

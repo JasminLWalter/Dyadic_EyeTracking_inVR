@@ -96,6 +96,8 @@ public class GameManager : MonoBehaviour
 
     private float probabilityForOne = 0.5f;
     public Camera mainCamera;
+
+    public bool countdownRunning = false;
     //private bool startedTimer = false;
     // Start is called before the first frame update
 
@@ -302,7 +304,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
 
                     StartCoroutine(Condition1());
-                    StartCoroutine(CountdownTimer(timerCountdownText));
+                    //StartCoroutine(CountdownTimer(timerCountdownText));
                 }
                 trialNumber++;
             }          
@@ -410,9 +412,6 @@ public class GameManager : MonoBehaviour
         ShowMilkyGlassRandom();
         _startedRound = true;
         _selected = false;
-        //Timer();
-        
-        Debug.Log("Timer started");
 
         // 1. Freeze receiver 
             	// --> eye data is not sent to the signaler at this point
@@ -660,7 +659,7 @@ public class GameManager : MonoBehaviour
             countdownTextReceiver.text = "Wait until Signaler has decided!";
             yield return new WaitForSeconds(19);
             countdownTextReceiver.gameObject.SetActive(false);
-            //StartCoroutine(CountdownTimer(timerCountdownTextReceiver));
+            
             
             
             
@@ -670,6 +669,7 @@ public class GameManager : MonoBehaviour
 
 public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
 {
+    countdownRunning = true;
     receiverManager.CountdownStarted = true;
     yield return new WaitForSeconds(1);
     int count = 20;
@@ -697,6 +697,7 @@ public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
     StartCoroutine(ShowTimeExceeded());
     trialFailedCount++;
     UpdateScore(-20);
+    countdownRunning = false;
 }
 
 }
