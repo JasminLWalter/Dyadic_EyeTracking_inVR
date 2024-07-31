@@ -51,6 +51,7 @@ public class ReceiverManager : MonoBehaviour
     private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
     public int selectCounter = 0;
     private bool countdownRunning = false;
+    private LSLReceiverOutlets lSLReceiverOutlets;
 
     // Start is called before the first frame update
     void Start()
@@ -59,6 +60,8 @@ public class ReceiverManager : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         menuManager = FindObjectOfType<MenuManager>();
         signalerManager = FindObjectOfType<SignalerManager>();
+        lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
+
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
 
@@ -109,7 +112,10 @@ public class ReceiverManager : MonoBehaviour
                 }
                 if(selectCounter > 1)
                 {
-                    signalerManager.Unfreeze();                    
+                    signalerManager.Unfreeze();
+                    string frozenString = signalerManager.frozen.ToString();
+                    lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
+                        
                 }
                
             }

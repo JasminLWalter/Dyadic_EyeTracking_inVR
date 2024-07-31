@@ -341,7 +341,7 @@ public class LSLSignalerOutlets : MonoBehaviour
 
         // Frozen Gaze
         lslIFrozenGaze = new StreamInfo(
-            "FrozenGazeSignaler",
+            "FrozenSignaler",
             "Markers",
             1,
             NominalRate,
@@ -408,30 +408,18 @@ public class LSLSignalerOutlets : MonoBehaviour
         lslORaycastHit.push_sample(raycast);
 
         // Prepare the eye data to be sent through LSL
-        // float[] eyeData = new float[9];
-        // eyeData[0] = signalerManager.eyePositionCombinedWorld.x;
-        // eyeData[1] = signalerManager.eyePositionCombinedWorld.y;
-        // eyeData[2] = signalerManager.eyePositionCombinedWorld.z;
-        // eyeData[3] = signalerManager.eyeDirectionCombinedWorld.x;
-        // eyeData[4] = signalerManager.eyeDirectionCombinedWorld.y;
-        // eyeData[5] = signalerManager.eyeDirectionCombinedWorld.z;
-        // eyeData[6] = signalerManager.eyeRotationCombinedWorld.x;
-        // eyeData[7] = signalerManager.eyeRotationCombinedWorld.y;
-        // eyeData[8] = signalerManager.eyeRotationCombinedWorld.z;
-        // float[] eyeData = new float[9];
-        // eyeData[0] = signalerManager.eyePositionCombinedWorld.x;
-        // eyeData[1] = signalerManager.eyePositionCombinedWorld.y;
-        // eyeData[2] = signalerManager.eyePositionCombinedWorld.z;
-        // eyeData[3] = signalerManager.eyeDirectionCombinedWorld.x;
-        // eyeData[4] = signalerManager.eyeDirectionCombinedWorld.y;
-        // eyeData[5] = signalerManager.eyeDirectionCombinedWorld.z;
-        // eyeData[6] = signalerManager.eyeRotationCombinedWorld.x;
-        // eyeData[7] = signalerManager.eyeRotationCombinedWorld.y;
-        // eyeData[8] = signalerManager.eyeRotationCombinedWorld.z;
+        float[] eyePosDirRotData = new float[9];
+        eyePosDirRotData[0] = signalerManager.eyePositionCombinedWorld.x;
+        eyePosDirRotData[1] = signalerManager.eyePositionCombinedWorld.y;
+        eyePosDirRotData[2] = signalerManager.eyePositionCombinedWorld.z;
+        eyePosDirRotData[3] = signalerManager.eyeDirectionCombinedWorld.x;
+        eyePosDirRotData[4] = signalerManager.eyeDirectionCombinedWorld.y;
+        eyePosDirRotData[5] = signalerManager.eyeDirectionCombinedWorld.z;
+        eyePosDirRotData[6] = signalerManager.eyeRotationCombinedWorld.x;
+        eyePosDirRotData[7] = signalerManager.eyeRotationCombinedWorld.y;
+        eyePosDirRotData[8] = signalerManager.eyeRotationCombinedWorld.z;
 
-        // // lslOEyePosDirRot.push_sample(eyeData);
-
-        // Retrieve eye data from SRanipal
+        // Retrieve eye openness and pupil diameter data from SRanipal
         if (SRanipal_Eye_v2.GetVerboseData(out VerboseData eyeData))
         {
             // Eye openness

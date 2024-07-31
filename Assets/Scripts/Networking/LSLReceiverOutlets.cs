@@ -45,8 +45,8 @@ public class LSLReceiverOutlets : MonoBehaviour
     public StreamOutlet lslOHandPosDirRot;
     public StreamInfo lslIPreferredHand;
     public StreamOutlet lslOPreferredHand;
-    // public StreamInfo lslIFrozenGaze;
-    // public StreamOutlet lslOFrozenGaze;
+    public StreamInfo lslIFrozenGaze;
+    public StreamOutlet lslOFrozenGaze;
     // public StreamInfo lslITrialNumber;
     // public StreamOutlet lslOTrialNumber;
     // public StreamInfo lslIFailTrial;
@@ -336,6 +336,15 @@ public class LSLReceiverOutlets : MonoBehaviour
         //     LSL.channel_format_t.cf_int32);
         // lslIFailedTrialCounter.desc().append_child("Count");
         // lslOFailedTrialCounter = new StreamOutlet(lslIFailedTrialCounter);
+
+        // // Frozen Gaze
+        lslIFrozenGaze = new StreamInfo(
+            "FrozenReceiver",
+            "Markers",
+            1,
+            NominalRate,
+            LSL.channel_format_t.cf_string);
+        lslOFrozenGaze = new StreamOutlet(lslIFrozenGaze);
 
         // Receiver Finished
         lslIReceiverFinished = new StreamInfo(

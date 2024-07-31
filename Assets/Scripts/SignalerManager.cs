@@ -50,15 +50,17 @@ public class SignalerManager : MonoBehaviour
 
     public int freezeCounter = 0;
     public  Vector3 frozenPosition;
+    private LSLSignalerOutlets lSLSignalerOutlets;
    
     // Start is called before the first frame update
     void Start()
     {
-         gameManager = FindObjectOfType<GameManager>();
-         menuManager = FindObjectOfType<MenuManager>();
-         embodimentManager = FindObjectOfType<EmbodimentManager>();
-         receiverManager = FindObjectOfType<ReceiverManager>();
-         simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
+        gameManager = FindObjectOfType<GameManager>();
+        menuManager = FindObjectOfType<MenuManager>();
+        embodimentManager = FindObjectOfType<EmbodimentManager>();
+        simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
+        lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
+
 
 
         _inputBindings = new InputBindings();
@@ -175,6 +177,8 @@ public class SignalerManager : MonoBehaviour
             if(freezeCounter > 1)
             {
                 Freeze();
+                string frozenString = frozen.ToString();
+                lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
             }
         }
 
