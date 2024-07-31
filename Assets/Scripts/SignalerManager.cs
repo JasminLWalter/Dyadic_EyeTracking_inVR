@@ -32,6 +32,8 @@ public class SignalerManager : MonoBehaviour
     public MenuManager menuManager;
     public GameManager gameManager;
 
+    public ReceiverManager receiverManager;
+
     private EmbodimentManager embodimentManager;
     private SimpleCrosshair simpleCrosshair;
 
@@ -55,6 +57,7 @@ public class SignalerManager : MonoBehaviour
          gameManager = FindObjectOfType<GameManager>();
          menuManager = FindObjectOfType<MenuManager>();
          embodimentManager = FindObjectOfType<EmbodimentManager>();
+         receiverManager = FindObjectOfType<ReceiverManager>();
          simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
 
 
@@ -71,6 +74,10 @@ public class SignalerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (phase3SecondPartCoroutineRunning && receiverManager.phase3SecondPartCoroutineRunningReceiver)
+        {
+            StartCoroutine(gameManager.Countdown());
+        }
        /* if (!frozen)
         {
             if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayOrigin, out rayDirection))
@@ -104,7 +111,7 @@ public class SignalerManager : MonoBehaviour
             }
 
         }*/
-        if (frozen == false)
+        if (frozen == false && freezeCounter > 2 && gameManager.countdownRunning == false)
         {
             StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownText));
         }
