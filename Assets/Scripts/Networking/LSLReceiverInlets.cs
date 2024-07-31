@@ -4,7 +4,7 @@ using System.Collections;
 
 public class LSLReceiverInlets : MonoBehaviour
 {
-    private string[] streamNames = { "ExperimentPhase", "TimestampsSignaler", "SignalerReady", "BoxSelectedBySignaler", "Rewards", "EyePosDirRotSignaler", "EyeOpennessLRSignaler", "PupilDiameterLRSignaler", "HMDPosDirRotSignaler", "HandPosDirRotSignaler", "PreferredHandSignaler", "FrozenGazeSignaler", "BreakSignaler" };
+    private string[] streamNames = { "ExperimentPhase", "TimestampsSignaler", "SignalerReady", "BoxSelectedBySignaler", "Rewards", "EyePosDirRotSignaler", "EyeOpennessLRSignaler", "PupilDiameterLRSignaler", "HMDPosDirRotSignaler", "HandPosDirRotSignaler", "PreferredHandSignaler", "FrozenSignaler", "BreakSignaler" };
     private StreamInlet[] streamInlets;
     private int[] channelCounts;
     private int[][] intSamples;
@@ -12,11 +12,13 @@ public class LSLReceiverInlets : MonoBehaviour
     private string[][] stringSamples;
     public float sampleInterval = 0.0001f;
     private GameManager gameManager;
+    private SignalerManager signalerManager;
 
 
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        signalerManager = GameObject.Find("SignalerManager").GetComponent<SignalerManager>();
 
         int streamCount = streamNames.Length;
         streamInlets = new StreamInlet[streamCount];
@@ -162,6 +164,10 @@ public class LSLReceiverInlets : MonoBehaviour
             case "ExperimentPhase":
                 break;
             // Add additional cases for other streams as needed
+            case "FrozenSignaler":
+                Debug.Log(sample[0]);
+                signalerManager.frozen = sample[0]=="true";
+                break;
         }
     }
 }
