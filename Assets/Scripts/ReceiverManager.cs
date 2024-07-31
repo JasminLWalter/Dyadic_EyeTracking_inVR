@@ -28,6 +28,7 @@ public class ReceiverManager : MonoBehaviour
     public Vector3 eyePositionCombinedWorld;
     public Vector3 eyeDirectionCombinedWorld;
     public Quaternion eyeRotationCombinedWorld;
+    public RaycastHit hitData;
 
     public Transform leftControllerTransform; // Reference to the VR controller's transform
     public Transform rightControllerTransform;
@@ -89,7 +90,6 @@ public class ReceiverManager : MonoBehaviour
         invisibleObjectReceiver.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
 
 
-        RaycastHit hitData;
         if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _layerMask))
         {
             
