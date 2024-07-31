@@ -7,6 +7,7 @@ public class LSLReceiverOutlets : MonoBehaviour
 {
     private string participantUID; 
     private const double NominalRate = LSL.LSL.IRREGULAR_RATE; // irregular sampling rate
+    private ReceiverManager receiverManager;
     
     // public StreamInfo lslIMetadata;
     // public StreamOutlet lslOMetadata; 
@@ -28,7 +29,8 @@ public class LSLReceiverOutlets : MonoBehaviour
     // public StreamOutlet lslOBoxSelectedBySignaler;
     public StreamInfo lslIBoxSelectedByReceiver;
     public StreamOutlet lslOBoxSelectedByReceiver;
-
+    public StreamInfo lslIRaycastHit; 
+    public StreamOutlet lslORaycastHit;
     public StreamInfo lslIEyePosDirRot; 
     public StreamOutlet lslOEyePosDirRot;
     // public StreamInfo lslIRaycastHit; 
@@ -66,6 +68,8 @@ public class LSLReceiverOutlets : MonoBehaviour
 
     void Start()
     {
+        receiverManager = GameObject.Find("Complete XR Origin Set Up").GetComponent<ReceiverManager>();
+
         // // Metadata
         // lslIMetadata = new StreamInfo(
         //     "Metadata",
@@ -172,6 +176,17 @@ public class LSLReceiverOutlets : MonoBehaviour
         lslIBoxSelectedByReceiver.desc().append_child("BoxPosZ");
         lslIBoxSelectedByReceiver.desc().append_child("Reward Received");
         lslOBoxSelectedByReceiver = new StreamOutlet(lslIBoxSelectedByReceiver);
+
+        // Raycast hit
+        lslIRaycastHit = new StreamInfo(
+            "RaycastHitReceiver",
+            "Markers",
+            3,
+            NominalRate,
+            LSL.channel_format_t.cf_int32);
+        lslIRaycastHit.desc().append_child("Hit.x");
+        lslIRaycastHit.desc().append_child("Hit.y");
+        lslIRaycastHit.desc().append_child("Hit.z");
 
         // Eye Position, Direction, Rotation
         lslIEyePosDirRot = new StreamInfo(
@@ -346,6 +361,12 @@ public class LSLReceiverOutlets : MonoBehaviour
     void Update()
     {
     
+        var raycast = new float[3];
+        raycast[0] = receiverManager.hitData.transform.position.x;
+        raycast[1] = receiverManager.hitData.transform.position.x;
+        raycast[2] = receiverManager.hitData.transform.position.x;
+
+        lslORaycastHit.push_sample(raycast);
     }    
 
 }

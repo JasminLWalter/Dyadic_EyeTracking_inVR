@@ -41,6 +41,7 @@ public class SignalerManager : MonoBehaviour
     public bool phase3SecondPartCoroutineRunning = false;
 
     public GameObject invisibleObject;
+    public RaycastHit hitData;
 
     public GameObject avatar;
     private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
@@ -114,8 +115,6 @@ public class SignalerManager : MonoBehaviour
 
         invisibleObject.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
 
-
-        RaycastHit hitData;
         if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _layerMask))
         {
             
