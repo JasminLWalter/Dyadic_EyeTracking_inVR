@@ -71,57 +71,6 @@ public class ReceiverManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (signalerManager.phase3SecondPartCoroutineRunning == false && phase3SecondPartCoroutineRunningReceiver) //signalerManager.phase3SecondPartCoroutineRunning == true as soon as two-player-mode
-        {
-            StartCoroutine(gameManager.Countdown());
-        }
-        if (signalerManager.frozen && gameManager.countdownRunning == false)
-        {
-            gameManager.StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownTextReceiver));
-        }
-
-        /*
-        SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
-        eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmd.transform.position;
-        Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1, verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
-
-        eyeDirectionCombinedWorld = hmd.transform.rotation * coordinateAdaptedGazeDirectionCombined;
-        eyeRotationCombinedWorld = hmd.transform.rotation;
-
-        invisibleObjectReceiver.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
-
-/*
-        if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _layerMask))
-        {
-            
-            
-            if (_lastHit == null)
-            {
-                _lastHit = hitData.collider;
-              //  _lastHit.gameObject.SendMessage("StaredAt");
-            }
-            else if (_lastHit != null && _lastHit != hitData.collider)
-            {
-                Debug.Log("Hit something new: " + hitData.collider.name);
-              //  _lastHit.gameObject.SendMessage("NotLongerStaredAt");
-                _lastHit = hitData.collider;
-                //_lastHit.gameObject.SendMessage("StaredAt");
-            }
-        }
-
-        else
-        {
-            if (_lastHit != null)
-            {
-              //  _lastHit.gameObject.SendMessage("NotLongerStaredAt");
-                _lastHit = null;
-            }
-        }*/
-
-        if (_inputBindings.Player.SelectBox.triggered==true){
-            Debug.LogError("Pressed Select Box");
-        }
-
         Ray ray = new Ray(preferredHandTransform.position, preferredHandTransform.forward);
         RaycastHit hit;
 
@@ -174,11 +123,66 @@ public class ReceiverManager : MonoBehaviour
                 _lastHitController = null;
             }
         }
-    }
-    public void Teleport(Vector3 location)
-    {
+    
 
-        OriginTransform.transform.position = location;
-    }
 
+
+
+
+        if (signalerManager.phase3SecondPartCoroutineRunning == false && phase3SecondPartCoroutineRunningReceiver) //signalerManager.phase3SecondPartCoroutineRunning == true as soon as two-player-mode
+        {
+            StartCoroutine(gameManager.Countdown());
+        }
+        if (signalerManager.frozen && gameManager.countdownRunning == false)
+        {
+            gameManager.StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownTextReceiver));
+        }
+
+        
+        SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
+        eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmd.transform.position;
+        Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1, verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
+
+        eyeDirectionCombinedWorld = hmd.transform.rotation * coordinateAdaptedGazeDirectionCombined;
+        eyeRotationCombinedWorld = hmd.transform.rotation;
+
+        invisibleObjectReceiver.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
+
+
+        if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _layerMask))
+        {
+            
+            
+            if (_lastHit == null)
+            {
+                _lastHit = hitData.collider;
+              //  _lastHit.gameObject.SendMessage("StaredAt");
+            }
+            else if (_lastHit != null && _lastHit != hitData.collider)
+            {
+                Debug.Log("Hit something new: " + hitData.collider.name);
+              //  _lastHit.gameObject.SendMessage("NotLongerStaredAt");
+                _lastHit = hitData.collider;
+                //_lastHit.gameObject.SendMessage("StaredAt");
+            }
+        }
+
+        else
+        {
+            if (_lastHit != null)
+            {
+              //  _lastHit.gameObject.SendMessage("NotLongerStaredAt");
+                _lastHit = null;
+            }
+        }
+
+
+    }
+        
+        public void Teleport(Vector3 location)
+        {
+
+            OriginTransform.transform.position = location;
+        }
+    
 }
