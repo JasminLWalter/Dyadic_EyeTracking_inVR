@@ -347,7 +347,7 @@ public class GameManager : MonoBehaviour
 
         if (_ValidationSuccessStatus == false) 
         {
-            //SRanipal_Eye_v2.LaunchEyeCalibration();
+            // SRanipal_Eye_v2.LaunchEyeCalibration();
             _ValidationSuccessStatus = true;
         }
         #endregion
@@ -535,7 +535,7 @@ public class GameManager : MonoBehaviour
         }
         if(_currentRound == 10 ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
         {
-            SRanipal_Eye_v2.LaunchEyeCalibration();
+            //SRanipal_Eye_v2.LaunchEyeCalibration();
             EnterPausePhase();
             eyetrackingValidation.ValidateEyeTracking();
         }
@@ -657,6 +657,8 @@ public class GameManager : MonoBehaviour
 
             countdownTextReceiver.text = "Go!";
             yield return new WaitForSeconds(1);
+            countdownTextReceiver.text = "Wait until Signaler has decided!";
+            yield return new WaitForSeconds(19);
             countdownTextReceiver.gameObject.SetActive(false);
             //StartCoroutine(CountdownTimer(timerCountdownTextReceiver));
             
@@ -668,6 +670,7 @@ public class GameManager : MonoBehaviour
 
 public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
 {
+    receiverManager.CountdownStarted = true;
     yield return new WaitForSeconds(1);
     int count = 20;
     while (count > 0)

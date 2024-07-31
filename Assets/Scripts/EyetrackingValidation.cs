@@ -79,7 +79,7 @@ public class EyetrackingValidation : MonoBehaviour
     {
         if (startCal || _inputBindings.UI.Calibration.triggered)
         {
-            SRanipal_Eye_v2.LaunchEyeCalibration();
+            // SRanipal_Eye_v2.LaunchEyeCalibration();
             startCal = false;
         }
 

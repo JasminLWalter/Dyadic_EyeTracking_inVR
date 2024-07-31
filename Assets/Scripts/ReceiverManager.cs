@@ -43,7 +43,7 @@ public class ReceiverManager : MonoBehaviour
     public List<TMP_Text> TextsPhase3Receiver;
 
     public GameObject avatar;
-
+    public bool CountdownStarted = false;
     public GameObject invisibleObjectReceiver;
 
     private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
@@ -69,9 +69,15 @@ public class ReceiverManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (signalerManager.phase3SecondPartCoroutineRunning && phase3SecondPartCoroutineRunningReceiver)
         {
             StartCoroutine(gameManager.Countdown());
         }
+        if (signalerManager.frozen)
+        {
+            gameManager.StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownTextReceiver));
+        }
+
         
         SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
         eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmd.transform.position;
@@ -140,17 +146,18 @@ public class ReceiverManager : MonoBehaviour
                 {
                     StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => phase3SecondPartCoroutineRunningReceiver = false));
                     phase3SecondPartCoroutineRunningReceiver = true;
+                    Debug.LogError("Ready Receiver");
                     
                     foreach (TMP_Text TextPhase3 in signalerManager.TextsPhase3)
                     {
                         TextPhase3.gameObject.SetActive(false);
                     }
-                }/*
-                if(gameManager.firstFreezeReceiver)
+                }
+                if(selectCounter > 1)
                 {
-                    Debug.LogError("Receiver freezes"); 
-                    StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownText));
-                }*/
+                    signalerManager.Unfreeze();
+                    
+                }
                
             }
         }

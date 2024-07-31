@@ -103,6 +103,10 @@ public class SignalerManager : MonoBehaviour
             }
 
         }*/
+        if (frozen == false)
+        {
+            StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownText));
+        }
 
         //  gaze data of the signaler
         SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
@@ -131,6 +135,7 @@ public class SignalerManager : MonoBehaviour
                 _lastHit.gameObject.SendMessage("NotLongerStaredAt");
                 _lastHit = hitData.collider;
                 _lastHit.gameObject.SendMessage("StaredAt");
+                Debug.Log("Hit data collider:" + hitData.transform.position);
             }
         /*    else if (_inputBindings.UI.Select.triggered)
             {
@@ -148,10 +153,11 @@ public class SignalerManager : MonoBehaviour
             }
         }
 
+
         if (gameManager.role == "signaler" && _inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)
         {
             // frozenPosition = signalerOutletScript.invisibleObject.transform.position;
-            Freeze();
+            
             freezeCounter += 1;
             gameManager.firstFreeze = true;
             if(phase3SecondPartCoroutineRunning == false)
@@ -162,8 +168,7 @@ public class SignalerManager : MonoBehaviour
             
             if(freezeCounter > 1)
             {
-                gameManager.StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownTextReceiver));
-                
+                Freeze();
             }
         }
 
