@@ -69,7 +69,7 @@ public class LSLSignalerOutlets : MonoBehaviour
 
     void Start()
     {
-        signalerManager = GameObject.Find("Complete XR Origin Set Up").GetComponent<SignalerManager>();
+        signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
 
 
         // // Metadata
@@ -400,12 +400,12 @@ public class LSLSignalerOutlets : MonoBehaviour
 
     void Update()
     {
-        var raycast = new float[3];
-        raycast[0] = signalerManager.hitData.transform.position.x;
-        raycast[1] = signalerManager.hitData.transform.position.x;
-        raycast[2] = signalerManager.hitData.transform.position.x;
+        // var raycast = new float[3];
+        // raycast[0] = signalerManager.hitData.transform.position.x;
+        // raycast[1] = signalerManager.hitData.transform.position.x;
+        // raycast[2] = signalerManager.hitData.transform.position.x;
 
-        lslORaycastHit.push_sample(raycast);
+        // lslORaycastHit.push_sample(raycast);
 
         // Prepare the eye data to be sent through LSL
         float[] eyePosDirRotData = new float[9];

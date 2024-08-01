@@ -18,7 +18,7 @@ public class LSLReceiverInlets : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        signalerManager = GameObject.Find("SignalerManager").GetComponent<SignalerManager>();
+        signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
 
         int streamCount = streamNames.Length;
         streamInlets = new StreamInlet[streamCount];
@@ -123,7 +123,7 @@ public class LSLReceiverInlets : MonoBehaviour
 
     private void ProcessIntSample(int[] sample, double timeStamp, string streamName)
     {
-        Debug.LogWarning($"Received int sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+        // Debug.LogWarning($"Received int sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
 
         switch (streamName)
 
@@ -136,7 +136,7 @@ public class LSLReceiverInlets : MonoBehaviour
 
     private void ProcessFloatSample(float[] sample, double timeStamp, string streamName)
     {
-        Debug.LogWarning($"Received float sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+        // Debug.LogWarning($"Received float sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
 
         switch (streamName)
         {
@@ -156,7 +156,7 @@ public class LSLReceiverInlets : MonoBehaviour
 
     private void ProcessStringSample(string[] sample, double timeStamp, string streamName)
     {
-        Debug.LogWarning($"Received string sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+        // Debug.LogWarning($"Received string sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
 
         // Example: Handling specific string stream data
         switch (streamName)

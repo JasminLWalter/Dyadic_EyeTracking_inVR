@@ -70,7 +70,7 @@ public class LSLReceiverOutlets : MonoBehaviour
 
     void Start()
     {
-        receiverManager = GameObject.Find("Complete XR Origin Set Up").GetComponent<ReceiverManager>();
+        receiverManager = GameObject.Find("Receiver").GetComponent<ReceiverManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         // // Metadata
@@ -364,7 +364,7 @@ public class LSLReceiverOutlets : MonoBehaviour
     void Update()
     {
         
-
+        Debug.LogWarning(receiverManager.hitData.transform.position);
 
         //  Raycast
         var raycast = new float[3];

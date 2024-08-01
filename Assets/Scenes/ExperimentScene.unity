@@ -31658,7 +31658,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  NeededToGetData: 1
+  invisibleObjectSecondary: {fileID: 1003333915}
+  headConstraintSecondary: {fileID: 1211618507}
 --- !u!114 &1980098754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31833,7 +31834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 453f31c61b878c74db88f66b7573078f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headConstraint: {fileID: 0}
+  headConstraint: {fileID: 1211618508}
 --- !u!114 &1980098761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38493,7 +38494,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  NeededToGetData: 1
+  invisibleObjectSecondary: {fileID: 1003333915}
+  headConstraintSecondary: {fileID: 1005449140}
 --- !u!114 &7646968462962455495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38734,7 +38736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 453f31c61b878c74db88f66b7573078f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headConstraint: {fileID: 0}
+  headConstraint: {fileID: 1005449141}
 --- !u!114 &7646968462962455509
 MonoBehaviour:
   m_ObjectHideFlags: 0

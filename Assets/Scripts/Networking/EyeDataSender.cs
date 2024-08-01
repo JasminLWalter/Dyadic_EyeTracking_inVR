@@ -85,7 +85,6 @@ public class EyeDataSender : MonoBehaviour
             }
             // Prepare LSL sample
             //Debug.Log("Invisible Object: " + signalerManager.invisibleObject.transform.position);
-            Debug.Log("Head Constraint: " + headConstraint.position);
 
             float[] sample = new float[27];
             //float[] sample = new float[22];
@@ -124,7 +123,6 @@ public class EyeDataSender : MonoBehaviour
             sample[25] = headConstraint.transform.rotation.z;
             sample[26] = headConstraint.transform.rotation.w;
 
-            Debug.Log("Sending Sample: " + string.Join(", ", sample));
 
             // Include additional eye weightings if necessary
            /* int index = 19;
