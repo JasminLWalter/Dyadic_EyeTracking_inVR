@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ViveSR.anipal.Eye;
 using UnityEngine;
 using LSL;
 
@@ -8,6 +9,7 @@ public class LSLReceiverOutlets : MonoBehaviour
     private string participantUID; 
     private const double NominalRate = LSL.LSL.IRREGULAR_RATE; // irregular sampling rate
     private ReceiverManager receiverManager;
+    private GameManager gameManager;
     
     // public StreamInfo lslIMetadata;
     // public StreamOutlet lslOMetadata; 
@@ -51,8 +53,8 @@ public class LSLReceiverOutlets : MonoBehaviour
     // public StreamOutlet lslOTrialNumber;
     // public StreamInfo lslIFailTrial;
     // public StreamOutlet lslOFailTrial;
-    // public StreamInfo lslIFailedTrialCounter;
-    // public StreamOutlet lslOFailedTrialCounter;
+    public StreamInfo lslIFailedTrialCounter;
+    public StreamOutlet lslOFailedTrialCounter;
     public StreamInfo lslIReceiverFinished;
     public StreamOutlet lslOReceiverFinished;
 
@@ -69,6 +71,7 @@ public class LSLReceiverOutlets : MonoBehaviour
     void Start()
     {
         receiverManager = GameObject.Find("Complete XR Origin Set Up").GetComponent<ReceiverManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         // // Metadata
         // lslIMetadata = new StreamInfo(
@@ -300,15 +303,6 @@ public class LSLReceiverOutlets : MonoBehaviour
             LSL.channel_format_t.cf_string);
         lslOPreferredHand = new StreamOutlet(lslIPreferredHand);
 
-        // Frozen Gaze
-        // lslIFrozenGaze = new StreamInfo(
-        //     "FrozenGazeReceiver",
-        //     "Markers",
-        //     1,
-        //     NominalRate,
-        //     LSL.channel_format_t.cf_string);
-        // lslOFrozenGaze = new StreamOutlet(lslIFrozenGaze);
-
         // // Trial Number
         // lslITrialNumber = new StreamInfo(
         //     "TrialNumber",
@@ -328,14 +322,14 @@ public class LSLReceiverOutlets : MonoBehaviour
         // lslOFailTrial = new StreamOutlet(lslIFailTrial);
 
         // // Failed Trial Counter
-        // lslIFailedTrialCounter = new StreamInfo(
-        //     "FailedTrialCounter",
-        //     "Markers",
-        //     1,
-        //     NominalRate,
-        //     LSL.channel_format_t.cf_int32);
-        // lslIFailedTrialCounter.desc().append_child("Count");
-        // lslOFailedTrialCounter = new StreamOutlet(lslIFailedTrialCounter);
+        lslIFailedTrialCounter = new StreamInfo(
+            "FailedTrialCounter",
+            "Markers",
+            1,
+            NominalRate,
+            LSL.channel_format_t.cf_int32);
+        lslIFailedTrialCounter.desc().append_child("Count");
+        lslOFailedTrialCounter = new StreamOutlet(lslIFailedTrialCounter);
 
         // // Frozen Gaze
         lslIFrozenGaze = new StreamInfo(
@@ -369,13 +363,31 @@ public class LSLReceiverOutlets : MonoBehaviour
     }
     void Update()
     {
-    
+        
+
+
+        //  Raycast
         var raycast = new float[3];
         raycast[0] = receiverManager.hitData.transform.position.x;
         raycast[1] = receiverManager.hitData.transform.position.x;
         raycast[2] = receiverManager.hitData.transform.position.x;
 
         lslORaycastHit.push_sample(raycast);
+
+        if (SRanipal_Eye_v2.GetVerboseData(out VerboseData eyeData))
+        {
+            // Eye openness
+            var opennessData = new float[2];
+            opennessData[0] = eyeData.left.eye_openness;
+            opennessData[1] = eyeData.right.eye_openness;
+            lslOEyeOpennessLR.push_sample(opennessData);
+
+            // Pupil diameter
+            var pupilDiameterData = new float[2];
+            pupilDiameterData[0] = eyeData.left.pupil_diameter_mm;
+            pupilDiameterData[1] = eyeData.right.pupil_diameter_mm;
+            lslOPupilDiameterLR.push_sample(pupilDiameterData);
+        }
     }    
 
 }

@@ -76,9 +76,9 @@ public class SignalerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (phase3SecondPartCoroutineRunning && receiverManager.phase3SecondPartCoroutineRunningReceiver)
+        if (phase3SecondPartCoroutineRunning)// && receiverManager.phase3SecondPartCoroutineRunningReceiver)
         {
-            StartCoroutine(gameManager.Countdown());
+            //StartCoroutine(gameManager.Countdown());
         }
        /* if (!frozen)
         {
@@ -115,7 +115,7 @@ public class SignalerManager : MonoBehaviour
         }*/
         if (frozen == false && freezeCounter > 2 && gameManager.countdownRunning == false)
         {
-            StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownText));
+            //StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownText));
         }
 
         //  gaze data of the signaler

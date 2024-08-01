@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 using ViveSR.anipal.Eye;
 using ViveSR.anipal.Lip;
+using System;
 
 
 public class ReceiverManager : MonoBehaviour
@@ -40,7 +41,7 @@ public class ReceiverManager : MonoBehaviour
     public SignalerManager signalerManager;
     public ReceiverManager receiverManager;
     public bool boxSelected = false;
-    public bool phase3SecondPartCoroutineRunningReceiver = true;
+    public bool phase3SecondPartCoroutineRunningReceiver = false;
     public bool didRunSecondPartReceiver = false;
     public List<TMP_Text> TextsPhase3Receiver;
 
@@ -135,9 +136,9 @@ public class ReceiverManager : MonoBehaviour
 
 
 
-        if (signalerManager.phase3SecondPartCoroutineRunning == false && phase3SecondPartCoroutineRunningReceiver) //signalerManager.phase3SecondPartCoroutineRunning == true as soon as two-player-mode
+        if (gameManager.running == false&& phase3SecondPartCoroutineRunningReceiver) // && signalerManager.phase3SecondPartCoroutineRunning == true as soon as two-player-mode
         {
-            StartCoroutine(gameManager.Countdown());
+            //StartCoroutine(gameManager.Countdown());
         }
         if (signalerManager.frozen && gameManager.countdownRunning == false)
         {

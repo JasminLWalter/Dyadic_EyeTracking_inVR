@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using VIVE.OpenXR;
 using ViveSR.anipal.Eye;
-
+using System;
 public class GameManager : MonoBehaviour
 {
     [Tooltip("Stores the current condition of the experiment.")]
@@ -88,6 +88,7 @@ public class GameManager : MonoBehaviour
     public bool _ValidationSuccessStatus = true;
     
     public bool TimeExceeded = false;
+    public bool running = false;
     
 
     public float _timeLimit = 3;
@@ -608,7 +609,7 @@ public class GameManager : MonoBehaviour
 
     private void ShowMilkyGlassRandom()
     {
-        float randomValue = Random.value;
+        float randomValue = UnityEngine.Random.value;
          
          if(randomValue < probabilityForOne){
             milkyGlass.SetActive(true);
@@ -625,6 +626,7 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator Countdown()
     {
+        running = true;
         int count = countdownTime;
         yield return new WaitForSeconds(1f);
 
@@ -658,6 +660,10 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(1);
             countdownTextReceiver.text = "Wait until Signaler has decided!";
             yield return new WaitForSeconds(19);
+            countdownTextReceiver.text = "Start!";
+            yield return new WaitForSeconds(1);
+            
+            
             countdownTextReceiver.gameObject.SetActive(false);
             
             
