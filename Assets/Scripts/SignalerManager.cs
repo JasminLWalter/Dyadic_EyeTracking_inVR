@@ -119,8 +119,7 @@ public class SignalerManager : MonoBehaviour
         }
 
         //  gaze data of the signaler
-        SRanipal_Eye.GetVerboseData(out VerboseData verboseData);
-        Debug.Log("verboseData.combined.eye_data.gaze_origin_mm: " + verboseData.combined.eye_data.gaze_origin_mm);
+        SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
         eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmd.transform.position;
         Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1, verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
 

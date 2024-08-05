@@ -5172,7 +5172,7 @@ MonoBehaviour:
     m_SourceObjects:
       m_Length: 1
       m_Item0:
-        transform: {fileID: 0}
+        transform: {fileID: 1003333919}
         weight: 1
       m_Item1:
         transform: {fileID: 0}
@@ -8847,7 +8847,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnableEye: 1
   EnableEyeDataCallback: 1
-  EnableEyeVersion: 0
+  EnableEyeVersion: 1
 --- !u!4 &458844615
 Transform:
   m_ObjectHideFlags: 0
@@ -12247,9 +12247,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hmd: {fileID: 1516416796}
   OriginTransform: {fileID: 4134505311631137542}
-  combinedEyes: {fileID: 0}
-  leftEye: {fileID: 1173071851}
-  rightEye: {fileID: 155936314}
   eyePositionCombinedWorld: {x: 0, y: 0, z: 0}
   eyeDirectionCombinedWorld: {x: 0, y: 0, z: 0}
   eyeRotationCombinedWorld: {x: 0, y: 0, z: 0, w: 0}
@@ -24219,7 +24216,7 @@ MonoBehaviour:
     m_SourceObjects:
       m_Length: 1
       m_Item0:
-        transform: {fileID: 0}
+        transform: {fileID: 1068163935}
         weight: 1
       m_Item1:
         transform: {fileID: 0}
@@ -24760,7 +24757,7 @@ MonoBehaviour:
     m_SourceObjects:
       m_Length: 1
       m_Item0:
-        transform: {fileID: 0}
+        transform: {fileID: 1068163935}
         weight: 1
       m_Item1:
         transform: {fileID: 0}
@@ -26023,9 +26020,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hmd: {fileID: 1516416796}
   OriginTransform: {fileID: 4134505311631137542}
-  combinedEyes: {fileID: 0}
-  leftEye: {fileID: 1173071851}
-  rightEye: {fileID: 668277752}
   eyePositionCombinedWorld: {x: 0, y: 0, z: 0}
   eyeDirectionCombinedWorld: {x: 0, y: 0, z: 0}
   eyeRotationCombinedWorld: {x: 0, y: 0, z: 0, w: 0}
@@ -34520,7 +34514,7 @@ MonoBehaviour:
     m_SourceObjects:
       m_Length: 1
       m_Item0:
-        transform: {fileID: 0}
+        transform: {fileID: 1003333919}
         weight: 1
       m_Item1:
         transform: {fileID: 0}
@@ -38317,9 +38311,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hmd: {fileID: 1516416796}
   OriginTransform: {fileID: 1578861478}
-  combinedEyes: {fileID: 0}
-  leftEye: {fileID: 1173071851}
-  rightEye: {fileID: 155936314}
   eyePositionCombinedWorld: {x: 0, y: 0, z: 0}
   eyeDirectionCombinedWorld: {x: 0, y: 0, z: 0}
   eyeRotationCombinedWorld: {x: 0, y: 0, z: 0, w: 0}
