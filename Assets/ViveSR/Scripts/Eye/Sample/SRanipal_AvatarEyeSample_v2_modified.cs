@@ -5,7 +5,7 @@ using ViveSR.anipal.Eye;
 
 namespace ViveSR.anipal.Eye
 {
-    public class SRanipal_AvatarEyeSample_v2 : MonoBehaviour
+    public class SRanipal_AvatarEyeSample_v2_modified : MonoBehaviour
     {
         [SerializeField] private Transform[] EyesModels = new Transform[0];
         [SerializeField] private List<EyeShapeTable_v2> EyeShapeTables;

@@ -48,8 +48,8 @@ public class EyeDataSender : MonoBehaviour
             // SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out gazeOrigin, out leftGazeDirection);
             SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
             SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out gazeOrigin, out combinedGazeDirection);
-            // if(signalerManager.frozen == false)
-            // {
+            if(signalerManager.frozen == false)
+            {
             // Get blink weightings
                 leftBlink = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Blink) ? eyeWeightings[EyeShape_v2.Eye_Left_Blink] : 0.0f;
                 rightBlink = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Blink) ? eyeWeightings[EyeShape_v2.Eye_Right_Blink] : 0.0f;
@@ -65,24 +65,24 @@ public class EyeDataSender : MonoBehaviour
                 eye_Right_Down = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Down) ? eyeWeightings[EyeShape_v2.Eye_Right_Down] : 0.0f;   
                 eye_Right_Left = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Left) ? eyeWeightings[EyeShape_v2.Eye_Right_Left] : 0.0f;
                 eye_Right_Right = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Right) ? eyeWeightings[EyeShape_v2.Eye_Right_Right] : 0.0f;
-            // }
-            // if(signalerManager.frozen)
-            // {
-            //     leftBlink = leftBlink;
-            //     rightBlink = rightBlink;        
-            //     leftWide = leftWide;
-            //     rightWide = rightWide;
-            //     leftSqueeze = leftSqueeze;
-            //     rightSqueeze = rightSqueeze;            
-            //     eye_Left_Up = eye_Left_Up;
-            //     eye_Left_Down = eye_Left_Down;
-            //     eye_Left_Left = eye_Left_Left;
-            //     eye_Left_Right = eye_Left_Right;                
-            //     eye_Right_Up = eye_Right_Up;
-            //     eye_Right_Down = eye_Right_Down; 
-            //     eye_Right_Left = eye_Right_Left;
-            //     eye_Right_Right = eye_Right_Right;
-            // }
+            }
+            if(signalerManager.frozen)
+            {
+                leftBlink = leftBlink;
+                rightBlink = rightBlink;        
+                leftWide = leftWide;
+                rightWide = rightWide;
+                leftSqueeze = leftSqueeze;
+                rightSqueeze = rightSqueeze;            
+                eye_Left_Up = eye_Left_Up;
+                eye_Left_Down = eye_Left_Down;
+                eye_Left_Left = eye_Left_Left;
+                eye_Left_Right = eye_Left_Right;                
+                eye_Right_Up = eye_Right_Up;
+                eye_Right_Down = eye_Right_Down; 
+                eye_Right_Left = eye_Right_Left;
+                eye_Right_Right = eye_Right_Right;
+            }
             // Prepare LSL sample
             //Debug.Log("Invisible Object: " + signalerManager.invisibleObject.transform.position);
 
@@ -137,5 +137,6 @@ public class EyeDataSender : MonoBehaviour
             // Send sample via LSL
             outlet.push_sample(sample);
         }
+        Debug.Log("Frozen: " + signalerManager.frozen);
     }
 }
