@@ -21,9 +21,9 @@ public class ReceiverManager : MonoBehaviour
     public Transform OriginTransform;
 
     //  for displaying the eye movement of the signaler
-    [SerializeField] private Transform combinedEyes;
-    [SerializeField] private Transform leftEye;
-    [SerializeField] private Transform rightEye;
+    // [SerializeField] private Transform combinedEyes;
+    // [SerializeField] private Transform leftEye;
+    // [SerializeField] private Transform rightEye;
     private Vector3 rayOrigin;
     private Vector3 rayDirection;
 

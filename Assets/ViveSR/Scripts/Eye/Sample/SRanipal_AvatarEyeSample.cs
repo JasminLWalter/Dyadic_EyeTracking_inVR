@@ -113,6 +113,8 @@ namespace ViveSR
                             if (SRanipal_Eye.GetGazeRay(GazeIndex.COMBINE, out GazeOriginCombinedLocal, out GazeDirectionCombinedLocal, eyeData)) { }
                             else if (SRanipal_Eye.GetGazeRay(GazeIndex.LEFT, out GazeOriginCombinedLocal, out GazeDirectionCombinedLocal, eyeData)) { }
                             else if (SRanipal_Eye.GetGazeRay(GazeIndex.RIGHT, out GazeOriginCombinedLocal, out GazeDirectionCombinedLocal, eyeData)) { }
+                            Debug.Log("Sranipal Data succesfully retrieved:" + SRanipal_Eye.GetGazeRay(GazeIndex.LEFT, out GazeOriginCombinedLocal, out GazeDirectionCombinedLocal, eyeData));
+                    
                         }
                         else {
                             if (SRanipal_Eye.GetGazeRay(GazeIndex.COMBINE, out GazeOriginCombinedLocal, out GazeDirectionCombinedLocal)) { }
@@ -122,6 +124,7 @@ namespace ViveSR
                         }
                         UpdateGazeRay(GazeDirectionCombinedLocal);    
                     }
+                    
                 }
                 private void Release()
                 {
