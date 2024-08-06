@@ -50,6 +50,10 @@ public class EyeDataSender : MonoBehaviour
     private Vector3 rightGazeDirection = new Vector3(0f,0f,0f);
     private Vector3 rightGazeDirectionFrozen = new Vector3(0f,0f,0f);
 
+    public Vector3 invisibleObjectPosFrozen = new Vector3(0f,0f,0f);
+    public Vector3 invisibleObjectPos = new Vector3(0f,0f,0f);
+    public Vector4 headConstraintPos = new Vector3(0f,0f,0f);
+    private Vector4 headConstraintFrozen = new Vector3(0f,0f,0f);
 
     private InputBindings _inputBindings;
     void Start()
@@ -97,6 +101,16 @@ public class EyeDataSender : MonoBehaviour
                 eye_Right_Down = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Down) ? eyeWeightings[EyeShape_v2.Eye_Right_Down] : 0.0f;   
                 eye_Right_Left = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Left) ? eyeWeightings[EyeShape_v2.Eye_Right_Left] : 0.0f;
                 eye_Right_Right = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Right) ? eyeWeightings[EyeShape_v2.Eye_Right_Right] : 0.0f;
+                
+                invisibleObjectPos.x = signalerManager.invisibleObject.transform.position.x;
+                invisibleObjectPos.y = signalerManager.invisibleObject.transform.position.y;
+                invisibleObjectPos.z = signalerManager.invisibleObject.transform.position.z;    
+
+                headConstraintPos.x = headConstraint.transform.rotation.x;
+                headConstraintPos.y = headConstraint.transform.rotation.y;
+                headConstraintPos.z = headConstraint.transform.rotation.z;
+                headConstraintPos.w = headConstraint.transform.rotation.w;
+                
             }
             else if(signalerManager.frozen)
             {
@@ -122,6 +136,15 @@ public class EyeDataSender : MonoBehaviour
                 eye_Right_Down = eye_Right_DownFrozen;   
                 eye_Right_Left = eye_Right_LeftFrozen;
                 eye_Right_Right = eye_Right_RightFrozen;
+
+                invisibleObjectPos.x = invisibleObjectPosFrozen.x;
+                invisibleObjectPos.y = invisibleObjectPosFrozen.y;
+                invisibleObjectPos.z = invisibleObjectPosFrozen.z;
+
+                headConstraintPos.x = headConstraintFrozen.x;
+                headConstraintPos.y = headConstraintFrozen.y;
+                headConstraintPos.z = headConstraintFrozen.z;
+                headConstraintPos.w = headConstraintFrozen.w;
             }
             // Prepare LSL sample
             //Debug.Log("Invisible Object: " + signalerManager.invisibleObject.transform.position);
@@ -154,14 +177,14 @@ public class EyeDataSender : MonoBehaviour
             sample[19] = eye_Right_Right;
 
             
-            sample[20] = signalerManager.invisibleObject.transform.position.x;
-            sample[21] = signalerManager.invisibleObject.transform.position.y;
-            sample[22] = signalerManager.invisibleObject.transform.position.z;
+            sample[20] = invisibleObjectPos.x;
+            sample[21] = invisibleObjectPos.y;
+            sample[22] = invisibleObjectPos.z;
 
-            sample[23] = headConstraint.transform.rotation.x;
-            sample[24] = headConstraint.transform.rotation.y;
-            sample[25] = headConstraint.transform.rotation.z;
-            sample[26] = headConstraint.transform.rotation.w;
+            sample[23] = headConstraintPos.x;
+            sample[24] = headConstraintPos.y;
+            sample[25] = headConstraintPos.z;
+            sample[26] = headConstraintPos.w;
 
 
             // Include additional eye weightings if necessary
@@ -209,8 +232,21 @@ public class EyeDataSender : MonoBehaviour
                 rightGazeDirectionFrozen.y = rightGazeDirection.y;
                 rightGazeDirectionFrozen.z = rightGazeDirection.z;
 
+                // sample[20] = signalerManager.invisibleObject.transform.position.x;
+                // sample[21] = signalerManager.invisibleObject.transform.position.y;
+                // sample[22] = signalerManager.invisibleObject.transform.position.z;
 
-            
+                invisibleObjectPosFrozen.x = signalerManager.invisibleObject.transform.position.x;
+                invisibleObjectPosFrozen.y = signalerManager.invisibleObject.transform.position.y;
+                invisibleObjectPosFrozen.z = signalerManager.invisibleObject.transform.position.z;
+
+                headConstraintFrozen.x = headConstraint.transform.rotation.x;
+                headConstraintFrozen.y = headConstraint.transform.rotation.y;
+                headConstraintFrozen.z = headConstraint.transform.rotation.z;
+                headConstraintFrozen.w = headConstraint.transform.rotation.w;
+
+
+                Debug.Log("Invisible Object Pos: " + signalerManager.invisibleObject.transform.position.x + signalerManager.invisibleObject.transform.position.y + signalerManager.invisibleObject.transform.position.z);
                 Debug.Log("Blink Frozen: " + leftBlinkFrozen);
                 signalerManager.frozen = true;
             }
