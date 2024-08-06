@@ -258,7 +258,7 @@ public class MenuManager : MonoBehaviour
                         Debug.Log("second part did run");
                         
                     } 
-                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.phase3SecondPartCoroutineRunning == false && countdownRunning && receiverManager.phase3SecondPartCoroutineRunningReceiver == false)
+                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.phase3SecondPartCoroutineRunning == true && countdownRunning && receiverManager.phase3SecondPartCoroutineRunningReceiver == true && receiverManager.secondCheck)
                     {
                         StartCoroutine(gameManager.Countdown());
                         Debug.Log("second part did run");

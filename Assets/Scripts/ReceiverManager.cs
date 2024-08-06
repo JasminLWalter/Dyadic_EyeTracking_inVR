@@ -52,6 +52,8 @@ public class ReceiverManager : MonoBehaviour
     private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
     public int selectCounter = 0;
     private bool countdownRunning = false;
+    public bool secondCheck = false;
+
     private LSLReceiverOutlets lSLReceiverOutlets;
 
     // Start is called before the first frame update
@@ -102,9 +104,12 @@ public class ReceiverManager : MonoBehaviour
                
                 if(menuManager.didRunReceiver && !phase3SecondPartCoroutineRunningReceiver)
                 {
+                    Debug.LogError("Ready Receiver");
+                    
+                    secondCheck = true;
                     StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => phase3SecondPartCoroutineRunningReceiver = false));
                     phase3SecondPartCoroutineRunningReceiver = true;
-                    Debug.LogError("Ready Receiver");
+                    
                     
                     foreach (TMP_Text TextPhase3 in signalerManager.TextsPhase3)
                     {
