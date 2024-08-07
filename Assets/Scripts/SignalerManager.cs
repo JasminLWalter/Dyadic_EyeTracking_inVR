@@ -40,7 +40,7 @@ public class SignalerManager : MonoBehaviour
     public List<TMP_Text> TextsPhase3;
 
     public bool frozen = false;
-    public bool phase3SecondPartCoroutineRunning = false;
+    public bool signalerReady = false;
 
     public GameObject invisibleObject;
     public RaycastHit hitData;
@@ -55,6 +55,7 @@ public class SignalerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         gameManager = FindObjectOfType<GameManager>();
         menuManager = FindObjectOfType<MenuManager>();
         embodimentManager = FindObjectOfType<EmbodimentManager>();
@@ -76,10 +77,7 @@ public class SignalerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (phase3SecondPartCoroutineRunning)// && receiverManager.phase3SecondPartCoroutineRunningReceiver)
-        {
-            //StartCoroutine(gameManager.Countdown());
-        }
+
        /* if (!frozen)
         {
             if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayOrigin, out rayDirection))
@@ -168,10 +166,12 @@ public class SignalerManager : MonoBehaviour
             
             freezeCounter += 1;
             gameManager.firstFreeze = true;
-            if(phase3SecondPartCoroutineRunning == false)
+            if(signalerReady == false)
             {
-                StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => phase3SecondPartCoroutineRunning = false));
-                phase3SecondPartCoroutineRunning = true;
+                StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => signalerReady = false));
+                signalerReady = true;
+                string signalerReadyString = signalerReady.ToString();
+                lSLSignalerOutlets.lslISignalerReady.push_sample(new string[] {signalerReady} );
             }
             
             if(freezeCounter > 1)

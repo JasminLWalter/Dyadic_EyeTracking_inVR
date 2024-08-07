@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour
             receiver.GetComponent<ReceiverManager>().enabled = false;
             signaler.GetComponent<SignalerManager>().enabled = true;
             signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
-            signalerManager.Teleport(new Vector3(-99.5999985f, -105.760002f, 66.6399994f), avatarSecondary);
+            signalerManager.Teleport(spaceLocationsReceiver.ElementAt(3), avatarSecondary);
             
             // Eye data scripts
             avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
@@ -209,7 +209,10 @@ public class GameManager : MonoBehaviour
             role = "receiver";
             receiver.GetComponent<ReceiverManager>().enabled = true;
             signaler.GetComponent<SignalerManager>().enabled = false;
-            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0), xrOriginSetup);
+            Debug.Log("Receiver Sec Teleported" + avatarSecondary.transform.position);
+            
+            Debug.Log("Receiver Sec Teleported" + avatarSecondary.transform.position);
 
             // Eye data scripts
             avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
@@ -231,15 +234,23 @@ public class GameManager : MonoBehaviour
             avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = false;
             avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = false;
         }
-        Debug.LogError("avatarMain position secondary" + avatarSecondary.transform.position);
-        signalerManager.Teleport(new Vector3(-99.5999985f,-99f,66.6399994f), avatarSecondary);
+        if (role == "receiver")
+        {
+            avatarSecondary.transform.rotation =Quaternion.Euler(new Vector3(0, 180, 0));
+            avatarSecondary.transform.position = new Vector3(-3f,3f,5.5f); //Vector3(-3.07173824,-2.07763529,-9.10935402)
+        }
+        if (role == "signaler")
+        {
+            // avatarSecondary.transform.rotation = new Vector3(0,0,0);
+            avatarSecondary.transform.position = new Vector3(-3f,3.1f,-10f);
+        }
         #region Experimental process 
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
         {
             if (role == "receiver")
             {
-                receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase));
+                receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase), xrOriginSetup);
             }
             if (role == "signaler") 
             {
@@ -362,7 +373,7 @@ public class GameManager : MonoBehaviour
         phase += 1;
         if (role == "receiver")
         {
-            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase));
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase), xrOriginSetup);
         }
         if (role == "signaler") 
         {
@@ -377,7 +388,7 @@ public class GameManager : MonoBehaviour
         pauseRoomReceiver = new Vector3(-114, -27, 1);
         if (role == "receiver")
         {
-            receiverManager.Teleport(pauseRoomReceiver);
+            receiverManager.Teleport(pauseRoomReceiver, xrOriginSetup);
         }
         if (role == "signaler") 
         {
@@ -391,7 +402,7 @@ public class GameManager : MonoBehaviour
 
         if (role == "receiver")
         {
-            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(currentPhase));
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(currentPhase), xrOriginSetup);
         }
         if (role == "signaler") 
         {

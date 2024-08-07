@@ -3415,7 +3415,7 @@ MonoBehaviour:
   - {x: 0, y: -29, z: 55}
   - {x: -99, y: -100, z: 80}
   - {x: 0, y: -29, z: 55}
-  - {x: -2.9, y: 2, z: 6.7}
+  - {x: -3.9, y: 2, z: 4.8}
   - {x: 0, y: -29, z: 55}
   rewards: 000000000500000000000000050000000a000000000000000500000000000000
   _ValidationSuccessStatus: 1
@@ -7065,7 +7065,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 58ed26152fe3f184983d0f60ecb57561, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.1
+      value: -7.22
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 58ed26152fe3f184983d0f60ecb57561, type: 3}
       propertyPath: m_LocalPosition.y
@@ -26040,6 +26040,7 @@ MonoBehaviour:
   CountdownStarted: 0
   invisibleObjectReceiver: {fileID: 1068163931}
   selectCounter: 0
+  secondCheck: 0
 --- !u!4 &1740773031
 Transform:
   m_ObjectHideFlags: 0
@@ -31829,6 +31830,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   headConstraint: {fileID: 1211618508}
+  invisibleObjectPosFrozen: {x: 0, y: 0, z: 0}
+  invisibleObjectPos: {x: 0, y: 0, z: 0}
+  headConstraintPos: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &1980098761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38728,6 +38732,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   headConstraint: {fileID: 1005449141}
+  invisibleObjectPosFrozen: {x: 0, y: 0, z: 0}
+  invisibleObjectPos: {x: 0, y: 0, z: 0}
+  headConstraintPos: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &7646968462962455509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40870,7 +40877,6 @@ SceneRoots:
   - {fileID: 1636692118}
   - {fileID: 2985430234135536838}
   - {fileID: 1980098679}
-  - {fileID: 777719403}
   - {fileID: 1947636892}
   - {fileID: 1911593879}
   - {fileID: 279322123}
@@ -40878,3 +40884,4 @@ SceneRoots:
   - {fileID: 1003333919}
   - {fileID: 1989596893}
   - {fileID: 1740773031}
+  - {fileID: 777719403}

@@ -41,7 +41,7 @@ public class ReceiverManager : MonoBehaviour
     public SignalerManager signalerManager;
     public ReceiverManager receiverManager;
     public bool boxSelected = false;
-    public bool phase3SecondPartCoroutineRunningReceiver = false;
+    public bool receiverReady = false;
     public bool didRunSecondPartReceiver = false;
     public List<TMP_Text> TextsPhase3Receiver;
 
@@ -72,6 +72,7 @@ public class ReceiverManager : MonoBehaviour
         {
             TextPhase3Receiver.gameObject.SetActive(false);
         }
+
     }
 
     // Update is called once per frame
@@ -102,13 +103,15 @@ public class ReceiverManager : MonoBehaviour
                boxSelected = true;
                selectCounter++;
                
-                if(menuManager.didRunReceiver && !phase3SecondPartCoroutineRunningReceiver)
+                if(menuManager.didRunReceiver && !receiverReady)
                 {
                     Debug.LogError("Ready Receiver");
                     
                     secondCheck = true;
-                    StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => phase3SecondPartCoroutineRunningReceiver = false));
-                    phase3SecondPartCoroutineRunningReceiver = true;
+                    StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => receiverReady = false));
+                    receiverReady = true;
+                    string receiverReadyString = receiverReady.ToString();
+                    lSLReceiverOutlets.lslIReceiverReady.push_sample(new string[] {receiverReady} );
                     
                     
                     foreach (TMP_Text TextPhase3 in signalerManager.TextsPhase3)
@@ -135,16 +138,7 @@ public class ReceiverManager : MonoBehaviour
                 _lastHitController = null;
             }
         }
-    
 
-
-
-
-
-        if (gameManager.running == false&& phase3SecondPartCoroutineRunningReceiver) // && signalerManager.phase3SecondPartCoroutineRunning == true as soon as two-player-mode
-        {
-            //StartCoroutine(gameManager.Countdown());
-        }
         if (signalerManager.frozen && gameManager.countdownRunning == false)
         {
             gameManager.StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownTextReceiver));
@@ -191,10 +185,9 @@ public class ReceiverManager : MonoBehaviour
 
     }
         
-        public void Teleport(Vector3 location)
-        {
-
-            OriginTransform.transform.position = location;
-        }
+    public void Teleport(Vector3 location, GameObject avatar)
+    {
+        avatar.transform.position = location;// + new Vector3(-0.4f, 5f, -0.7f);
+    }
     
 }

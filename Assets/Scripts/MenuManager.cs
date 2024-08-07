@@ -251,22 +251,24 @@ public class MenuManager : MonoBehaviour
                 }
                 else if (currentTextIndex >= textComponents.Count)
                 { 
-                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.phase3SecondPartCoroutineRunning == false && !countdownRunning && receiverManager.phase3SecondPartCoroutineRunningReceiver == false)
+                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.phase3SecondPartCoroutineRunning == false && !countdownRunning && receiverManager.receiverReady == false)
                     {
                         //StartCoroutine(gameManager.Countdown());
                         countdownRunning = true;
                         Debug.Log("second part did run");
                         
                     } 
-                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.phase3SecondPartCoroutineRunning == true && countdownRunning && receiverManager.phase3SecondPartCoroutineRunningReceiver == true && receiverManager.secondCheck)
+                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.signalerReady == true && countdownRunning && receiverManager.receiverReady == true && receiverManager.secondCheck)
                     {
                         StartCoroutine(gameManager.Countdown());
                         Debug.Log("second part did run");
                         
                     } 
-                    if (gameManager.GetCurrentPhase() == 0 || gameManager.GetCurrentPhase() == 2)
+                    if (gameManager.GetCurrentPhase() == 0) // || gameManager.GetCurrentPhase() == 2)
                     {
                         gameManager.EnterNextPhase();
+                        gameManager.EnterNextPhase();
+
 
 
                     }/*  

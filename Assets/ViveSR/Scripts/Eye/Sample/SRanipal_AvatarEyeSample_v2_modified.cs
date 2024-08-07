@@ -49,8 +49,6 @@ namespace ViveSR.anipal.Eye
         {
             // Receive data from LSL
             inlet.pull_sample(sample, 0.0f);
-            Debug.Log("Receiving Sample: " + string.Join(", ", sample));
-
 
             Vector3 combinedGazeDirection = new Vector3(sample[0], sample[1], sample[2]);
             Vector3 rightGazeDirection = new Vector3(sample[3], sample[4], sample[5]);
@@ -60,7 +58,7 @@ namespace ViveSR.anipal.Eye
             invisibleObjectSecondary.transform.position = new Vector3(sample[20], sample[21], sample[22]);
             headConstraintSecondary.transform.rotation =  new Quaternion(sample[23], sample[24], sample[25],sample[26]);
             //Debug.Log("invisibleObjectSecondary Position: " + invisibleObjectSecondary.transform.position);
-            Debug.Log("headConstraintSecondary Position: " + headConstraintSecondary.transform.position);
+            
             // Debug.Log("Left Gaze Direction: " + leftGazeDirection);
             // Debug.Log("Right Gaze Direction: " + rightGazeDirection);
             // Update gaze and eye shapes based on received data
