@@ -142,9 +142,6 @@ public class LSLSignalerInlets : MonoBehaviour
 
         switch (streamName)
         {
-            case "ReceiverReady":
-                // Handle ReceiverReady stream
-                break;
             case "BoxSelectedByReceiver":
                 int reward = (int)sample[3];
                 gameManager.UpdateScore(reward);
@@ -167,6 +164,9 @@ public class LSLSignalerInlets : MonoBehaviour
         // Example: Handling specific string stream data
         switch (streamName)
         {
+            case "ReceiverReady":
+                receiverManager.receiverReady = sample[0]=="true";
+                break;
             case "ReceiverFinished":
                 receiverManager.boxSelected = true ? sample[0]=="true" : sample[0]=="false";
                 break;

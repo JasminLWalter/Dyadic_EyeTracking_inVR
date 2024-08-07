@@ -111,7 +111,7 @@ public class ReceiverManager : MonoBehaviour
                     StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => receiverReady = false));
                     receiverReady = true;
                     string receiverReadyString = receiverReady.ToString();
-                    lSLReceiverOutlets.lslIReceiverReady.push_sample(new string[] {receiverReady} );
+                    lSLReceiverOutlets.lslOReceiverReady.push_sample(new string[] {receiverReady} );
                     
                     
                     foreach (TMP_Text TextPhase3 in signalerManager.TextsPhase3)

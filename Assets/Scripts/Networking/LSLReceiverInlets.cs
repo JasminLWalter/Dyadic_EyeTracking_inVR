@@ -140,9 +140,6 @@ public class LSLReceiverInlets : MonoBehaviour
 
         switch (streamName)
         {
-            case "SignalerReady":
-                // Handle ReceiverReady stream
-                break;
             case "HMDPosDirRotSignaler":
                 // Handle HMDPosDirRotReceiver stream
                 break;
@@ -162,6 +159,9 @@ public class LSLReceiverInlets : MonoBehaviour
         switch (streamName)
         {
             case "ExperimentPhase":
+                break;
+            case "SignalerReady":
+                signalerManager.signalerReady = sample[0]=="true";
                 break;
             // Add additional cases for other streams as needed
             case "FrozenSignaler":

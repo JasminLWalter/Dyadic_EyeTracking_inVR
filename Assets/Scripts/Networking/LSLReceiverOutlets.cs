@@ -101,7 +101,7 @@ public class LSLReceiverOutlets : MonoBehaviour
             "Markers",
             1,
             NominalRate,
-            LSL.channel_format_t.cf_int32);
+            LSL.channel_format_t.cf_string);
 
         // // Experiment Phase
         // lslIExperimentPhase = new StreamInfo(
