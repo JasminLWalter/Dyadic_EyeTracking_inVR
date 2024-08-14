@@ -251,7 +251,7 @@ public class MenuManager : MonoBehaviour
                 }
                 else if (currentTextIndex >= textComponents.Count)
                 { 
-                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.phase3SecondPartCoroutineRunning == false && !countdownRunning && receiverManager.receiverReady == false)
+                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.signalerReady == false && !countdownRunning && receiverManager.receiverReady == false)
                     {
                         //StartCoroutine(gameManager.Countdown());
                         countdownRunning = true;
@@ -266,7 +266,6 @@ public class MenuManager : MonoBehaviour
                     } 
                     if (gameManager.GetCurrentPhase() == 0) // || gameManager.GetCurrentPhase() == 2)
                     {
-                        gameManager.EnterNextPhase();
                         gameManager.EnterNextPhase();
 
 

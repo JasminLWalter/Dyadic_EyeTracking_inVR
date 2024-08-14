@@ -171,7 +171,7 @@ public class SignalerManager : MonoBehaviour
                 StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => signalerReady = false));
                 signalerReady = true;
                 string signalerReadyString = signalerReady.ToString();
-                lSLSignalerOutlets.lslOSignalerReady.push_sample(new string[] {signalerReady} );
+                lSLSignalerOutlets.lslOSignalerReady.push_sample(new string[] {signalerReadyString} );
             }
             
             if(freezeCounter > 1)
