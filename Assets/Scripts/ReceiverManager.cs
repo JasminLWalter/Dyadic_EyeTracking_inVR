@@ -96,12 +96,14 @@ public class ReceiverManager : MonoBehaviour
                 _lastHitController = hit.collider;
                 _lastHitController.gameObject.SendMessage("StaredAtReceiver");
             }
-            else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3)
+            else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3 && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box"))
             {
                 Debug.LogError("SelectBox");
                _lastHitController.gameObject.SendMessage("Selected");
                boxSelected = true;
                selectCounter++;
+               lSLReceiverOutlets.lslOSelectCounter.push_sample(new int[] {selectCounter} );
+               Debug.Log("selectCounter" + selectCounter);
                
                 if(menuManager.didRunReceiver && !receiverReady)
                 {
@@ -119,13 +121,13 @@ public class ReceiverManager : MonoBehaviour
                         TextPhase3.gameObject.SetActive(false);
                     }
                 }
-                if(selectCounter > 1)
-                {
-                    signalerManager.Unfreeze();
-                    string frozenString = signalerManager.frozen.ToString();
-                    lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
-                        
-                }
+                // if(selectCounter > 1)
+                // {
+                //     // signalerManager.Unfreeze();
+                //     string frozenString = signalerManager.frozen.ToString();
+                //     lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
+    
+                // }
                
             }
         }

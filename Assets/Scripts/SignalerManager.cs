@@ -60,7 +60,7 @@ public class SignalerManager : MonoBehaviour
         menuManager = FindObjectOfType<MenuManager>();
         embodimentManager = FindObjectOfType<EmbodimentManager>();
         simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
-        lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
+        
 
 
 
@@ -174,12 +174,12 @@ public class SignalerManager : MonoBehaviour
                 lSLSignalerOutlets.lslOSignalerReady.push_sample(new string[] {signalerReadyString} );
             }
             
-            if(freezeCounter > 1)
-            {
-                Freeze();
-                string frozenString = frozen.ToString();
-                lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
-            }
+            // if(freezeCounter > 1)
+            // {
+            //     // Freeze();
+            //     string frozenString = frozen.ToString();
+            //     lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
+            // }
         }
 
     }
@@ -189,18 +189,18 @@ public class SignalerManager : MonoBehaviour
         avatar.transform.position = location;// + new Vector3(-0.4f, 5f, -0.7f);
     }
 
-    // Prevent the eye gameobjects from moving according to the EyeTracking data.
-    public void Freeze()
-    {
-        frozen = true;
+    // // Prevent the eye gameobjects from moving according to the EyeTracking data.
+    // public void Freeze()
+    // {
+    //     frozen = true;
 
-    }
+    // }
 
-    // Make the eye gameobjects follow the participants' eye movements again.
-    public void Unfreeze()
-    {
-        frozen = false;
-    }
+    // // Make the eye gameobjects follow the participants' eye movements again.
+    // public void Unfreeze()
+    // {
+    //     frozen = false;
+    // }
 
 
 }

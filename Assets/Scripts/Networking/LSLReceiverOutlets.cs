@@ -25,6 +25,9 @@ public class LSLReceiverOutlets : MonoBehaviour
     // public StreamOutlet lslOCalibrationCounter;
     // public StreamInfo lslIEmbodimentTrainingTime;
     // public StreamOutlet lslOEmbodimentTrainingTime;
+    
+    public StreamInfo lslISelectCounter;
+    public StreamOutlet lslOSelectCounter;
     public StreamInfo lslIReceiverReady;
     public StreamOutlet lslOReceiverReady;
     // public StreamInfo lslIBoxSelectedBySignaler;
@@ -102,6 +105,16 @@ public class LSLReceiverOutlets : MonoBehaviour
             1,
             NominalRate,
             LSL.channel_format_t.cf_string);
+
+        // Selection Counter
+        lslISelectCounter = new StreamInfo(
+            "SelectCounter",
+            "Markers",
+            1,
+            NominalRate,
+            LSL.channel_format_t.cf_int32);
+        lslISelectCounter.desc().append_child("Count");
+        lslOSelectCounter = new StreamOutlet(lslISelectCounter);
 
         // // Experiment Phase
         // lslIExperimentPhase = new StreamInfo(

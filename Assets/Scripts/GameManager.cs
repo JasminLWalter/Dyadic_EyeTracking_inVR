@@ -103,6 +103,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
 
     private bool roleAssigned = false;
+    private bool trainingEnd = false;
     void Start()
     {
         _inputBindings = new InputBindings();
@@ -210,9 +211,6 @@ public class GameManager : MonoBehaviour
             receiver.GetComponent<ReceiverManager>().enabled = true;
             signaler.GetComponent<SignalerManager>().enabled = false;
             receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0), xrOriginSetup);
-            Debug.Log("Receiver Sec Teleported" + avatarSecondary.transform.position);
-            
-            Debug.Log("Receiver Sec Teleported" + avatarSecondary.transform.position);
 
             // Eye data scripts
             avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
@@ -297,7 +295,7 @@ public class GameManager : MonoBehaviour
                 roundsDisplayReceiver.gameObject.SetActive(true);
                 roundsDisplayReceiver.text = "Round: " + _currentRound;
             }
-            if (_currentRound > 0 && _currentRound < 4)
+            if (_currentRound > 0 && _currentRound < 4 && !trainingEnd)
             {
                 if (role == "signaler")
                 {
@@ -311,16 +309,17 @@ public class GameManager : MonoBehaviour
             if (_currentRound < roundsPerCondition)
             {   
                 Debug.Log("first layer of if condition" + _currentRound + " " + roundsPerCondition);
-                if (_startedRound == false && signalerManager.freezeCounter > 1)
+                if (_startedRound == false && receiverManager.selectCounter > 2)
                 {
                     Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
 
                     StartCoroutine(Condition1());
                     //StartCoroutine(CountdownTimer(timerCountdownText));
+                    trialNumber++;
                 }
-                trialNumber++;
+                
             }          
-            if (_currentRound == 4) //this order could cause problems
+            if (_currentRound == 4 && !trainingEnd) //this order could cause problems
             {    
                 ResetScoreRound();
                 if (role == "signaler")
@@ -331,6 +330,7 @@ public class GameManager : MonoBehaviour
                 {
                     trainingSignReceiver.gameObject.SetActive(false);
                 }
+                trainingEnd = true;
             }
             
             else if (_currentRound == roundsPerCondition)

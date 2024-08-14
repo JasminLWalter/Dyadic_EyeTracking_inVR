@@ -10,6 +10,8 @@ public class EyeDataSender : MonoBehaviour
     private EyeData_v2 eyeData = new EyeData_v2();
 
     private SignalerManager signalerManager;
+    private ReceiverManager receiverManager;
+    private GameManager gameManager;
     // private GameObject invisibleObject;
     public Transform headConstraint;
 
@@ -56,11 +58,20 @@ public class EyeDataSender : MonoBehaviour
     private Vector4 headConstraintFrozen = new Vector3(0f,0f,0f);
 
     private InputBindings _inputBindings;
+
+    private LSLSignalerOutlets lSLSignalerOutlets;
+    private LSLReceiverOutlets lSLReceiverOutlets;
     void Start()
     {
         StreamInfo streamInfo = new StreamInfo("EyeTracking", "Gaze", 27, 0, channel_format_t.cf_float32, "eyeTracking12345");
         outlet = new StreamOutlet(streamInfo);
+        lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
+        lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
+
         signalerManager = FindObjectOfType<SignalerManager>();
+        receiverManager = FindObjectOfType<ReceiverManager>();
+        gameManager = FindObjectOfType<GameManager>();
+
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
 
@@ -78,182 +89,340 @@ public class EyeDataSender : MonoBehaviour
            // new Vector3 rightGazeDirectionFrozen, combinedGazeDirectionFrozen;
 
 
-            
-            if(signalerManager.frozen == false)
+            if (gameManager.role == "signaler")
             {
-                SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
-                SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out gazeOrigin, out combinedGazeDirection);
-                // Extract gaze direction
-                // SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out gazeOrigin, out leftGazeDirection);
+                if(signalerManager.frozen == false)
+                {
+                    SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
+                    SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out gazeOrigin, out combinedGazeDirection);
+                    // Extract gaze direction
+                    // SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out gazeOrigin, out leftGazeDirection);
 
-            // Get blink weightings
-                leftBlink = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Blink) ? eyeWeightings[EyeShape_v2.Eye_Left_Blink] : 0.0f;
-                rightBlink = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Blink) ? eyeWeightings[EyeShape_v2.Eye_Right_Blink] : 0.0f;
-                leftWide = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Wide) ? eyeWeightings[EyeShape_v2.Eye_Left_Wide] : 0.0f;
-                rightWide = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Wide) ? eyeWeightings[EyeShape_v2.Eye_Right_Wide] : 0.0f;
-                leftSqueeze = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Left_Squeeze] : 0.0f;
-                rightSqueeze = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Right_Squeeze] : 0.0f;
-                eye_Left_Up = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Up) ? eyeWeightings[EyeShape_v2.Eye_Left_Up] : 0.0f;
-                eye_Left_Down = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Down) ? eyeWeightings[EyeShape_v2.Eye_Left_Down] : 0.0f;
-                eye_Left_Left =  eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Left) ? eyeWeightings[EyeShape_v2.Eye_Left_Left] : 0.0f;  
-                eye_Left_Right = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Right) ? eyeWeightings[EyeShape_v2.Eye_Left_Right] : 0.0f;
-                eye_Right_Up = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Up) ? eyeWeightings[EyeShape_v2.Eye_Right_Up] : 0.0f;
-                eye_Right_Down = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Down) ? eyeWeightings[EyeShape_v2.Eye_Right_Down] : 0.0f;   
-                eye_Right_Left = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Left) ? eyeWeightings[EyeShape_v2.Eye_Right_Left] : 0.0f;
-                eye_Right_Right = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Right) ? eyeWeightings[EyeShape_v2.Eye_Right_Right] : 0.0f;
+                // Get blink weightings
+                    leftBlink = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Blink) ? eyeWeightings[EyeShape_v2.Eye_Left_Blink] : 0.0f;
+                    rightBlink = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Blink) ? eyeWeightings[EyeShape_v2.Eye_Right_Blink] : 0.0f;
+                    leftWide = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Wide) ? eyeWeightings[EyeShape_v2.Eye_Left_Wide] : 0.0f;
+                    rightWide = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Wide) ? eyeWeightings[EyeShape_v2.Eye_Right_Wide] : 0.0f;
+                    leftSqueeze = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Left_Squeeze] : 0.0f;
+                    rightSqueeze = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Right_Squeeze] : 0.0f;
+                    eye_Left_Up = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Up) ? eyeWeightings[EyeShape_v2.Eye_Left_Up] : 0.0f;
+                    eye_Left_Down = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Down) ? eyeWeightings[EyeShape_v2.Eye_Left_Down] : 0.0f;
+                    eye_Left_Left =  eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Left) ? eyeWeightings[EyeShape_v2.Eye_Left_Left] : 0.0f;  
+                    eye_Left_Right = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Right) ? eyeWeightings[EyeShape_v2.Eye_Left_Right] : 0.0f;
+                    eye_Right_Up = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Up) ? eyeWeightings[EyeShape_v2.Eye_Right_Up] : 0.0f;
+                    eye_Right_Down = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Down) ? eyeWeightings[EyeShape_v2.Eye_Right_Down] : 0.0f;   
+                    eye_Right_Left = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Left) ? eyeWeightings[EyeShape_v2.Eye_Right_Left] : 0.0f;
+                    eye_Right_Right = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Right) ? eyeWeightings[EyeShape_v2.Eye_Right_Right] : 0.0f;
+                    
+                    invisibleObjectPos.x = signalerManager.invisibleObject.transform.position.x;
+                    invisibleObjectPos.y = signalerManager.invisibleObject.transform.position.y;
+                    invisibleObjectPos.z = signalerManager.invisibleObject.transform.position.z;    
+
+                    headConstraintPos.x = headConstraint.transform.rotation.x;
+                    headConstraintPos.y = headConstraint.transform.rotation.y;
+                    headConstraintPos.z = headConstraint.transform.rotation.z;
+                    headConstraintPos.w = headConstraint.transform.rotation.w;
+                    
+                }
+                else if(signalerManager.frozen)
+                {
+                    combinedGazeDirection.x = combinedGazeDirectionFrozen.x;
+                    combinedGazeDirection.y = combinedGazeDirectionFrozen.y;
+                    combinedGazeDirection.z = combinedGazeDirectionFrozen.z;
+                    rightGazeDirection.x = rightGazeDirectionFrozen.x;
+                    rightGazeDirection.y = rightGazeDirectionFrozen.y;
+                    rightGazeDirection.z = rightGazeDirectionFrozen.z;
+
+
+                    leftBlink = leftBlinkFrozen;
+                    rightBlink = rightBlinkFrozen;
+                    leftWide = leftWideFrozen;
+                    rightWide = rightWideFrozen;
+                    leftSqueeze = leftSqueezeFrozen;
+                    rightSqueeze = rightSqueezeFrozen;
+                    eye_Left_Up = eye_Left_UpFrozen;
+                    eye_Left_Down = eye_Left_DownFrozen;
+                    eye_Left_Left =  eye_Left_LeftFrozen;  
+                    eye_Left_Right = eye_Left_RightFrozen;
+                    eye_Right_Up = eye_Right_UpFrozen;
+                    eye_Right_Down = eye_Right_DownFrozen;   
+                    eye_Right_Left = eye_Right_LeftFrozen;
+                    eye_Right_Right = eye_Right_RightFrozen;
+
+                    invisibleObjectPos.x = invisibleObjectPosFrozen.x;
+                    invisibleObjectPos.y = invisibleObjectPosFrozen.y;
+                    invisibleObjectPos.z = invisibleObjectPosFrozen.z;
+
+                    headConstraintPos.x = headConstraintFrozen.x;
+                    headConstraintPos.y = headConstraintFrozen.y;
+                    headConstraintPos.z = headConstraintFrozen.z;
+                    headConstraintPos.w = headConstraintFrozen.w;
+                }
+                // Prepare LSL sample
+                //Debug.Log("Invisible Object: " + signalerManager.invisibleObject.transform.position);
+
+                float[] sample = new float[27];
+                //float[] sample = new float[22];
+                // sample[0] = leftGazeDirection.x;
+                // sample[1] = leftGazeDirection.y;
+                // sample[2] = leftGazeDirection.z;
+                sample[0] = combinedGazeDirection.x;
+                sample[1] = combinedGazeDirection.y;
+                sample[2] = combinedGazeDirection.z;
+                sample[3] = rightGazeDirection.x;
+                sample[4] = rightGazeDirection.y;
+                sample[5] = rightGazeDirection.z;
+                sample[6] = leftBlink;
+                sample[7] = rightBlink;
+                sample[8] = leftWide;
+                sample[9] = rightWide;
+                sample[10] = leftSqueeze;
+                sample[11] = rightSqueeze;
                 
-                invisibleObjectPos.x = signalerManager.invisibleObject.transform.position.x;
-                invisibleObjectPos.y = signalerManager.invisibleObject.transform.position.y;
-                invisibleObjectPos.z = signalerManager.invisibleObject.transform.position.z;    
+                sample[12] = eye_Left_Up;
+                sample[13] = eye_Left_Down;
+                sample[14] = eye_Left_Left;
+                sample[15] = eye_Left_Right;   
+                sample[16] = eye_Right_Up;
+                sample[17] = eye_Right_Down;
+                sample[18] = eye_Right_Left;
+                sample[19] = eye_Right_Right;
 
-                headConstraintPos.x = headConstraint.transform.rotation.x;
-                headConstraintPos.y = headConstraint.transform.rotation.y;
-                headConstraintPos.z = headConstraint.transform.rotation.z;
-                headConstraintPos.w = headConstraint.transform.rotation.w;
                 
+                sample[20] = invisibleObjectPos.x;
+                sample[21] = invisibleObjectPos.y;
+                sample[22] = invisibleObjectPos.z;
+
+                sample[23] = headConstraintPos.x;
+                sample[24] = headConstraintPos.y;
+                sample[25] = headConstraintPos.z;
+                sample[26] = headConstraintPos.w;
+
+                // Send sample via LSL
+                outlet.push_sample(sample);
+
+                if(_inputBindings.Player.Freeze.triggered && signalerManager.freezeCounter > 1)
+                {
+                    leftBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Blink) ? eyeWeightings[EyeShape_v2.Eye_Left_Blink] : 0.0f;
+                    rightBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Blink) ? eyeWeightings[EyeShape_v2.Eye_Right_Blink] : 0.0f;
+                    leftWideFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Wide) ? eyeWeightings[EyeShape_v2.Eye_Left_Wide] : 0.0f;
+                    rightWideFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Wide) ? eyeWeightings[EyeShape_v2.Eye_Right_Wide] : 0.0f;
+                    leftSqueezeFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Left_Squeeze] : 0.0f;
+                    rightSqueezeFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Right_Squeeze] : 0.0f;
+                    eye_Left_UpFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Up) ? eyeWeightings[EyeShape_v2.Eye_Left_Up] : 0.0f;
+                    eye_Left_DownFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Down) ? eyeWeightings[EyeShape_v2.Eye_Left_Down] : 0.0f;
+                    eye_Left_LeftFrozen =  eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Left) ? eyeWeightings[EyeShape_v2.Eye_Left_Left] : 0.0f;  
+                    eye_Left_RightFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Right) ? eyeWeightings[EyeShape_v2.Eye_Left_Right] : 0.0f;
+                    eye_Right_UpFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Up) ? eyeWeightings[EyeShape_v2.Eye_Right_Up] : 0.0f;
+                    eye_Right_DownFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Down) ? eyeWeightings[EyeShape_v2.Eye_Right_Down] : 0.0f;   
+                    eye_Right_LeftFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Left) ? eyeWeightings[EyeShape_v2.Eye_Right_Left] : 0.0f;
+                    eye_Right_RightFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Right) ? eyeWeightings[EyeShape_v2.Eye_Right_Right] : 0.0f;
+
+                    SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
+                    SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out gazeOrigin, out combinedGazeDirection);
+
+                    combinedGazeDirectionFrozen.x = combinedGazeDirection.x;
+                    combinedGazeDirectionFrozen.y = combinedGazeDirection.y;
+                    combinedGazeDirectionFrozen.z = combinedGazeDirection.z;
+                    
+                    Debug.Log("Combined Gaze Direction: " + combinedGazeDirection.x + combinedGazeDirection.y + combinedGazeDirection.z);
+
+                    Debug.Log("Combined Gaze Direction Frozen: " + combinedGazeDirectionFrozen.x + combinedGazeDirectionFrozen.y + combinedGazeDirectionFrozen.z);
+
+                    rightGazeDirectionFrozen.x = rightGazeDirection.x;
+                    rightGazeDirectionFrozen.y = rightGazeDirection.y;
+                    rightGazeDirectionFrozen.z = rightGazeDirection.z;
+
+                    // sample[20] = signalerManager.invisibleObject.transform.position.x;
+                    // sample[21] = signalerManager.invisibleObject.transform.position.y;
+                    // sample[22] = signalerManager.invisibleObject.transform.position.z;
+
+                    invisibleObjectPosFrozen.x = signalerManager.invisibleObject.transform.position.x;
+                    invisibleObjectPosFrozen.y = signalerManager.invisibleObject.transform.position.y;
+                    invisibleObjectPosFrozen.z = signalerManager.invisibleObject.transform.position.z;
+
+                    headConstraintFrozen.x = headConstraint.transform.rotation.x;
+                    headConstraintFrozen.y = headConstraint.transform.rotation.y;
+                    headConstraintFrozen.z = headConstraint.transform.rotation.z;
+                    headConstraintFrozen.w = headConstraint.transform.rotation.w;
+
+
+                    Debug.Log("Invisible Object Pos: " + signalerManager.invisibleObject.transform.position.x + signalerManager.invisibleObject.transform.position.y + signalerManager.invisibleObject.transform.position.z);
+                    Debug.Log("Blink Frozen: " + leftBlinkFrozen);
+                    signalerManager.frozen = true;
+                    string frozenString = signalerManager.frozen.ToString();
+                    lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
+
+                }
             }
-            else if(signalerManager.frozen)
+
+            if (gameManager.role == "receiver")
             {
-                combinedGazeDirection.x = combinedGazeDirectionFrozen.x;
-                combinedGazeDirection.y = combinedGazeDirectionFrozen.y;
-                combinedGazeDirection.z = combinedGazeDirectionFrozen.z;
-                rightGazeDirection.x = rightGazeDirectionFrozen.x;
-                rightGazeDirection.y = rightGazeDirectionFrozen.y;
-                rightGazeDirection.z = rightGazeDirectionFrozen.z;
+                if(signalerManager.frozen == true)
+                {
+                    SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
+                    SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out gazeOrigin, out combinedGazeDirection);
+                    // Extract gaze direction
+                    // SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out gazeOrigin, out leftGazeDirection);
+
+                // Get blink weightings
+                    leftBlink = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Blink) ? eyeWeightings[EyeShape_v2.Eye_Left_Blink] : 0.0f;
+                    rightBlink = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Blink) ? eyeWeightings[EyeShape_v2.Eye_Right_Blink] : 0.0f;
+                    leftWide = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Wide) ? eyeWeightings[EyeShape_v2.Eye_Left_Wide] : 0.0f;
+                    rightWide = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Wide) ? eyeWeightings[EyeShape_v2.Eye_Right_Wide] : 0.0f;
+                    leftSqueeze = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Left_Squeeze] : 0.0f;
+                    rightSqueeze = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Right_Squeeze] : 0.0f;
+                    eye_Left_Up = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Up) ? eyeWeightings[EyeShape_v2.Eye_Left_Up] : 0.0f;
+                    eye_Left_Down = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Down) ? eyeWeightings[EyeShape_v2.Eye_Left_Down] : 0.0f;
+                    eye_Left_Left =  eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Left) ? eyeWeightings[EyeShape_v2.Eye_Left_Left] : 0.0f;  
+                    eye_Left_Right = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Right) ? eyeWeightings[EyeShape_v2.Eye_Left_Right] : 0.0f;
+                    eye_Right_Up = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Up) ? eyeWeightings[EyeShape_v2.Eye_Right_Up] : 0.0f;
+                    eye_Right_Down = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Down) ? eyeWeightings[EyeShape_v2.Eye_Right_Down] : 0.0f;   
+                    eye_Right_Left = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Left) ? eyeWeightings[EyeShape_v2.Eye_Right_Left] : 0.0f;
+                    eye_Right_Right = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Right) ? eyeWeightings[EyeShape_v2.Eye_Right_Right] : 0.0f;
+                    
+                    invisibleObjectPos.x = receiverManager.invisibleObjectReceiver.transform.position.x;
+                    invisibleObjectPos.y = receiverManager.invisibleObjectReceiver.transform.position.y;
+                    invisibleObjectPos.z = receiverManager.invisibleObjectReceiver.transform.position.z;    
+
+                    headConstraintPos.x = headConstraint.transform.rotation.x;
+                    headConstraintPos.y = headConstraint.transform.rotation.y;
+                    headConstraintPos.z = headConstraint.transform.rotation.z;
+                    headConstraintPos.w = headConstraint.transform.rotation.w;
+                    
+                }
+                else if(signalerManager.frozen == false)
+                {
+                    combinedGazeDirection.x = combinedGazeDirectionFrozen.x;
+                    combinedGazeDirection.y = combinedGazeDirectionFrozen.y;
+                    combinedGazeDirection.z = combinedGazeDirectionFrozen.z;
+                    rightGazeDirection.x = rightGazeDirectionFrozen.x;
+                    rightGazeDirection.y = rightGazeDirectionFrozen.y;
+                    rightGazeDirection.z = rightGazeDirectionFrozen.z;
 
 
-                leftBlink = leftBlinkFrozen;
-                rightBlink = rightBlinkFrozen;
-                leftWide = leftWideFrozen;
-                rightWide = rightWideFrozen;
-                leftSqueeze = leftSqueezeFrozen;
-                rightSqueeze = rightSqueezeFrozen;
-                eye_Left_Up = eye_Left_UpFrozen;
-                eye_Left_Down = eye_Left_DownFrozen;
-                eye_Left_Left =  eye_Left_LeftFrozen;  
-                eye_Left_Right = eye_Left_RightFrozen;
-                eye_Right_Up = eye_Right_UpFrozen;
-                eye_Right_Down = eye_Right_DownFrozen;   
-                eye_Right_Left = eye_Right_LeftFrozen;
-                eye_Right_Right = eye_Right_RightFrozen;
+                    leftBlink = leftBlinkFrozen;
+                    rightBlink = rightBlinkFrozen;
+                    leftWide = leftWideFrozen;
+                    rightWide = rightWideFrozen;
+                    leftSqueeze = leftSqueezeFrozen;
+                    rightSqueeze = rightSqueezeFrozen;
+                    eye_Left_Up = eye_Left_UpFrozen;
+                    eye_Left_Down = eye_Left_DownFrozen;
+                    eye_Left_Left =  eye_Left_LeftFrozen;  
+                    eye_Left_Right = eye_Left_RightFrozen;
+                    eye_Right_Up = eye_Right_UpFrozen;
+                    eye_Right_Down = eye_Right_DownFrozen;   
+                    eye_Right_Left = eye_Right_LeftFrozen;
+                    eye_Right_Right = eye_Right_RightFrozen;
 
-                invisibleObjectPos.x = invisibleObjectPosFrozen.x;
-                invisibleObjectPos.y = invisibleObjectPosFrozen.y;
-                invisibleObjectPos.z = invisibleObjectPosFrozen.z;
+                    invisibleObjectPos.x = invisibleObjectPosFrozen.x;
+                    invisibleObjectPos.y = invisibleObjectPosFrozen.y;
+                    invisibleObjectPos.z = invisibleObjectPosFrozen.z;
 
-                headConstraintPos.x = headConstraintFrozen.x;
-                headConstraintPos.y = headConstraintFrozen.y;
-                headConstraintPos.z = headConstraintFrozen.z;
-                headConstraintPos.w = headConstraintFrozen.w;
-            }
-            // Prepare LSL sample
-            //Debug.Log("Invisible Object: " + signalerManager.invisibleObject.transform.position);
+                    headConstraintPos.x = headConstraintFrozen.x;
+                    headConstraintPos.y = headConstraintFrozen.y;
+                    headConstraintPos.z = headConstraintFrozen.z;
+                    headConstraintPos.w = headConstraintFrozen.w;
+                }
+                // Prepare LSL sample
+                //Debug.Log("Invisible Object: " + signalerManager.invisibleObject.transform.position);
 
-            float[] sample = new float[27];
-            //float[] sample = new float[22];
-            // sample[0] = leftGazeDirection.x;
-            // sample[1] = leftGazeDirection.y;
-            // sample[2] = leftGazeDirection.z;
-            sample[0] = combinedGazeDirection.x;
-            sample[1] = combinedGazeDirection.y;
-            sample[2] = combinedGazeDirection.z;
-            sample[3] = rightGazeDirection.x;
-            sample[4] = rightGazeDirection.y;
-            sample[5] = rightGazeDirection.z;
-            sample[6] = leftBlink;
-            sample[7] = rightBlink;
-            sample[8] = leftWide;
-            sample[9] = rightWide;
-            sample[10] = leftSqueeze;
-            sample[11] = rightSqueeze;
-            
-            sample[12] = eye_Left_Up;
-            sample[13] = eye_Left_Down;
-            sample[14] = eye_Left_Left;
-            sample[15] = eye_Left_Right;   
-            sample[16] = eye_Right_Up;
-            sample[17] = eye_Right_Down;
-            sample[18] = eye_Right_Left;
-            sample[19] = eye_Right_Right;
-
-            
-            sample[20] = invisibleObjectPos.x;
-            sample[21] = invisibleObjectPos.y;
-            sample[22] = invisibleObjectPos.z;
-
-            sample[23] = headConstraintPos.x;
-            sample[24] = headConstraintPos.y;
-            sample[25] = headConstraintPos.z;
-            sample[26] = headConstraintPos.w;
-
-
-            // Include additional eye weightings if necessary
-           /* int index = 19;
-            
-            foreach (var weighting in eyeWeightings)
-            {
-                sample[index] = weighting.Value;
-                index++;
-                if (index >= 20) break; // Ensure we do not exceed the sample size
-            }*/
-
-            // Send sample via LSL
-            outlet.push_sample(sample);
-
-            if(_inputBindings.Player.Freeze.triggered)// && signalerManager.freezeCounter > 1)
-            {
-                leftBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Blink) ? eyeWeightings[EyeShape_v2.Eye_Left_Blink] : 0.0f;
-                rightBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Blink) ? eyeWeightings[EyeShape_v2.Eye_Right_Blink] : 0.0f;
-                leftWideFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Wide) ? eyeWeightings[EyeShape_v2.Eye_Left_Wide] : 0.0f;
-                rightWideFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Wide) ? eyeWeightings[EyeShape_v2.Eye_Right_Wide] : 0.0f;
-                leftSqueezeFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Left_Squeeze] : 0.0f;
-                rightSqueezeFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Right_Squeeze] : 0.0f;
-                eye_Left_UpFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Up) ? eyeWeightings[EyeShape_v2.Eye_Left_Up] : 0.0f;
-                eye_Left_DownFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Down) ? eyeWeightings[EyeShape_v2.Eye_Left_Down] : 0.0f;
-                eye_Left_LeftFrozen =  eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Left) ? eyeWeightings[EyeShape_v2.Eye_Left_Left] : 0.0f;  
-                eye_Left_RightFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Right) ? eyeWeightings[EyeShape_v2.Eye_Left_Right] : 0.0f;
-                eye_Right_UpFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Up) ? eyeWeightings[EyeShape_v2.Eye_Right_Up] : 0.0f;
-                eye_Right_DownFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Down) ? eyeWeightings[EyeShape_v2.Eye_Right_Down] : 0.0f;   
-                eye_Right_LeftFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Left) ? eyeWeightings[EyeShape_v2.Eye_Right_Left] : 0.0f;
-                eye_Right_RightFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Right) ? eyeWeightings[EyeShape_v2.Eye_Right_Right] : 0.0f;
-
-                SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
-                SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out gazeOrigin, out combinedGazeDirection);
-
-                combinedGazeDirectionFrozen.x = combinedGazeDirection.x;
-                combinedGazeDirectionFrozen.y = combinedGazeDirection.y;
-                combinedGazeDirectionFrozen.z = combinedGazeDirection.z;
+                float[] sample = new float[27];
+                //float[] sample = new float[22];
+                // sample[0] = leftGazeDirection.x;
+                // sample[1] = leftGazeDirection.y;
+                // sample[2] = leftGazeDirection.z;
+                sample[0] = combinedGazeDirection.x;
+                sample[1] = combinedGazeDirection.y;
+                sample[2] = combinedGazeDirection.z;
+                sample[3] = rightGazeDirection.x;
+                sample[4] = rightGazeDirection.y;
+                sample[5] = rightGazeDirection.z;
+                sample[6] = leftBlink;
+                sample[7] = rightBlink;
+                sample[8] = leftWide;
+                sample[9] = rightWide;
+                sample[10] = leftSqueeze;
+                sample[11] = rightSqueeze;
                 
-                Debug.Log("Combined Gaze Direction: " + combinedGazeDirection.x + combinedGazeDirection.y + combinedGazeDirection.z);
+                sample[12] = eye_Left_Up;
+                sample[13] = eye_Left_Down;
+                sample[14] = eye_Left_Left;
+                sample[15] = eye_Left_Right;   
+                sample[16] = eye_Right_Up;
+                sample[17] = eye_Right_Down;
+                sample[18] = eye_Right_Left;
+                sample[19] = eye_Right_Right;
 
-                Debug.Log("Combined Gaze Direction Frozen: " + combinedGazeDirectionFrozen.x + combinedGazeDirectionFrozen.y + combinedGazeDirectionFrozen.z);
+                
+                sample[20] = invisibleObjectPos.x;
+                sample[21] = invisibleObjectPos.y;
+                sample[22] = invisibleObjectPos.z;
 
-                rightGazeDirectionFrozen.x = rightGazeDirection.x;
-                rightGazeDirectionFrozen.y = rightGazeDirection.y;
-                rightGazeDirectionFrozen.z = rightGazeDirection.z;
+                sample[23] = headConstraintPos.x;
+                sample[24] = headConstraintPos.y;
+                sample[25] = headConstraintPos.z;
+                sample[26] = headConstraintPos.w;
 
-                // sample[20] = signalerManager.invisibleObject.transform.position.x;
-                // sample[21] = signalerManager.invisibleObject.transform.position.y;
-                // sample[22] = signalerManager.invisibleObject.transform.position.z;
-
-                invisibleObjectPosFrozen.x = signalerManager.invisibleObject.transform.position.x;
-                invisibleObjectPosFrozen.y = signalerManager.invisibleObject.transform.position.y;
-                invisibleObjectPosFrozen.z = signalerManager.invisibleObject.transform.position.z;
-
-                headConstraintFrozen.x = headConstraint.transform.rotation.x;
-                headConstraintFrozen.y = headConstraint.transform.rotation.y;
-                headConstraintFrozen.z = headConstraint.transform.rotation.z;
-                headConstraintFrozen.w = headConstraint.transform.rotation.w;
+                // Send sample via LSL
+                outlet.push_sample(sample);
+            
 
 
-                Debug.Log("Invisible Object Pos: " + signalerManager.invisibleObject.transform.position.x + signalerManager.invisibleObject.transform.position.y + signalerManager.invisibleObject.transform.position.z);
-                Debug.Log("Blink Frozen: " + leftBlinkFrozen);
-                signalerManager.frozen = true;
+                if(_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 1)
+                {
+                    leftBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Blink) ? eyeWeightings[EyeShape_v2.Eye_Left_Blink] : 0.0f;
+                    rightBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Blink) ? eyeWeightings[EyeShape_v2.Eye_Right_Blink] : 0.0f;
+                    leftWideFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Wide) ? eyeWeightings[EyeShape_v2.Eye_Left_Wide] : 0.0f;
+                    rightWideFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Wide) ? eyeWeightings[EyeShape_v2.Eye_Right_Wide] : 0.0f;
+                    leftSqueezeFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Left_Squeeze] : 0.0f;
+                    rightSqueezeFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Squeeze) ? eyeWeightings[EyeShape_v2.Eye_Right_Squeeze] : 0.0f;
+                    eye_Left_UpFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Up) ? eyeWeightings[EyeShape_v2.Eye_Left_Up] : 0.0f;
+                    eye_Left_DownFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Down) ? eyeWeightings[EyeShape_v2.Eye_Left_Down] : 0.0f;
+                    eye_Left_LeftFrozen =  eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Left) ? eyeWeightings[EyeShape_v2.Eye_Left_Left] : 0.0f;  
+                    eye_Left_RightFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Right) ? eyeWeightings[EyeShape_v2.Eye_Left_Right] : 0.0f;
+                    eye_Right_UpFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Up) ? eyeWeightings[EyeShape_v2.Eye_Right_Up] : 0.0f;
+                    eye_Right_DownFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Down) ? eyeWeightings[EyeShape_v2.Eye_Right_Down] : 0.0f;   
+                    eye_Right_LeftFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Left) ? eyeWeightings[EyeShape_v2.Eye_Right_Left] : 0.0f;
+                    eye_Right_RightFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Right) ? eyeWeightings[EyeShape_v2.Eye_Right_Right] : 0.0f;
+
+                    SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
+                    SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out gazeOrigin, out combinedGazeDirection);
+
+                    combinedGazeDirectionFrozen.x = combinedGazeDirection.x;
+                    combinedGazeDirectionFrozen.y = combinedGazeDirection.y;
+                    combinedGazeDirectionFrozen.z = combinedGazeDirection.z;
+                    
+                    Debug.Log("Combined Gaze Direction: " + combinedGazeDirection.x + combinedGazeDirection.y + combinedGazeDirection.z);
+
+                    Debug.Log("Combined Gaze Direction Frozen: " + combinedGazeDirectionFrozen.x + combinedGazeDirectionFrozen.y + combinedGazeDirectionFrozen.z);
+
+                    rightGazeDirectionFrozen.x = rightGazeDirection.x;
+                    rightGazeDirectionFrozen.y = rightGazeDirection.y;
+                    rightGazeDirectionFrozen.z = rightGazeDirection.z;
+
+                    // sample[20] = signalerManager.invisibleObject.transform.position.x;
+                    // sample[21] = signalerManager.invisibleObject.transform.position.y;
+                    // sample[22] = signalerManager.invisibleObject.transform.position.z;
+
+                    invisibleObjectPosFrozen.x = receiverManager.invisibleObjectReceiver.transform.position.x;
+                    invisibleObjectPosFrozen.y = receiverManager.invisibleObjectReceiver.transform.position.y;
+                    invisibleObjectPosFrozen.z = receiverManager.invisibleObjectReceiver.transform.position.z;
+
+                    headConstraintFrozen.x = headConstraint.transform.rotation.x;
+                    headConstraintFrozen.y = headConstraint.transform.rotation.y;
+                    headConstraintFrozen.z = headConstraint.transform.rotation.z;
+                    headConstraintFrozen.w = headConstraint.transform.rotation.w;
+
+
+                    Debug.Log("Invisible Object Pos: " + signalerManager.invisibleObject.transform.position.x + signalerManager.invisibleObject.transform.position.y + signalerManager.invisibleObject.transform.position.z);
+                    Debug.Log("Blink Frozen: " + leftBlinkFrozen);
+                    signalerManager.frozen = false;
+                    string frozenString = signalerManager.frozen.ToString();
+                    lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
+                }
             }
-           
         }
-        Debug.Log("Frozen: " + signalerManager.frozen);
-        Debug.Log("New Gaze Direction: " + combinedGazeDirection.x + combinedGazeDirection.y + combinedGazeDirection.z);
-
     }
 }

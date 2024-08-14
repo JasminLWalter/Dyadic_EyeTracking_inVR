@@ -267,6 +267,8 @@ public class MenuManager : MonoBehaviour
                     if (gameManager.GetCurrentPhase() == 0) // || gameManager.GetCurrentPhase() == 2)
                     {
                         gameManager.EnterNextPhase();
+                        gameManager.EnterNextPhase();
+                        gameManager.EnterNextPhase();
 
 
 
