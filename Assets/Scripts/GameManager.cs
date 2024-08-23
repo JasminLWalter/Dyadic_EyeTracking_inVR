@@ -188,11 +188,11 @@ public class GameManager : MonoBehaviour
             // Eye data scripts
             avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
             avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = false;
-            avatarMain.GetComponent<EyeDataSender>().enabled = true;
+            avatarMain.GetComponent<EyeDataSenderSignaler>().enabled = true;
             
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
-            avatarSecondary.GetComponent<EyeDataSender>().enabled = true;
+            avatarSecondary.GetComponent<EyeDataSenderSignaler>().enabled = true;
 
             // LSL Streams
             avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
@@ -215,11 +215,11 @@ public class GameManager : MonoBehaviour
             // Eye data scripts
             avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
             avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = false;
-            avatarMain.GetComponent<EyeDataSender>().enabled = true;
+            avatarMain.GetComponent<EyeDataSenderReceiver>().enabled = true;
             
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
-            avatarSecondary.GetComponent<EyeDataSender>().enabled = true;
+            avatarSecondary.GetComponent<EyeDataSenderReceiver>().enabled = true;
 
             // LSL Streams
             avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
