@@ -32462,7 +32462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 453f31c61b878c74db88f66b7573078f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headConstraint: {fileID: 0}
+  headConstraint: {fileID: 1211618508}
   invisibleObjectPosFrozen: {x: 0, y: 0, z: 0}
   invisibleObjectPos: {x: 0, y: 0, z: 0}
   headConstraintPos: {x: 0, y: 0, z: 0, w: 0}
@@ -32478,7 +32478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37867746c8ef43c4a870044d1a849c4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headConstraint: {fileID: 0}
+  headConstraint: {fileID: 1211618508}
   invisibleObjectPosFrozen: {x: 0, y: 0, z: 0}
   invisibleObjectPos: {x: 0, y: 0, z: 0}
   headConstraintPos: {x: 0, y: 0, z: 0, w: 0}
@@ -35866,9 +35866,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1970928214426170920, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7646968462962455511}
-    - targetCorrespondingSourceObject: {fileID: 1970928214426170920, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7646968462962455510}
     - targetCorrespondingSourceObject: {fileID: 5889483161799468849, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
       insertIndex: -1
       addedObject: {fileID: 172060973}
@@ -39178,22 +39175,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   NeededToGetData: 1
---- !u!114 &7646968462962455510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7646968462962455489}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 453f31c61b878c74db88f66b7573078f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  headConstraint: {fileID: 0}
-  invisibleObjectPosFrozen: {x: 0, y: 0, z: 0}
-  invisibleObjectPos: {x: 0, y: 0, z: 0}
-  headConstraintPos: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &7646968462962455511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39206,7 +39187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37867746c8ef43c4a870044d1a849c4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headConstraint: {fileID: 0}
+  headConstraint: {fileID: 1005449141}
   invisibleObjectPosFrozen: {x: 0, y: 0, z: 0}
   invisibleObjectPos: {x: 0, y: 0, z: 0}
   headConstraintPos: {x: 0, y: 0, z: 0, w: 0}

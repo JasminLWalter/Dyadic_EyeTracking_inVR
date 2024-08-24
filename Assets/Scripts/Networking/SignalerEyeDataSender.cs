@@ -3,7 +3,7 @@ using LSL;
 using System.Collections.Generic;
 using ViveSR.anipal.Eye;
 
-public class EyeDataSenderSignaler : MonoBehaviour
+public class SignalerEyeDataSender : MonoBehaviour
 {
     private StreamOutlet outlet;
     private Dictionary<EyeShape_v2, float> eyeWeightings = new Dictionary<EyeShape_v2, float>();
