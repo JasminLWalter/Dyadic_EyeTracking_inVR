@@ -24,6 +24,8 @@ namespace ViveSR.anipal.Eye
         public GameObject invisibleObjectSecondary;
         public GameObject headConstraintSecondary;
 
+        public GameManager gameManager;
+
         private void Start()
         {
             SetEyesModels(EyesModels[0], EyesModels[1]);
@@ -39,9 +41,16 @@ namespace ViveSR.anipal.Eye
             SetEyeShapeAnimationCurves(curves);
 
             // Initialize LSL inlet
-            StreamInfo[] results = LSL.LSL.resolve_stream("name", "EyeTracking",1,0.0);
-            inlet = new StreamInlet(results[0]);
-
+            if(gameManager.role == "signaler"){
+                StreamInfo[] results = LSL.LSL.resolve_stream("name", "EyeTrackingReceiver",1,0.0);
+                inlet = new StreamInlet(results[0]);
+            }
+            if(gameManager.role == "receiver"){
+                StreamInfo[] results = LSL.LSL.resolve_stream("name", "EyeTrackingSignaler",1,0.0);
+                inlet = new StreamInlet(results[0]);
+            }
+            
+            
             // invisibleObjectSecondary = GameObject.Find("invisibleObjectSecondary").GetComponent<invisibleObjectSecondary>();
         }
 

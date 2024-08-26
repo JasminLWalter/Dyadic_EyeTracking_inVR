@@ -59,11 +59,13 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
     private InputBindings _inputBindings;
 
+    private bool testing = true;
+
     private LSLSignalerOutlets lSLSignalerOutlets;
     private LSLReceiverOutlets lSLReceiverOutlets;
     void Start()
     {
-        StreamInfo streamInfo = new StreamInfo("EyeTracking", "Gaze", 27, 0, channel_format_t.cf_float32, "eyeTracking12345");
+        StreamInfo streamInfo = new StreamInfo("EyeTrackingReceiver", "Gaze", 27, 0, channel_format_t.cf_float32, "eyeTracking67890");
         outlet = new StreamOutlet(streamInfo);
         lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
         lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
@@ -298,8 +300,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 headConstraintFrozen.w = headConstraint.transform.rotation.w;
 
 
-                Debug.Log("Invisible Object Pos: " + signalerManager.invisibleObject.transform.position.x + signalerManager.invisibleObject.transform.position.y + signalerManager.invisibleObject.transform.position.z);
-                Debug.Log("Blink Frozen: " + leftBlinkFrozen);
+
                 signalerManager.frozen = false;
                 string frozenString = signalerManager.frozen.ToString();
                 lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );

@@ -26708,9 +26708,9 @@ MonoBehaviour:
   rightControllerTransform: {fileID: 9014170783538599043}
   preferredHandTransform: {fileID: 9014170783538599043}
   gameManager: {fileID: 171754634}
-  menuManager: {fileID: 0}
-  signalerManager: {fileID: 0}
-  receiverManager: {fileID: 0}
+  menuManager: {fileID: 1398317297}
+  signalerManager: {fileID: 777719402}
+  receiverManager: {fileID: 1740773030}
   boxSelected: 0
   receiverReady: 0
   didRunSecondPartReceiver: 0
@@ -32239,6 +32239,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   invisibleObjectSecondary: {fileID: 1003333915}
   headConstraintSecondary: {fileID: 1211618507}
+  gameManager: {fileID: 171754634}
 --- !u!114 &1980098754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38840,6 +38841,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   invisibleObjectSecondary: {fileID: 1003333915}
   headConstraintSecondary: {fileID: 1005449140}
+  gameManager: {fileID: 0}
 --- !u!114 &7646968462962455495
 MonoBehaviour:
   m_ObjectHideFlags: 0

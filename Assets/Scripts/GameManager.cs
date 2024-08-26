@@ -201,6 +201,7 @@ public class GameManager : MonoBehaviour
             avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = true;
             avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = true;
 
+
             avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = false;
             avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = false;   
             avatarMain.GetComponent<LSLReceiverInlets>().enabled = false;
@@ -223,10 +224,10 @@ public class GameManager : MonoBehaviour
             avatarSecondary.GetComponent<ReceiverEyeDataSender>().enabled = false;
 
             // LSL Streams
-            avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
-            avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = true;   
             avatarMain.GetComponent<LSLReceiverInlets>().enabled = true;
             avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;
+            avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
+            avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = true;   
 
             avatarMain.GetComponent<LSLSignalerOutlets>().enabled = false;
             avatarMain.GetComponent<LSLSignalerInlets>().enabled = false;
