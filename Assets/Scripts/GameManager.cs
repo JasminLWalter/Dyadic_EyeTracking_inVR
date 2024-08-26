@@ -193,7 +193,7 @@ public class GameManager : MonoBehaviour
             
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
-            avatarSecondary.GetComponent<SignalerEyeDataSender>().enabled = true;
+            avatarSecondary.GetComponent<SignalerEyeDataSender>().enabled = false;
 
             // LSL Streams
             avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
@@ -220,7 +220,7 @@ public class GameManager : MonoBehaviour
             
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
-            avatarSecondary.GetComponent<ReceiverEyeDataSender>().enabled = true;
+            avatarSecondary.GetComponent<ReceiverEyeDataSender>().enabled = false;
 
             // LSL Streams
             avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
