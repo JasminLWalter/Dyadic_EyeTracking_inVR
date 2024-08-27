@@ -66,7 +66,7 @@ public class LSLSignalerOutlets : MonoBehaviour
     public StreamOutlet lslORewards;
     public StreamInfo lslIEndTime;
     public StreamOutlet lslOEndTime;
-
+    private double unityTimestamp
     void Start()
     {
         signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
@@ -400,6 +400,14 @@ public class LSLSignalerOutlets : MonoBehaviour
 
     void Update()
     {
+
+        // Timestamp
+        double lslTimestamp = LSL.LSL.local_clock();
+        unityTimestamp = Time.realtimeSinceStartupAsDouble;
+        
+        double[] timestampData = new double[2] { lslTimestamp, unityTimestamp };
+        lslOTimestamps.push_sample(timestampData);
+
         // var raycast = new float[3];
         // raycast[0] = signalerManager.hitData.transform.position.x;
         // raycast[1] = signalerManager.hitData.transform.position.x;

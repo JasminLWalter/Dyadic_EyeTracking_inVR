@@ -70,6 +70,7 @@ public class LSLReceiverOutlets : MonoBehaviour
     private int channelCount = 0;
     StreamInfo[] streamInfos;
     public StreamInlet streamInlet;
+    private double unityTimestamp
 
     void Start()
     {
@@ -93,7 +94,7 @@ public class LSLReceiverOutlets : MonoBehaviour
         lslITimestamps = new StreamInfo(
             "TimestampsReceiver",
             "Markers",
-            1,
+            2,
             NominalRate,
             LSL.channel_format_t.cf_double64);
         lslOTimestamps = new StreamOutlet(lslITimestamps);
@@ -377,7 +378,12 @@ public class LSLReceiverOutlets : MonoBehaviour
     void Update()
     {
         
-        Debug.LogWarning(receiverManager.hitData.transform.position);
+        // Timestamp
+        double lslTimestamp = LSL.LSL.local_clock();
+        unityTimestamp = Time.realtimeSinceStartupAsDouble;
+        
+        double[] timestampData = new double[2] { lslTimestamp, unityTimestamp };
+        lslOTimestamps.push_sample(timestampData);
 
         //  Raycast
         var raycast = new float[3];
