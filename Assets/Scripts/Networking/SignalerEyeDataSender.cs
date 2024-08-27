@@ -63,7 +63,7 @@ public class SignalerEyeDataSender : MonoBehaviour
     private LSLReceiverOutlets lSLReceiverOutlets;
     void Start()
     {
-        StreamInfo streamInfo = new StreamInfo("EyeTrackingSignaler", "Gaze", 27, 0, channel_format_t.cf_float32, "eyeTracking12345");
+        StreamInfo streamInfo = new StreamInfo("EyeTrackingSignaler", "Gaze", 27, 0, channel_format_t.cf_float32);
         outlet = new StreamOutlet(streamInfo);
         lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
         lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
