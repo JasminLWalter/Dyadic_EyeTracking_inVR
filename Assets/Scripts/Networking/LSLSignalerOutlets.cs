@@ -66,7 +66,7 @@ public class LSLSignalerOutlets : MonoBehaviour
     public StreamOutlet lslORewards;
     public StreamInfo lslIEndTime;
     public StreamOutlet lslOEndTime;
-    private double unityTimestamp
+    private double unityTimestamp;
     void Start()
     {
         signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();

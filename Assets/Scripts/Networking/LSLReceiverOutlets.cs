@@ -70,7 +70,7 @@ public class LSLReceiverOutlets : MonoBehaviour
     private int channelCount = 0;
     StreamInfo[] streamInfos;
     public StreamInlet streamInlet;
-    private double unityTimestamp
+    private double unityTimestamp;
 
     void Start()
     {
