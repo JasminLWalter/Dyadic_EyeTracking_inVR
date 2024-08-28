@@ -50,7 +50,7 @@ public class SignalerManager : MonoBehaviour
 
     public int freezeCounter = 0;
     public  Vector3 frozenPosition;
-    private LSLSignalerOutlets lSLSignalerOutlets;
+    public LSLSignalerOutlets lSLSignalerOutlets;
    
     // Start is called before the first frame update
     void Start()
@@ -61,9 +61,6 @@ public class SignalerManager : MonoBehaviour
         embodimentManager = FindObjectOfType<EmbodimentManager>();
         simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
         
-
-
-
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
 
@@ -165,13 +162,17 @@ public class SignalerManager : MonoBehaviour
             // frozenPosition = signalerOutletScript.invisibleObject.transform.position;
             
             freezeCounter += 1;
+            
+            int freezeCounterSignaler = freezeCounter;
+            lSLSignalerOutlets.lslOFreezeCounterSignaler.push_sample(new int[] {freezeCounterSignaler});
             gameManager.firstFreeze = true;
             if(signalerReady == false)
             {
                 StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => signalerReady = false));
                 signalerReady = true;
                 string signalerReadyString = signalerReady.ToString();
-                lSLSignalerOutlets.lslOSignalerReady.push_sample(new string[] {signalerReadyString} );
+                lSLSignalerOutlets.lslOSignalerReady.push_sample(new string[] {signalerReadyString});
+
             }
             
             // if(freezeCounter > 1)

@@ -59,14 +59,15 @@ public class SignalerEyeDataSender : MonoBehaviour
 
     private InputBindings _inputBindings;
 
-    private LSLSignalerOutlets lSLSignalerOutlets;
-    private LSLReceiverOutlets lSLReceiverOutlets;
+    public LSLSignalerOutlets lSLSignalerOutlets;
+   // private LSLReceiverOutlets lSLReceiverOutlets;
     void Start()
     {
         StreamInfo streamInfo = new StreamInfo("EyeTrackingSignaler", "Gaze", 27, 0, channel_format_t.cf_float32);
         outlet = new StreamOutlet(streamInfo);
-        lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
-        lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
+        
+        // lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
+        // lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
 
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
@@ -248,7 +249,9 @@ public class SignalerEyeDataSender : MonoBehaviour
 
                     Debug.Log("Invisible Object Pos: " + signalerManager.invisibleObject.transform.position.x + signalerManager.invisibleObject.transform.position.y + signalerManager.invisibleObject.transform.position.z);
                     Debug.Log("Blink Frozen: " + leftBlinkFrozen);
+                    
                     signalerManager.frozen = true;
+
                     string frozenString = signalerManager.frozen.ToString();
                     lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 

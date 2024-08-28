@@ -56,6 +56,7 @@ namespace ViveSR.anipal.Eye
 
         private void Update()
         {
+
             // Receive data from LSL
             inlet.pull_sample(sample, 0.0f);
 

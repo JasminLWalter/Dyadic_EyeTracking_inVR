@@ -106,6 +106,8 @@ public class LSLReceiverOutlets : MonoBehaviour
             1,
             NominalRate,
             LSL.channel_format_t.cf_string);
+        lslOReceiverReady = new StreamOutlet(lslIReceiverReady);
+
 
         // Selection Counter
         lslISelectCounter = new StreamInfo(
@@ -385,13 +387,13 @@ public class LSLReceiverOutlets : MonoBehaviour
         double[] timestampData = new double[2] { lslTimestamp, unityTimestamp };
         lslOTimestamps.push_sample(timestampData);
 
-        //  Raycast
-        var raycast = new float[3];
-        raycast[0] = receiverManager.hitData.transform.position.x;
-        raycast[1] = receiverManager.hitData.transform.position.x;
-        raycast[2] = receiverManager.hitData.transform.position.x;
+        // //  Raycast
+        // var raycast = new float[3];
+        // raycast[0] = receiverManager.hitData.transform.position.x;
+        // raycast[1] = receiverManager.hitData.transform.position.x;
+        // raycast[2] = receiverManager.hitData.transform.position.x;
 
-        lslORaycastHit.push_sample(raycast);
+        // lslORaycastHit.push_sample(raycast);
 
         if (SRanipal_Eye_v2.GetVerboseData(out VerboseData eyeData))
         {

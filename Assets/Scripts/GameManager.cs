@@ -124,6 +124,7 @@ public class GameManager : MonoBehaviour
         embodimentManager = FindObjectOfType<EmbodimentManager>();
         eyetrackingValidation = FindObjectOfType<EyetrackingValidation>();
         simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
+        // boxBehaviour = FindObjectOfType<BoxBehaviour>();
 
         trainingSign.gameObject.SetActive(false);
         trainingSignReceiver.gameObject.SetActive(false);
@@ -280,7 +281,7 @@ public class GameManager : MonoBehaviour
         {
             //assign role here?
             //player.role = "receiver";
-            Debug.LogError("Phase 3");
+            //Debug.LogError("Phase 3");
             if (role == "receiver")
             {
                 vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,-0.94f);

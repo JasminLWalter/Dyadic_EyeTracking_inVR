@@ -54,6 +54,9 @@ public class LSLSignalerOutlets : MonoBehaviour
     public StreamOutlet lslOPreferredHand;
     public StreamInfo lslIFrozenGaze;
     public StreamOutlet lslOFrozenGaze;
+    public StreamInfo lslIFreezeCounterSignaler;
+    public StreamOutlet lslOFreezeCounterSignaler;
+    
     // public StreamInfo lslITrialNumber;
     // public StreamOutlet lslOTrialNumber;
     // public StreamInfo lslIFailTrial;
@@ -101,6 +104,8 @@ public class LSLSignalerOutlets : MonoBehaviour
             1,
             NominalRate,
             LSL.channel_format_t.cf_string);
+        lslOSignalerReady = new StreamOutlet(lslISignalerReady);
+
 
         // // Experiment Phase
         // lslIExperimentPhase = new StreamInfo(
@@ -348,6 +353,15 @@ public class LSLSignalerOutlets : MonoBehaviour
             LSL.channel_format_t.cf_string);
         lslOFrozenGaze = new StreamOutlet(lslIFrozenGaze);
 
+        // Freeze Counter
+        lslIFreezeCounterSignaler = new StreamInfo(
+            "FreezeCounterSignaler",
+            "Markers",
+            1,
+            NominalRate,
+            LSL.channel_format_t.cf_int32);
+        lslOFreezeCounterSignaler = new StreamOutlet(lslIFreezeCounterSignaler);
+       
         // // Trial Number
         // lslITrialNumber = new StreamInfo(
         //     "TrialNumber",

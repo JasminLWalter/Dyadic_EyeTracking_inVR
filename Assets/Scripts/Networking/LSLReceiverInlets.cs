@@ -4,7 +4,7 @@ using System.Collections;
 
 public class LSLReceiverInlets : MonoBehaviour
 {
-    private string[] streamNames = { "ExperimentPhase", "TimestampsSignaler", "SignalerReady", "BoxSelectedBySignaler", "Rewards", "EyePosDirRotSignaler", "EyeOpennessLRSignaler", "PupilDiameterLRSignaler", "HMDPosDirRotSignaler", "HandPosDirRotSignaler", "PreferredHandSignaler", "FrozenSignaler", "BreakSignaler" };
+    private string[] streamNames = { "ExperimentPhase", "TimestampsSignaler", "SignalerReady", "BoxSelectedBySignaler", "Rewards", "EyePosDirRotSignaler", "EyeOpennessLRSignaler", "PupilDiameterLRSignaler", "HMDPosDirRotSignaler", "HandPosDirRotSignaler", "PreferredHandSignaler", "FrozenSignaler", "FreezeCounterSignaler","BreakSignaler" };
     private StreamInlet[] streamInlets;
     private int[] channelCounts;
     private int[][] intSamples;

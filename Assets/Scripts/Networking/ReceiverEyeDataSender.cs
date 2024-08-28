@@ -10,7 +10,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
     private EyeData_v2 eyeData = new EyeData_v2();
 
     private SignalerManager signalerManager;
-    private ReceiverManager receiverManager;
+    public ReceiverManager receiverManager;
     private GameManager gameManager;
     // private GameObject invisibleObject;
     public Transform headConstraint;
@@ -59,19 +59,38 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
     private InputBindings _inputBindings;
 
-    private bool testing = true;
+    // private StreamInlet inletFreezeCounter;
+    private StreamInlet inletFrozenSignaler;
 
-    private LSLSignalerOutlets lSLSignalerOutlets;
-    private LSLReceiverOutlets lSLReceiverOutlets;
+    private bool testing = true;
+    private bool frozen = false;
+    // private int freezeCounter = 0;
+
+    // public LSLSignalerOutlets lSLSignalerOutlets;
+    public LSLReceiverOutlets lSLReceiverOutlets;
     void Start()
     {
         StreamInfo streamInfo = new StreamInfo("EyeTrackingReceiver", "Gaze", 27, 0, channel_format_t.cf_float32);
         outlet = new StreamOutlet(streamInfo);
-        lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
-        lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
 
-        signalerManager = FindObjectOfType<SignalerManager>();
-        receiverManager = FindObjectOfType<ReceiverManager>();
+        // StreamInfo[] freezeCounterSignalerStream = LSL.LSL.resolve_stream("name", "FreezeCounterSignaler",1,0.0);       
+        // inletFreezeCounter = new StreamInlet(freezeCounterSignalerStream[0]);
+
+        StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
+        if (frozenSignalerStreams.Length > 0)
+        {
+            inletFrozenSignaler = new StreamInlet(frozenSignalerStreams[0]);
+        }
+        else
+        {
+            Debug.LogError("No FrozenSignaler stream found.");
+        }
+
+        // lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
+        // lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
+
+        // signalerManager = FindObjectOfType<SignalerManager>();
+        // receiverManager = FindObjectOfType<ReceiverManager>();
         gameManager = FindObjectOfType<GameManager>();
 
         _inputBindings = new InputBindings();
@@ -81,6 +100,32 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
     void Update()
     {
+
+        // if (inletFreezeCounter != null)
+        // {
+        //     // Pull sample from the freeze counter inlet
+        //     int[] sampleFreezeCounter = new int[1];
+        //    inletFreezeCounter.pull_sample(sampleFreezeCounter);
+        //     Debug.Log($"Freeze Counter Sample: {sampleFreezeCounter[0]}");
+
+        //     freezeCounter = sampleFreezeCounter[0];
+        // }
+
+        if (inletFrozenSignaler != null)
+        {
+            // Pull sample from the frozen signaler inlet
+            string[] sampleFrozenSignaler = new string[1];
+            inletFrozenSignaler.pull_sample(sampleFrozenSignaler);
+            Debug.Log($"Frozen Signaler Sample: {sampleFrozenSignaler[0]}");
+            
+            if(sampleFrozenSignaler[0] == "true"){
+                frozen = true;
+            }
+            if(sampleFrozenSignaler[0] == "false"){
+                frozen = false;
+            }
+        }
+
         if (SRanipal_Eye_v2.GetEyeWeightings(out eyeWeightings))
         {
             // invisibleObject = signalerManager.invisibleObject;
@@ -92,7 +137,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
 
            
-            if(signalerManager.frozen == true)
+            if(frozen == true)
             {
                 
                 SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
@@ -171,7 +216,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 outlet.push_sample(sample);
                 
             }
-            if(signalerManager.frozen == false)
+            if(frozen == false)
             {
 
                 combinedGazeDirection.x = combinedGazeDirectionFrozen.x;
@@ -252,7 +297,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
             }
         
 
-            if(_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 1)
+            if(receiverManager.selectCounter > 1)
             {
 
 
@@ -301,8 +346,8 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
 
 
-                signalerManager.frozen = false;
-                string frozenString = signalerManager.frozen.ToString();
+                frozen = false;
+                string frozenString = frozen.ToString();
                 lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
             }    
         }    

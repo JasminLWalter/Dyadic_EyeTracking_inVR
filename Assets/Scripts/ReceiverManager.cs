@@ -54,7 +54,7 @@ public class ReceiverManager : MonoBehaviour
     private bool countdownRunning = false;
     public bool secondCheck = false;
 
-    private LSLReceiverOutlets lSLReceiverOutlets;
+    public LSLReceiverOutlets lSLReceiverOutlets;
 
     // Start is called before the first frame update
     void Start()
@@ -63,7 +63,7 @@ public class ReceiverManager : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         menuManager = FindObjectOfType<MenuManager>();
         signalerManager = FindObjectOfType<SignalerManager>();
-        lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
+        // lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
 
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
