@@ -125,6 +125,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 frozen = false;
             }
         }
+        
 
         if (SRanipal_Eye_v2.GetEyeWeightings(out eyeWeightings))
         {
@@ -137,7 +138,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
 
            
-            if(frozen == true)
+            if(frozen == true || testing == true)
             {
                 
                 SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);

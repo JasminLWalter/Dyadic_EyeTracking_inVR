@@ -40,6 +40,15 @@ namespace ViveSR.anipal.Eye
             }
             SetEyeShapeAnimationCurves(curves);
 
+
+            
+            // invisibleObjectSecondary = GameObject.Find("invisibleObjectSecondary").GetComponent<invisibleObjectSecondary>();
+        }
+
+        private void Update()
+        {
+
+            if(inlet == null){
             // Initialize LSL inlet
             if(gameManager.role == "signaler"){
                 StreamInfo[] results = LSL.LSL.resolve_stream("name", "EyeTrackingReceiver",1,0.0);
@@ -50,15 +59,9 @@ namespace ViveSR.anipal.Eye
                 inlet = new StreamInlet(results[0]);
             }
             
-            
-            // invisibleObjectSecondary = GameObject.Find("invisibleObjectSecondary").GetComponent<invisibleObjectSecondary>();
-        }
-
-        private void Update()
-        {
-
+            }
             // Receive data from LSL
-            inlet.pull_sample(sample, 0.0f);
+            inlet.pull_sample(sample, 1.0f);
 
             Vector3 combinedGazeDirection = new Vector3(sample[0], sample[1], sample[2]);
             Vector3 rightGazeDirection = new Vector3(sample[3], sample[4], sample[5]);
