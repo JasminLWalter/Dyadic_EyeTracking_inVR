@@ -58,6 +58,7 @@ public class SignalerEyeDataSender : MonoBehaviour
     private Vector4 headConstraintFrozen = new Vector3(0f,0f,0f);
 
     private InputBindings _inputBindings;
+    private StreamInlet inletFrozenReceiver;
 
     public LSLSignalerOutlets lSLSignalerOutlets;
    // private LSLReceiverOutlets lSLReceiverOutlets;
@@ -65,6 +66,7 @@ public class SignalerEyeDataSender : MonoBehaviour
     {
         StreamInfo streamInfo = new StreamInfo("EyeTrackingSignaler", "Gaze", 27, 0, channel_format_t.cf_float32);
         outlet = new StreamOutlet(streamInfo);
+        
         
         // lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
         // lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
@@ -80,6 +82,35 @@ public class SignalerEyeDataSender : MonoBehaviour
 
     void Update()
     {
+
+        if(inletFrozenReceiver == null){
+            
+            StreamInfo[] frozenReceiverStreams = LSL.LSL.resolve_stream("name", "FrozenReceiver", 1, 0.0);
+            if (frozenReceiverStreams.Length > 0)
+            {
+                inletFrozenReceiver = new StreamInlet(frozenReceiverStreams[0]);
+            }
+            else
+            {
+                Debug.LogError("No FrozenReceiver stream found.");
+            }
+        }
+        
+        if (inletFrozenReceiver != null)
+        {
+            // Pull sample from the frozen signaler inlet
+            string[] sampleFrozenReceiver = new string[1];
+            inletFrozenReceiver.pull_sample(sampleFrozenReceiver);
+            Debug.Log($"Frozen Signaler Sample: {sampleFrozenReceiver[0]}");
+            
+            if(sampleFrozenReceiver[0] == "true"){
+                signalerManager.frozen = true;
+            }
+            if(sampleFrozenReceiver[0] == "false"){
+                signalerManager.frozen = false;
+            }
+        }
+        
         if (SRanipal_Eye_v2.GetEyeWeightings(out eyeWeightings))
         {
             // invisibleObject = signalerManager.invisibleObject;
@@ -246,14 +277,12 @@ public class SignalerEyeDataSender : MonoBehaviour
                     headConstraintFrozen.z = headConstraint.transform.rotation.z;
                     headConstraintFrozen.w = headConstraint.transform.rotation.w;
 
-
-                    Debug.Log("Invisible Object Pos: " + signalerManager.invisibleObject.transform.position.x + signalerManager.invisibleObject.transform.position.y + signalerManager.invisibleObject.transform.position.z);
-                    Debug.Log("Blink Frozen: " + leftBlinkFrozen);
                     
                     signalerManager.frozen = true;
 
                     string frozenString = signalerManager.frozen.ToString();
                     lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
+                    Debug.LogError("Frozen local :" + signalerManager.frozen);
 
                 }
             

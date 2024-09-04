@@ -77,6 +77,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
         // inletFreezeCounter = new StreamInlet(freezeCounterSignalerStream[0]);
 
         StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
+        Debug.LogError(frozenSignalerStreams[0]);
         if (frozenSignalerStreams.Length > 0)
         {
             inletFrozenSignaler = new StreamInlet(frozenSignalerStreams[0]);
@@ -101,22 +102,24 @@ public class ReceiverEyeDataSender : MonoBehaviour
     void Update()
     {
 
-        // if (inletFreezeCounter != null)
-        // {
-        //     // Pull sample from the freeze counter inlet
-        //     int[] sampleFreezeCounter = new int[1];
-        //    inletFreezeCounter.pull_sample(sampleFreezeCounter);
-        //     Debug.Log($"Freeze Counter Sample: {sampleFreezeCounter[0]}");
-
-        //     freezeCounter = sampleFreezeCounter[0];
-        // }
-
+        if(inletFrozenSignaler == null){
+            StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
+            Debug.LogError(frozenSignalerStreams[0]);
+            if (frozenSignalerStreams.Length > 0)
+            {
+                inletFrozenSignaler = new StreamInlet(frozenSignalerStreams[0]);
+            }
+            else
+            {
+                Debug.LogError("No FrozenSignaler stream found.");
+            }
+        }
         if (inletFrozenSignaler != null)
         {
             // Pull sample from the frozen signaler inlet
             string[] sampleFrozenSignaler = new string[1];
             inletFrozenSignaler.pull_sample(sampleFrozenSignaler);
-            Debug.Log($"Frozen Signaler Sample: {sampleFrozenSignaler[0]}");
+            Debug.Log($"Frozen remote: {sampleFrozenSignaler[0]}");
             
             if(sampleFrozenSignaler[0] == "true"){
                 frozen = true;
