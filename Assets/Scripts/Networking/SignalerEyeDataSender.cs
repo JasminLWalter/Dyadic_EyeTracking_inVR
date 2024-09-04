@@ -67,6 +67,17 @@ public class SignalerEyeDataSender : MonoBehaviour
         StreamInfo streamInfo = new StreamInfo("EyeTrackingSignaler", "Gaze", 27, 0, channel_format_t.cf_float32);
         outlet = new StreamOutlet(streamInfo);
         
+        StreamInfo[] frozenReceiverStreams = LSL.LSL.resolve_stream("name", "FrozenReceiver", 1, 0.0);
+        Debug.LogError("is Empty: " + frozenReceiverStreams.Length);
+            if (frozenReceiverStreams.Length > 0)
+            {
+                
+                inletFrozenReceiver = new StreamInlet(frozenReceiverStreams[0]);
+            }
+            else
+            {
+                Debug.LogError("No FrozenReceiver stream found.");
+            }
         
         // lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
         // lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
@@ -83,18 +94,13 @@ public class SignalerEyeDataSender : MonoBehaviour
     void Update()
     {
 
-        if(inletFrozenReceiver == null){
+        // if(inletFrozenReceiver == null & gameManager.role == "signaler") {
             
-            StreamInfo[] frozenReceiverStreams = LSL.LSL.resolve_stream("name", "FrozenReceiver", 1, 0.0);
-            if (frozenReceiverStreams.Length > 0)
-            {
-                inletFrozenReceiver = new StreamInlet(frozenReceiverStreams[0]);
-            }
-            else
-            {
-                Debug.LogError("No FrozenReceiver stream found.");
-            }
-        }
+        //     StreamInfo[] frozenReceiverStreams = LSL.LSL.resolve_stream("name", "FrozenReceiver", 1, 0.0);
+        //     inletFrozenReceiver = new StreamInlet(frozenReceiverStreams[0]);
+        //     Debug.LogError("ReceiverFrozen remotely: " + frozenReceiverStreams[0]);
+
+        // }
         
         if (inletFrozenReceiver != null)
         {

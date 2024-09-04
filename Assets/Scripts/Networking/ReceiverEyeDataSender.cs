@@ -102,18 +102,18 @@ public class ReceiverEyeDataSender : MonoBehaviour
     void Update()
     {
 
-        if(inletFrozenSignaler == null){
-            StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
-            Debug.LogError(frozenSignalerStreams[0]);
-            if (frozenSignalerStreams.Length > 0)
-            {
-                inletFrozenSignaler = new StreamInlet(frozenSignalerStreams[0]);
-            }
-            else
-            {
-                Debug.LogError("No FrozenSignaler stream found.");
-            }
-        }
+        // if(inletFrozenSignaler == null){
+        //     StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
+        //     Debug.LogError(frozenSignalerStreams[0]);
+        //     if (frozenSignalerStreams.Length > 0)
+        //     {
+        //         inletFrozenSignaler = new StreamInlet(frozenSignalerStreams[0]);
+        //     }
+        //     else
+        //     {
+        //         Debug.LogError("No FrozenSignaler stream found.");
+        //     }
+        // }
         if (inletFrozenSignaler != null)
         {
             // Pull sample from the frozen signaler inlet
