@@ -96,13 +96,14 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
-        string frozenString = frozen.ToString();
-        lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
+
 
     }
 
     void Update()
     {
+        string frozenString = frozen.ToString();
+        lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 
         if(inletFrozenSignaler == null && gameManager.phase == 3){
             StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
@@ -206,7 +207,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 sample[17] = eye_Right_Down;
                 sample[18] = eye_Right_Left;
                 sample[19] = eye_Right_Right;
-                Debug.Log("eye_Right_Right"+ sample[19]);
+                // Debug.Log("eye_Right_Right"+ sample[19]);
 
                 
                 sample[20] = invisibleObjectPos.x;
@@ -353,7 +354,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
 
                 frozen = false;
-                string frozenString = frozen.ToString();
+                frozenString = frozen.ToString();
                 lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
             }    
         }    

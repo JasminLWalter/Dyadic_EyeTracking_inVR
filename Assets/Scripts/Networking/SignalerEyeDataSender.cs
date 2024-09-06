@@ -81,8 +81,7 @@ public class SignalerEyeDataSender : MonoBehaviour
         
         // lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
         // lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
-        string frozenString = frozen.ToString();
-        lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
+
 
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
@@ -95,6 +94,8 @@ public class SignalerEyeDataSender : MonoBehaviour
 
     void Update()
     {
+        string frozenString = signalerManager.frozen.ToString();
+        lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 
         // if(inletFrozenReceiver == null & gameManager.role == "signaler") {
             
@@ -306,7 +307,7 @@ public class SignalerEyeDataSender : MonoBehaviour
                     
                     signalerManager.frozen = true;
 
-                    string frozenString = signalerManager.frozen.ToString();
+                    frozenString = signalerManager.frozen.ToString();
                     lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
                     Debug.LogError("Frozen local :" + signalerManager.frozen);
 
