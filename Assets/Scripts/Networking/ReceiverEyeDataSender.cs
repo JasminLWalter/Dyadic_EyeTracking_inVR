@@ -76,16 +76,16 @@ public class ReceiverEyeDataSender : MonoBehaviour
         // StreamInfo[] freezeCounterSignalerStream = LSL.LSL.resolve_stream("name", "FreezeCounterSignaler",1,0.0);       
         // inletFreezeCounter = new StreamInlet(freezeCounterSignalerStream[0]);
 
-        StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
-        Debug.LogError(frozenSignalerStreams[0]);
-        if (frozenSignalerStreams.Length > 0)
-        {
-            inletFrozenSignaler = new StreamInlet(frozenSignalerStreams[0]);
-        }
-        else
-        {
-            Debug.LogError("No FrozenSignaler stream found.");
-        }
+        // StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
+        // Debug.LogError(frozenSignalerStreams[0]);
+        // if (frozenSignalerStreams.Length > 0)
+        // {
+        //     inletFrozenSignaler = new StreamInlet(frozenSignalerStreams[0]);
+        // }
+        // else
+        // {
+        //     Debug.LogError("No FrozenSignaler stream found.");
+        // }
 
         // lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
         // lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
@@ -102,18 +102,18 @@ public class ReceiverEyeDataSender : MonoBehaviour
     void Update()
     {
 
-        // if(inletFrozenSignaler == null){
-        //     StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
-        //     Debug.LogError(frozenSignalerStreams[0]);
-        //     if (frozenSignalerStreams.Length > 0)
-        //     {
-        //         inletFrozenSignaler = new StreamInlet(frozenSignalerStreams[0]);
-        //     }
-        //     else
-        //     {
-        //         Debug.LogError("No FrozenSignaler stream found.");
-        //     }
-        // }
+        if(inletFrozenSignaler == null && gameManager.phase == 3){
+            StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
+            Debug.LogError(frozenSignalerStreams[0]);
+            if (frozenSignalerStreams.Length > 0)
+            {
+                inletFrozenSignaler = new StreamInlet(frozenSignalerStreams[0]);
+            }
+            else
+            {
+                Debug.LogError("No FrozenSignaler stream found.");
+            }
+        }
         if (inletFrozenSignaler != null)
         {
             // Pull sample from the frozen signaler inlet

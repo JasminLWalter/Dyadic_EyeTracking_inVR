@@ -67,17 +67,17 @@ public class SignalerEyeDataSender : MonoBehaviour
         StreamInfo streamInfo = new StreamInfo("EyeTrackingSignaler", "Gaze", 27, 0, channel_format_t.cf_float32);
         outlet = new StreamOutlet(streamInfo);
         
-        StreamInfo[] frozenReceiverStreams = LSL.LSL.resolve_stream("name", "FrozenReceiver", 1, 0.0);
-        Debug.LogError("is Empty: " + frozenReceiverStreams.Length);
-            if (frozenReceiverStreams.Length > 0)
-            {
+        // StreamInfo[] frozenReceiverStreams = LSL.LSL.resolve_stream("name", "FrozenReceiver", 1, 0.0);
+        // Debug.LogError("is Empty: " + frozenReceiverStreams.Length);
+        //     if (frozenReceiverStreams.Length > 0)
+        //     {
                 
-                inletFrozenReceiver = new StreamInlet(frozenReceiverStreams[0]);
-            }
-            else
-            {
-                Debug.LogError("No FrozenReceiver stream found.");
-            }
+        //         inletFrozenReceiver = new StreamInlet(frozenReceiverStreams[0]);
+        //     }
+        //     else
+        //     {
+        //         Debug.LogError("No FrozenReceiver stream found.");
+        //     }
         
         // lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
         // lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
@@ -101,7 +101,24 @@ public class SignalerEyeDataSender : MonoBehaviour
         //     Debug.LogError("ReceiverFrozen remotely: " + frozenReceiverStreams[0]);
 
         // }
-        
+        if (inletFrozenReceiver == null && gameManager.phase == 3)
+        {
+            // Resolve stream and check if there is a valid FrozenReceiver stream available
+            StreamInfo[] frozenReceiverStreams = LSL.LSL.resolve_stream("name", "FrozenReceiver", 1, 2.0);
+            
+            if (frozenReceiverStreams.Length > 0)
+            {
+                // Create the inlet only if a valid stream is found
+                inletFrozenReceiver = new StreamInlet(frozenReceiverStreams[0]);
+                Debug.Log("ReceiverFrozen stream found and inlet created.");
+            }
+            else
+            {
+                // Handle the case where no stream is found (optional logging)
+                Debug.LogError("No FrozenReceiver stream found.");
+            }
+        }
+
         if (inletFrozenReceiver != null)
         {
             // Pull sample from the frozen signaler inlet
