@@ -81,6 +81,8 @@ public class SignalerEyeDataSender : MonoBehaviour
         
         // lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
         // lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
+        string frozenString = frozen.ToString();
+        lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
@@ -103,6 +105,7 @@ public class SignalerEyeDataSender : MonoBehaviour
         // }
         if (inletFrozenReceiver == null && gameManager.phase == 3)
         {
+
             // Resolve stream and check if there is a valid FrozenReceiver stream available
             StreamInfo[] frozenReceiverStreams = LSL.LSL.resolve_stream("name", "FrozenReceiver", 1, 2.0);
             

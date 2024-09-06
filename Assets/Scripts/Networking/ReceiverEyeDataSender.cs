@@ -96,6 +96,8 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
+        string frozenString = frozen.ToString();
+        lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 
     }
 
