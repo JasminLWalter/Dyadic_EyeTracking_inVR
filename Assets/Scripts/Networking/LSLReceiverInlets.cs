@@ -161,12 +161,12 @@ public class LSLReceiverInlets : MonoBehaviour
             case "ExperimentPhase":
                 break;
             case "SignalerReady":
-                signalerManager.signalerReady = sample[0]=="true";
+                signalerManager.signalerReady = sample[0]=="True";
                 break;
             // Add additional cases for other streams as needed
             case "FrozenSignaler":
-                Debug.Log(sample[0]);
-                signalerManager.frozen = sample[0]=="true";
+                Debug.LogWarning(sample[0]=="True");
+                signalerManager.frozen = sample[0]=="True";
                 break;
         }
     }

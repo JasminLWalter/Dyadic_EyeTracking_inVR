@@ -165,14 +165,14 @@ public class LSLSignalerInlets : MonoBehaviour
         switch (streamName)
         {
             case "ReceiverReady":
-                receiverManager.receiverReady = sample[0]=="true";
+                receiverManager.receiverReady = sample[0]=="True";
                 break;
             case "ReceiverFinished":
-                receiverManager.boxSelected = true ? sample[0]=="true" : sample[0]=="false";
+                receiverManager.boxSelected = sample[0]=="True";
                 break;
             case "FrozenReceiver":
                 Debug.LogWarning(sample[0]);
-                signalerManager.frozen = sample[0]=="true";                
+                signalerManager.frozen = sample[0]=="True";                
                 break;
         }
     }
