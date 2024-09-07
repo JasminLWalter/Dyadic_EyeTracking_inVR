@@ -95,7 +95,7 @@ public class SignalerEyeDataSender : MonoBehaviour
     void Update()
     {
         string frozenString = signalerManager.frozen.ToString();
-        lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
+        // lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 
         // if(inletFrozenReceiver == null & gameManager.role == "signaler") {
             
@@ -104,39 +104,39 @@ public class SignalerEyeDataSender : MonoBehaviour
         //     Debug.LogError("ReceiverFrozen remotely: " + frozenReceiverStreams[0]);
 
         // }
-        if (inletFrozenReceiver == null && gameManager.phase == 3)
-        {
+        // if (inletFrozenReceiver == null && gameManager.phase == 3)
+        // {
 
-            // Resolve stream and check if there is a valid FrozenReceiver stream available
-            StreamInfo[] frozenReceiverStreams = LSL.LSL.resolve_stream("name", "FrozenReceiver", 1, 2.0);
+        //     // Resolve stream and check if there is a valid FrozenReceiver stream available
+        //     StreamInfo[] frozenReceiverStreams = LSL.LSL.resolve_stream("name", "FrozenReceiver", 1, 2.0);
             
-            if (frozenReceiverStreams.Length > 0)
-            {
-                // Create the inlet only if a valid stream is found
-                inletFrozenReceiver = new StreamInlet(frozenReceiverStreams[0]);
-                Debug.Log("ReceiverFrozen stream found and inlet created.");
-            }
-            else
-            {
-                // Handle the case where no stream is found (optional logging)
-                Debug.LogError("No FrozenReceiver stream found.");
-            }
-        }
+        //     if (frozenReceiverStreams.Length > 0)
+        //     {
+        //         // Create the inlet only if a valid stream is found
+        //         inletFrozenReceiver = new StreamInlet(frozenReceiverStreams[0]);
+        //         Debug.Log("ReceiverFrozen stream found and inlet created.");
+        //     }
+        //     else
+        //     {
+        //         // Handle the case where no stream is found (optional logging)
+        //         Debug.LogError("No FrozenReceiver stream found.");
+        //     }
+        // }
 
-        if (inletFrozenReceiver != null)
-        {
-            // Pull sample from the frozen signaler inlet
-            string[] sampleFrozenReceiver = new string[1];
-            inletFrozenReceiver.pull_sample(sampleFrozenReceiver);
-            Debug.Log($"Frozen Signaler Sample: {sampleFrozenReceiver[0]}");
+        // if (inletFrozenReceiver != null)
+        // {
+        //     // Pull sample from the frozen signaler inlet
+        //     string[] sampleFrozenReceiver = new string[1];
+        //     inletFrozenReceiver.pull_sample(sampleFrozenReceiver);
+        //     Debug.Log($"Frozen Signaler Sample: {sampleFrozenReceiver[0]}");
             
-            if(sampleFrozenReceiver[0] == "true"){
-                signalerManager.frozen = true;
-            }
-            if(sampleFrozenReceiver[0] == "false"){
-                signalerManager.frozen = false;
-            }
-        }
+        //     if(sampleFrozenReceiver[0] == "true"){
+        //         signalerManager.frozen = true;
+        //     }
+        //     if(sampleFrozenReceiver[0] == "false"){
+        //         signalerManager.frozen = false;
+        //     }
+        // }
         
         if (SRanipal_Eye_v2.GetEyeWeightings(out eyeWeightings))
         {
@@ -259,7 +259,7 @@ public class SignalerEyeDataSender : MonoBehaviour
                 // Send sample via LSL
                 outlet.push_sample(sample);
 
-                if(_inputBindings.Player.Freeze.triggered && signalerManager.freezeCounter > 1)
+                if(_inputBindings.Player.Freeze.triggered || signalerManager.freezeCounter > 1)
                 {
                     leftBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Blink) ? eyeWeightings[EyeShape_v2.Eye_Left_Blink] : 0.0f;
                     rightBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Blink) ? eyeWeightings[EyeShape_v2.Eye_Right_Blink] : 0.0f;
@@ -310,6 +310,7 @@ public class SignalerEyeDataSender : MonoBehaviour
                     frozenString = signalerManager.frozen.ToString();
                     lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
                     Debug.LogError("Frozen local :" + signalerManager.frozen);
+                    Debug.LogError("Frozen local string :" + frozenString);
 
                 }
             

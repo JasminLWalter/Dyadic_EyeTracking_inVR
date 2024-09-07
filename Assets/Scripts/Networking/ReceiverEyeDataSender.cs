@@ -103,34 +103,34 @@ public class ReceiverEyeDataSender : MonoBehaviour
     void Update()
     {
         string frozenString = frozen.ToString();
-        lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
+        // lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 
-        if(inletFrozenSignaler == null && gameManager.phase == 3){
-            StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
-            Debug.LogError(frozenSignalerStreams[0]);
-            if (frozenSignalerStreams.Length > 0)
-            {
-                inletFrozenSignaler = new StreamInlet(frozenSignalerStreams[0]);
-            }
-            else
-            {
-                Debug.LogError("No FrozenSignaler stream found.");
-            }
-        }
-        if (inletFrozenSignaler != null)
-        {
-            // Pull sample from the frozen signaler inlet
-            string[] sampleFrozenSignaler = new string[1];
-            inletFrozenSignaler.pull_sample(sampleFrozenSignaler);
-            Debug.Log($"Frozen remote: {sampleFrozenSignaler[0]}");
+        // if(inletFrozenSignaler == null && gameManager.phase == 3){
+        //     StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
+        //     Debug.LogError(frozenSignalerStreams[0]);
+        //     if (frozenSignalerStreams.Length > 0)
+        //     {
+        //         inletFrozenSignaler = new StreamInlet(frozenSignalerStreams[0]);
+        //     }
+        //     else
+        //     {
+        //         Debug.LogError("No FrozenSignaler stream found.");
+        //     }
+        // }
+        // if (inletFrozenSignaler != null)
+        // {
+        //     // Pull sample from the frozen signaler inlet
+        //     string[] sampleFrozenSignaler = new string[1];
+        //     inletFrozenSignaler.pull_sample(sampleFrozenSignaler);
+        //     Debug.Log($"Frozen remote: {sampleFrozenSignaler[0]}");
             
-            if(sampleFrozenSignaler[0] == "true"){
-                frozen = true;
-            }
-            if(sampleFrozenSignaler[0] == "false"){
-                frozen = false;
-            }
-        }
+        //     if(sampleFrozenSignaler[0] == "true"){
+        //         frozen = true;
+        //     }
+        //     if(sampleFrozenSignaler[0] == "false"){
+        //         frozen = false;
+        //     }
+        // }
         
 
         if (SRanipal_Eye_v2.GetEyeWeightings(out eyeWeightings))
