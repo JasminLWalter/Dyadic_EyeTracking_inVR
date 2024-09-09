@@ -12,15 +12,16 @@ public class LSLSignalerInlets : MonoBehaviour
     private float[][] floatSamples;
     private string[][] stringSamples;
     public float sampleInterval = 0.0001f;
-    private ReceiverManager receiverManager;
+    public ReceiverManager receiverManager;
     private GameManager gameManager;
-    private SignalerManager signalerManager;
+    public SignalerManager signalerManager;
 
     void Start()
     {
-        receiverManager = GameObject.Find("Receiver").GetComponent<ReceiverManager>();
+       
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
+        // signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
+        // receiverManager = GameObject.Find("Receiver").GetComponent<ReceiverManager>();
 
         int streamCount = streamNames.Length;
         streamInlets = new StreamInlet[streamCount];
@@ -171,7 +172,7 @@ public class LSLSignalerInlets : MonoBehaviour
                 receiverManager.boxSelected = sample[0]=="True";
                 break;
             case "FrozenReceiver":
-                Debug.LogWarning(sample[0]);
+                Debug.LogWarning("FrozenReceiver: " + sample[0]);
                 signalerManager.frozen = sample[0]=="True";                
                 break;
         }

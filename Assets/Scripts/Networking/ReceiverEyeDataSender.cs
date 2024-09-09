@@ -59,15 +59,9 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
     private InputBindings _inputBindings;
 
-    // private StreamInlet inletFreezeCounter;
-    private StreamInlet inletFrozenSignaler;
-
-    private bool testing = true;
     public bool frozen;
-    // private int freezeCounter = 0;
-
-    // public LSLSignalerOutlets lSLSignalerOutlets;
     public LSLReceiverOutlets lSLReceiverOutlets;
+
     void Start()
     {
         StreamInfo streamInfo = new StreamInfo("EyeTrackingReceiver", "Gaze", 27, 0, channel_format_t.cf_float32);
@@ -308,7 +302,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
             }
         
             Debug.LogError("select counter: " + receiverManager.selectCounter); 
-            if(receiverManager.selectCounter > 1)
+            if(receiverManager.selectCounter > 1 && _inputBindings.Player.Freeze.triggered)
             {
 
 

@@ -174,13 +174,7 @@ public class SignalerManager : MonoBehaviour
                 lSLSignalerOutlets.lslOSignalerReady.push_sample(new string[] {signalerReadyString});
 
             }
-            
-            // if(freezeCounter > 1)
-            // {
-            //     // Freeze();
-            //     string frozenString = frozen.ToString();
-            //     lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
-            // }
+
         }
 
     }

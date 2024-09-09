@@ -97,6 +97,7 @@ public class SignalerEyeDataSender : MonoBehaviour
     void Update()
     {
         frozenString = signalerManager.frozen.ToString();
+        Debug.LogError("FrozenString Signaler: " + frozenString);	
         // lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 
         // if(inletFrozenReceiver == null & gameManager.role == "signaler") {
@@ -260,6 +261,8 @@ public class SignalerEyeDataSender : MonoBehaviour
 
                 // Send sample via LSL
                 outlet.push_sample(sample);
+
+                Debug.LogError("FreezeCounter: " + signalerManager.freezeCounter);
 
                 if(_inputBindings.Player.Freeze.triggered && signalerManager.freezeCounter > 1)
                 {
