@@ -63,7 +63,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
     private StreamInlet inletFrozenSignaler;
 
     private bool testing = true;
-    private bool frozen = false;
+    public bool frozen;
     // private int freezeCounter = 0;
 
     // public LSLSignalerOutlets lSLSignalerOutlets;
@@ -103,6 +103,8 @@ public class ReceiverEyeDataSender : MonoBehaviour
     void Update()
     {
         string frozenString = frozen.ToString();
+        Debug.LogError("frozen" + frozen);
+
         // lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 
         // if(inletFrozenSignaler == null && gameManager.phase == 3){
@@ -144,7 +146,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
 
            
-            if(frozen == true || testing == true)
+            if(frozen == true)
             {
                 
                 SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
@@ -223,6 +225,8 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 outlet.push_sample(sample);
                 
             }
+
+
             if(frozen == false)
             {
 
@@ -303,7 +307,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 outlet.push_sample(sample);
             }
         
-
+            Debug.LogError("select counter: " + receiverManager.selectCounter); 
             if(receiverManager.selectCounter > 1)
             {
 

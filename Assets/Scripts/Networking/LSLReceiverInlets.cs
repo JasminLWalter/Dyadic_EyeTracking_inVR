@@ -13,12 +13,13 @@ public class LSLReceiverInlets : MonoBehaviour
     public float sampleInterval = 0.0001f;
     private GameManager gameManager;
     private SignalerManager signalerManager;
-
+    public ReceiverEyeDataSender receiverEyeDataSender;
 
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
+
 
         int streamCount = streamNames.Length;
         streamInlets = new StreamInlet[streamCount];
@@ -151,7 +152,7 @@ public class LSLReceiverInlets : MonoBehaviour
         }
     }
 
-    private void ProcessStringSample(string[] sample, double timeStamp, string streamName)
+    public void ProcessStringSample(string[] sample, double timeStamp, string streamName)
     {
         // Debug.LogWarning($"Received string sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
 
@@ -166,7 +167,7 @@ public class LSLReceiverInlets : MonoBehaviour
             // Add additional cases for other streams as needed
             case "FrozenSignaler":
                 Debug.LogWarning(sample[0]=="True");
-                signalerManager.frozen = sample[0]=="True";
+                receiverEyeDataSender.frozen = sample[0]=="True";
                 break;
         }
     }

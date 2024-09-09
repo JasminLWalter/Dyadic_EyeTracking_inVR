@@ -194,17 +194,17 @@ public class GameManager : MonoBehaviour
             
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
-            avatarSecondary.GetComponent<SignalerEyeDataSender>().enabled = false;
+            // avatarSecondary.GetComponent<SignalerEyeDataSender>().enabled = false;
 
             // LSL Streams
             avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
             avatarMain.GetComponent<LSLSignalerInlets>().enabled = true;
-            avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = true;
-            avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = true;
+            // avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = true;
+            // avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = true;
 
 
-            avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = false;
-            avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = false;   
+            // avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = false;
+            // avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = false;   
             avatarMain.GetComponent<LSLReceiverInlets>().enabled = false;
             avatarMain.GetComponent<LSLReceiverOutlets>().enabled = false;
         }
@@ -222,18 +222,18 @@ public class GameManager : MonoBehaviour
             
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
-            avatarSecondary.GetComponent<ReceiverEyeDataSender>().enabled = false;
+            // avatarSecondary.GetComponent<ReceiverEyeDataSender>().enabled = false;
 
             // LSL Streams
             avatarMain.GetComponent<LSLReceiverInlets>().enabled = true;
             avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;
-            avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
-            avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = true;   
+            // avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
+            // avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = true;   
 
             avatarMain.GetComponent<LSLSignalerOutlets>().enabled = false;
             avatarMain.GetComponent<LSLSignalerInlets>().enabled = false;
-            avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = false;
-            avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = false;
+            // avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = false;
+            // avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = false;
         }
         if (role == "receiver")
         {

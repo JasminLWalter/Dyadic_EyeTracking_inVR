@@ -9,7 +9,7 @@ public class SignalerEyeDataSender : MonoBehaviour
     private Dictionary<EyeShape_v2, float> eyeWeightings = new Dictionary<EyeShape_v2, float>();
     private EyeData_v2 eyeData = new EyeData_v2();
 
-    private SignalerManager signalerManager;
+    public SignalerManager signalerManager;
     private ReceiverManager receiverManager;
     private GameManager gameManager;
     // private GameObject invisibleObject;
@@ -59,6 +59,8 @@ public class SignalerEyeDataSender : MonoBehaviour
 
     private InputBindings _inputBindings;
     private StreamInlet inletFrozenReceiver;
+    private string frozenString;
+
 
     public LSLSignalerOutlets lSLSignalerOutlets;
    // private LSLReceiverOutlets lSLReceiverOutlets;
@@ -83,7 +85,7 @@ public class SignalerEyeDataSender : MonoBehaviour
         // lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
 
 
-        signalerManager = FindObjectOfType<SignalerManager>();
+        // signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
         gameManager = FindObjectOfType<GameManager>();
 
@@ -94,7 +96,7 @@ public class SignalerEyeDataSender : MonoBehaviour
 
     void Update()
     {
-        string frozenString = signalerManager.frozen.ToString();
+        frozenString = signalerManager.frozen.ToString();
         // lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 
         // if(inletFrozenReceiver == null & gameManager.role == "signaler") {
@@ -259,7 +261,7 @@ public class SignalerEyeDataSender : MonoBehaviour
                 // Send sample via LSL
                 outlet.push_sample(sample);
 
-                if(_inputBindings.Player.Freeze.triggered || signalerManager.freezeCounter > 1)
+                if(_inputBindings.Player.Freeze.triggered && signalerManager.freezeCounter > 1)
                 {
                     leftBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Blink) ? eyeWeightings[EyeShape_v2.Eye_Left_Blink] : 0.0f;
                     rightBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Blink) ? eyeWeightings[EyeShape_v2.Eye_Right_Blink] : 0.0f;
