@@ -288,9 +288,9 @@ public class SignalerEyeDataSender : MonoBehaviour
                     combinedGazeDirectionFrozen.y = combinedGazeDirection.y;
                     combinedGazeDirectionFrozen.z = combinedGazeDirection.z;
                     
-                    Debug.Log("Combined Gaze Direction: " + combinedGazeDirection.x + combinedGazeDirection.y + combinedGazeDirection.z);
+                    // Debug.Log("Combined Gaze Direction: " + combinedGazeDirection.x + combinedGazeDirection.y + combinedGazeDirection.z);
 
-                    Debug.Log("Combined Gaze Direction Frozen: " + combinedGazeDirectionFrozen.x + combinedGazeDirectionFrozen.y + combinedGazeDirectionFrozen.z);
+                    // Debug.Log("Combined Gaze Direction Frozen: " + combinedGazeDirectionFrozen.x + combinedGazeDirectionFrozen.y + combinedGazeDirectionFrozen.z);
 
                     rightGazeDirectionFrozen.x = rightGazeDirection.x;
                     rightGazeDirectionFrozen.y = rightGazeDirection.y;

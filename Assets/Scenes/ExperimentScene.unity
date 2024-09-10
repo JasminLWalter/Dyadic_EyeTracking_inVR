@@ -32376,6 +32376,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sampleInterval: 0.0001
+  receiverManager: {fileID: 0}
+  signalerManager: {fileID: 0}
 --- !u!114 &1980098758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32401,6 +32403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sampleInterval: 0.0001
+  receiverEyeDataSender: {fileID: 0}
 --- !u!114 &1980098761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32514,6 +32517,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sampleInterval: 0.0001
+  receiverManager: {fileID: 0}
+  signalerManager: {fileID: 0}
 --- !u!4 &1989596893
 Transform:
   m_ObjectHideFlags: 0
@@ -38615,7 +38620,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4134505311631137542}
   - component: {fileID: 7313654230535762585}
-  - component: {fileID: 7313654230535762587}
   - component: {fileID: 7313654230535762588}
   m_Layer: 0
   m_Name: Complete XR Origin Set Up
@@ -38639,36 +38643,6 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   inVR: 1
   hmd: {fileID: 1516416796}
---- !u!114 &7313654230535762587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7313654230535762584}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 760160e0fc9fedb49b6f8756c65c01ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hmd: {fileID: 1516416796}
-  OriginTransform: {fileID: 1578861478}
-  eyePositionCombinedWorld: {x: 0, y: 0, z: 0}
-  eyeDirectionCombinedWorld: {x: 0, y: 0, z: 0}
-  eyeRotationCombinedWorld: {x: 0, y: 0, z: 0, w: 0}
-  menuManager: {fileID: 0}
-  gameManager: {fileID: 0}
-  receiverManager: {fileID: 0}
-  TextsPhase3:
-  - {fileID: 263224819}
-  - {fileID: 21529636}
-  frozen: 0
-  signalerReady: 0
-  invisibleObject: {fileID: 1068163931}
-  avatar: {fileID: 7646968462962455489}
-  freezeCounter: 0
-  frozenPosition: {x: 0, y: 0, z: 0}
-  lSLSignalerOutlets: {fileID: 0}
 --- !u!114 &7313654230535762588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39034,6 +39008,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sampleInterval: 0.0001
+  receiverManager: {fileID: 1740773030}
+  signalerManager: {fileID: 777719402}
 --- !u!114 &7646968462962455506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39059,6 +39035,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sampleInterval: 0.0001
+  receiverEyeDataSender: {fileID: 7646968462962455508}
 --- !u!114 &7646968462962455508
 MonoBehaviour:
   m_ObjectHideFlags: 0

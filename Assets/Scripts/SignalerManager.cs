@@ -134,11 +134,11 @@ public class SignalerManager : MonoBehaviour
             }
             else if (_lastHit != null && _lastHit != hitData.collider)
             {
-                Debug.Log("Hit something new: " + hitData.collider.name);
+                // Debug.Log("Hit something new: " + hitData.collider.name);
                 _lastHit.gameObject.SendMessage("NotLongerStaredAt");
                 _lastHit = hitData.collider;
                 _lastHit.gameObject.SendMessage("StaredAt");
-                Debug.Log("Hit data collider:" + hitData.transform.position);
+                // Debug.Log("Hit data collider:" + hitData.transform.position);
             }
         /*    else if (_inputBindings.UI.Select.triggered)
             {

@@ -5,7 +5,7 @@ using System.Linq;
 
 public class LSLSignalerInlets : MonoBehaviour
 {
-    private string[] streamNames = { "ExperimentPhase", "SelectCounter", "TimestampsReceiver", "ReceiverReady", "BoxSelectedByReceiver", "EyePosDirRotReceiver", "EyeOpennessLRReceiver", "PupilDiameterLRReceiver", "HMDPosDirRotReceiver", "HandPosDirRotReceiver", "PreferredHandReceiver", "ReceiverFinished", "FrozenReceiver", "BreakReceiver" };
+    private string[] streamNames = { "ExperimentPhase", "SelectCounter", "TimestampsReceiver", "ReceiverReady", "BoxSelectedByReceiver", "EyePosDirRotReceiver", "EyeOpennessLRReceiver", "PupilDiameterLRReceiver", "HMDPosDirRotReceiver", "HandPosDirRotReceiver", "PreferredHandReceiver", "ReceiverFinished", "FrozenReceiver", "BreakReceiver", "ScoreReceiver" };
     private StreamInlet[] streamInlets;
     private int[] channelCounts;
     private int[][] intSamples;
@@ -134,6 +134,15 @@ public class LSLSignalerInlets : MonoBehaviour
             case "ExperimentPhase":
                 // Handle ExperimentPhase stream
                 break;
+            case "SelectCounter":
+                Debug.Log("Received selectCounter: " + sample[0]);
+                receiverManager.selectCounter = (int)sample[0];
+                break;
+            case "Score":
+                Debug.Log("Received score: " + sample[0]);
+                int reward = (int)sample[0];
+                Debug.Log("Received reward: " + reward);
+                gameManager.UpdateScore(reward);
         }
     }
 
@@ -144,8 +153,7 @@ public class LSLSignalerInlets : MonoBehaviour
         switch (streamName)
         {
             case "BoxSelectedByReceiver":
-                int reward = (int)sample[3];
-                gameManager.UpdateScore(reward);
+                
                 break;
             case "HMDPosDirRotReceiver":
                 // Handle HMDPosDirRotReceiver stream
