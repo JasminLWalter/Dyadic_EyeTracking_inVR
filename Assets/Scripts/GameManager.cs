@@ -312,7 +312,7 @@ public class GameManager : MonoBehaviour
             if (_currentRound < roundsPerCondition)
             {   
                 Debug.Log("first layer of if condition" + _currentRound + " " + roundsPerCondition);
-                if (_startedRound == false && receiverManager.selectCounter > 2 && receiverManager.frozen)
+                if (_startedRound == false && receiverManager.selectCounter > 2 && !signalerManager.frozen)
                 {
                     Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
 

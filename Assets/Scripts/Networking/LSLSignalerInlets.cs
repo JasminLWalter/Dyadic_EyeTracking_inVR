@@ -138,11 +138,12 @@ public class LSLSignalerInlets : MonoBehaviour
                 Debug.Log("Received selectCounter: " + sample[0]);
                 receiverManager.selectCounter = (int)sample[0];
                 break;
-            case "Score":
+            case "ScoreReceiver":
                 Debug.Log("Received score: " + sample[0]);
                 int reward = (int)sample[0];
                 Debug.Log("Received reward: " + reward);
                 gameManager.UpdateScore(reward);
+                break;
         }
     }
 

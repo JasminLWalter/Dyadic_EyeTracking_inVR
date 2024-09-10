@@ -14,6 +14,7 @@ public class BoxBehaviour : MonoBehaviour
     [SerializeField] private Material highlightMaterial;
 
     private TextMeshPro rewardText;
+    private LSLReceiverOutlets lslReceiverOutlets;
 
     // Start is called before the first frame update
     void Start()
