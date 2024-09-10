@@ -131,17 +131,14 @@ public class ReceiverManager : MonoBehaviour
                
             }
         }
-        else
+        else if (_lastHitController != null)
         {
-            if (_lastHitController != null)
-            {
-                Debug.Log("Not longer stared at.");
-                _lastHitController.gameObject.SendMessage("NotLongerStaredAt");
-                _lastHitController = null;
-            }
+            Debug.Log("Not longer stared at.");
+            _lastHitController.gameObject.SendMessage("NotLongerStaredAt");
+            _lastHitController = null;
         }
 
-        if (signalerManager.frozen && gameManager.countdownRunning == false)
+        else if (signalerManager.frozen && gameManager.countdownRunning == false)
         {
             gameManager.StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownTextReceiver));
         }
