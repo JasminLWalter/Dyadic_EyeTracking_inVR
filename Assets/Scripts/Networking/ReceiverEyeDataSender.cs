@@ -96,7 +96,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
     void Update()
     {
-        // string frozenString = frozen.ToString();
+        string frozenString = frozen.ToString();
         Debug.LogError("frozen" + frozen);
 
         // lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
