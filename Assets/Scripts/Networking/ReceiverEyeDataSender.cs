@@ -96,7 +96,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
     void Update()
     {
-        string frozenString = frozen.ToString();
+        // string frozenString = frozen.ToString();
         Debug.LogError("frozen" + frozen);
 
         // lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
@@ -302,7 +302,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
             }
         
             Debug.LogError("select counter: " + receiverManager.selectCounter); 
-            if(receiverManager.selectCounter > 1 && _inputBindings.Player.Freeze.triggered)
+            if(receiverManager.selectCounter > 1 && _inputBindings.Player.SelectBox.triggered && signalerManager.frozen)
             {
 
 
@@ -350,8 +350,8 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 headConstraintFrozen.w = headConstraint.transform.rotation.w;
 
 
-
-                frozen = false;
+                signalerManager.frozen = false;
+                
                 frozenString = frozen.ToString();
                 lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
             }    
