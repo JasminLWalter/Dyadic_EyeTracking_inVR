@@ -301,7 +301,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 outlet.push_sample(sample);
             }
         
-            Debug.LogError("select counter: " + receiverManager.selectCounter); 
+            Debug.LogError("select counter: " + receiverManager.selectCounter+ "_inputBindings.Player.SelectBox.triggered" + _inputBindings.Player.SelectBox.triggered + " signalerManager.frozen"+ signalerManager.frozen); 
             if(receiverManager.selectCounter > 1 && _inputBindings.Player.SelectBox.triggered && signalerManager.frozen)
             {
 
