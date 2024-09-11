@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int roundsPerCondition = 0;
     private int _currentRound = 0;
+    public bool _startedRound = false;
     private bool _selected = false;
     public bool firstFreeze = false;
     public bool firstFreezeReceiver = false;
@@ -311,14 +312,16 @@ public class GameManager : MonoBehaviour
             if (_currentRound < roundsPerCondition)
             {   
                 Debug.Log("first layer of if condition" + _currentRound + " " + roundsPerCondition);
-                if (receiverManager.selectCounter > 1 && !signalerManager.frozen)
-                {
-                    Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
-                    receiverManager.boxSelected = true;
-                    StartCoroutine(Condition1());
-                    //StartCoroutine(CountdownTimer(timerCountdownText));
-                    trialNumber++;
-                }
+                if (role == "receiver")
+                    if (_startedRound == false && receiverManager.selectCounter > 1 && !signalerManager.frozen)
+                    {
+                        Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
+                        receiverManager.boxSelected = true;
+                        _startedRound = true;
+                        StartCoroutine(Condition1());
+                        //StartCoroutine(CountdownTimer(timerCountdownText));
+                        trialNumber++;
+                    }
                 
             }          
             if (_currentRound == 4 && !trainingEnd) //this order could cause problems
@@ -424,6 +427,7 @@ public class GameManager : MonoBehaviour
     {
 
         ShowMilkyGlassRandom();
+        // _startedRound = true;
         _selected = false;
 
         // 1. Freeze receiver 
@@ -553,6 +557,7 @@ public class GameManager : MonoBehaviour
         }
         _currentRound += 1;
         _selected = true;
+        // _startedRound = false;
         receiverManager.boxSelected = false;
 
     }
