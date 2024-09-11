@@ -314,7 +314,7 @@ public class SignalerEyeDataSender : MonoBehaviour
 
                     frozenString = signalerManager.frozen.ToString();
                     lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
-                    Debug.LogError("Frozen local :" + signalerManager.frozen);
+                    Debug.LogError("Frozen signalerdatasender :" + signalerManager.frozen);
                     Debug.LogError("Frozen local string :" + frozenString);
 
                 }

@@ -354,6 +354,8 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 
                 frozenString = frozen.ToString();
                 lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
+
+                Debug.LogError("Frozen receiverdatasender :" + signalerManager.frozen);
             }    
         }    
     }
