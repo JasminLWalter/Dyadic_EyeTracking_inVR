@@ -53,7 +53,6 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int roundsPerCondition = 0;
     private int _currentRound = 0;
-    private bool _startedRound = false;
     private bool _selected = false;
     public bool firstFreeze = false;
     public bool firstFreezeReceiver = false;
@@ -312,11 +311,10 @@ public class GameManager : MonoBehaviour
             if (_currentRound < roundsPerCondition)
             {   
                 Debug.Log("first layer of if condition" + _currentRound + " " + roundsPerCondition);
-                if (_startedRound == false && receiverManager.selectCounter > 1 && !signalerManager.frozen)
+                if (receiverManager.selectCounter > 1 && !signalerManager.frozen)
                 {
                     Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
                     receiverManager.boxSelected = true;
-                    _startedRound = true;
                     StartCoroutine(Condition1());
                     //StartCoroutine(CountdownTimer(timerCountdownText));
                     trialNumber++;
@@ -426,7 +424,6 @@ public class GameManager : MonoBehaviour
     {
 
         ShowMilkyGlassRandom();
-        _startedRound = true;
         _selected = false;
 
         // 1. Freeze receiver 
@@ -556,7 +553,6 @@ public class GameManager : MonoBehaviour
         }
         _currentRound += 1;
         _selected = true;
-        _startedRound = false;
         receiverManager.boxSelected = false;
 
     }
