@@ -45,7 +45,7 @@ public class BoxBehaviour : MonoBehaviour
     // While the box is starred at (= while the x-ray collides with the box)
     public void Selected()
     {
-        lslReceiverOutlets.lslOScore.push_sample( new int[] { int.Parse(rewardText.text) } );
+        // lslReceiverOutlets.lslOScore.push_sample( new int[] { int.Parse(rewardText.text) } );
         gameManager.UpdateScore(int.Parse(rewardText.text));
     }
 

@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
         embodimentManager = FindObjectOfType<EmbodimentManager>();
         eyetrackingValidation = FindObjectOfType<EyetrackingValidation>();
         simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
-        // boxBehaviour = FindObjectOfType<BoxBehaviour>();
+        boxBehaviour = FindObjectOfType<BoxBehaviour>();
 
         trainingSign.gameObject.SetActive(false);
         trainingSignReceiver.gameObject.SetActive(false);
@@ -316,7 +316,7 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
                     receiverManager.boxSelected = true;
-                    _startedRound == true;
+                    _startedRound = true;
                     StartCoroutine(Condition1());
                     //StartCoroutine(CountdownTimer(timerCountdownText));
                     trialNumber++;
