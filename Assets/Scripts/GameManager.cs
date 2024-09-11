@@ -312,10 +312,11 @@ public class GameManager : MonoBehaviour
             if (_currentRound < roundsPerCondition)
             {   
                 Debug.Log("first layer of if condition" + _currentRound + " " + roundsPerCondition);
-                if (_startedRound == false && receiverManager.selectCounter > 2 && !signalerManager.frozen)
+                if (_startedRound == false && receiverManager.selectCounter > 1 && !signalerManager.frozen)
                 {
                     Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
-
+                    receiverManager.boxSelected = true;
+                    _startedRound == true;
                     StartCoroutine(Condition1());
                     //StartCoroutine(CountdownTimer(timerCountdownText));
                     trialNumber++;
@@ -556,6 +557,7 @@ public class GameManager : MonoBehaviour
         _currentRound += 1;
         _selected = true;
         _startedRound = false;
+        receiverManager.boxSelected = false;
 
     }
 

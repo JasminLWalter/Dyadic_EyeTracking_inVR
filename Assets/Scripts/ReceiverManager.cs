@@ -100,7 +100,7 @@ public class ReceiverManager : MonoBehaviour
             {
                 Debug.LogError("SelectBox");
                _lastHitController.gameObject.SendMessage("Selected");
-               boxSelected = true;
+            //    boxSelected = true;
                selectCounter++;
                lSLReceiverOutlets.lslOSelectCounter.push_sample(new int[] {selectCounter} );
                Debug.Log("selectCounter" + selectCounter);
