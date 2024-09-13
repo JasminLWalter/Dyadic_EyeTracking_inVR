@@ -528,6 +528,11 @@ public class GameManager : MonoBehaviour
             shuffledRewards[index] = reward;
         }
 
+        float[] floatArray = shuffledRewards.Select(i => (float)i).ToArray();
+        Debug.LogWarning("Float Array: " + string.Join(", ", floatArray));
+        Debug.LogWarning(lslReceiverOutlets);
+        lslReceiverOutlets.lslORewardValues.push_sample(floatArray);
+
         Debug.Log("Shuffled rewards: " + string.Join(", ", shuffledRewards));
         // Assign the shuffled rewards to the boxes
         for (int i = 0; i < boxes.Count; i++)
