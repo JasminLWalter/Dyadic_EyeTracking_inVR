@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
     private float probabilityForOne = 0.5f;
     public Camera mainCamera;
 
-    private LSLReceiverOutlets lslReceiverOutlets;
+    public LSLReceiverOutlets lslReceiverOutlets;
     public bool countdownRunning = false;
     //private bool startedTimer = false;
     // Start is called before the first frame update
@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
         eyetrackingValidation = FindObjectOfType<EyetrackingValidation>();
         simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
         boxBehaviour = FindObjectOfType<BoxBehaviour>();
-        lslReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
+        lslReceiverOutlets = avatarMain.GetComponent<LSLReceiverOutlets>();
 
         trainingSign.gameObject.SetActive(false);
         trainingSignReceiver.gameObject.SetActive(false);
