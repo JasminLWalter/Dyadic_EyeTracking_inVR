@@ -67,6 +67,8 @@ public class LSLReceiverOutlets : MonoBehaviour
     public StreamOutlet lslOEndTime;
     public StreamInfo lslIScore;
     public StreamOutlet lslOScore;
+    public StreamInfo lslIRewardValues;
+    public StreamOutlet lslORewardValues;
 
     float[] sample;
     private int channelCount = 0;
@@ -197,15 +199,6 @@ public class LSLReceiverOutlets : MonoBehaviour
         lslIBoxSelectedByReceiver.desc().append_child("BoxPosZ");
         lslIBoxSelectedByReceiver.desc().append_child("Reward Received");
         lslOBoxSelectedByReceiver = new StreamOutlet(lslIBoxSelectedByReceiver);
-
-        // Score 
-        lslIScore = new StreamInfo(
-            "ScoreReceiver",
-            "Markers",
-            1,
-            NominalRate,
-            LSL.channel_format_t.cf_int32);
-        lslOScore = new StreamOutlet(lslIScore);
 
         // Raycast hit
         lslIRaycastHit = new StreamInfo(
@@ -386,6 +379,24 @@ public class LSLReceiverOutlets : MonoBehaviour
         lslIBreak.desc().append_child("Break start time");
         lslIBreak.desc().append_child("Break end time");
         lslOBreak = new StreamOutlet(lslIBreak);
+
+        // Score 
+        lslIScore = new StreamInfo(
+            "ScoreReceiver",
+            "Markers",
+            1,
+            NominalRate,
+            LSL.channel_format_t.cf_int32);
+        lslOScore = new StreamOutlet(lslIScore);
+
+        // Reward Values
+        lslIRewardValues = new StreamInfo(
+            "RewardValuesReceiver",
+            "Markers",
+            8,
+            NominalRate,
+            LSL.channel_format_t.cf_float32);
+        lslORewardValues = new StreamOutlet(lslIRewardValues);
 
     }
     void Update()

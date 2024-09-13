@@ -156,6 +156,10 @@ public class LSLSignalerInlets : MonoBehaviour
             case "BoxSelectedByReceiver":
                 
                 break;
+            case "RewardValues": 
+            // Handle RewardValues stream
+                Debug.Log("Shuffled rewards: " + string.Join(", ", sample));
+                break;
             case "HMDPosDirRotReceiver":
                 // Handle HMDPosDirRotReceiver stream
                 break;
