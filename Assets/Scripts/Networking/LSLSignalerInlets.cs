@@ -5,7 +5,7 @@ using System.Linq;
 
 public class LSLSignalerInlets : MonoBehaviour
 {
-    private string[] streamNames = { "ExperimentPhase", "SelectCounter", "TimestampsReceiver", "ReceiverReady", "BoxSelectedByReceiver", "EyePosDirRotReceiver", "EyeOpennessLRReceiver", "PupilDiameterLRReceiver", "HMDPosDirRotReceiver", "HandPosDirRotReceiver", "PreferredHandReceiver", "ReceiverFinished", "FrozenReceiver", "BreakReceiver", "ScoreReceiver" };
+    private string[] streamNames = { "ExperimentPhase", "SelectCounter", "TimestampsReceiver", "ReceiverReady", "BoxSelectedByReceiver", "EyePosDirRotReceiver", "EyeOpennessLRReceiver", "PupilDiameterLRReceiver", "HMDPosDirRotReceiver", "HandPosDirRotReceiver", "PreferredHandReceiver", "ReceiverFinished", "FrozenReceiver", "RewardValues","BreakReceiver", "ScoreReceiver" };
     private StreamInlet[] streamInlets;
     private int[] channelCounts;
     private int[][] intSamples;
