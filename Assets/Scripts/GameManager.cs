@@ -98,7 +98,6 @@ public class GameManager : MonoBehaviour
     private float probabilityForOne = 0.5f;
     public Camera mainCamera;
 
-    private LSLReceiverOutlets lslReceiverOutlets;
     public bool countdownRunning = false;
     //private bool startedTimer = false;
     // Start is called before the first frame update
@@ -126,16 +125,15 @@ public class GameManager : MonoBehaviour
         eyetrackingValidation = FindObjectOfType<EyetrackingValidation>();
         simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
         boxBehaviour = FindObjectOfType<BoxBehaviour>();
-        lslReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
 
         trainingSign.gameObject.SetActive(false);
         trainingSignReceiver.gameObject.SetActive(false);
         TimeExceededTMP.gameObject.SetActive(false);
         TimeExceededTMPReceiver.gameObject.SetActive(false);
-        scoreDisplay.gameObject.SetActive(false);
-        roundsDisplay.gameObject.SetActive(false);
-        scoreDisplayReceiver.gameObject.SetActive(false);
-        roundsDisplayReceiver.gameObject.SetActive(false);
+        scoreDisplay.gameObject.SetActive(true);
+        roundsDisplay.gameObject.SetActive(true);
+        scoreDisplayReceiver.gameObject.SetActive(true);
+        roundsDisplayReceiver.gameObject.SetActive(true);
         
         xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
         
@@ -144,7 +142,40 @@ public class GameManager : MonoBehaviour
 
     }
 
-    
+    // void AssignRole()
+    // {
+    //     if (_inputBindings.UI.Signaler.triggered) // 4 on keyboard
+    //     {
+    //         role = "signaler";
+    //         receiver.GetComponent<ReceiverManager>().enabled = false;
+    //         signaler.GetComponent<SignalerManager>().enabled = true;
+    //         signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
+    //         signalerManager.Teleport(new Vector3(-99.5999985f, -105.760002f, 66.6399994f), avatarSecondary);
+            
+    //         // LSL Streams
+    //         avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
+    //         avatarMain.GetComponent<LSLSignalerInlets>().enabled = true;
+    //         avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = true;
+    //         avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = true;
+            
+    //     }
+    //     else if (_inputBindings.UI.Receiver.triggered) // 6 on keyboard
+    //     {
+    //         role = "receiver";
+    //         receiver.GetComponent<ReceiverManager>().enabled = true;
+    //         signaler.GetComponent<SignalerManager>().enabled = false;
+    //         receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
+
+    //         // LSL Streams
+    //         avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
+    //         avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = true;
+    //         avatarMain.GetComponent<LSLReceiverInlets>().enabled = true;
+    //         avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;
+    //     }
+    //     roleAssigned = true;
+    // }
+
+    // Update is called once per frame
     void Update()
     {
 
@@ -326,7 +357,7 @@ public class GameManager : MonoBehaviour
             vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,1.22000003f);
             xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
             avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0));
-            // Debug.LogError("turn around");
+            Debug.LogError("turn around");
            }
            if (role == "signaler")
            {
@@ -427,9 +458,7 @@ public class GameManager : MonoBehaviour
         // 5. Receiver chooses box 
         if(receiverManager.boxSelected == true)
         {
-            Debug.LogWarning("Score before:" + score);
             boxBehaviour.Selected();
-            Debug.LogWarning("Score after:" + score);
         }
 
         if (Time.time - _startRoundTime < _timeLimit){
@@ -496,8 +525,6 @@ public class GameManager : MonoBehaviour
 
             shuffledRewards[index] = reward;
         }
-        float[] floatArray = shuffledRewards.Select(i => (float)i).ToArray();
-        lslReceiverOutlets.lslORewardValues.push_sample(floatArray);
 
         Debug.Log("Shuffled rewards: " + string.Join(", ", shuffledRewards));
         // Assign the shuffled rewards to the boxes
@@ -513,16 +540,8 @@ public class GameManager : MonoBehaviour
     public void UpdateScore(int reward)
     {
         score += reward;
-        if(role == "signaler")
-        {
-            scoreDisplay.gameObject.SetActive(true);
-            scoreDisplay.text = "Score: " + score;
-        }
-        if(role == "receiver")
-        {
-            scoreDisplayReceiver.gameObject.SetActive(true);
-            scoreDisplayReceiver.text = "Score: " + score;
-        }
+        scoreDisplayReceiver.text = "Score: " + score;
+
         if(_currentRound == 10 ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
         {
             //SRanipal_Eye_v2.LaunchEyeCalibration();
@@ -540,16 +559,8 @@ public class GameManager : MonoBehaviour
     {
         score = 0;
         _currentRound = 0;
-        if(role == "signaler")
-        {
-            scoreDisplay.text = "Score: " + score;
-            roundsDisplay.text = "Round: " + _currentRound;
-        }
-        if(role == "receiver")
-        {
-            scoreDisplayReceiver.text = "Score: " + score;
-            roundsDisplayReceiver.text = "Round: " + _currentRound;
-        }
+        scoreDisplayReceiver.text = "Score: " + score;
+        roundsDisplayReceiver.text = "Round: " + _currentRound;
 
     }
 
