@@ -679,7 +679,7 @@ public class GameManager : MonoBehaviour
 
             countdownTextReceiver.text = "Go!";
             yield return new WaitForSeconds(1);
-            countdownTextReceiver.text = "Wait until Signaler has decided!";
+            countdownTextReceiver.text = "Wait!";
             yield return new WaitForSeconds(19);
             countdownTextReceiver.text = "Start!";
             yield return new WaitForSeconds(1);
