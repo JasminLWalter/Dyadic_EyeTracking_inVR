@@ -132,10 +132,22 @@ public class GameManager : MonoBehaviour
         trainingSignReceiver.gameObject.SetActive(false);
         TimeExceededTMP.gameObject.SetActive(false);
         TimeExceededTMPReceiver.gameObject.SetActive(false);
-        scoreDisplay.gameObject.SetActive(true);
-        roundsDisplay.gameObject.SetActive(true);
-        scoreDisplayReceiver.gameObject.SetActive(true);
-        roundsDisplayReceiver.gameObject.SetActive(true);
+        if (role == "signaler")
+        {
+            scoreDisplay.gameObject.SetActive(true);
+            roundsDisplay.gameObject.SetActive(true);
+            scoreDisplayReceiver.gameObject.SetActive(false);
+            roundsDisplayReceiver.gameObject.SetActive(false);
+        }
+        if (role == "receiver")
+        {
+            scoreDisplayReceiver.gameObject.SetActive(true);
+            roundsDisplayReceiver.gameObject.SetActive(true);
+            scoreDisplay.gameObject.SetActive(false);
+            roundsDisplay.gameObject.SetActive(false);
+        }
+        
+
         
         xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
         
