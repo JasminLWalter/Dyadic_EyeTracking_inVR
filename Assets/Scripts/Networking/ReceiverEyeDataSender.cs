@@ -302,7 +302,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
             }
         
             Debug.LogError("select counter: " + receiverManager.selectCounter); 
-            if(receiverManager.selectCounter > 1 && _inputBindings.Player.SelectBox.triggered && frozen)
+            if(receiverManager.selectCounter > 1 && _inputBindings.Player.SelectBox.triggered)
             {
 
 
