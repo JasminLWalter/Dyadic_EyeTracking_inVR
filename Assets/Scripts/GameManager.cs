@@ -253,6 +253,8 @@ public class GameManager : MonoBehaviour
         {
             avatarSecondary.transform.rotation =Quaternion.Euler(new Vector3(0, 180, 0));
             avatarSecondary.transform.position = new Vector3(-3f,3f,5.5f); //Vector3(-3.07173824,-2.07763529,-9.10935402)
+            Debug.LogWarning(lslReceiverOutlets);
+
         }
         if (role == "signaler")
         {
@@ -542,8 +544,15 @@ public class GameManager : MonoBehaviour
 
         float[] floatArray = shuffledRewards.Select(i => (float)i).ToArray();
         Debug.LogWarning("Float Array: " + string.Join(", ", floatArray));
-        Debug.LogWarning(lslReceiverOutlets);
-        lslReceiverOutlets.lslORewardValues.push_sample(floatArray);
+        Debug.LogWarning("Type of floatArray: " + floatArray.GetType());
+        Debug.LogWarning("Length of floatArray: " + floatArray.Length);
+        if (lslReceiverOutlets.lslORewardValues != null) {
+            lslReceiverOutlets.lslORewardValues.push_sample(floatArray);
+            Debug.Log("Sample pushed successfully.");
+        }
+        else{
+            Debug.Log("Outlet not found");
+        }
 
         Debug.Log("Shuffled rewards: " + string.Join(", ", shuffledRewards));
         // Assign the shuffled rewards to the boxes

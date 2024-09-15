@@ -5,7 +5,7 @@ using System.Linq;
 
 public class LSLSignalerInlets : MonoBehaviour
 {
-    private string[] streamNames = { "ExperimentPhase", "SelectCounter", "TimestampsReceiver", "ReceiverReady", "BoxSelectedByReceiver", "EyePosDirRotReceiver", "EyeOpennessLRReceiver", "PupilDiameterLRReceiver", "HMDPosDirRotReceiver", "HandPosDirRotReceiver", "PreferredHandReceiver", "ReceiverFinished", "FrozenReceiver", "RewardValues","BreakReceiver", "ScoreReceiver" };
+    private string[] streamNames = { "ExperimentPhase", "SelectCounter", "TimestampsReceiver", "ReceiverReady", "BoxSelectedByReceiver", "EyePosDirRotReceiver", "EyeOpennessLRReceiver", "PupilDiameterLRReceiver", "HMDPosDirRotReceiver", "HandPosDirRotReceiver", "PreferredHandReceiver", "ReceiverFinished", "FrozenReceiver", "RewardValuesReceiver","BreakReceiver", "ScoreReceiver" };
     private StreamInlet[] streamInlets;
     private int[] channelCounts;
     private int[][] intSamples;
@@ -20,8 +20,8 @@ public class LSLSignalerInlets : MonoBehaviour
     {
        
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        // signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
-        // receiverManager = GameObject.Find("Receiver").GetComponent<ReceiverManager>();
+        signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
+        receiverManager = GameObject.Find("Receiver").GetComponent<ReceiverManager>();
 
         int streamCount = streamNames.Length;
         streamInlets = new StreamInlet[streamCount];
@@ -149,16 +149,16 @@ public class LSLSignalerInlets : MonoBehaviour
 
     private void ProcessFloatSample(float[] sample, double timeStamp, string streamName)
     {
-        // Debug.LogWarning($"Received float sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+        Debug.LogWarning($"Received float sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
 
         switch (streamName)
         {
             case "BoxSelectedByReceiver":
                 
                 break;
-            case "RewardValues": 
+            case "RewardValuesReceiver": 
             // Handle RewardValues stream
-                Debug.Log("Shuffled rewards: " + string.Join(", ", sample));
+                Debug.Log("Received shuffled rewards: " + string.Join(", ", sample));
                 break;
             case "HMDPosDirRotReceiver":
                 // Handle HMDPosDirRotReceiver stream
