@@ -543,16 +543,7 @@ public class GameManager : MonoBehaviour
         }
 
         float[] floatArray = shuffledRewards.Select(i => (float)i).ToArray();
-        Debug.LogWarning("Float Array: " + string.Join(", ", floatArray));
-        Debug.LogWarning("Type of floatArray: " + floatArray.GetType());
-        Debug.LogWarning("Length of floatArray: " + floatArray.Length);
-        if (lslReceiverOutlets.lslORewardValues != null) {
-            lslReceiverOutlets.lslORewardValues.push_sample(floatArray);
-            Debug.Log("Sample pushed successfully.");
-        }
-        else{
-            Debug.Log("Outlet not found");
-        }
+        lslReceiverOutlets.lslORewardValues.push_sample(floatArray);
 
         Debug.Log("Shuffled rewards: " + string.Join(", ", shuffledRewards));
         // Assign the shuffled rewards to the boxes

@@ -2,6 +2,10 @@ using UnityEngine;
 using LSL;
 using System.Collections;
 using System.Linq;
+using System.Collections.Generic;
+using System;
+
+
 
 public class LSLSignalerInlets : MonoBehaviour
 {
@@ -15,6 +19,8 @@ public class LSLSignalerInlets : MonoBehaviour
     public ReceiverManager receiverManager;
     private GameManager gameManager;
     public SignalerManager signalerManager;
+    public List<int> intList;
+
 
     void Start()
     {
@@ -149,7 +155,7 @@ public class LSLSignalerInlets : MonoBehaviour
 
     private void ProcessFloatSample(float[] sample, double timeStamp, string streamName)
     {
-        Debug.LogWarning($"Received float sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+        // Debug.LogWarning($"Received float sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
 
         switch (streamName)
         {
@@ -159,6 +165,13 @@ public class LSLSignalerInlets : MonoBehaviour
             case "RewardValuesReceiver": 
             // Handle RewardValues stream
                 Debug.Log("Received shuffled rewards: " + string.Join(", ", sample));
+                List<int> intSample = sample.Select(f => (int)Math.Round(f)).ToList();
+                for (int i = 0; i < gameManager.boxes.Count; i++)
+                {
+                    BoxBehaviour currentBox = gameManager.boxes.ElementAt(i).GetComponent<BoxBehaviour>();
+                    
+                    currentBox.ChangeReward(intSample.ElementAt(i));
+                }
                 break;
             case "HMDPosDirRotReceiver":
                 // Handle HMDPosDirRotReceiver stream
