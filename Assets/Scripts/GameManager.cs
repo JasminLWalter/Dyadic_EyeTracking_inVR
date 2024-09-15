@@ -442,7 +442,7 @@ public class GameManager : MonoBehaviour
     #endregion
     private IEnumerator Condition1()
     {
-
+        
         ShowMilkyGlassRandom();
         // _startedRound = true;
         _selected = false;
@@ -458,7 +458,7 @@ public class GameManager : MonoBehaviour
         _startRoundTime = Time.time;
 
         // 4. Signaler freezes themselves by button press or after the timer runs out
-        yield return new WaitWhile(() => ((_inputBindings.Player.Freeze.triggered == false)^(Time.time - _startRoundTime < _timeLimit)));
+        yield return new WaitWhile(() => ((_inputBindings.Player.Freeze.triggered == false)||(Time.time - _startRoundTime < _timeLimit)));
         if(role == "signaler" && _inputBindings.Player.Freeze.triggered && !firstSelectionMade)
         {
             Debug.LogError("firstSelectionMade");
