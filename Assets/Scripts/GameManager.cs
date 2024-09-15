@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     public Material invisible;
     private InputBindings _inputBindings;
     
-    private int score;
+    private int score = 0;
     private List<int> shuffledRewards;
     public string role;
     [SerializeField] private TextMeshProUGUI  scoreDisplay;
@@ -132,23 +132,7 @@ public class GameManager : MonoBehaviour
         trainingSignReceiver.gameObject.SetActive(false);
         TimeExceededTMP.gameObject.SetActive(false);
         TimeExceededTMPReceiver.gameObject.SetActive(false);
-        if (role == "signaler")
-        {
-            scoreDisplay.gameObject.SetActive(true);
-            roundsDisplay.gameObject.SetActive(true);
-            scoreDisplayReceiver.gameObject.SetActive(false);
-            roundsDisplayReceiver.gameObject.SetActive(false);
-        }
-        if (role == "receiver")
-        {
-            scoreDisplayReceiver.gameObject.SetActive(true);
-            roundsDisplayReceiver.gameObject.SetActive(true);
-            scoreDisplay.gameObject.SetActive(false);
-            roundsDisplay.gameObject.SetActive(false);
-        }
-        
 
-        
         xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
         
         score = 0;
@@ -221,6 +205,11 @@ public class GameManager : MonoBehaviour
             // avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = false;   
             avatarMain.GetComponent<LSLReceiverInlets>().enabled = false;
             avatarMain.GetComponent<LSLReceiverOutlets>().enabled = false;
+
+            scoreDisplay.gameObject.SetActive(true);
+            roundsDisplay.gameObject.SetActive(true);
+            scoreDisplayReceiver.gameObject.SetActive(false);
+            roundsDisplayReceiver.gameObject.SetActive(false);
         }
         if (_inputBindings.UI.Receiver.triggered) // 6 on keyboard
         {
@@ -248,6 +237,11 @@ public class GameManager : MonoBehaviour
             avatarMain.GetComponent<LSLSignalerInlets>().enabled = false;
             // avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = false;
             // avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = false;
+
+            scoreDisplayReceiver.gameObject.SetActive(true);
+            roundsDisplayReceiver.gameObject.SetActive(true);
+            scoreDisplay.gameObject.SetActive(false);
+            roundsDisplay.gameObject.SetActive(false);
         }
         if (role == "receiver")
         {
@@ -306,12 +300,10 @@ public class GameManager : MonoBehaviour
             }
             if(role == "signaler")
             {
-                roundsDisplay.gameObject.SetActive(true);
                 roundsDisplay.text = "Round: " + _currentRound;
             }
             if(role == "receiver")
             {
-                roundsDisplayReceiver.gameObject.SetActive(true);
                 roundsDisplayReceiver.text = "Round: " + _currentRound;
             }
             if (_currentRound > 0 && _currentRound < 4 && !trainingEnd)
@@ -560,6 +552,7 @@ public class GameManager : MonoBehaviour
     {
         score += reward;
         scoreDisplayReceiver.text = "Score: " + score;
+        scoreDisplay.text = "Score: " + score;
 
         if(_currentRound == 10 ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
         {
@@ -580,6 +573,9 @@ public class GameManager : MonoBehaviour
         _currentRound = 0;
         scoreDisplayReceiver.text = "Score: " + score;
         roundsDisplayReceiver.text = "Round: " + _currentRound;
+
+        scoreDisplay.text = "Score: " + score;
+        roundsDisplay.text = "Round: " + _currentRound;
 
     }
 

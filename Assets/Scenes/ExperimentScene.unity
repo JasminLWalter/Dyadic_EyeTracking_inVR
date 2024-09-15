@@ -3385,7 +3385,8 @@ MonoBehaviour:
   roundsDisplayReceiver: {fileID: 1882278240}
   TimeExceededTMP: {fileID: 115359661}
   TimeExceededTMPReceiver: {fileID: 301607826}
-  roundsPerCondition: 5
+  roundsPerCondition: 13
+  _startedRound: 0
   firstFreeze: 0
   firstFreezeReceiver: 0
   boxes:
@@ -3423,6 +3424,7 @@ MonoBehaviour:
   running: 0
   _timeLimit: 30
   mainCamera: {fileID: 1516416800}
+  lslReceiverOutlets: {fileID: 0}
   countdownRunning: 0
 --- !u!4 &171754635
 Transform:
@@ -32378,6 +32380,7 @@ MonoBehaviour:
   sampleInterval: 0.0001
   receiverManager: {fileID: 0}
   signalerManager: {fileID: 0}
+  intList: 
 --- !u!114 &1980098758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32519,6 +32522,7 @@ MonoBehaviour:
   sampleInterval: 0.0001
   receiverManager: {fileID: 0}
   signalerManager: {fileID: 0}
+  intList: 
 --- !u!4 &1989596893
 Transform:
   m_ObjectHideFlags: 0
@@ -39010,6 +39014,7 @@ MonoBehaviour:
   sampleInterval: 0.0001
   receiverManager: {fileID: 1740773030}
   signalerManager: {fileID: 777719402}
+  intList: 
 --- !u!114 &7646968462962455506
 MonoBehaviour:
   m_ObjectHideFlags: 0
