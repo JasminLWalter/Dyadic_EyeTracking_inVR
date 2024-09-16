@@ -212,9 +212,6 @@ public class GameManager : MonoBehaviour
             scoreDisplayReceiver.gameObject.SetActive(false);
             roundsDisplayReceiver.gameObject.SetActive(false);
 
-            calCounter += 1;
-            SRanipal_Eye_v2.LaunchEyeCalibration();
-
         }
         if (_inputBindings.UI.Receiver.triggered && calCounter<1) // 6 on keyboard
         {
@@ -250,14 +247,15 @@ public class GameManager : MonoBehaviour
 
             
         }
-        if (role == "receiver"  && calCounter<1)
+        if (role == "receiver")
         {
             avatarSecondary.transform.rotation =Quaternion.Euler(new Vector3(0, 180, 0));
             avatarSecondary.transform.position = new Vector3(-3f,3f,5.5f); //Vector3(-3.07173824,-2.07763529,-9.10935402)
             Debug.LogWarning(lslReceiverOutlets);
 
+
         }
-        if (role == "signaler"  && calCounter<1)
+        if (role == "signaler")
         {
             // avatarSecondary.transform.rotation = new Vector3(0,0,0);
             avatarSecondary.transform.position = new Vector3(-3f,3.1f,-10f);
@@ -302,19 +300,19 @@ public class GameManager : MonoBehaviour
             //assign role here?
             //player.role = "receiver";
             //Debug.LogError("Phase 3");
-            if (role == "receiver" && calCounter<1)
+            if (role == "receiver")
             {
                 vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,-0.94f);
                 xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 270, 0));
                 avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
                 calCounter += 1;
-                SRanipal_Eye_v2.LaunchEyeCalibration();
+                // SRanipal_Eye_v2.LaunchEyeCalibration();
             }
-            if(role == "signaler" && calCounter<1)
+            if(role == "signaler")
             {
                 roundsDisplay.text = "Round: " + _currentRound;
                 calCounter += 1;
-                SRanipal_Eye_v2.LaunchEyeCalibration();
+                // SRanipal_Eye_v2.LaunchEyeCalibration();
             }
             if(role == "receiver")
             {
