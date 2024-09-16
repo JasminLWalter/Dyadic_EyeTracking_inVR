@@ -267,19 +267,15 @@ public class GameManager : MonoBehaviour
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
         {
-            if (role == "receiver"  && calCounter<1)
+            if (role == "receiver")
             {
                 receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase), xrOriginSetup);
 
-                calCounter += 1;
-                SRanipal_Eye_v2.LaunchEyeCalibration();
             }
-            if (role == "signaler"  && calCounter<1) 
+            if (role == "signaler") 
             {
                 signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
 
-                calCounter += 1;
-                SRanipal_Eye_v2.LaunchEyeCalibration();
             }
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             // EnterNextPhase();
@@ -306,15 +302,19 @@ public class GameManager : MonoBehaviour
             //assign role here?
             //player.role = "receiver";
             //Debug.LogError("Phase 3");
-            if (role == "receiver")
+            if (role == "receiver" && calCounter<1)
             {
                 vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,-0.94f);
                 xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 270, 0));
                 avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
+                calCounter += 1;
+                SRanipal_Eye_v2.LaunchEyeCalibration();
             }
-            if(role == "signaler")
+            if(role == "signaler" && calCounter<1)
             {
                 roundsDisplay.text = "Round: " + _currentRound;
+                calCounter += 1;
+                SRanipal_Eye_v2.LaunchEyeCalibration();
             }
             if(role == "receiver")
             {
