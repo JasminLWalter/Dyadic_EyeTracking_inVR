@@ -554,11 +554,11 @@ public class GameManager : MonoBehaviour
         scoreDisplayReceiver.text = "Score: " + score;
         scoreDisplay.text = "Score: " + score;
 
-        if(_currentRound == 10 ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
+        if(_currentRound == 1 ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
         {
-            //SRanipal_Eye_v2.LaunchEyeCalibration();
-            EnterPausePhase();
-            eyetrackingValidation.ValidateEyeTracking();
+            SRanipal_Eye_v2.LaunchEyeCalibration();
+            // EnterPausePhase();
+            // eyetrackingValidation.ValidateEyeTracking();
         }
         _currentRound += 1;
         _selected = true;

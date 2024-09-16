@@ -549,11 +549,11 @@ namespace ViveSR
                 /// Launches anipal's Eye Calibration feature (an overlay program).
                 /// </summary>
                 /// <returns>Indicates the resulting ViveSR.Error status of this method.</returns>
-                // public static bool LaunchEyeCalibration()
-                // {
-                //     int result = SRanipal_Eye_API.LaunchEyeCalibration(IntPtr.Zero);
-                //     return result == (int)Error.WORK;
-                // }
+                public static bool LaunchEyeCalibration()
+                {
+                    int result = SRanipal_Eye_API.LaunchEyeCalibration(IntPtr.Zero);
+                    return result == (int)Error.WORK;
+                }
             }
         }
     }
