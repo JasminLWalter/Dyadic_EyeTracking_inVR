@@ -105,6 +105,7 @@ public class GameManager : MonoBehaviour
 
     private bool roleAssigned = false;
     private bool trainingEnd = false;
+    private int calCounter = 0;
     void Start()
     {
         _inputBindings = new InputBindings();
@@ -177,7 +178,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
-        if (_inputBindings.UI.Signaler.triggered) // 4 on keyboard
+        if (_inputBindings.UI.Signaler.triggered && calCounter<1) // 4 on keyboard
         {
             role = "signaler";
             receiver.GetComponent<ReceiverManager>().enabled = false;
@@ -210,8 +211,12 @@ public class GameManager : MonoBehaviour
             roundsDisplay.gameObject.SetActive(true);
             scoreDisplayReceiver.gameObject.SetActive(false);
             roundsDisplayReceiver.gameObject.SetActive(false);
+
+            calCounter += 1;
+            SRanipal_Eye_v2.LaunchEyeCalibration();
+
         }
-        if (_inputBindings.UI.Receiver.triggered) // 6 on keyboard
+        if (_inputBindings.UI.Receiver.triggered && calCounter<1) // 6 on keyboard
         {
             role = "receiver";
             receiver.GetComponent<ReceiverManager>().enabled = true;
@@ -242,6 +247,9 @@ public class GameManager : MonoBehaviour
             roundsDisplayReceiver.gameObject.SetActive(true);
             scoreDisplay.gameObject.SetActive(false);
             roundsDisplay.gameObject.SetActive(false);
+
+            calCounter += 1;
+            SRanipal_Eye_v2.LaunchEyeCalibration();
         }
         if (role == "receiver")
         {
@@ -556,7 +564,6 @@ public class GameManager : MonoBehaviour
 
         if(_currentRound == 1 ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
         {
-            SRanipal_Eye_v2.LaunchEyeCalibration();
             // EnterPausePhase();
             // eyetrackingValidation.ValidateEyeTracking();
         }

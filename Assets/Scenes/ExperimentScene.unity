@@ -3385,7 +3385,7 @@ MonoBehaviour:
   roundsDisplayReceiver: {fileID: 1882278240}
   TimeExceededTMP: {fileID: 115359661}
   TimeExceededTMPReceiver: {fileID: 301607826}
-  roundsPerCondition: 13
+  roundsPerCondition: 17
   _startedRound: 0
   firstFreeze: 0
   firstFreezeReceiver: 0
