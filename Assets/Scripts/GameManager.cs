@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
-        if (_inputBindings.UI.Signaler.triggered && calCounter<1) // 4 on keyboard
+        if (_inputBindings.UI.Signaler.triggered) // 4 on keyboard
         {
             role = "signaler";
             receiver.GetComponent<ReceiverManager>().enabled = false;
@@ -248,32 +248,38 @@ public class GameManager : MonoBehaviour
             scoreDisplay.gameObject.SetActive(false);
             roundsDisplay.gameObject.SetActive(false);
 
-            calCounter += 1;
-            SRanipal_Eye_v2.LaunchEyeCalibration();
+            
         }
-        if (role == "receiver")
+        if (role == "receiver"  && calCounter<1)
         {
             avatarSecondary.transform.rotation =Quaternion.Euler(new Vector3(0, 180, 0));
             avatarSecondary.transform.position = new Vector3(-3f,3f,5.5f); //Vector3(-3.07173824,-2.07763529,-9.10935402)
             Debug.LogWarning(lslReceiverOutlets);
 
         }
-        if (role == "signaler")
+        if (role == "signaler"  && calCounter<1)
         {
             // avatarSecondary.transform.rotation = new Vector3(0,0,0);
             avatarSecondary.transform.position = new Vector3(-3f,3.1f,-10f);
+            
         }
         #region Experimental process 
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
         {
-            if (role == "receiver")
+            if (role == "receiver"  && calCounter<1)
             {
                 receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase), xrOriginSetup);
+
+                calCounter += 1;
+                SRanipal_Eye_v2.LaunchEyeCalibration();
             }
-            if (role == "signaler") 
+            if (role == "signaler"  && calCounter<1) 
             {
                 signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
+
+                calCounter += 1;
+                SRanipal_Eye_v2.LaunchEyeCalibration();
             }
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             // EnterNextPhase();
