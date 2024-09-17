@@ -62,6 +62,8 @@ public class ReceiverEyeDataSender : MonoBehaviour
     public bool frozen;
     public LSLReceiverOutlets lSLReceiverOutlets;
 
+    public GameObject waitReceiver;
+
     void Start()
     {
         StreamInfo streamInfo = new StreamInfo("EyeTrackingReceiver", "Gaze", 27, 0, channel_format_t.cf_float32);
@@ -91,14 +93,14 @@ public class ReceiverEyeDataSender : MonoBehaviour
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
 
+        waitReceiver.gameObject.SetActive(false);
+
 
     }
 
     void Update()
     {
         string frozenString = frozen.ToString();
-        Debug.LogError("frozen" + frozen);
-
         // lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 
         // if(inletFrozenSignaler == null && gameManager.phase == 3){
@@ -142,7 +144,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
            
             if(gameManager.frozen == true)
             {
-                
+                waitReceiver.gameObject.SetActive(false);
                 SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
                 SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out gazeOrigin, out combinedGazeDirection);
                 // Extract gaze direction
@@ -223,6 +225,11 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
             if(gameManager.frozen == false)
             {
+                if(receiverManager.selectCounter > 1)
+                {
+                    waitReceiver.gameObject.SetActive(true);
+                }
+                
 
                 combinedGazeDirection.x = combinedGazeDirectionFrozen.x;
                 combinedGazeDirection.y = combinedGazeDirectionFrozen.y;

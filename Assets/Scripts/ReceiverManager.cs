@@ -123,7 +123,7 @@ public class ReceiverManager : MonoBehaviour
                 // }
                
             }
-            else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3 && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box") && gameManager.frozen)
+            else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3 && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box")) // && gameManager.frozen)
             {
                 Debug.LogError("SelectBox");
                _lastHitController.gameObject.SendMessage("Selected");
