@@ -227,6 +227,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
             {
                 if(receiverManager.selectCounter >= 2)
                 {
+                    Debug.Log("abh");
                     waitReceiver.gameObject.SetActive(true);
                 }
                 
