@@ -225,7 +225,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
             if(gameManager.frozen == false)
             {
-                if(receiverManager.selectCounter > 1)
+                if(receiverManager.selectCounter >= 2)
                 {
                     waitReceiver.gameObject.SetActive(true);
                 }

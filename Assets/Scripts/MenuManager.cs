@@ -45,6 +45,7 @@ public class MenuManager : MonoBehaviour
     private ReceiverManager receiverManager;
     private SignalerManager signalerManager;
     public EyetrackingValidation eyetrackingValidation;
+    private ReceiverEyeDataSender receiverEyeDataSender;
     //public SRanipal_Eye_v2 sRanipal_Eye_v2;
     private InputBindings _inputBindings;
     private int currentTextIndex = 0;
@@ -67,6 +68,7 @@ public class MenuManager : MonoBehaviour
         eyetrackingValidation = FindObjectOfType<EyetrackingValidation>();
         receiverManager = FindObjectOfType<ReceiverManager>();
         signalerManager = FindObjectOfType<SignalerManager>();
+        receiverEyeDataSender = FindObjectOfType<ReceiverEyeDataSender>();
         //sRanipal_Eye_v2 = FindObjectOfType<SRanipal_Eye_v2>();
         
 
@@ -251,6 +253,7 @@ public class MenuManager : MonoBehaviour
                 }
                 else if (currentTextIndex >= textComponents.Count)
                 { 
+                    // I think this initiates the Second Part of the instructions
                     if (gameManager.GetCurrentPhase() == 3 && signalerManager.signalerReady == false && !countdownRunning && receiverManager.receiverReady == false)
                     {
                         //StartCoroutine(gameManager.Countdown());
@@ -258,8 +261,10 @@ public class MenuManager : MonoBehaviour
                         Debug.Log("second part did run");
                         
                     } 
+                    //and this the countdown
                     if (gameManager.GetCurrentPhase() == 3 && signalerManager.signalerReady == true && countdownRunning && receiverManager.receiverReady == true && receiverManager.secondCheck)
                     {
+                        receiverEyeDataSender.waitReceiver.gameObject.SetActive(true);
                         StartCoroutine(gameManager.Countdown());
                         Debug.Log("second part did run");
                         

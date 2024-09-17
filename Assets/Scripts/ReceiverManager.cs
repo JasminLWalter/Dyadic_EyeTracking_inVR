@@ -96,47 +96,40 @@ public class ReceiverManager : MonoBehaviour
                 _lastHitController = hit.collider;
                 _lastHitController.gameObject.SendMessage("StaredAtReceiver");
             }
-            else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3 && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box") && selectCounter<=1)
+            else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3 && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box"))
             {
-                if(menuManager.didRunReceiver && !receiverReady)
+                if ( selectCounter <= 1)
                 {
-                    Debug.LogError("Ready Receiver");
-                    
-                    secondCheck = true;
-                    StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => receiverReady = false));
-                    receiverReady = true;
-                    string receiverReadyString = receiverReady.ToString();
-                    lSLReceiverOutlets.lslOReceiverReady.push_sample(new string[] {receiverReadyString} );
-                    
-                    
-                    foreach (TMP_Text TextPhase3 in signalerManager.TextsPhase3)
+                    if(menuManager.didRunReceiver && !receiverReady)
                     {
-                        TextPhase3.gameObject.SetActive(false);
+                        Debug.LogError("Ready Receiver");
+                        selectCounter++;
+                        secondCheck = true;
+                        StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => receiverReady = false));
+                        receiverReady = true;
+                        string receiverReadyString = receiverReady.ToString();
+                        lSLReceiverOutlets.lslOReceiverReady.push_sample(new string[] {receiverReadyString} );
+                        
+                        
+                        foreach (TMP_Text TextPhase3 in signalerManager.TextsPhase3)
+                        {
+                            TextPhase3.gameObject.SetActive(false);
+                        }
                     }
                 }
-                // if(selectCounter > 1)
-                // {
-                //     // signalerManager.Unfreeze();
-                //     string frozenString = signalerManager.frozen.ToString();
-                //     lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
-    
-                // }
-               
+                if (!gameManager.frozen) //must be set to true later
+                {
+                    _lastHitController.gameObject.SendMessage("Selected");
+                    selectCounter++;
+                    lSLReceiverOutlets.lslOSelectCounter.push_sample(new int[] {selectCounter} );
+                    Debug.Log("selectCounter" + selectCounter);
+                    if (gameManager.role == "receiver")
+                    {
+                            gameManager._startedRound = false;
+                    }
+                }
             }
-            else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3 && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box")) // && gameManager.frozen)
-            {
-                Debug.LogError("SelectBox");
-               _lastHitController.gameObject.SendMessage("Selected");
-            //    boxSelected = true;
 
-               selectCounter++;
-               lSLReceiverOutlets.lslOSelectCounter.push_sample(new int[] {selectCounter} );
-               Debug.Log("selectCounter" + selectCounter);
-               if (gameManager.role == "receiver")
-               {
-                    gameManager._startedRound = false;
-               }
-            }
         }
         else if (_lastHitController != null)
         {
