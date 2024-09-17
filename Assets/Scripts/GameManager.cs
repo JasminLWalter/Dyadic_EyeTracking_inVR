@@ -106,6 +106,8 @@ public class GameManager : MonoBehaviour
     private bool roleAssigned = false;
     private bool trainingEnd = false;
     private int calCounter = 0;
+
+    public bool frozen = false;
     void Start()
     {
         _inputBindings = new InputBindings();

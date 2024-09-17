@@ -96,20 +96,8 @@ public class ReceiverManager : MonoBehaviour
                 _lastHitController = hit.collider;
                 _lastHitController.gameObject.SendMessage("StaredAtReceiver");
             }
-            else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3 && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box"))
+            else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3 && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box") && selectCounter<=1)
             {
-                Debug.LogError("SelectBox");
-               _lastHitController.gameObject.SendMessage("Selected");
-            //    boxSelected = true;
-
-               selectCounter++;
-               lSLReceiverOutlets.lslOSelectCounter.push_sample(new int[] {selectCounter} );
-               Debug.Log("selectCounter" + selectCounter);
-               if (gameManager.role == "receiver")
-               {
-                    gameManager._startedRound = false;
-               }
-               
                 if(menuManager.didRunReceiver && !receiverReady)
                 {
                     Debug.LogError("Ready Receiver");
@@ -134,6 +122,20 @@ public class ReceiverManager : MonoBehaviour
     
                 // }
                
+            }
+            else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3 && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box") && gameManager.frozen)
+            {
+                Debug.LogError("SelectBox");
+               _lastHitController.gameObject.SendMessage("Selected");
+            //    boxSelected = true;
+
+               selectCounter++;
+               lSLReceiverOutlets.lslOSelectCounter.push_sample(new int[] {selectCounter} );
+               Debug.Log("selectCounter" + selectCounter);
+               if (gameManager.role == "receiver")
+               {
+                    gameManager._startedRound = false;
+               }
             }
         }
         else if (_lastHitController != null)
