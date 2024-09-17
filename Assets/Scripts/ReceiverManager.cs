@@ -145,7 +145,7 @@ public class ReceiverManager : MonoBehaviour
             _lastHitController = null;
         }
 
-        else if (signalerManager.frozen && gameManager.countdownRunning == false)
+        else if (gameManager.frozen && gameManager.countdownRunning == false)
         {
             gameManager.StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownTextReceiver));
         }

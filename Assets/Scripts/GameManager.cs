@@ -180,6 +180,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
+        Debug.Log("frozen in gameManager"+ frozen);
         if (_inputBindings.UI.Signaler.triggered) // 4 on keyboard
         {
             role = "signaler";
@@ -336,7 +337,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("first layer of if condition" + _currentRound + " " + roundsPerCondition);
                 if (role == "receiver")
                 {
-                    if (_startedRound == false && receiverManager.selectCounter > 1 && !signalerManager.frozen)
+                    if (_startedRound == false && receiverManager.selectCounter > 1 && !frozen)
                     {
                         Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
                         receiverManager.boxSelected = true;
@@ -711,7 +712,7 @@ public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
     int count = 20;
     while (count > 0)
     {
-        if ((signalerManager.frozen && signalerManager.freezeCounter > 1)  || (_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 1))
+        if ((frozen && signalerManager.freezeCounter > 1)  || (_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 1))
         {
             CDT.text = string.Empty; 
             Debug.LogError("stopped everything");

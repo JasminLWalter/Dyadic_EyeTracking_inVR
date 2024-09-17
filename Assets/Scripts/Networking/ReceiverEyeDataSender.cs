@@ -140,7 +140,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
 
            
-            if(frozen == true)
+            if(gameManager.frozen == true)
             {
                 
                 SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
@@ -221,7 +221,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
             }
 
 
-            if(frozen == false)
+            if(gameManager.frozen == false)
             {
 
                 combinedGazeDirection.x = combinedGazeDirectionFrozen.x;
@@ -301,7 +301,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 outlet.push_sample(sample);
             }
         
-            if(receiverManager.selectCounter > 1 && _inputBindings.Player.SelectBox.triggered)
+            if(receiverManager.selectCounter > 1 && _inputBindings.Player.SelectBox.triggered && gameManager.frozen)
             {
 
 
@@ -349,12 +349,12 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 headConstraintFrozen.w = headConstraint.transform.rotation.w;
 
 
-                frozen = false;
+                gameManager.frozen = false;
                 
-                frozenString = frozen.ToString();
+                frozenString = gameManager.frozen.ToString();
                 lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 
-                Debug.LogError("Frozen receiverdatasender :" + frozen);
+                Debug.LogError("Frozen Receiver :" + gameManager.frozen);
             }    
         }    
     }

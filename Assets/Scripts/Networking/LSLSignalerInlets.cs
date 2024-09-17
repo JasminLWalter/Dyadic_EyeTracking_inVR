@@ -199,7 +199,7 @@ public class LSLSignalerInlets : MonoBehaviour
                 break;
             case "FrozenReceiver":
                 Debug.LogWarning("FrozenReceiver: " + sample[0]);
-                signalerManager.frozen = sample[0]=="True";                
+                gameManager.frozen = sample[0]=="True";                
                 break;
         }
     }

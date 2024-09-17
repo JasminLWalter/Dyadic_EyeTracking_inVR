@@ -39,7 +39,6 @@ public class SignalerManager : MonoBehaviour
 
     public List<TMP_Text> TextsPhase3;
 
-    public bool frozen = false;
     public bool signalerReady = false;
 
     public GameObject invisibleObject;
@@ -108,7 +107,7 @@ public class SignalerManager : MonoBehaviour
             }
 
         }*/
-        if (frozen == false && freezeCounter > 2 && gameManager.countdownRunning == false)
+        if (gameManager.frozen == false && freezeCounter > 2 && gameManager.countdownRunning == false)
         {
             //StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownText));
         }

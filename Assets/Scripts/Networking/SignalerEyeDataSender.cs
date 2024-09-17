@@ -96,7 +96,7 @@ public class SignalerEyeDataSender : MonoBehaviour
 
     void Update()
     {
-        frozenString = signalerManager.frozen.ToString();
+        frozenString = gameManager.frozen.ToString();
         Debug.LogError("FrozenString Signaler: " + frozenString);	
         // lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 
@@ -152,7 +152,7 @@ public class SignalerEyeDataSender : MonoBehaviour
 
 
 
-                if(signalerManager.frozen == false)
+                if(gameManager.frozen == false)
                 {
                     SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
                     SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out gazeOrigin, out combinedGazeDirection);
@@ -185,7 +185,7 @@ public class SignalerEyeDataSender : MonoBehaviour
                     headConstraintPos.w = headConstraint.transform.rotation.w;
                     
                 }
-                else if(signalerManager.frozen)
+                else if(gameManager.frozen)
                 {
                     combinedGazeDirection.x = combinedGazeDirectionFrozen.x;
                     combinedGazeDirection.y = combinedGazeDirectionFrozen.y;
@@ -264,7 +264,7 @@ public class SignalerEyeDataSender : MonoBehaviour
 
                 Debug.LogError("FreezeCounter: " + signalerManager.freezeCounter);
 
-                if(_inputBindings.Player.Freeze.triggered && signalerManager.freezeCounter > 1)
+                if(_inputBindings.Player.Freeze.triggered && signalerManager.freezeCounter > 1 && !gameManager.frozen)
                 {
                     leftBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Blink) ? eyeWeightings[EyeShape_v2.Eye_Left_Blink] : 0.0f;
                     rightBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Blink) ? eyeWeightings[EyeShape_v2.Eye_Right_Blink] : 0.0f;
@@ -310,12 +310,11 @@ public class SignalerEyeDataSender : MonoBehaviour
                     headConstraintFrozen.w = headConstraint.transform.rotation.w;
 
                     
-                    signalerManager.frozen = true;
+                    gameManager.frozen = true;
 
-                    frozenString = signalerManager.frozen.ToString();
+                    frozenString = gameManager.frozen.ToString();
                     lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
-                    Debug.LogError("Frozen signalerdatasender :" + signalerManager.frozen);
-                    Debug.LogError("Frozen local string :" + frozenString);
+                    Debug.LogError("Frozen signalerdatasender :" + gameManager.frozen);
 
                 }
             
