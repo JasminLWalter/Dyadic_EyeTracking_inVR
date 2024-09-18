@@ -59,7 +59,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
     private InputBindings _inputBindings;
 
-    public bool frozen;
+    // public bool frozen;
     public LSLReceiverOutlets lSLReceiverOutlets;
 
     public GameObject waitReceiver;
@@ -100,7 +100,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
     void Update()
     {
-        string frozenString = frozen.ToString();
+        string frozenString = gameManager.frozen.ToString();
         // lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
 
         // if(inletFrozenSignaler == null && gameManager.phase == 3){

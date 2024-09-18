@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Transform eyes;
 
-    public bool frozen = false;
+    // public bool frozen = false;
 
     private InputBindings _inputBindings;
 
@@ -43,13 +43,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!frozen)
+        // if (!frozen)
         {
-            if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayOrigin, out rayDirection))
-            {
-                eyes.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.Self);
+        //     if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayOrigin, out rayDirection))
+            // {
+        //         eyes.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.Self);
                 //Debug.LogError("Direction x:" + rayDirection.x + "Direction y:" + rayDirection.y + "Direction z:" + rayDirection.z);
-            }
+            // }
             //eyes.localRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
             /*
             if (!_inputBindings.Player.EyeGazeIsTracked.triggered) 
@@ -65,35 +65,35 @@ public class Player : MonoBehaviour
 
  
 
-        if (role != "")
-        {
-            if (role == "signaler")
-            {
-                // Functions for signaler:
-                // raycast from eyes to select box
-                // Freeze themselves when selected
-                if (_inputBindings.Player.Freeze.triggered)
-                {
-                    Freeze();
-                    // Debug.LogError("Freeze was triggered!");
+        // if (role != "")
+        // {
+        //     if (role == "signaler")
+        //     {
+        //         // Functions for signaler:
+        //         // raycast from eyes to select box
+        //         // Freeze themselves when selected
+        //         if (_inputBindings.Player.Freeze.triggered)
+        //         {
+        //             Freeze();
+        //             // Debug.LogError("Freeze was triggered!");
 
-                    //TODO:
-                    // send current eye information to receiver
-                }
-                //TODO:
-                // or get frozen after certain time
+        //             //TODO:
+        //             // send current eye information to receiver
+        //         }
+        //         //TODO:
+        //         // or get frozen after certain time
 
-            }
+        //     }
 
-            if (role == "receiver")
-            {
-                // Functions for receiver:
-                // raycast from controller to select box
+        //     if (role == "receiver")
+        //     {
+        //         // Functions for receiver:
+        //         // raycast from controller to select box
                 
 
-                // also: other role can see what receiver is doing (including eye + hand movement)
-            }
-        }
+        //         // also: other role can see what receiver is doing (including eye + hand movement)
+        //     }
+        // }
         
     }
     
@@ -104,18 +104,18 @@ public class Player : MonoBehaviour
         currentLocation.position = location;
     }
     
-    // Prevent the eye gameobjects from moving according to the EyeTracking data.
-    public void Freeze()
-    {
-        frozen = true;
+    // // Prevent the eye gameobjects from moving according to the EyeTracking data.
+    // public void Freeze()
+    // {
+    //     frozen = true;
 
-    }
+    // }
 
-    // Make the eye gameobjects follow the participants' eye movements again.
-    public void Unfreeze()
-    {
-        frozen = false;
-    }
+    // // Make the eye gameobjects follow the participants' eye movements again.
+    // public void Unfreeze()
+    // {
+    //     frozen = false;
+    // }
  
 
 }
