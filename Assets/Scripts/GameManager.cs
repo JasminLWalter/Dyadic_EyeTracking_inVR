@@ -747,7 +747,7 @@ public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
     UpdateScore(-20);
     countdownRunning = false;
 }
-    void PlayAudio()
+    public void PlayAudio()
     {
         // Play the audio
         if (soundEffect.isPlaying)
