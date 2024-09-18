@@ -117,7 +117,8 @@ public class ReceiverManager : MonoBehaviour
                         }
                     }
                 }
-                if (selectCounter > 1 && gameManager.frozen) 
+                Debug.Log("selectCounter"+selectCounter);
+                if (selectCounter >= 1 && gameManager.frozen) 
                 {
                     _lastHitController.gameObject.SendMessage("Selected");
                     selectCounter++;
