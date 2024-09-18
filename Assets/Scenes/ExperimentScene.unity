@@ -4168,7 +4168,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &217620201
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6406,7 +6406,6 @@ MonoBehaviour:
   role: signaler
   playerCamera: {fileID: 1516416800}
   eyes: {fileID: 1483203751}
-  frozen: 0
   OriginTransform: {fileID: 4134505311631137542}
 --- !u!4 &279322123
 Transform:
@@ -8870,7 +8869,6 @@ MonoBehaviour:
   role: 
   playerCamera: {fileID: 9014170783435387909}
   eyes: {fileID: 1483203751}
-  frozen: 0
   OriginTransform: {fileID: 0}
 --- !u!114 &452463686
 MonoBehaviour:
@@ -20697,7 +20695,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1270312871
 RectTransform:
   m_ObjectHideFlags: 0
@@ -32727,7 +32725,6 @@ MonoBehaviour:
   invisibleObjectPosFrozen: {x: 0, y: 0, z: 0}
   invisibleObjectPos: {x: 0, y: 0, z: 0}
   headConstraintPos: {x: 0, y: 0, z: 0, w: 0}
-  frozen: 0
   lSLReceiverOutlets: {fileID: 1980098758}
   waitReceiver: {fileID: 0}
 --- !u!114 &1980098763
@@ -39330,7 +39327,6 @@ MonoBehaviour:
   invisibleObjectPosFrozen: {x: 0, y: 0, z: 0}
   invisibleObjectPos: {x: 0, y: 0, z: 0}
   headConstraintPos: {x: 0, y: 0, z: 0, w: 0}
-  frozen: 0
   lSLReceiverOutlets: {fileID: 7646968462962455506}
   waitReceiver: {fileID: 217620200}
 --- !u!114 &7646968462962455509

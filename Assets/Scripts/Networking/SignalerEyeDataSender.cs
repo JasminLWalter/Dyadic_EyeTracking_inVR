@@ -274,7 +274,7 @@ public class SignalerEyeDataSender : MonoBehaviour
 
                 Debug.LogError("FreezeCounter: " + signalerManager.freezeCounter);
 
-                if(_inputBindings.Player.Freeze.triggered && signalerManager.freezeCounter > 1 && !gameManager.frozen)
+                if(_inputBindings.Player.Freeze.triggered && signalerManager.freezeCounter > 0 && !gameManager.frozen)
                 {
                     leftBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Blink) ? eyeWeightings[EyeShape_v2.Eye_Left_Blink] : 0.0f;
                     rightBlinkFrozen = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Blink) ? eyeWeightings[EyeShape_v2.Eye_Right_Blink] : 0.0f;

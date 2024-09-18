@@ -98,7 +98,7 @@ public class ReceiverManager : MonoBehaviour
             }
             else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3 && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box"))
             {
-                if ( selectCounter <= 1)
+                if ( selectCounter < 1)
                 {
                     if(menuManager.didRunReceiver && !receiverReady)
                     {
