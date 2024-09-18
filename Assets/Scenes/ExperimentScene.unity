@@ -15984,8 +15984,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: To continue, press the trigger button. Also you will use the trigger button
-    to register your chosen position during your task.
+  m_text: "To continue, press the trackpad. \nTo register your chosen position during
+    your task, press the trigger button."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -20029,8 +20029,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Keep in Mind that you point with your eyes. For each trial you will only
-    have 20 Seconds to do that. '
+  m_text: 'Keep in Mind that you point with your eyes. '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -24354,8 +24353,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: To continue, press the trigger button. Also you will use the trigger button
-    to register your chosen position during your task.
+  m_text: "To continue, press the trackpad. \nTo register your chosen position during
+    your task, press the trigger button."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -27402,6 +27401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fc515671ee60774a977218babec865e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _lastHitController: {fileID: 0}
   hmd: {fileID: 1516416796}
   OriginTransform: {fileID: 4134505311631137542}
   eyePositionCombinedWorld: {x: 0, y: 0, z: 0}

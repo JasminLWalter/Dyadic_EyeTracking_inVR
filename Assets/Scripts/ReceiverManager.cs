@@ -14,7 +14,7 @@ public class ReceiverManager : MonoBehaviour
 
     private InputBindings _inputBindings;
     private Collider _lastHit;
-    private Collider _lastHitController;
+    public Collider _lastHitController;
     private int _layerMask = 1 << 3;  // Only objects on Layer 3 should be considered
 
     public GameObject hmd;
@@ -123,6 +123,10 @@ public class ReceiverManager : MonoBehaviour
                 {
                     _lastHitController.gameObject.SendMessage("Selected");
                     selectCounter++;
+                    receiverManager.boxSelected = true;
+                    StartCoroutine(gameManager.Condition1());
+                    //StartCoroutine(CountdownTimer(timerCountdownText));
+                    gameManager.trialNumber++;
                     lSLReceiverOutlets.lslOSelectCounter.push_sample(new int[] {selectCounter} );
                     Debug.Log("selectCounter" + selectCounter);
                     if (gameManager.role == "receiver")

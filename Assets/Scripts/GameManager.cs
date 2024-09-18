@@ -343,22 +343,22 @@ public class GameManager : MonoBehaviour
                     trainingSignReceiver.gameObject.SetActive(true);
                 }
             } 
-            if (_currentRound < roundsPerCondition)
-            {   
-                Debug.Log("first layer of if condition" + _currentRound + " " + roundsPerCondition);
-                if (role == "receiver")
-                {
-                    if (_startedRound == false && receiverManager.selectCounter > 1 && !frozen)
-                    {
-                        Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
-                        receiverManager.boxSelected = true;
-                        _startedRound = true;
-                        StartCoroutine(Condition1());
-                        //StartCoroutine(CountdownTimer(timerCountdownText));
-                        trialNumber++;
-                    }
-                }
-            }          
+            // if (_currentRound < roundsPerCondition)
+            // {   
+            //     Debug.Log("first layer of if condition" + _currentRound + " " + roundsPerCondition);
+            //     if (role == "receiver")
+            //     {
+            //         if (_startedRound == false && receiverManager.selectCounter > 1 && !frozen && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box"))
+            //         {
+            //             Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
+            //             receiverManager.boxSelected = true;
+            //             _startedRound = true;
+            //             StartCoroutine(Condition1());
+            //             //StartCoroutine(CountdownTimer(timerCountdownText));
+            //             trialNumber++;
+            //         }
+            //     }
+            // }          
             if (_currentRound == 4 && !trainingEnd) //this order could cause problems
             {    
                 ResetScoreRound();
@@ -458,7 +458,7 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
-    private IEnumerator Condition1()
+    public IEnumerator Condition1()
     {
         
         ShowMilkyGlassRandom();
