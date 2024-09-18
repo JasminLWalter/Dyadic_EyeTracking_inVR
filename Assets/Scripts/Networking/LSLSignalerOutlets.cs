@@ -65,8 +65,6 @@ public class LSLSignalerOutlets : MonoBehaviour
     // public StreamOutlet lslOFailedTrialCounter;
     public StreamInfo lslIBreak;
     public StreamOutlet lslOBreak;
-    public StreamInfo lslIRewards;
-    public StreamOutlet lslORewards;
     public StreamInfo lslIEndTime;
     public StreamOutlet lslOEndTime;
     private double unityTimestamp;
@@ -389,15 +387,6 @@ public class LSLSignalerOutlets : MonoBehaviour
         //     LSL.channel_format_t.cf_int32);
         // lslIFailedTrialCounter.desc().append_child("Count");
         // lslOFailedTrialCounter = new StreamOutlet(lslIFailedTrialCounter);
-
-        // Rewards
-        lslIRewards = new StreamInfo(
-            "RewardSignaler",
-            "Markers",
-            8,
-            NominalRate,
-            LSL.channel_format_t.cf_int32);
-        lslORewards = new StreamOutlet(lslIRewards);
 
         // Break
         lslIBreak = new StreamInfo(

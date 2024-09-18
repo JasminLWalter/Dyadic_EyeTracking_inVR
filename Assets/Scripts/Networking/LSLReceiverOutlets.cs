@@ -58,9 +58,6 @@ public class LSLReceiverOutlets : MonoBehaviour
     // public StreamOutlet lslOFailTrial;
     public StreamInfo lslIFailedTrialCounter;
     public StreamOutlet lslOFailedTrialCounter;
-    public StreamInfo lslIReceiverFinished;
-    public StreamOutlet lslOReceiverFinished;
-
     public StreamInfo lslIBreak;
     public StreamOutlet lslOBreak;
     public StreamInfo lslIEndTime;
@@ -359,15 +356,6 @@ public class LSLReceiverOutlets : MonoBehaviour
             NominalRate,
             LSL.channel_format_t.cf_string);
         lslOFrozenGaze = new StreamOutlet(lslIFrozenGaze);
-
-        // Receiver Finished
-        lslIReceiverFinished = new StreamInfo(
-                "ReceiverFinished",
-                "Markers",
-                1,
-                NominalRate,
-                LSL.channel_format_t.cf_string);
-        lslOReceiverFinished = new StreamOutlet(lslIReceiverFinished);
 
         // Break
         lslIBreak = new StreamInfo(
