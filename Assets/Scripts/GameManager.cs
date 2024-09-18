@@ -108,6 +108,8 @@ public class GameManager : MonoBehaviour
     private int calCounter = 0;
 
     public bool frozen = false;
+    public bool previousFrozen = false;
+    public AudioSource soundEffect;
     void Start()
     {
         _inputBindings = new InputBindings();
@@ -179,6 +181,15 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (frozen != previousFrozen)
+        {
+            // Play the audio when the boolean changes
+            PlayAudio();
+            
+            // Update previousBool to the new value of myBool
+            previousFrozen = frozen;
+        }
+    
 
         Debug.Log("frozen in gameManager"+ frozen);
         if (_inputBindings.UI.Signaler.triggered) // 4 on keyboard
@@ -736,5 +747,14 @@ public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
     UpdateScore(-20);
     countdownRunning = false;
 }
+    void PlayAudio()
+    {
+        // Play the audio
+        if (soundEffect.isPlaying)
+        {
+            soundEffect.Stop();  // Optional: Stop current audio if it's still playing
+        }
+        soundEffect.Play();  // Play the audio
+    }
 
 }

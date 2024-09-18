@@ -62,6 +62,7 @@ public class SignalerEyeDataSender : MonoBehaviour
     private string frozenString;
 
     public GameObject wait;
+    public GameObject yourTurn;
 
     public LSLSignalerOutlets lSLSignalerOutlets;
    // private LSLReceiverOutlets lSLReceiverOutlets;
@@ -94,6 +95,7 @@ public class SignalerEyeDataSender : MonoBehaviour
         _inputBindings.Player.Enable();
 
         wait.gameObject.SetActive(false);
+        yourTurn.gameObject.SetActive(false);
 
 
     }
@@ -159,6 +161,8 @@ public class SignalerEyeDataSender : MonoBehaviour
                 if(gameManager.frozen == false)
                 {
                     wait.gameObject.SetActive(false);
+                    yourTurn.gameObject.SetActive(true);
+
                     SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
                     SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out gazeOrigin, out combinedGazeDirection);
                     // Extract gaze direction
@@ -195,6 +199,7 @@ public class SignalerEyeDataSender : MonoBehaviour
                     if (signalerManager.freezeCounter > 1)
                     {
                         wait.gameObject.SetActive(true);
+                        yourTurn.gameObject.SetActive(false);
                     }
                     
                     combinedGazeDirection.x = combinedGazeDirectionFrozen.x;

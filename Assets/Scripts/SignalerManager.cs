@@ -156,7 +156,10 @@ public class SignalerManager : MonoBehaviour
         if (gameManager.role == "signaler" && _inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)
         {
             // frozenPosition = signalerOutletScript.invisibleObject.transform.position;
-            
+            if(freezeCounter > 1)
+            {
+                gameManager.PlayAudio();
+            }
             freezeCounter += 1;
             
             int freezeCounterSignaler = freezeCounter;

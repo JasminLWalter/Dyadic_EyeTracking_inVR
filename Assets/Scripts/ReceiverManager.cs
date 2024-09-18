@@ -102,6 +102,7 @@ public class ReceiverManager : MonoBehaviour
                 {
                     if(menuManager.didRunReceiver && !receiverReady)
                     {
+                        gameManager.PlayAudio();
                         Debug.LogError("Ready Receiver");
                         selectCounter++;
                         secondCheck = true;

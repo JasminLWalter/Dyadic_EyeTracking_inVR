@@ -63,6 +63,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
     public LSLReceiverOutlets lSLReceiverOutlets;
 
     public GameObject waitReceiver;
+    public GameObject yourTurnReceiver;
 
     void Start()
     {
@@ -94,6 +95,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
         _inputBindings.Player.Enable();
 
         waitReceiver.gameObject.SetActive(false);
+        yourTurnReceiver.gameObject.SetActive(false);
 
 
     }
@@ -145,6 +147,8 @@ public class ReceiverEyeDataSender : MonoBehaviour
             if(gameManager.frozen == true)
             {
                 waitReceiver.gameObject.SetActive(false);
+                yourTurnReceiver.gameObject.SetActive(true);
+
                 SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
                 SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out gazeOrigin, out combinedGazeDirection);
                 // Extract gaze direction
@@ -229,6 +233,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 {
                     Debug.Log("abh");
                     waitReceiver.gameObject.SetActive(true);
+                    yourTurnReceiver.gameObject.SetActive(false);
                 }
                 
 
