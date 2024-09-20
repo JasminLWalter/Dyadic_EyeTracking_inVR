@@ -44,10 +44,8 @@ public class LSLReceiverOutlets : MonoBehaviour
     public StreamOutlet lslOEyeOpennessLR;
     public StreamInfo lslIPupilDiameterLR; 
     public StreamOutlet lslOPupilDiameterLR;
-    public StreamInfo lslIhmdPosDirRot;
-    public StreamOutlet lslOhmdPosDirRot;
-    public StreamInfo lslIHandPosDirRot;
-    public StreamOutlet lslOHandPosDirRot;
+    // public StreamInfo lslIHandPosDirRot;
+    // public StreamOutlet lslOHandPosDirRot;
     public StreamInfo lslIPreferredHand;
     public StreamOutlet lslOPreferredHand;
     public StreamInfo lslIFrozenGaze;
@@ -247,30 +245,6 @@ public class LSLReceiverOutlets : MonoBehaviour
         lslIPupilDiameterLR.desc().append_child("DiameterL");
         lslIPupilDiameterLR.desc().append_child("DiameterR");
         lslOPupilDiameterLR = new StreamOutlet(lslIPupilDiameterLR);
-
-        // HMD Position, Direction, Rotation
-        lslIhmdPosDirRot = new StreamInfo(
-            "HMDPosDirRotReceiver",
-            "Markers",
-            15,
-            NominalRate,
-            LSL.channel_format_t.cf_float32);
-        lslIhmdPosDirRot.desc().append_child("PosX");
-        lslIhmdPosDirRot.desc().append_child("PosY");
-        lslIhmdPosDirRot.desc().append_child("PosZ");
-        lslIhmdPosDirRot.desc().append_child("DirForwardX");
-        lslIhmdPosDirRot.desc().append_child("DirForwardY");
-        lslIhmdPosDirRot.desc().append_child("DirForwardZ");
-        lslIhmdPosDirRot.desc().append_child("DirVerticalX");
-        lslIhmdPosDirRot.desc().append_child("DirVerticalY");
-        lslIhmdPosDirRot.desc().append_child("DirVerticalZ");
-        lslIhmdPosDirRot.desc().append_child("DirHorizontalX");
-        lslIhmdPosDirRot.desc().append_child("DirHorizontalY");
-        lslIhmdPosDirRot.desc().append_child("DirHorizontalZ");
-        lslIhmdPosDirRot.desc().append_child("RotX");
-        lslIhmdPosDirRot.desc().append_child("RotY");
-        lslIhmdPosDirRot.desc().append_child("RotZ");
-        lslOhmdPosDirRot = new StreamOutlet(lslIhmdPosDirRot);
 
         // Hand Position, Direction, Rotation
         // lslIHandPosDirRot = new StreamInfo(
