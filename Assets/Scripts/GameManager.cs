@@ -656,13 +656,13 @@ public class GameManager : MonoBehaviour
          if(randomValue < probabilityForOne){
             milkyGlass.SetActive(true);
             clearGlass.SetActive(false);
-            Debug.LogError("ShowMilkyGlass");
+            // Debug.LogError("ShowMilkyGlass");
          } 
          else 
          {
             clearGlass.SetActive(true);
             milkyGlass.SetActive(false);
-            Debug.LogError("ShowClearGlass");
+            // Debug.LogError("ShowClearGlass");
          }
 
     }

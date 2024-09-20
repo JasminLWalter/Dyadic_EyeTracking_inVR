@@ -91,7 +91,7 @@ public class ReceiverManager : MonoBehaviour
             }
             else if (_lastHitController != null && _lastHitController != hit.collider)
             {
-                Debug.Log("Hit something new: " + hit.collider.name);
+                // Debug.Log("Hit something new: " + hit.collider.name);
                 _lastHitController.gameObject.SendMessage("NotLongerStaredAt");
                 _lastHitController = hit.collider;
                 _lastHitController.gameObject.SendMessage("StaredAtReceiver");
@@ -103,7 +103,7 @@ public class ReceiverManager : MonoBehaviour
                     if(menuManager.didRunReceiver && !receiverReady)
                     {
                         gameManager.PlayAudio();
-                        Debug.LogError("Ready Receiver");
+                        // Debug.LogError("Ready Receiver");
                         selectCounter++;
                         secondCheck = true;
                         StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => receiverReady = false));
@@ -118,17 +118,32 @@ public class ReceiverManager : MonoBehaviour
                         }
                     }
                 }
-                Debug.Log("selectCounter"+selectCounter);
+                // Debug.Log("selectCounter"+selectCounter);
                 if (selectCounter >= 1 && gameManager.frozen) 
                 {
                     _lastHitController.gameObject.SendMessage("Selected");
                     selectCounter++;
                     receiverManager.boxSelected = true;
+                     // Access hit point
+                    Vector3 hitPoint = hit.point;
+
+                    // Create sample array
+                    float[] sample = new float[3];
+                    sample[0] = hitPoint.x;
+                    sample[1] = hitPoint.y;
+                    sample[2] = hitPoint.z;
+
+                    // Push sample to LSL
+                    lSLReceiverOutlets.lslOBoxSelectedByReceiver.push_sample(sample);
+
+                    // Optionally log the data
+                    Debug.Log("Sent hit point to LSL: " + hitPoint);
+                    Debug.LogError("Hitpoint Coords"+hit.point);
                     StartCoroutine(gameManager.Condition1());
                     //StartCoroutine(CountdownTimer(timerCountdownText));
                     gameManager.trialNumber++;
                     lSLReceiverOutlets.lslOSelectCounter.push_sample(new int[] {selectCounter} );
-                    Debug.Log("selectCounter" + selectCounter);
+                    // Debug.Log("selectCounter" + selectCounter);
                     if (gameManager.role == "receiver")
                     {
                             gameManager._startedRound = false;
@@ -139,7 +154,7 @@ public class ReceiverManager : MonoBehaviour
         }
         else if (_lastHitController != null)
         {
-            Debug.Log("Not longer stared at.");
+            // Debug.Log("Not longer stared at.");
             _lastHitController.gameObject.SendMessage("NotLongerStaredAt");
             _lastHitController = null;
         }
@@ -171,7 +186,7 @@ public class ReceiverManager : MonoBehaviour
             }
             else if (_lastHit != null && _lastHit != hitData.collider)
             {
-                Debug.Log("Hit something new: " + hitData.collider.name);
+                // Debug.Log("Hit something new: " + hitData.collider.name);
               //  _lastHit.gameObject.SendMessage("NotLongerStaredAt");
                 _lastHit = hitData.collider;
                 //_lastHit.gameObject.SendMessage("StaredAt");

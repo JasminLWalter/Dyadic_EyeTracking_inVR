@@ -6988,7 +6988,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'You have the Role of the Signaler. You can signal a preferred box to your
+  m_text: 'You have the role of the Signaler. You can signal a preferred box to your
     partner by fixating it with your eyes and pressing the trigger button to register
     your response. '
   m_isRightToLeft: 0

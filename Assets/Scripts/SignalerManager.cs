@@ -122,7 +122,7 @@ public class SignalerManager : MonoBehaviour
     
         invisibleObject.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
     
-        if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _layerMask))
+        if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity))
         {
             
             
@@ -133,11 +133,11 @@ public class SignalerManager : MonoBehaviour
             }
             else if (_lastHit != null && _lastHit != hitData.collider)
             {
-                Debug.Log("Hit something new: " + hitData.collider.name);
+                // Debug.Log("Hit something new: " + hitData.collider.name);
                 _lastHit.gameObject.SendMessage("NotLongerStaredAt");
                 _lastHit = hitData.collider;
                 _lastHit.gameObject.SendMessage("StaredAt");
-                Debug.Log("Hit data collider:" + hitData.transform.position);
+                // Debug.Log("Hit data collider:" + hitData.transform.position);
             }
         /*    else if (_inputBindings.UI.Select.triggered)
             {
@@ -161,6 +161,21 @@ public class SignalerManager : MonoBehaviour
                 gameManager.PlayAudio();
             }
             freezeCounter += 1;
+
+            Vector3 hitPoint = hitData.point;
+
+            // Create sample array
+            float[] sample = new float[3];
+            sample[0] = hitPoint.x;
+            sample[1] = hitPoint.y;
+            sample[2] = hitPoint.z;
+
+            // Push sample to LSL
+            lSLSignalerOutlets.lslOBoxSelectedBySignaler.push_sample(sample);
+
+            
+            Debug.LogError("Sent hit point to LSL: " + sample[0]+sample[1]);
+            Debug.LogError("Hitpoint signaler gaze: "+hitData.point);
             
             int freezeCounterSignaler = freezeCounter;
             lSLSignalerOutlets.lslOFreezeCounterSignaler.push_sample(new int[] {freezeCounterSignaler});
