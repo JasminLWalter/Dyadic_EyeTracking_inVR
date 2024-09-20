@@ -134,11 +134,15 @@ public class ReceiverManager : MonoBehaviour
                     sample[2] = hitPoint.z;
 
                     // Push sample to LSL
-                    lSLReceiverOutlets.lslOBoxSelectedByReceiver.push_sample(sample);
+                    lSLReceiverOutlets.lslORaycastHitReceiver.push_sample(sample);
 
                     // Optionally log the data
-                    Debug.Log("Sent hit point to LSL: " + hitPoint);
+                    Debug.LogError("Sent hit point to LSL: x " + sample[0]);
+                    Debug.LogError("Sent hit point to LSL: y " + sample[1]);
+                    Debug.LogError("Sent hit point to LSL: z " + sample[2]);
+
                     Debug.LogError("Hitpoint Coords"+hit.point);
+
                     StartCoroutine(gameManager.Condition1());
                     //StartCoroutine(CountdownTimer(timerCountdownText));
                     gameManager.trialNumber++;

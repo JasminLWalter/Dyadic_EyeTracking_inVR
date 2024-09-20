@@ -34,8 +34,8 @@ public class LSLReceiverOutlets : MonoBehaviour
     // public StreamOutlet lslOBoxSelectedBySignaler;
     public StreamInfo lslIBoxSelectedByReceiver;
     public StreamOutlet lslOBoxSelectedByReceiver;
-    public StreamInfo lslIRaycastHit; 
-    public StreamOutlet lslORaycastHit;
+    public StreamInfo lslIRaycastHitReceiver; 
+    public StreamOutlet lslORaycastHitReceiver;
     public StreamInfo lslIEyePosDirRot; 
     public StreamOutlet lslOEyePosDirRot;
     // public StreamInfo lslIRaycastHit; 
@@ -196,15 +196,16 @@ public class LSLReceiverOutlets : MonoBehaviour
         lslOBoxSelectedByReceiver = new StreamOutlet(lslIBoxSelectedByReceiver);
 
         // Raycast hit
-        lslIRaycastHit = new StreamInfo(
+        lslIRaycastHitReceiver = new StreamInfo(
             "RaycastHitReceiver",
             "Markers",
             3,
             NominalRate,
             LSL.channel_format_t.cf_int32);
-        lslIRaycastHit.desc().append_child("Hit.x");
-        lslIRaycastHit.desc().append_child("Hit.y");
-        lslIRaycastHit.desc().append_child("Hit.z");
+        lslIRaycastHitReceiver.desc().append_child("Hit.x");
+        lslIRaycastHitReceiver.desc().append_child("Hit.y");
+        lslIRaycastHitReceiver.desc().append_child("Hit.z");
+        lslORaycastHitReceiver = new StreamOutlet(lslIRaycastHitReceiver);
 
         // Eye Position, Direction, Rotation
         lslIEyePosDirRot = new StreamInfo(

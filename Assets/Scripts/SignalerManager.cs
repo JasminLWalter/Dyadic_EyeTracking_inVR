@@ -171,7 +171,7 @@ public class SignalerManager : MonoBehaviour
             sample[2] = hitPoint.z;
 
             // Push sample to LSL
-            lSLSignalerOutlets.lslOBoxSelectedBySignaler.push_sample(sample);
+            lSLSignalerOutlets.lslORaycastHitSignaler.push_sample(sample);
 
             
             Debug.LogError("Sent hit point to LSL: " + sample[0]+sample[1]);
