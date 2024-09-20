@@ -68,22 +68,42 @@ public class ReceiverEyeDataSender : MonoBehaviour
     void Start()
     {
         StreamInfo streamInfo = new StreamInfo("EyeTrackingReceiver", "Gaze", 27, 0, channel_format_t.cf_float32);
+        
+        // description
+        streamInfo.desc().append_child("combinedGazeDirection.x");
+        streamInfo.desc().append_child("combinedGazeDirection.y");
+        streamInfo.desc().append_child("combinedGazeDirection.z");
+        streamInfo.desc().append_child("rightGazeDirection.x");
+        streamInfo.desc().append_child("rightGazeDirection.y");
+        streamInfo.desc().append_child("rightGazeDirection.z");
+        streamInfo.desc().append_child("leftBlink");
+        streamInfo.desc().append_child("rightBlink");
+        streamInfo.desc().append_child("leftWide");
+        streamInfo.desc().append_child("rightWide");
+        streamInfo.desc().append_child("leftSqueeze");
+        streamInfo.desc().append_child("rightSqueeze");
+
+        streamInfo.desc().append_child("eye_Left_Up");
+        streamInfo.desc().append_child("eye_Left_Down");
+        streamInfo.desc().append_child("eye_Left_Left");
+        streamInfo.desc().append_child("eye_Left_Right");
+        streamInfo.desc().append_child("eye_Right_Up");
+        streamInfo.desc().append_child("eye_Right_Down");
+        streamInfo.desc().append_child("eye_Right_Left");
+        streamInfo.desc().append_child("eye_Right_Right");
+
+        streamInfo.desc().append_child("invisibleObjectPos.x");
+        streamInfo.desc().append_child("invisibleObjectPos.y");
+        streamInfo.desc().append_child("invisibleObjectPos.z");
+
+        streamInfo.desc().append_child("headConstraintPos.x");
+        streamInfo.desc().append_child("headConstraintPos.y");
+        streamInfo.desc().append_child("headConstraintPos.z");
+        streamInfo.desc().append_child("headConstraintPos.w");
+        
         outlet = new StreamOutlet(streamInfo);
 
-        // StreamInfo[] freezeCounterSignalerStream = LSL.LSL.resolve_stream("name", "FreezeCounterSignaler",1,0.0);       
-        // inletFreezeCounter = new StreamInlet(freezeCounterSignalerStream[0]);
-
-        // StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
-        // Debug.LogError(frozenSignalerStreams[0]);
-        // if (frozenSignalerStreams.Length > 0)
-        // {
-        //     inletFrozenSignaler = new StreamInlet(frozenSignalerStreams[0]);
-        // }
-        // else
-        // {
-        //     Debug.LogError("No FrozenSignaler stream found.");
-        // }
-
+    
         // lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
         // lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
 
@@ -103,34 +123,6 @@ public class ReceiverEyeDataSender : MonoBehaviour
     void Update()
     {
         string frozenString = gameManager.frozen.ToString();
-        // lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
-
-        // if(inletFrozenSignaler == null && gameManager.phase == 3){
-        //     StreamInfo[] frozenSignalerStreams = LSL.LSL.resolve_stream("name", "FrozenSignaler", 1, 0.0);
-        //     Debug.LogError(frozenSignalerStreams[0]);
-        //     if (frozenSignalerStreams.Length > 0)
-        //     {
-        //         inletFrozenSignaler = new StreamInlet(frozenSignalerStreams[0]);
-        //     }
-        //     else
-        //     {
-        //         Debug.LogError("No FrozenSignaler stream found.");
-        //     }
-        // }
-        // if (inletFrozenSignaler != null)
-        // {
-        //     // Pull sample from the frozen signaler inlet
-        //     string[] sampleFrozenSignaler = new string[1];
-        //     inletFrozenSignaler.pull_sample(sampleFrozenSignaler);
-        //     Debug.Log($"Frozen remote: {sampleFrozenSignaler[0]}");
-            
-        //     if(sampleFrozenSignaler[0] == "true"){
-        //         frozen = true;
-        //     }
-        //     if(sampleFrozenSignaler[0] == "false"){
-        //         frozen = false;
-        //     }
-        // }
         
 
         if (SRanipal_Eye_v2.GetEyeWeightings(out eyeWeightings))

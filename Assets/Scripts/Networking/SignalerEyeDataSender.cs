@@ -69,22 +69,41 @@ public class SignalerEyeDataSender : MonoBehaviour
     void Start()
     {
         StreamInfo streamInfo = new StreamInfo("EyeTrackingSignaler", "Gaze", 27, 0, channel_format_t.cf_float32);
+        
+        // description
+        streamInfo.desc().append_child("combinedGazeDirection.x");
+        streamInfo.desc().append_child("combinedGazeDirection.y");
+        streamInfo.desc().append_child("combinedGazeDirection.z");
+        streamInfo.desc().append_child("rightGazeDirection.x");
+        streamInfo.desc().append_child("rightGazeDirection.y");
+        streamInfo.desc().append_child("rightGazeDirection.z");
+        streamInfo.desc().append_child("leftBlink");
+        streamInfo.desc().append_child("rightBlink");
+        streamInfo.desc().append_child("leftWide");
+        streamInfo.desc().append_child("rightWide");
+        streamInfo.desc().append_child("leftSqueeze");
+        streamInfo.desc().append_child("rightSqueeze");
+
+        streamInfo.desc().append_child("eye_Left_Up");
+        streamInfo.desc().append_child("eye_Left_Down");
+        streamInfo.desc().append_child("eye_Left_Left");
+        streamInfo.desc().append_child("eye_Left_Right");
+        streamInfo.desc().append_child("eye_Right_Up");
+        streamInfo.desc().append_child("eye_Right_Down");
+        streamInfo.desc().append_child("eye_Right_Left");
+        streamInfo.desc().append_child("eye_Right_Right");
+
+        streamInfo.desc().append_child("invisibleObjectPos.x");
+        streamInfo.desc().append_child("invisibleObjectPos.y");
+        streamInfo.desc().append_child("invisibleObjectPos.z");
+
+        streamInfo.desc().append_child("headConstraintPos.x");
+        streamInfo.desc().append_child("headConstraintPos.y");
+        streamInfo.desc().append_child("headConstraintPos.z");
+        streamInfo.desc().append_child("headConstraintPos.w");
+        
         outlet = new StreamOutlet(streamInfo);
         
-        // StreamInfo[] frozenReceiverStreams = LSL.LSL.resolve_stream("name", "FrozenReceiver", 1, 0.0);
-        // Debug.LogError("is Empty: " + frozenReceiverStreams.Length);
-        //     if (frozenReceiverStreams.Length > 0)
-        //     {
-                
-        //         inletFrozenReceiver = new StreamInlet(frozenReceiverStreams[0]);
-        //     }
-        //     else
-        //     {
-        //         Debug.LogError("No FrozenReceiver stream found.");
-        //     }
-        
-        // lSLSignalerOutlets = FindObjectOfType<LSLSignalerOutlets>();
-        // lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
 
 
         // signalerManager = FindObjectOfType<SignalerManager>();

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using LSL;
 using System.Collections.Generic;
+using System.Collections;
 using ViveSR.anipal.Eye;
 
 namespace ViveSR.anipal.Eye
@@ -23,8 +24,9 @@ namespace ViveSR.anipal.Eye
         private float[] sample = new float[27];
         public GameObject invisibleObjectSecondary;
         public GameObject headConstraintSecondary;
-
         public GameManager gameManager;
+        public float sampleRate = 1000f;
+        public float sampleInterval;
 
         private void Start()
         {
@@ -40,44 +42,59 @@ namespace ViveSR.anipal.Eye
             }
             SetEyeShapeAnimationCurves(curves);
 
+            StartCoroutine(ProcessEyeTrackingData());
 
-            
             // invisibleObjectSecondary = GameObject.Find("invisibleObjectSecondary").GetComponent<invisibleObjectSecondary>();
         }
 
-        private void Update()
+        private IEnumerator ProcessEyeTrackingData()
         {
+              
+            sampleInterval = 1f / sampleRate;  
+            // Main loop to run indefinitely
+            while (true)
+            {
+                if (inlet == null)
+                {
+                    // Initialize LSL inlet based on the role
+                    if (gameManager.role == "signaler")
+                    {
+                        StreamInfo[] results = LSL.LSL.resolve_stream("name", "EyeTrackingReceiver", 1, 0.0);
+                        inlet = new StreamInlet(results[0]);
+                    }
+                    else if (gameManager.role == "receiver")
+                    {
+                        StreamInfo[] results = LSL.LSL.resolve_stream("name", "EyeTrackingSignaler", 1, 0.0);
+                        inlet = new StreamInlet(results[0]);
+                    }
+                }
 
-            if(inlet == null){
-            // Initialize LSL inlet
-            if(gameManager.role == "signaler"){
-                StreamInfo[] results = LSL.LSL.resolve_stream("name", "EyeTrackingReceiver",1,0.0);
-                inlet = new StreamInlet(results[0]);
-            }
-            if(gameManager.role == "receiver"){
-                StreamInfo[] results = LSL.LSL.resolve_stream("name", "EyeTrackingSignaler",1,0.0);
-                inlet = new StreamInlet(results[0]);
-            }
-            
-            }
-            // Receive data from LSL
-            inlet.pull_sample(sample, 1.0f);
+                // Check if inlet is initialized
+                if (inlet != null)
+                {
+                    // Receive data from LSL
+                    inlet.pull_sample(sample, 1.0f);
 
-            Vector3 combinedGazeDirection = new Vector3(sample[0], sample[1], sample[2]);
-            Vector3 rightGazeDirection = new Vector3(sample[3], sample[4], sample[5]);
-            bool leftBlink = sample[6] > 0.5f;
-            bool rightBlink = sample[7] > 0.5f;
+                    // Process the sample data
+                    Vector3 combinedGazeDirection = new Vector3(sample[0], sample[1], sample[2]);
+                    Vector3 rightGazeDirection = new Vector3(sample[3], sample[4], sample[5]);
+                    bool leftBlink = sample[6] > 0.5f;
+                    bool rightBlink = sample[7] > 0.5f;
 
-            invisibleObjectSecondary.transform.position = new Vector3(sample[20], sample[21], sample[22]);
-            headConstraintSecondary.transform.rotation =  new Quaternion(sample[23], sample[24], sample[25],sample[26]);
-            //Debug.Log("invisibleObjectSecondary Position: " + invisibleObjectSecondary.transform.position);
-            
-            // Debug.Log("Left Gaze Direction: " + leftGazeDirection);
-            // Debug.Log("Right Gaze Direction: " + rightGazeDirection);
-            // Update gaze and eye shapes based on received data
-            UpdateGazeRay(combinedGazeDirection);
-            UpdateEyeShapes(leftBlink, rightBlink, sample);
+                    // Update positions and rotations based on received data
+                    invisibleObjectSecondary.transform.position = new Vector3(sample[20], sample[21], sample[22]);
+                    headConstraintSecondary.transform.rotation = new Quaternion(sample[23], sample[24], sample[25], sample[26]);
+
+                    // Update gaze direction and eye shapes
+                    UpdateGazeRay(combinedGazeDirection);
+                    UpdateEyeShapes(leftBlink, rightBlink, sample);
+                }
+
+                // Wait for the next interval based on the sample rate
+                yield return new WaitForSeconds(sampleInterval);
+            }
         }
+
 
         public void SetEyesModels(Transform leftEye, Transform rightEye)
         {
