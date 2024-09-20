@@ -15,7 +15,8 @@ public class LSLSignalerInlets : MonoBehaviour
     private int[][] intSamples;
     private float[][] floatSamples;
     private string[][] stringSamples;
-    public float sampleInterval = 0.0001f;
+    public float sampleRate = 1000f;
+    public float sampleInterval;
     public ReceiverManager receiverManager;
     private GameManager gameManager;
     public SignalerManager signalerManager;
@@ -35,7 +36,8 @@ public class LSLSignalerInlets : MonoBehaviour
         intSamples = new int[streamCount][];
         floatSamples = new float[streamCount][];
         stringSamples = new string[streamCount][];
-
+        
+        sampleInterval = 1f/sampleRate;
         StartCoroutine(ResolveAndProcessStreams());
     }
 
