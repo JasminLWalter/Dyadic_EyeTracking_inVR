@@ -13,6 +13,7 @@ public class MenuManager : MonoBehaviour
     public TMP_Text TextPhase6;
     public TMP_Text Pause;
     public List<TMP_Text> TextsPhase3;
+    public TMP_Text textGazeFixed;
 
     private bool phase0CoroutineRunning = false;
     private bool phase2CoroutineRunning = false;
@@ -290,6 +291,17 @@ public class MenuManager : MonoBehaviour
                 }
 
             }
+
+            // if(_inputBindings.Player.Freeze.triggered && gameManager.role == "signaler"){
+            //     if(gameManager.frozen == true || signalerManager.freezeCounter < 1){
+            //         textGazeFixed.gameObject.SetActive(true);
+            //     }
+            //     if(gameManager.frozen == false){
+            //         textGazeFixed.gameObject.SetActive(false);
+            //     }
+    
+
+            // }
             yield return null;
         }
     } 

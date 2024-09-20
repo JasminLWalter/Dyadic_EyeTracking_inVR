@@ -171,7 +171,6 @@ public class SignalerManager : MonoBehaviour
                 signalerReady = true;
                 string signalerReadyString = signalerReady.ToString();
                 lSLSignalerOutlets.lslOSignalerReady.push_sample(new string[] {signalerReadyString});
-
             }
 
         }

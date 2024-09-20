@@ -2,6 +2,7 @@ using UnityEngine;
 using LSL;
 using System.Collections.Generic;
 using ViveSR.anipal.Eye;
+using TMPro;
 
 public class SignalerEyeDataSender : MonoBehaviour
 {
@@ -64,6 +65,10 @@ public class SignalerEyeDataSender : MonoBehaviour
     public GameObject wait;
     public GameObject yourTurn;
 
+    
+    public TMP_Text TextFixedGaze;
+
+
     public LSLSignalerOutlets lSLSignalerOutlets;
    // private LSLReceiverOutlets lSLReceiverOutlets;
     void Start()
@@ -97,7 +102,7 @@ public class SignalerEyeDataSender : MonoBehaviour
         wait.gameObject.SetActive(false);
         yourTurn.gameObject.SetActive(false);
 
-
+        TextFixedGaze.gameObject.SetActive(false);
     }
 
     void Update()
