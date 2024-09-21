@@ -15,7 +15,7 @@ public class LSLSignalerInlets : MonoBehaviour
     private int[][] intSamples;
     private float[][] floatSamples;
     private string[][] stringSamples;
-    public float sampleRate = 1000f;
+    public float sampleRate = 90f;
     public float sampleInterval;
     public ReceiverManager receiverManager;
     private GameManager gameManager;
