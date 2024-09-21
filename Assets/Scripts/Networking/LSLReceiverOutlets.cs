@@ -17,8 +17,8 @@ public class LSLReceiverOutlets : MonoBehaviour
     public StreamOutlet lslOTimestamps;
     // public StreamInfo lslIExperimentPhase;
     // public StreamOutlet lslOExperimentPhase;
-    // public StreamInfo lslIValidationError; 
-    // public StreamOutlet lslOValidationError; 
+    public StreamInfo lslIValidationError; 
+    public StreamOutlet lslOValidationError; 
     // public StreamInfo lslIValidationErrorCounter;
     // public StreamOutlet lslOValidationErrorCounter; 
     // public StreamInfo lslICalibrationCounter;
@@ -129,16 +129,16 @@ public class LSLReceiverOutlets : MonoBehaviour
         // lslOExperimentPhase = new StreamOutlet(lslIExperimentPhase);
         
         // // Validation Error 
-        // lslIValidationError = new StreamInfo(
-        //     "ValidationError",
-        //     "Markers",
-        //     3,
-        //     NominalRate,
-        //     LSL.channel_format_t.cf_float32);
-        // lslIValidationError.desc().append_child("ValX");
-        // lslIValidationError.desc().append_child("ValY");
-        // lslIValidationError.desc().append_child("ValZ");
-        // lslOValidationError = new StreamOutlet(lslIValidationError);
+        lslIValidationError = new StreamInfo(
+            "ValidationErrorReceiver",
+            "Markers",
+            3,
+            NominalRate,
+            LSL.channel_format_t.cf_float32);
+        lslIValidationError.desc().append_child("ValX");
+        lslIValidationError.desc().append_child("ValY");
+        lslIValidationError.desc().append_child("ValZ");
+        lslOValidationError = new StreamOutlet(lslIValidationError);
 
         // // Validation Error Counter
         // lslIValidationErrorCounter = new StreamInfo(

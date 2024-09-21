@@ -21,6 +21,8 @@ public class EyetrackingValidation : MonoBehaviour
     [SerializeField] private GameObject fixationPoint;
     [SerializeField] private List<Vector3> keyPositions;
     public GameManager gameManager;
+    public LSLReceiverOutlets lslReceiverOutlets;
+    public LSLSignalerOutlets lslSignalerOutlets;
 
     private bool _isValidationRunning;
     private bool _isErrorCheckRunning;
@@ -77,6 +79,8 @@ public class EyetrackingValidation : MonoBehaviour
 
     private void Update()
     {
+
+        
         if (startCal || _inputBindings.UI.Calibration.triggered)
         {
             SRanipal_Eye_v2.LaunchEyeCalibration();
@@ -178,6 +182,22 @@ public class EyetrackingValidation : MonoBehaviour
                     Debug.LogError("ValError x" + validationData.EyeValidationError.x);
                     Debug.LogError("ValError y" + validationData.EyeValidationError.y);
                     Debug.LogError("ValError z" + validationData.EyeValidationError.z);
+
+                    float[] valErrorArray = new float[3];
+                    valErrorArray[0] = validationData.EyeValidationError.x;
+                    valErrorArray[1] = validationData.EyeValidationError.y;
+                    valErrorArray[2] = validationData.EyeValidationError.z;
+
+                    if (gameManager.role == "receiver")
+
+                    {
+                        lslReceiverOutlets.lslOValidationError.push_sample(valErrorArray);
+                    }	
+
+                    if (gameManager.role == "signaler")
+                    {
+                        lslSignalerOutlets.lslOValidationError.push_sample(valErrorArray);
+                    }
                 }
                 
                 yield return new WaitForEndOfFrame();

@@ -27161,6 +27161,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1670471451}
   - component: {fileID: 1670471450}
+  - component: {fileID: 1670471453}
+  - component: {fileID: 1670471452}
   m_Layer: 0
   m_Name: EyetrackingValidation
   m_TagString: Untagged
@@ -27209,6 +27211,30 @@ Transform:
   - {fileID: 28909915}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1670471452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670471449}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f680dc465fe5a5b4aa7b076b9297fb54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1670471453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670471449}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e636d6e1bd04d6499037a5a3cac1bf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1673459461 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2168521240031779473, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
