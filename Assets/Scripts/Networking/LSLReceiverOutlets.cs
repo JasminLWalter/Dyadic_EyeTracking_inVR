@@ -65,6 +65,9 @@ public class LSLReceiverOutlets : MonoBehaviour
     public StreamInfo lslIRewardValues;
     public StreamOutlet lslORewardValues;
 
+    public StreamInfo lslImilkyGlassBool;
+    public StreamOutlet lslOmilkyGlassBool;
+
     float[] sample;
     private int channelCount = 0;
     StreamInfo[] streamInfos;
@@ -285,6 +288,14 @@ public class LSLReceiverOutlets : MonoBehaviour
         // lslIHandPosDirRot.desc().append_child("RightRotY");
         // lslIHandPosDirRot.desc().append_child("RightRotZ");
         // lslOHandPosDirRot = new StreamOutlet(lslIHandPosDirRot);
+        
+        lslImilkyGlassBool = new StreamInfo(
+            "milkyGlassBool",
+            "Markers",
+            1,
+            NominalRate,
+            LSL.channel_format_t.cf_string);
+        lslOmilkyGlassBool = new StreamOutlet(lslImilkyGlassBool);
 
         // Preferred Hand
         lslIPreferredHand = new StreamInfo(

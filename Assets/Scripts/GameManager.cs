@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
     public bool countdownRunning = false;
     //private bool startedTimer = false;
     // Start is called before the first frame update
-
+    public bool milkyGlassBool;
     private bool roleAssigned = false;
     private bool trainingEnd = false;
     private int calCounter = 0;
@@ -656,15 +656,16 @@ public class GameManager : MonoBehaviour
          if(randomValue < probabilityForOne){
             milkyGlass.SetActive(true);
             clearGlass.SetActive(false);
-            // Debug.LogError("ShowMilkyGlass");
+            milkyGlassBool = true;
          } 
          else 
          {
             clearGlass.SetActive(true);
             milkyGlass.SetActive(false);
-            // Debug.LogError("ShowClearGlass");
+            milkyGlassBool = false;
          }
-
+        string milkyGlassBoolString = milkyGlassBool.ToString();
+        lslReceiverOutlets.lslOmilkyGlassBool.push_sample(new string[] {milkyGlassBoolString});
     }
     public IEnumerator Countdown()
     {

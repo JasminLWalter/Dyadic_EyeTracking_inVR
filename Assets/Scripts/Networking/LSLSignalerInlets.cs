@@ -203,6 +203,10 @@ public class LSLSignalerInlets : MonoBehaviour
                 Debug.LogWarning("FrozenReceiver: " + sample[0]);
                 gameManager.frozen = sample[0]=="True";                
                 break;
+            case "milkyGlassBool":
+                gameManager.milkyGlassBool = sample[0]=="True";
+                Debug.Log("milkyGlass" + gameManager.milkyGlassBool);
+                break;
         }
     }
 }
