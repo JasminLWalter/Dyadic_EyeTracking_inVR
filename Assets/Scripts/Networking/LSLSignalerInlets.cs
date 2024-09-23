@@ -205,7 +205,7 @@ public class LSLSignalerInlets : MonoBehaviour
                 break;
             case "milkyGlassBool":
                 gameManager.milkyGlassBool = sample[0]=="True";
-                Debug.Log("milkyGlass" + gameManager.milkyGlassBool);
+                Debug.Log("milkyGlass" + sample[0]);
                 break;
         }
     }
