@@ -134,7 +134,7 @@ public class ReceiverManager : MonoBehaviour
                     sample[2] = hitPoint.z;
 
                     // Push sample to LSL
-                    lSLReceiverOutlets.lslORaycastHitReceiver.push_sample(sample);
+                    lSLReceiverOutlets.lslOBoxSelectedByReceiver.push_sample(sample);
 
                     // Optionally log the data
                     Debug.LogError("Sent hit point to LSL: x " + sample[0]);

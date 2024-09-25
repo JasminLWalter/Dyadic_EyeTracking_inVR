@@ -33,8 +33,8 @@ public class LSLSignalerOutlets : MonoBehaviour
     // public StreamOutlet lslOCalibrationCounter;
     // public StreamInfo lslIEmbodimentTrainingTime;
     // public StreamOutlet lslOEmbodimentTrainingTime;
-    public StreamInfo lslIBoxSelectedBySignaler;
-    public StreamOutlet lslOBoxSelectedBySignaler;
+    // public StreamInfo lslIBoxSelectedBySignaler;
+    // public StreamOutlet lslOBoxSelectedBySignaler;
     // public StreamInfo lslIBoxSelectedByReceiver;
     // public StreamOutlet lslOBoxSelectedByReceiver;
 
@@ -155,17 +155,17 @@ public class LSLSignalerOutlets : MonoBehaviour
         // lslOEmbodimentTrainingTime = new StreamOutlet(lslIEmbodimentTrainingTime);
 
         // Box Selected by Signaler
-        lslIBoxSelectedBySignaler = new StreamInfo(
-            "BoxSelectedBySignaler",
-            "Markers",
-            4,
-            NominalRate,
-            LSL.channel_format_t.cf_float32);
-        lslIBoxSelectedBySignaler.desc().append_child("BoxPosX");
-        lslIBoxSelectedBySignaler.desc().append_child("BoxPosY");
-        lslIBoxSelectedBySignaler.desc().append_child("BoxPosZ");
-        lslIBoxSelectedBySignaler.desc().append_child("Associated Reward");
-        lslOBoxSelectedBySignaler = new StreamOutlet(lslIBoxSelectedBySignaler);
+        // lslIBoxSelectedBySignaler = new StreamInfo(
+        //     "BoxSelectedBySignaler",
+        //     "Markers",
+        //     4,
+        //     NominalRate,
+        //     LSL.channel_format_t.cf_float32);
+        // lslIBoxSelectedBySignaler.desc().append_child("BoxPosX");
+        // lslIBoxSelectedBySignaler.desc().append_child("BoxPosY");
+        // lslIBoxSelectedBySignaler.desc().append_child("BoxPosZ");
+        // lslIBoxSelectedBySignaler.desc().append_child("Associated Reward");
+        // lslOBoxSelectedBySignaler = new StreamOutlet(lslIBoxSelectedBySignaler);
 
         // // Box Selected by Receiver
         // lslIBoxSelectedByReceiver = new StreamInfo(

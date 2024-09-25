@@ -186,17 +186,17 @@ public class LSLReceiverOutlets : MonoBehaviour
         // lslOBoxSelectedBySignaler = new StreamOutlet(lslIBoxSelectedBySignaler);
 
         // // Box Selected by Receiver
-        // lslIBoxSelectedByReceiver = new StreamInfo(
-        //     "BoxSelectedByReceiver",
-        //     "Markers",
-        //     4,
-        //     NominalRate,
-        //     LSL.channel_format_t.cf_float32);
-        // lslIBoxSelectedByReceiver.desc().append_child("BoxPosX");
-        // lslIBoxSelectedByReceiver.desc().append_child("BoxPosY");
-        // lslIBoxSelectedByReceiver.desc().append_child("BoxPosZ");
+        lslIBoxSelectedByReceiver = new StreamInfo(
+            "BoxSelectedByReceiver",
+            "Markers",
+            3,
+            NominalRate,
+            LSL.channel_format_t.cf_float32);
+        lslIBoxSelectedByReceiver.desc().append_child("BoxPosX");
+        lslIBoxSelectedByReceiver.desc().append_child("BoxPosY");
+        lslIBoxSelectedByReceiver.desc().append_child("BoxPosZ");
         // lslIBoxSelectedByReceiver.desc().append_child("Reward Received");
-        // lslOBoxSelectedByReceiver = new StreamOutlet(lslIBoxSelectedByReceiver);
+        lslOBoxSelectedByReceiver = new StreamOutlet(lslIBoxSelectedByReceiver);
 
         // Raycast hit
         lslIRaycastHitReceiver = new StreamInfo(

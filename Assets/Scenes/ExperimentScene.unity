@@ -3426,6 +3426,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1516416800}
   lslReceiverOutlets: {fileID: 0}
   countdownRunning: 0
+  milkyGlassBool: 0
   frozen: 0
   previousFrozen: 0
   soundEffect: {fileID: 544546573}
@@ -12939,6 +12940,7 @@ MonoBehaviour:
   freezeCounter: 0
   frozenPosition: {x: 0, y: 0, z: 0}
   lSLSignalerOutlets: {fileID: 7646968462962455504}
+  Box1Left: {fileID: 220224549}
 --- !u!4 &777719403
 Transform:
   m_ObjectHideFlags: 0

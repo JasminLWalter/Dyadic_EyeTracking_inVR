@@ -50,10 +50,13 @@ public class SignalerManager : MonoBehaviour
     public int freezeCounter = 0;
     public  Vector3 frozenPosition;
     public LSLSignalerOutlets lSLSignalerOutlets;
+    public GameObject Box1Left;
+    
    
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Box1"+ Box1Left.transform.position);
 
         gameManager = FindObjectOfType<GameManager>();
         menuManager = FindObjectOfType<MenuManager>();
@@ -163,13 +166,17 @@ public class SignalerManager : MonoBehaviour
             freezeCounter += 1;
 
             Vector3 hitPoint = hitData.point;
-
+            
             // Create sample array
             float[] sample = new float[3];
-            sample[0] = hitPoint.x;
-            sample[1] = hitPoint.y;
-            sample[2] = hitPoint.z;
+            sample[0] = float.Parse(FormatFloat(hitPoint.x, 8)); // Convert string back to float
+            sample[1] = float.Parse(FormatFloat(hitPoint.y, 8)); // Convert string back to float
+            sample[2] = float.Parse(FormatFloat(hitPoint.z, 8)); // Convert string back to float
 
+            // sample[0] = hitPoint.x;
+            // sample[1] = hitPoint.y;
+            // sample[2] = hitPoint.z;
+            Debug.Log("hitpoint" + sample[0]);
             // Push sample to LSL
             lSLSignalerOutlets.lslORaycastHitSignaler.push_sample(sample);
 
@@ -211,4 +218,14 @@ public class SignalerManager : MonoBehaviour
     // }
 
 
+    public static string FormatFloat(float value, int decimalPlaces)
+    {
+        return value.ToString($"F{decimalPlaces}");
+    }
+
+
+
 }
+
+
+
