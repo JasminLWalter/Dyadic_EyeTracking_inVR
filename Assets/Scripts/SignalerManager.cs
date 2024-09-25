@@ -51,12 +51,58 @@ public class SignalerManager : MonoBehaviour
     public  Vector3 frozenPosition;
     public LSLSignalerOutlets lSLSignalerOutlets;
     public GameObject Box1Left;
+    public GameObject Box2;
+    public GameObject Box3;
+    public GameObject Box4;
+    public GameObject Box5;
+    public GameObject Box6;
+    public GameObject Box7;
+    public GameObject Box8;
     
    
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Box1"+ Box1Left.transform.position);
+
+        Debug.Log("Box1 Position (X): " + float.Parse(FormatFloat(Box1Left.transform.position.x, 8)));
+        Debug.Log("Box1 Position (Y): " + float.Parse(FormatFloat(Box1Left.transform.position.y, 8)));
+        Debug.Log("Box1 Position (Z): " + float.Parse(FormatFloat(Box1Left.transform.position.z, 8)));
+
+        Debug.Log("Box2 Position (X, Y, Z): " + 
+            float.Parse(FormatFloat(Box2.transform.position.x, 8)) + ", " + 
+            float.Parse(FormatFloat(Box2.transform.position.y, 8)) + ", " + 
+            float.Parse(FormatFloat(Box2.transform.position.z, 8)));
+
+        Debug.Log("Box3 Position (X, Y, Z): " + 
+            float.Parse(FormatFloat(Box3.transform.position.x, 8)) + ", " + 
+            float.Parse(FormatFloat(Box3.transform.position.y, 8)) + ", " + 
+            float.Parse(FormatFloat(Box3.transform.position.z, 8)));
+
+        Debug.Log("Box4 Position (X, Y, Z): " + 
+            float.Parse(FormatFloat(Box4.transform.position.x, 8)) + ", " + 
+            float.Parse(FormatFloat(Box4.transform.position.y, 8)) + ", " + 
+            float.Parse(FormatFloat(Box4.transform.position.z, 8)));
+
+        Debug.Log("Box5 Position (X, Y, Z): " + 
+            float.Parse(FormatFloat(Box5.transform.position.x, 8)) + ", " + 
+            float.Parse(FormatFloat(Box5.transform.position.y, 8)) + ", " + 
+            float.Parse(FormatFloat(Box5.transform.position.z, 8)));
+
+        Debug.Log("Box6 Position (X, Y, Z): " + 
+            float.Parse(FormatFloat(Box6.transform.position.x, 8)) + ", " + 
+            float.Parse(FormatFloat(Box6.transform.position.y, 8)) + ", " + 
+            float.Parse(FormatFloat(Box6.transform.position.z, 8)));
+
+        Debug.Log("Box7 Position (X, Y, Z): " + 
+            float.Parse(FormatFloat(Box7.transform.position.x, 8)) + ", " + 
+            float.Parse(FormatFloat(Box7.transform.position.y, 8)) + ", " + 
+            float.Parse(FormatFloat(Box7.transform.position.z, 8)));
+
+        Debug.Log("Box8 Position (X, Y, Z): " + 
+            float.Parse(FormatFloat(Box8.transform.position.x, 8)) + ", " + 
+            float.Parse(FormatFloat(Box8.transform.position.y, 8)) + ", " + 
+            float.Parse(FormatFloat(Box8.transform.position.z, 8)));
+
 
         gameManager = FindObjectOfType<GameManager>();
         menuManager = FindObjectOfType<MenuManager>();

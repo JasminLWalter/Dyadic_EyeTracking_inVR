@@ -186,7 +186,7 @@ public class LSLSignalerOutlets : MonoBehaviour
             "Markers",
             3,
             NominalRate,
-            LSL.channel_format_t.cf_int32);
+            LSL.channel_format_t.cf_float32);
         lslIRaycastHitSignaler.desc().append_child("Hit.x");
         lslIRaycastHitSignaler.desc().append_child("Hit.y");
         lslIRaycastHitSignaler.desc().append_child("Hit.z");
