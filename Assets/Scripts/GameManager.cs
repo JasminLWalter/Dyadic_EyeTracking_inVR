@@ -181,6 +181,17 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(milkyGlassBool)
+        {
+            milkyGlassBool = true;
+            milkyGlass.SetActive(true);
+        }
+        if(!milkyGlassBool)
+        {
+            clearGlass.SetActive(true);
+            milkyGlass.SetActive(false);
+        }
+
         if (frozen != previousFrozen)
         {
             // Play the audio when the boolean changes
@@ -654,19 +665,17 @@ public class GameManager : MonoBehaviour
         float randomValue = UnityEngine.Random.value;
          
          if(randomValue < probabilityForOne){
-            milkyGlass.SetActive(true);
-            clearGlass.SetActive(false);
             milkyGlassBool = true;
          } 
          else 
          {
-            clearGlass.SetActive(true);
-            milkyGlass.SetActive(false);
             milkyGlassBool = false;
          }
         string milkyGlassBoolString = milkyGlassBool.ToString();
         lslReceiverOutlets.lslOmilkyGlassBool.push_sample(new string[] {milkyGlassBoolString});
     }
+
+
     public IEnumerator Countdown()
     {
         running = true;
