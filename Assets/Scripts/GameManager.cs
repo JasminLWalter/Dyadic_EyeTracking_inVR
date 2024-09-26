@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
     {
         if(milkyGlassBool)
         {
-            milkyGlassBool = true;
+            clearGlass.SetActive(false);
             milkyGlass.SetActive(true);
         }
         if(!milkyGlassBool)

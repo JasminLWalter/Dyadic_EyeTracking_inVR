@@ -9,7 +9,7 @@ using System;
 
 public class LSLSignalerInlets : MonoBehaviour
 {
-    private string[] streamNames = { "ExperimentPhase", "SelectCounter", "TimestampsReceiver", "ReceiverReady", "BoxSelectedByReceiver", "EyePosDirRotReceiver", "EyeOpennessLRReceiver", "PupilDiameterLRReceiver", "HMDPosDirRotReceiver", "HandPosDirRotReceiver", "PreferredHandReceiver", "ReceiverFinished", "FrozenReceiver", "RewardValuesReceiver","BreakReceiver", "ScoreReceiver" };
+    private string[] streamNames = { "ExperimentPhase", "SelectCounter", "TimestampsReceiver", "ReceiverReady", "BoxSelectedByReceiver", "EyePosDirRotReceiver", "EyeOpennessLRReceiver", "PupilDiameterLRReceiver", "HMDPosDirRotReceiver", "HandPosDirRotReceiver", "PreferredHandReceiver", "ReceiverFinished", "FrozenReceiver", "RewardValuesReceiver","BreakReceiver", "ScoreReceiver", "milkyGlassBool" };
     private StreamInlet[] streamInlets;
     private int[] channelCounts;
     private int[][] intSamples;
