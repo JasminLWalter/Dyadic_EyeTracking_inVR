@@ -1,0 +1,671 @@
+{
+    "name": "InputBindings",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "8032b4e0-ea07-448e-a46f-826428218e93",
+            "actions": [
+                {
+                    "name": "MouseGaze",
+                    "type": "PassThrough",
+                    "id": "7b0bda95-acbb-4d86-bfc4-068e87d5f99b",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "EyeTracking",
+                    "type": "PassThrough",
+                    "id": "4d0b5468-84ff-45ab-8a1b-f6b4bcbc76a9",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Eye Gaze Is Tracked",
+                    "type": "Button",
+                    "id": "06a9a29a-909b-478e-9d80-9db6477b58a2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "HeadPosition",
+                    "type": "PassThrough",
+                    "id": "75707510-0e30-4dde-99ea-d63b588b76e7",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HeadRotation",
+                    "type": "PassThrough",
+                    "id": "7cf1e19c-6229-4845-91b2-224ef0394189",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Left Controller Device",
+                    "type": "PassThrough",
+                    "id": "710cac6c-f52f-4e35-9b78-a311e942af66",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Right Controller Device",
+                    "type": "PassThrough",
+                    "id": "cc3f1646-d3bb-4f6e-ba45-e79e6432c891",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Freeze",
+                    "type": "Button",
+                    "id": "3065a89c-34ce-410f-8fc5-29fccb52420a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectBox",
+                    "type": "Button",
+                    "id": "40747b3e-4657-49ef-a27d-dc7bc5390b84",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1145d288-c1de-48ff-a9ba-6a41974a1b7e",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseGaze",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1e8e4604-9ad6-45e8-8bae-aac704d73f72",
+                    "path": "<EyeGaze>/pose/rotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "EyeTracking",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0d52bcb8-884c-4ec6-a540-62eb821b34af",
+                    "path": "<XRInputV1::EyeTrackingOpenXR>/pose/isTracked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Eye Gaze Is Tracked",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7faa211c-44f0-454e-baa7-892372c3c995",
+                    "path": "<OpenXRHmd>/centerEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "HeadPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e41562f-8087-41b7-a641-180aa5f992be",
+                    "path": "<OpenXRHmd>/centerEyeRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "HeadRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d959c47-6ddd-407f-aacb-0d16de4e8427",
+                    "path": "<ViveController>{LeftHand}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "Left Controller Device",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "83d3da9e-ffd3-428e-833e-d90482557b66",
+                    "path": "<ViveController>{RightHand}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "Right Controller Device",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "641cd10e-72fe-4bc9-8afb-8e25a41ef0e3",
+                    "path": "<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/triggerpressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Freeze",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "179bd927-2edd-4263-a64c-34d3c59e3797",
+                    "path": "<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/triggerpressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Freeze",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "49621591-10b5-4f52-ab4f-35f2484b276f",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectBox",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "890913c0-8c32-4a93-b7d2-2a514676ff3f",
+                    "path": "<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/triggerpressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectBox",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "14d09cc1-7aff-4392-b756-9a58931c7cdd",
+                    "path": "<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/triggerpressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectBox",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "d0613ba3-3bef-4e31-a113-db450867f0f2",
+            "actions": [
+                {
+                    "name": "Continue",
+                    "type": "Button",
+                    "id": "9f48518a-c72a-4dd0-b42a-0a6039298806",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Return",
+                    "type": "Button",
+                    "id": "6a0112b9-3336-421b-8bcf-3c130dd30550",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skip",
+                    "type": "Button",
+                    "id": "25a282cc-a9fc-4158-8351-1dfe84d4ccf1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "58caaec9-d7b5-4e62-b67a-1c89ccfd0981",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "startrecordingtest",
+                    "type": "Button",
+                    "id": "cd90c677-250d-488a-b874-25896e7dff15",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "stoprecordingtest",
+                    "type": "Button",
+                    "id": "37d78d2a-1e32-4ead-bf3c-e868a8a90fcf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "showrecordingtest",
+                    "type": "Button",
+                    "id": "074bee3f-6141-4743-8603-5417aefa121a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Calibration",
+                    "type": "Button",
+                    "id": "368e06a7-1c4c-4c29-8447-fb977a663714",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Validation",
+                    "type": "Button",
+                    "id": "60dec410-b0a0-4143-ace8-df3fc2360a5b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pressed",
+                    "type": "Button",
+                    "id": "af98807f-8423-43b0-91f2-c8e44ef1cf1a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "17302692-da41-4cae-bc97-f485c574f2d1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Unpause",
+                    "type": "Button",
+                    "id": "1a5d5fd3-b3f4-42bc-8cb3-688cba31f1cf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Left Controller Device",
+                    "type": "PassThrough",
+                    "id": "33cffcc6-5567-4784-8e64-85ba037b324a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Right Controller Device",
+                    "type": "PassThrough",
+                    "id": "9b28a7ee-b312-4ff8-955d-537daf01d6f4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Receiver ",
+                    "type": "Button",
+                    "id": "0751d9af-e83c-4b06-b6f8-d1d5b173b3bb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Signaler ",
+                    "type": "Button",
+                    "id": "c1229aff-5d05-42e9-a5c6-3985516b166a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "46fb3456-afd2-488e-ab59-d3933a80c822",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Continue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d12c2f81-d972-4f8a-bd4a-d9c3c072068a",
+                    "path": "<ViveController>{RightHand}/menu",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Continue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "90f7f2e1-93ff-4b6c-b3a0-8f60717a6291",
+                    "path": "<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/trackpadclicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Continue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "566dc254-8bf7-43e0-871e-8ac659fe3cde",
+                    "path": "<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/trackpadclicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Continue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a47a8031-9228-44e9-a1b5-c2ad9758addc",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Return",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "905a6251-40fe-4195-851e-e47d798602a8",
+                    "path": "<ViveController>{LeftHand}/menu",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Return",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1299ee95-dfa5-4898-8beb-61e9f4e9f662",
+                    "path": "<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/grippressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Return",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f798e75d-cda7-4729-b526-663c2565dc75",
+                    "path": "<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/grippressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Return",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a274a355-f0d4-40c1-8a2d-b9f621bfd34e",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "74ca1241-1141-4afa-b3d5-9f541a91814d",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a9b80497-afb5-488d-9654-04b1c55e3e73",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "startrecordingtest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c7300ca3-d4db-4d23-870e-e138f21e1abf",
+                    "path": "<XRInputV1::Oculus::OculusTouchControllerOpenXR>{LeftHand}/secondarybutton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "startrecordingtest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fb8bfe4c-19ce-495a-a1be-6627d34ba8ef",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "stoprecordingtest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8fee7c1e-33ef-400d-9d58-1ec9cccb2c79",
+                    "path": "<XRInputV1::Oculus::OculusTouchControllerOpenXR>{LeftHand}/primarybutton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "stoprecordingtest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e0387bae-2ff1-492c-a6eb-561dea198a3b",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "showrecordingtest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "474c08c7-e738-4ba5-8417-70bd170f7ed6",
+                    "path": "<XRInputV1::Oculus::OculusTouchControllerOpenXR>{LeftHand}/thumbstickclicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "showrecordingtest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "42de63ce-2454-4a14-933d-8ec19f91feee",
+                    "path": "<XRController>{RightHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Calibration",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11f26c19-ca07-4588-b4f5-b4a477de196b",
+                    "path": "<XRController>{RightHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Validation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4bb9e23-0873-40d7-9414-388e6caa172e",
+                    "path": "<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/trackpadclicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "Pressed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "80130fcc-a903-4cbb-8201-068ba1536220",
+                    "path": "<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/trackpadclicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pressed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2a68d540-deb9-4b60-9ce9-4d3f400143ee",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "169a7ed7-53bb-45d3-8e6d-a6e02502ef9d",
+                    "path": "<Keyboard>/o",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Unpause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0032cd34-395b-4808-a5e2-4400346284de",
+                    "path": "<ViveController>{LeftHand}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "Left Controller Device",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "94751f00-c896-4c00-b6cb-0e4d592022fa",
+                    "path": "<ViveController>{RightHand}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "Right Controller Device",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7ba05f75-2d9a-4df5-be34-9cd8dfb4f1d3",
+                    "path": "<Keyboard>/numpad6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Receiver ",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2d2eed0c-5f3f-41bf-b62c-e9c9975b231a",
+                    "path": "<Keyboard>/numpad4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Signaler ",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "VR",
+            "bindingGroup": "VR",
+            "devices": []
+        }
+    ]
+}
