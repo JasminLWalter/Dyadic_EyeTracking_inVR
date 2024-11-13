@@ -41,7 +41,7 @@ public class MenuManager : MonoBehaviour
 
 
 
-    public Player player;
+
     public GameManager gameManager;
     private ReceiverManager receiverManager;
     private SignalerManager signalerManager;
@@ -107,11 +107,6 @@ public class MenuManager : MonoBehaviour
             TextPhase3Receiver.gameObject.SetActive(false);
         }
 
-        if (player == null)
-        {
-            Debug.LogError("Player reference not set in the Inspector!");
-            return;
-        }
     }
 
     void Update()

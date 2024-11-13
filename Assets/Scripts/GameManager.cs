@@ -412,7 +412,7 @@ public class GameManager : MonoBehaviour
 
         if (_ValidationSuccessStatus == false) 
         {
-            // SRanipal_Eye_v2.LaunchEyeCalibration();
+            SRanipal_Eye_v2.LaunchEyeCalibration();
             _ValidationSuccessStatus = true;
         }
         #endregion
@@ -593,8 +593,8 @@ public class GameManager : MonoBehaviour
 
         if(_currentRound == 1 ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
         {
-            // EnterPausePhase();
-            // eyetrackingValidation.ValidateEyeTracking();
+            EnterPausePhase();
+            eyetrackingValidation.ValidateEyeTracking();
         }
         _currentRound += 1;
         _selected = true;
