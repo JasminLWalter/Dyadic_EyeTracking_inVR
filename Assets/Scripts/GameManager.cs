@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
     private bool _selected = false;
     public bool firstFreeze = false;
     public bool firstFreezeReceiver = false;
+    public bool firstCalDone = false;
     [SerializeField] public List<GameObject> boxes = null;
     
 
@@ -414,6 +415,7 @@ public class GameManager : MonoBehaviour
         {
             SRanipal_Eye_v2.LaunchEyeCalibration();
             _ValidationSuccessStatus = true;
+            eyetrackingValidation.ValidateEyeTracking();
         }
         #endregion
     }
@@ -591,10 +593,11 @@ public class GameManager : MonoBehaviour
         scoreDisplayReceiver.text = "Score: " + score;
         scoreDisplay.text = "Score: " + score;
 
-        if(_currentRound == 1 ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
+        if(_currentRound == 1 && !firstCalDone ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
         {
             EnterPausePhase();
             eyetrackingValidation.ValidateEyeTracking();
+            firstCalDone = true;
         }
         _currentRound += 1;
         _selected = true;
