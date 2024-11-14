@@ -178,15 +178,13 @@ public class SignalerManager : MonoBehaviour
             if (_lastHit == null)
             {
                 _lastHit = hitData.collider;
-                _lastHit.gameObject.SendMessage("StaredAt");
+                _lastHit.gameObject.SendMessage("StaredAt", SendMessageOptions.DontRequireReceiver);
             }
             else if (_lastHit != null && _lastHit != hitData.collider)
             {
-                // Debug.Log("Hit something new: " + hitData.collider.name);
-                _lastHit.gameObject.SendMessage("NotLongerStaredAt");
+                _lastHit.gameObject.SendMessage("NotLongerStaredAt", SendMessageOptions.DontRequireReceiver);
                 _lastHit = hitData.collider;
-                _lastHit.gameObject.SendMessage("StaredAt");
-                // Debug.Log("Hit data collider:" + hitData.transform.position);
+                _lastHit.gameObject.SendMessage("StaredAt", SendMessageOptions.DontRequireReceiver);
             }
         /*    else if (_inputBindings.UI.Select.triggered)
             {
@@ -197,7 +195,7 @@ public class SignalerManager : MonoBehaviour
 
         else if (_lastHit != null)
         {
-            _lastHit.gameObject.SendMessage("NotLongerStaredAt");
+            _lastHit.gameObject.SendMessage("NotLongerStaredAt", SendMessageOptions.DontRequireReceiver);
             _lastHit = null;
         }
 
@@ -219,16 +217,8 @@ public class SignalerManager : MonoBehaviour
             sample[1] = float.Parse(FormatFloat(hitPoint.y, 8)); // Convert string back to float
             sample[2] = float.Parse(FormatFloat(hitPoint.z, 8)); // Convert string back to float
 
-            // sample[0] = hitPoint.x;
-            // sample[1] = hitPoint.y;
-            // sample[2] = hitPoint.z;
-            Debug.Log("hitpoint" + sample[0]);
             // Push sample to LSL
             lSLSignalerOutlets.lslORaycastHitSignaler.push_sample(sample);
-
-            
-            Debug.LogError("Sent hit point to LSL: " + sample[0]+sample[1]);
-            Debug.LogError("Hitpoint signaler gaze: "+hitData.point);
             
             int freezeCounterSignaler = freezeCounter;
             lSLSignalerOutlets.lslOFreezeCounterSignaler.push_sample(new int[] {freezeCounterSignaler});

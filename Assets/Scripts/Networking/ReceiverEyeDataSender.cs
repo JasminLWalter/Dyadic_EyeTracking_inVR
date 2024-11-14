@@ -358,8 +358,6 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 
                 frozenString = gameManager.frozen.ToString();
                 lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
-
-                Debug.LogError("Frozen Receiver :" + gameManager.frozen);
             }    
         }    
     }

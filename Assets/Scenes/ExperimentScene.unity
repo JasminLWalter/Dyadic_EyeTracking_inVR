@@ -8660,22 +8660,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: b2b17fb2f689dbe4bace833c3e74af88, type: 2}
---- !u!114 &452463684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7696548424182836575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96e42ebf9c287ca48815600e9bb363c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  role: 
-  playerCamera: {fileID: 9014170783435387909}
-  eyes: {fileID: 1483203751}
-  OriginTransform: {fileID: 0}
 --- !u!114 &452463686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39247,7 +39231,6 @@ GameObject:
   - component: {fileID: 3127728407541706733}
   - component: {fileID: 3297350933295859779}
   - component: {fileID: 4090221840438350099}
-  - component: {fileID: 452463684}
   - component: {fileID: 452463686}
   - component: {fileID: 7873184976941804771}
   - component: {fileID: 7873184976941804770}
@@ -39794,7 +39777,6 @@ GameObject:
   - component: {fileID: 2084568751}
   - component: {fileID: 9014170783435387914}
   - component: {fileID: 9014170783435387913}
-  - component: {fileID: 9014170783435387915}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -39911,19 +39893,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &9014170783435387915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9014170783435387907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de00d3d6c46395748bd546f23ba48587, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  start: 0
 --- !u!1 &9014170783538599042
 GameObject:
   m_ObjectHideFlags: 0
