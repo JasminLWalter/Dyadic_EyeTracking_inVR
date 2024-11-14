@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour
     
     public bool TimeExceeded = false;
     public bool running = false;
+    public bool calDoneOneTime = false;
     
 
     public float _timeLimit = 3;
@@ -414,6 +415,8 @@ public class GameManager : MonoBehaviour
         {
             SRanipal_Eye_v2.LaunchEyeCalibration();
             _ValidationSuccessStatus = true;
+            EnterPausePhase();
+            eyetrackingValidation.ValidateEyeTracking();
         }
         #endregion
     }
@@ -591,10 +594,11 @@ public class GameManager : MonoBehaviour
         scoreDisplayReceiver.text = "Score: " + score;
         scoreDisplay.text = "Score: " + score;
 
-        if(_currentRound == 1 ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
+        if(_currentRound == 1 && !calDoneOneTime ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
         {
             EnterPausePhase();
             eyetrackingValidation.ValidateEyeTracking();
+            calDoneOneTime = true;
         }
         _currentRound += 1;
         _selected = true;
