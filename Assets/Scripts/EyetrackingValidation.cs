@@ -179,9 +179,9 @@ public class EyetrackingValidation : MonoBehaviour
 
                     _eyeValidationData = validationData;
 
-                    Debug.LogError("ValError x" + validationData.EyeValidationError.x);
-                    Debug.LogError("ValError y" + validationData.EyeValidationError.y);
-                    Debug.LogError("ValError z" + validationData.EyeValidationError.z);
+                    Debug.Log("ValError x" + validationData.EyeValidationError.x);
+                    Debug.Log("ValError y" + validationData.EyeValidationError.y);
+                    Debug.Log("ValError z" + validationData.EyeValidationError.z);
 
                     float[] valErrorArray = new float[3];
                     valErrorArray[0] = validationData.EyeValidationError.x;
