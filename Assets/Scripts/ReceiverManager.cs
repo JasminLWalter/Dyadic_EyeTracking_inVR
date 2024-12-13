@@ -56,9 +56,12 @@ public class ReceiverManager : MonoBehaviour
 
     public LSLReceiverOutlets lSLReceiverOutlets;
 
+    private Camera mainCamera;
+
     // Start is called before the first frame update
     void Start()
     {
+        mainCamera = FindObjectOfType<Camera>();
         preferredHandTransform = rightControllerTransform;
         gameManager = FindObjectOfType<GameManager>();
         menuManager = FindObjectOfType<MenuManager>();
@@ -78,7 +81,16 @@ public class ReceiverManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Ray ray = new Ray(preferredHandTransform.position, preferredHandTransform.forward);
+        Ray ray;
+        if (gameManager.playedInVR)
+        {
+            ray = new Ray(preferredHandTransform.position, preferredHandTransform.forward);
+        }
+        else
+        {
+            Vector2 mouseScreenPosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
+            ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
+        }
         RaycastHit hit;
 
         // Check if the ray hits any UI buttons

@@ -6,7 +6,7 @@
             "id": "8032b4e0-ea07-448e-a46f-826428218e93",
             "actions": [
                 {
-                    "name": "MouseGaze",
+                    "name": "MousePosition",
                     "type": "PassThrough",
                     "id": "7b0bda95-acbb-4d86-bfc4-068e87d5f99b",
                     "expectedControlType": "Vector2",
@@ -95,7 +95,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MouseGaze",
+                    "action": "MousePosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR;
 using UnityEngine.UIElements;
 using VIVE.OpenXR;
 using ViveSR.anipal.Eye;
@@ -85,7 +86,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("There should be as many rewards as there are inner boxes.")]
     [SerializeField] private List<int> rewards;
 
-    public bool _ValidationSuccessStatus = false; // TODO: put to true
+    public bool _ValidationSuccessStatus = true; 
     
     public bool TimeExceeded = false;
     public bool running = false;
@@ -97,7 +98,7 @@ public class GameManager : MonoBehaviour
     private float _startRoundTime = 0;
 
     private float probabilityForOne = 0.5f;
-    public Camera mainCamera;
+    //public Camera mainCamera;
 
     public LSLReceiverOutlets lslReceiverOutlets;
     public bool countdownRunning = false;
@@ -111,8 +112,12 @@ public class GameManager : MonoBehaviour
     public bool frozen = false;
     public bool previousFrozen = false;
     public AudioSource soundEffect;
+
+    public bool playedInVR;
     void Start()
     {
+        playedInVR = XRSettings.isDeviceActive;
+        _ValidationSuccessStatus = true;
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
 
@@ -139,7 +144,7 @@ public class GameManager : MonoBehaviour
         TimeExceededTMP.gameObject.SetActive(false);
         TimeExceededTMPReceiver.gameObject.SetActive(false);
 
-        xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0));
+        xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0)); // old y=90
         
         score = 0;
 
@@ -275,7 +280,7 @@ public class GameManager : MonoBehaviour
         }
         if (role == "receiver")
         {
-            avatarSecondary.transform.rotation =Quaternion.Euler(new Vector3(0, 180, 0));
+            avatarSecondary.transform.rotation =Quaternion.Euler(new Vector3(0, -180, 0));
             avatarSecondary.transform.position = new Vector3(-3f,3f,5.5f); //Vector3(-3.07173824,-2.07763529,-9.10935402)
             Debug.LogWarning(lslReceiverOutlets);
 
@@ -329,8 +334,8 @@ public class GameManager : MonoBehaviour
             if (role == "receiver")
             {
                 vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,-0.94f);
-                xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 270, 0));
                 avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
+                xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, -360, 0)); //old y=270
                 calCounter += 1;
                 SRanipal_Eye_v2.LaunchEyeCalibration();
             }

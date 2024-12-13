@@ -28,7 +28,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             ""id"": ""8032b4e0-ea07-448e-a46f-826428218e93"",
             ""actions"": [
                 {
-                    ""name"": ""MouseGaze"",
+                    ""name"": ""MousePosition"",
                     ""type"": ""PassThrough"",
                     ""id"": ""7b0bda95-acbb-4d86-bfc4-068e87d5f99b"",
                     ""expectedControlType"": ""Vector2"",
@@ -117,7 +117,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MouseGaze"",
+                    ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -704,7 +704,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_MouseGaze = m_Player.FindAction("MouseGaze", throwIfNotFound: true);
+        m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
         m_Player_EyeTracking = m_Player.FindAction("EyeTracking", throwIfNotFound: true);
         m_Player_EyeGazeIsTracked = m_Player.FindAction("Eye Gaze Is Tracked", throwIfNotFound: true);
         m_Player_HeadPosition = m_Player.FindAction("HeadPosition", throwIfNotFound: true);
@@ -792,7 +792,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_MouseGaze;
+    private readonly InputAction m_Player_MousePosition;
     private readonly InputAction m_Player_EyeTracking;
     private readonly InputAction m_Player_EyeGazeIsTracked;
     private readonly InputAction m_Player_HeadPosition;
@@ -805,7 +805,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     {
         private @InputBindings m_Wrapper;
         public PlayerActions(@InputBindings wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MouseGaze => m_Wrapper.m_Player_MouseGaze;
+        public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
         public InputAction @EyeTracking => m_Wrapper.m_Player_EyeTracking;
         public InputAction @EyeGazeIsTracked => m_Wrapper.m_Player_EyeGazeIsTracked;
         public InputAction @HeadPosition => m_Wrapper.m_Player_HeadPosition;
@@ -823,9 +823,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
-            @MouseGaze.started += instance.OnMouseGaze;
-            @MouseGaze.performed += instance.OnMouseGaze;
-            @MouseGaze.canceled += instance.OnMouseGaze;
+            @MousePosition.started += instance.OnMousePosition;
+            @MousePosition.performed += instance.OnMousePosition;
+            @MousePosition.canceled += instance.OnMousePosition;
             @EyeTracking.started += instance.OnEyeTracking;
             @EyeTracking.performed += instance.OnEyeTracking;
             @EyeTracking.canceled += instance.OnEyeTracking;
@@ -854,9 +854,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IPlayerActions instance)
         {
-            @MouseGaze.started -= instance.OnMouseGaze;
-            @MouseGaze.performed -= instance.OnMouseGaze;
-            @MouseGaze.canceled -= instance.OnMouseGaze;
+            @MousePosition.started -= instance.OnMousePosition;
+            @MousePosition.performed -= instance.OnMousePosition;
+            @MousePosition.canceled -= instance.OnMousePosition;
             @EyeTracking.started -= instance.OnEyeTracking;
             @EyeTracking.performed -= instance.OnEyeTracking;
             @EyeTracking.canceled -= instance.OnEyeTracking;
@@ -1075,7 +1075,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     }
     public interface IPlayerActions
     {
-        void OnMouseGaze(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
         void OnEyeTracking(InputAction.CallbackContext context);
         void OnEyeGazeIsTracked(InputAction.CallbackContext context);
         void OnHeadPosition(InputAction.CallbackContext context);
