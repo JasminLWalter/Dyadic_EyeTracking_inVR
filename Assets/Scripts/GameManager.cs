@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
         TimeExceededTMP.gameObject.SetActive(false);
         TimeExceededTMPReceiver.gameObject.SetActive(false);
 
-        xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
+        xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0));
         
         score = 0;
 
