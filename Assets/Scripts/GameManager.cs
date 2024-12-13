@@ -182,16 +182,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(_ValidationSuccessStatus);
-        if (_ValidationSuccessStatus == false) 
-        {
-            Debug.Log("inside if statement");
-            SRanipal_Eye_v2.LaunchEyeCalibration();
-            _ValidationSuccessStatus = true;
-            EnterPausePhase();
-            eyetrackingValidation.ValidateEyeTracking();
-        }
-
         if(milkyGlassBool)
         {
             clearGlass.SetActive(false);
