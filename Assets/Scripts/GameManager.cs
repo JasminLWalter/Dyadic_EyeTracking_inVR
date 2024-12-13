@@ -147,8 +147,6 @@ public class GameManager : MonoBehaviour
         xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0)); // old y=90
         
         score = 0;
-
-
     }
 
     // void AssignRole()
@@ -187,6 +185,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Phase" + phase);
+
         if(milkyGlassBool)
         {
             clearGlass.SetActive(false);
@@ -327,23 +327,23 @@ public class GameManager : MonoBehaviour
         }
         // Phase 3: First Condition (Experiment Room)
         else if (phase == 3)
-        {
-            //assign role here?
-            //player.role = "receiver";
-            //Debug.LogError("Phase 3");
+        {   
+            if (calCounter == 0)
+            {
+                Debug.Log("Should start coroutine");
+                StartCoroutine(TriggerEyetrackingCalibration());
+                calCounter += 1;
+            } 
+           
             if (role == "receiver")
             {
                 vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,-0.94f);
                 avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
                 xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, -360, 0)); //old y=270
-                calCounter += 1;
-                SRanipal_Eye_v2.LaunchEyeCalibration();
             }
             if(role == "signaler")
             {
                 roundsDisplay.text = "Round: " + _currentRound;
-                calCounter += 1;
-                SRanipal_Eye_v2.LaunchEyeCalibration();
             }
             if(role == "receiver")
             {
@@ -415,14 +415,6 @@ public class GameManager : MonoBehaviour
             signalerManager.invisibleObject = invisibleObject;
            }
         }
-
-        if (_ValidationSuccessStatus == false) 
-        {
-            SRanipal_Eye_v2.LaunchEyeCalibration();
-            _ValidationSuccessStatus = true;
-            EnterPausePhase();
-            eyetrackingValidation.ValidateEyeTracking();
-        }
         #endregion
     }
 
@@ -438,7 +430,6 @@ public class GameManager : MonoBehaviour
         {
             signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
         }
-       // player.Teleport(spaceLocations.ElementAt(phase));
     }
    
     public void EnterPausePhase()
@@ -598,13 +589,6 @@ public class GameManager : MonoBehaviour
         score += reward;
         scoreDisplayReceiver.text = "Score: " + score;
         scoreDisplay.text = "Score: " + score;
-
-        if(_currentRound == 1 && !calDoneOneTime ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
-        {
-            EnterPausePhase();
-            eyetrackingValidation.ValidateEyeTracking();
-            calDoneOneTime = true;
-        }
         _currentRound += 1;
         _selected = true;
         // _startedRound = false;
@@ -622,6 +606,27 @@ public class GameManager : MonoBehaviour
         scoreDisplay.text = "Score: " + score;
         roundsDisplay.text = "Round: " + _currentRound;
 
+    }
+
+    // Trigger eyetracking calibration every 10 min
+    private IEnumerator TriggerEyetrackingCalibration()
+    {
+        Debug.Log("Started coroutine");
+        while(true)
+        {
+            // Do at most two calibrations
+            SRanipal_Eye_v2.LaunchEyeCalibration();
+            EnterPausePhase();
+            eyetrackingValidation.ValidateEyeTracking();
+            if (_ValidationSuccessStatus == false) 
+            {
+                SRanipal_Eye_v2.LaunchEyeCalibration();
+                EnterPausePhase();
+                eyetrackingValidation.ValidateEyeTracking();
+            }
+
+            yield return new WaitForSeconds(600); 
+        }
     }
 
     // TODO:

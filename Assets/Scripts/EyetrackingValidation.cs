@@ -11,8 +11,8 @@ public class EyetrackingValidation : MonoBehaviour
     public static EyetrackingValidation Instance { get; private set; }
 
     #region Fields
-    public bool startCal = false;
-    public bool startVal = false;
+    public bool startCal = false;  //  For initializing calibration from editor
+    public bool startVal = false;  // For initializing validation from editor
     public bool validationFinished = false;
     
 
@@ -67,7 +67,6 @@ public class EyetrackingValidation : MonoBehaviour
 
         fixationPoint.SetActive(false);
         _eyeValidationDataFrames = new List<EyeValidationData>();
-        //SRanipal_Eye_v2.LaunchEyeCalibration();
     }
     /*private void SaveValidationFile()
     {
