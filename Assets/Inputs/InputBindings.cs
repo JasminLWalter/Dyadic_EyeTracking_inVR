@@ -189,11 +189,22 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""30784f23-c808-4cee-87dc-5d4d3e415a7f"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Freeze"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""641cd10e-72fe-4bc9-8afb-8e25a41ef0e3"",
                     ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/triggerpressed"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""VR"",
                     ""action"": ""Freeze"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -204,7 +215,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/triggerpressed"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""VR"",
                     ""action"": ""Freeze"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -212,7 +223,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""49621591-10b5-4f52-ab4f-35f2484b276f"",
-                    ""path"": """",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -226,7 +237,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/triggerpressed"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""VR"",
                     ""action"": ""SelectBox"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -237,7 +248,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/triggerpressed"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""VR"",
                     ""action"": ""SelectBox"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

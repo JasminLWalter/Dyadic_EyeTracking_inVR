@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("There should be as many rewards as there are inner boxes.")]
     [SerializeField] private List<int> rewards;
 
-    public bool _ValidationSuccessStatus = true;
+    public bool _ValidationSuccessStatus = false; // TODO: put to true
     
     public bool TimeExceeded = false;
     public bool running = false;
@@ -182,6 +182,16 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(_ValidationSuccessStatus);
+        if (_ValidationSuccessStatus == false) 
+        {
+            Debug.Log("inside if statement");
+            SRanipal_Eye_v2.LaunchEyeCalibration();
+            _ValidationSuccessStatus = true;
+            EnterPausePhase();
+            eyetrackingValidation.ValidateEyeTracking();
+        }
+
         if(milkyGlassBool)
         {
             clearGlass.SetActive(false);
@@ -332,13 +342,13 @@ public class GameManager : MonoBehaviour
                 xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 270, 0));
                 avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
                 calCounter += 1;
-                // SRanipal_Eye_v2.LaunchEyeCalibration();
+                SRanipal_Eye_v2.LaunchEyeCalibration();
             }
             if(role == "signaler")
             {
                 roundsDisplay.text = "Round: " + _currentRound;
                 calCounter += 1;
-                // SRanipal_Eye_v2.LaunchEyeCalibration();
+                SRanipal_Eye_v2.LaunchEyeCalibration();
             }
             if(role == "receiver")
             {

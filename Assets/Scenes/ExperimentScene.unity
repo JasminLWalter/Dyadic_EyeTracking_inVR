@@ -3344,7 +3344,7 @@ MonoBehaviour:
   - {x: -3.9, y: 2, z: 4.8}
   - {x: 0, y: -29, z: 55}
   rewards: 000000000500000000000000050000000a000000000000000500000000000000
-  _ValidationSuccessStatus: 1
+  _ValidationSuccessStatus: 0
   TimeExceeded: 0
   running: 0
   calDoneOneTime: 0
