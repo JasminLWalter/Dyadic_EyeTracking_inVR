@@ -35,7 +35,7 @@ public class SignalerManager : MonoBehaviour
     public ReceiverManager receiverManager;
 
     private EmbodimentManager embodimentManager;
-    private SimpleCrosshair simpleCrosshair;
+    public GameObject simpleCrosshair;
 
     public List<TMP_Text> TextsPhase3;
 
@@ -107,7 +107,6 @@ public class SignalerManager : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         menuManager = FindObjectOfType<MenuManager>();
         embodimentManager = FindObjectOfType<EmbodimentManager>();
-        simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
         
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
@@ -170,8 +169,21 @@ public class SignalerManager : MonoBehaviour
         // eyeRotationCombinedWorld = hmd.transform.rotation;
     
         invisibleObject.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
-    
-        if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity))
+
+
+        Ray ray;
+        if (gameManager.playedInVR)
+        {
+            ray = new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld);
+        }
+        else
+        {
+           Vector2 mouseScreenPosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
+           ray = Camera.main.ScreenPointToRay(mouseScreenPosition); 
+        }
+
+
+        if (Physics.Raycast(ray, out hitData, Mathf.Infinity))
         {
             
             
@@ -179,12 +191,16 @@ public class SignalerManager : MonoBehaviour
             {
                 _lastHit = hitData.collider;
                 _lastHit.gameObject.SendMessage("StaredAt", SendMessageOptions.DontRequireReceiver);
+                // Let Crosshair appear where the signaler is looking at
+                simpleCrosshair.SetActive(true);
+                simpleCrosshair.transform.position = hitData.point;
             }
             else if (_lastHit != null && _lastHit != hitData.collider)
             {
                 _lastHit.gameObject.SendMessage("NotLongerStaredAt", SendMessageOptions.DontRequireReceiver);
                 _lastHit = hitData.collider;
                 _lastHit.gameObject.SendMessage("StaredAt", SendMessageOptions.DontRequireReceiver);
+                simpleCrosshair.transform.position = hitData.point;
             }
         /*    else if (_inputBindings.UI.Select.triggered)
             {
@@ -197,6 +213,7 @@ public class SignalerManager : MonoBehaviour
         {
             _lastHit.gameObject.SendMessage("NotLongerStaredAt", SendMessageOptions.DontRequireReceiver);
             _lastHit = null;
+            simpleCrosshair.SetActive(false);
         }
 
 
@@ -210,7 +227,7 @@ public class SignalerManager : MonoBehaviour
             freezeCounter += 1;
 
             Vector3 hitPoint = hitData.point;
-            
+
             // Create sample array
             float[] sample = new float[3];
             sample[0] = float.Parse(FormatFloat(hitPoint.x, 8)); // Convert string back to float

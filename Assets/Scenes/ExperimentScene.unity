@@ -3310,7 +3310,7 @@ MonoBehaviour:
   roundsDisplayReceiver: {fileID: 1882278240}
   TimeExceededTMP: {fileID: 115359661}
   TimeExceededTMPReceiver: {fileID: 301607826}
-  roundsPerCondition: 40
+  roundsPerCondition: 80
   _startedRound: 0
   firstFreeze: 0
   firstFreezeReceiver: 0
@@ -3349,13 +3349,13 @@ MonoBehaviour:
   running: 0
   calDoneOneTime: 0
   _timeLimit: 30
-  mainCamera: {fileID: 1516416800}
   lslReceiverOutlets: {fileID: 0}
   countdownRunning: 0
   milkyGlassBool: 0
   frozen: 0
   previousFrozen: 0
   soundEffect: {fileID: 544546573}
+  playedInVR: 0
 --- !u!4 &171754635
 Transform:
   m_ObjectHideFlags: 0
@@ -12603,6 +12603,7 @@ MonoBehaviour:
   menuManager: {fileID: 1398317297}
   gameManager: {fileID: 171754634}
   receiverManager: {fileID: 1740773030}
+  simpleCrosshair: {fileID: 1911593874}
   TextsPhase3:
   - {fileID: 263224819}
   - {fileID: 21529636}
