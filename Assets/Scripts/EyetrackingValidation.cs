@@ -1,9 +1,10 @@
- using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
+using TMPro;
 using ViveSR.anipal.Eye;
 
 public class EyetrackingValidation : MonoBehaviour
@@ -20,8 +21,9 @@ public class EyetrackingValidation : MonoBehaviour
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject fixationPoint;
     [SerializeField] private List<Vector3> keyPositions;
-    public GameManager gameManager;
-    [SerializeField] private DisableVRHeadMovement disableHeadMovement;
+    private GameManager gameManager;
+    private DisableVRHeadMovement disableHeadMovement;
+    [SerializeField] private TMP_Text valText;
     public LSLReceiverOutlets lslReceiverOutlets;
     public LSLSignalerOutlets lslSignalerOutlets;
 
@@ -69,7 +71,9 @@ public class EyetrackingValidation : MonoBehaviour
         fixationPoint.SetActive(false);
         _eyeValidationDataFrames = new List<EyeValidationData>();
 
+        gameManager = FindObjectOfType<GameManager>();
         disableHeadMovement = FindObjectOfType<DisableVRHeadMovement>();
+        valText.gameObject.SetActive(false);
     }
     /*private void SaveValidationFile()
     {
@@ -118,6 +122,15 @@ public class EyetrackingValidation : MonoBehaviour
         // Disable head movement 
         disableHeadMovement.DisableHeadMovement();
 
+        // Let instructions appear
+        valText.gameObject.SetActive(true);
+        valText.text = "Eye Tracking Validation";
+        yield return new WaitForSeconds(2f);
+        valText.text = "Please follow the dot with your eyes. \nDo not move your head.";
+        yield return new WaitForSeconds(5f);
+        valText.gameObject.SetActive(false);
+
+        // Let fixation point appear
         _validationId++;
 
         valCalCounter++;
