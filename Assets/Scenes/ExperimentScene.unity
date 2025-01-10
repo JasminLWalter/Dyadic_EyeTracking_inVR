@@ -25245,6 +25245,7 @@ GameObject:
   - component: {fileID: 1578861478}
   - component: {fileID: 1578861480}
   - component: {fileID: 1578861479}
+  - component: {fileID: 1578861481}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: Untagged
@@ -25300,6 +25301,18 @@ MonoBehaviour:
   m_CameraFloorOffsetObject: {fileID: 2056561679}
   m_RequestedTrackingOriginMode: 0
   m_CameraYOffset: 1.1176
+--- !u!114 &1578861481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578861477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2963403c9700d614aa9c1cf062750a6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1581553169 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5698817711878946961, guid: 9c4aa6cb71f7bf442ae84efc44ca7223, type: 3}
@@ -26644,6 +26657,7 @@ MonoBehaviour:
   - {x: -2.5, y: -2, z: 7.5}
   - {x: 3, y: 2.5, z: 7.5}
   gameManager: {fileID: 171754634}
+  disableHeadMovement: {fileID: 0}
   lslReceiverOutlets: {fileID: 7646968462962455506}
   lslSignalerOutlets: {fileID: 7646968462962455504}
   valCalCounter: 0

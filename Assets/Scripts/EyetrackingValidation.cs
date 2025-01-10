@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +21,7 @@ public class EyetrackingValidation : MonoBehaviour
     [SerializeField] private GameObject fixationPoint;
     [SerializeField] private List<Vector3> keyPositions;
     public GameManager gameManager;
+    [SerializeField] private DisableVRHeadMovement disableHeadMovement;
     public LSLReceiverOutlets lslReceiverOutlets;
     public LSLSignalerOutlets lslSignalerOutlets;
 
@@ -67,6 +68,8 @@ public class EyetrackingValidation : MonoBehaviour
 
         fixationPoint.SetActive(false);
         _eyeValidationDataFrames = new List<EyeValidationData>();
+
+        disableHeadMovement = FindObjectOfType<DisableVRHeadMovement>();
     }
     /*private void SaveValidationFile()
     {
@@ -111,6 +114,9 @@ public class EyetrackingValidation : MonoBehaviour
         if (_isValidationRunning) yield break;
 
         _isValidationRunning = true;
+
+        // Disable head movement 
+        disableHeadMovement.DisableHeadMovement();
 
         _validationId++;
 
@@ -235,6 +241,10 @@ public class EyetrackingValidation : MonoBehaviour
           {
             gameManager.SetValidationSuccessStatus(true); //originally GameManager.Instance.SetValidationSuccessStatus(true)
         }
+
+        // Re-enable head movement
+        disableHeadMovement.EnableHeadMovement();
+
         gameManager.ReturnToCurrentPhase();
     }
     

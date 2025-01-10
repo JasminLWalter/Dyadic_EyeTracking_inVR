@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
     public int trialNumber = 0;
     public int trialFailedCount = 0;
 
-    Vector3 pauseRoom = new Vector3();
+    Vector3 pauseRoomSignaler = new Vector3();
     Vector3 pauseRoomReceiver = new Vector3();
 
     private bool firstSelectionMade = false;
@@ -434,7 +434,7 @@ public class GameManager : MonoBehaviour
    
     public void EnterPausePhase()
     {
-        pauseRoom = new Vector3(0, -26, 55);
+        pauseRoomSignaler = new Vector3(0, -26, 55);  //former y value: -31.54
         pauseRoomReceiver = new Vector3(-114, -27, 1);
         if (role == "receiver")
         {
@@ -442,7 +442,7 @@ public class GameManager : MonoBehaviour
         }
         if (role == "signaler") 
         {
-            signalerManager.Teleport(pauseRoom, xrOriginSetup);
+            signalerManager.Teleport(pauseRoomSignaler, xrOriginSetup);
         }
 
     }
