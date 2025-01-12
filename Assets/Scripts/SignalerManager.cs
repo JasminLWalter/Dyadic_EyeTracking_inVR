@@ -195,7 +195,7 @@ public class SignalerManager : MonoBehaviour
             // Debug
             lineRenderer.enabled = true;
             lineRenderer.SetPosition(0, eyePositionCombinedWorld);
-            lineRenderer.SetPosition(1, hitData.point);
+            lineRenderer.SetPosition(1, eyePositionCombinedWorld+7*eyeDirectionCombinedWorld);
             
             if (_lastHit == null)
             {
