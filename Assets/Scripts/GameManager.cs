@@ -330,8 +330,7 @@ public class GameManager : MonoBehaviour
         {   
             if (calCounter == 0)
             {
-                Debug.Log("Should start coroutine");
-                StartCoroutine(TriggerEyetrackingCalibration());
+                //StartCoroutine(TriggerEyetrackingCalibration());   // For experiment: uncomment this
                 calCounter += 1;
             } 
            

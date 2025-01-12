@@ -193,14 +193,16 @@ public class SignalerManager : MonoBehaviour
                 _lastHit.gameObject.SendMessage("StaredAt", SendMessageOptions.DontRequireReceiver);
                 // Let Crosshair appear where the signaler is looking at
                 simpleCrosshair.SetActive(true);
-                simpleCrosshair.transform.position = hitData.point;
+                Vector3 screenPosition = Camera.main.WorldToScreenPoint(hitData.point);
+                simpleCrosshair.transform.position = screenPosition;
             }
             else if (_lastHit != null && _lastHit != hitData.collider)
             {
                 _lastHit.gameObject.SendMessage("NotLongerStaredAt", SendMessageOptions.DontRequireReceiver);
                 _lastHit = hitData.collider;
                 _lastHit.gameObject.SendMessage("StaredAt", SendMessageOptions.DontRequireReceiver);
-                simpleCrosshair.transform.position = hitData.point;
+                Vector3 screenPosition = Camera.main.WorldToScreenPoint(hitData.point);
+                simpleCrosshair.transform.position = screenPosition;
             }
         /*    else if (_inputBindings.UI.Select.triggered)
             {
