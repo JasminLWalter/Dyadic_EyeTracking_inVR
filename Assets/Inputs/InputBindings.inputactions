@@ -451,6 +451,17 @@
                 },
                 {
                     "name": "",
+                    "id": "9314696d-3373-4065-9b0f-1042727d93b0",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Continue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "a47a8031-9228-44e9-a1b5-c2ad9758addc",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",

@@ -58,6 +58,8 @@ public class SignalerManager : MonoBehaviour
     // public GameObject Box6;
     // public GameObject Box7;
     // public GameObject Box8;
+
+    public GameObject focusDebugSphere;
     
    
     // Start is called before the first frame update
@@ -121,7 +123,6 @@ public class SignalerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
        /* if (!frozen)
         {
             if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayOrigin, out rayDirection))
@@ -229,6 +230,10 @@ public class SignalerManager : MonoBehaviour
             freezeCounter += 1;
 
             Vector3 hitPoint = hitData.point;
+
+            // Debug focus points 
+            focusDebugSphere.SetActive(true);
+            focusDebugSphere.transform.position = hitPoint;
 
             // Create sample array
             float[] sample = new float[3];

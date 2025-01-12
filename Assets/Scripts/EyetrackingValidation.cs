@@ -125,7 +125,7 @@ public class EyetrackingValidation : MonoBehaviour
         // Let instructions appear
         valText.gameObject.SetActive(true);
         valText.text = "Eye Tracking Validation";
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
         valText.text = "Please follow the dot with your eyes. \nDo not move your head.";
         yield return new WaitForSeconds(5f);
         valText.gameObject.SetActive(false);

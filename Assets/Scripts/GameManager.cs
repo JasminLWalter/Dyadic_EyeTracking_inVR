@@ -208,8 +208,7 @@ public class GameManager : MonoBehaviour
         }
     
 
-        Debug.Log("frozen in gameManager"+ frozen);
-        if (_inputBindings.UI.Signaler.triggered) // 4 on keyboard
+        if (_inputBindings.UI.Signaler.triggered) // "s" on keyboard
         {
             role = "signaler";
             receiver.GetComponent<ReceiverManager>().enabled = false;
@@ -244,7 +243,7 @@ public class GameManager : MonoBehaviour
             roundsDisplayReceiver.gameObject.SetActive(false);
 
         }
-        if (_inputBindings.UI.Receiver.triggered && calCounter<1) // 6 on keyboard
+        if (_inputBindings.UI.Receiver.triggered && calCounter<1) // "r" on keyboard
         {
             role = "receiver";
             receiver.GetComponent<ReceiverManager>().enabled = true;
@@ -330,7 +329,7 @@ public class GameManager : MonoBehaviour
         {   
             if (calCounter == 0)
             {
-                //StartCoroutine(TriggerEyetrackingCalibration());   // For experiment: uncomment this
+                StartCoroutine(TriggerEyetrackingCalibration());   // Debug: commment this line; For experiment: uncomment this
                 calCounter += 1;
             } 
            
