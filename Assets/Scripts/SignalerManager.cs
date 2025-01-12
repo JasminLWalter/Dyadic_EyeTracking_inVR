@@ -59,7 +59,9 @@ public class SignalerManager : MonoBehaviour
     // public GameObject Box7;
     // public GameObject Box8;
 
+    // Debug
     public GameObject focusDebugSphere;
+    public LineRenderer lineRenderer;
     
    
     // Start is called before the first frame update
@@ -171,11 +173,15 @@ public class SignalerManager : MonoBehaviour
     
         invisibleObject.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
 
+        // Debug
+        //focusDebugSphere.transform.position = eyePositionCombinedWorld+ 3 * eyeDirectionCombinedWorld;
 
         Ray ray;
         if (gameManager.playedInVR)
         {
-            ray = new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld);
+            ray = new Ray(eyePositionCombinedWorld, eyePositionCombinedWorld+eyeDirectionCombinedWorld);
+            // Debug 
+            Debug.DrawRay(eyePositionCombinedWorld, eyePositionCombinedWorld+eyeDirectionCombinedWorld, Color.green);
         }
         else
         {
@@ -186,7 +192,10 @@ public class SignalerManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out hitData, Mathf.Infinity))
         {
-            
+            // Debug
+            lineRenderer.enabled = true;
+            lineRenderer.SetPosition(0, eyePositionCombinedWorld);
+            lineRenderer.SetPosition(1, hitData.point);
             
             if (_lastHit == null)
             {
@@ -194,16 +203,14 @@ public class SignalerManager : MonoBehaviour
                 _lastHit.gameObject.SendMessage("StaredAt", SendMessageOptions.DontRequireReceiver);
                 // Let Crosshair appear where the signaler is looking at
                 simpleCrosshair.SetActive(true);
-                Vector3 screenPosition = Camera.main.WorldToScreenPoint(hitData.point);
-                simpleCrosshair.transform.position = screenPosition;
+                simpleCrosshair.transform.position = hitData.point;
             }
             else if (_lastHit != null && _lastHit != hitData.collider)
             {
                 _lastHit.gameObject.SendMessage("NotLongerStaredAt", SendMessageOptions.DontRequireReceiver);
                 _lastHit = hitData.collider;
-                _lastHit.gameObject.SendMessage("StaredAt", SendMessageOptions.DontRequireReceiver);
-                Vector3 screenPosition = Camera.main.WorldToScreenPoint(hitData.point);
-                simpleCrosshair.transform.position = screenPosition;
+                _lastHit.gameObject.SendMessage("StaredAt", SendMessageOptions.DontRequireReceiver);Vector3 screenPosition = Camera.main.WorldToScreenPoint(hitData.point);
+                simpleCrosshair.transform.position = hitData.point;
             }
         /*    else if (_inputBindings.UI.Select.triggered)
             {

@@ -329,7 +329,7 @@ public class GameManager : MonoBehaviour
         {   
             if (calCounter == 0)
             {
-                StartCoroutine(TriggerEyetrackingCalibration());   // Debug: commment this line; For experiment: uncomment this
+                //StartCoroutine(TriggerEyetrackingCalibration());   // Debug: commment this line; For experiment: uncomment this
                 calCounter += 1;
             } 
            
