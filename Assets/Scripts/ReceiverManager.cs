@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
@@ -82,7 +83,7 @@ public class ReceiverManager : MonoBehaviour
     void Update()
     {
         Ray ray;
-        if (gameManager.playedInVR)
+        if (XRSettings.isDeviceActive)
         {
             ray = new Ray(preferredHandTransform.position, preferredHandTransform.forward);
         }

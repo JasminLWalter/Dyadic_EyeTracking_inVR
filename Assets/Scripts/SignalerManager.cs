@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 using TMPro;
 using System;
 using UnityEngine.InputSystem.HID;
@@ -13,7 +14,7 @@ public class SignalerManager : MonoBehaviour
    
     private InputBindings _inputBindings;
     private Collider _lastHit;
-    private int _layerMask = 1 << 3;  // Only objects on Layer 3 should be considered
+    private int _boxLayerMask;  // Only objects on the Box Layer should be hit by the raycast
 
     public GameObject hmd;
     public Transform OriginTransform;
@@ -120,6 +121,8 @@ public class SignalerManager : MonoBehaviour
             TextPhase3.gameObject.SetActive(false);
         }
 
+        _boxLayerMask = LayerMask.GetMask("Box");
+
     }
 
     // Update is called once per frame
@@ -176,41 +179,41 @@ public class SignalerManager : MonoBehaviour
         // Debug
         //focusDebugSphere.transform.position = eyePositionCombinedWorld+ 3 * eyeDirectionCombinedWorld;
 
+        // Create a ray from the eyes along the focus direction
         Ray ray;
-        if (gameManager.playedInVR)
+        if (XRSettings.isDeviceActive)
         {
-            ray = new Ray(eyePositionCombinedWorld, eyePositionCombinedWorld+eyeDirectionCombinedWorld);
-            // Debug 
-            Debug.DrawRay(eyePositionCombinedWorld, eyePositionCombinedWorld+eyeDirectionCombinedWorld, Color.green);
+            ray = new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld);
+            // Debug
+            /*
+            lineRenderer.enabled = true;
+            lineRenderer.SetPosition(0, ray.origin);
+            lineRenderer.SetPosition(1, ray.direction);*/
         }
-        else
+        else  
         {
+           Debug.LogError("No VR devices found in this frame. Using mouse position for ray cast."); 
            Vector2 mouseScreenPosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
            ray = Camera.main.ScreenPointToRay(mouseScreenPosition); 
         }
 
-
-        if (Physics.Raycast(ray, out hitData, Mathf.Infinity))
+        // If the ray hits a box
+        if (Physics.Raycast(ray, out hitData, Mathf.Infinity, _boxLayerMask)) // TODO: "&& gameManager.frozen" -> raycast only possible when it's the signaler's turn
         {
-            // Debug
-            lineRenderer.enabled = true;
-            lineRenderer.SetPosition(0, eyePositionCombinedWorld);
-            lineRenderer.SetPosition(1, eyePositionCombinedWorld+7*eyeDirectionCombinedWorld);
+            // Let crosshair appear where the signaler is looking at 
+            simpleCrosshair.SetActive(true);
+            simpleCrosshair.transform.position = hitData.point;
             
             if (_lastHit == null)
             {
                 _lastHit = hitData.collider;
                 _lastHit.gameObject.SendMessage("StaredAt", SendMessageOptions.DontRequireReceiver);
-                // Let Crosshair appear where the signaler is looking at
-                simpleCrosshair.SetActive(true);
-                simpleCrosshair.transform.position = hitData.point;
             }
             else if (_lastHit != null && _lastHit != hitData.collider)
             {
                 _lastHit.gameObject.SendMessage("NotLongerStaredAt", SendMessageOptions.DontRequireReceiver);
                 _lastHit = hitData.collider;
                 _lastHit.gameObject.SendMessage("StaredAt", SendMessageOptions.DontRequireReceiver);Vector3 screenPosition = Camera.main.WorldToScreenPoint(hitData.point);
-                simpleCrosshair.transform.position = hitData.point;
             }
         /*    else if (_inputBindings.UI.Select.triggered)
             {
@@ -239,6 +242,7 @@ public class SignalerManager : MonoBehaviour
             Vector3 hitPoint = hitData.point;
 
             // Debug focus points 
+            Debug.Log("Hit object: "+hitData.transform.name);
             focusDebugSphere.SetActive(true);
             focusDebugSphere.transform.position = hitPoint;
 

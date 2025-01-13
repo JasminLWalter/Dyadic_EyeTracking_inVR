@@ -113,10 +113,8 @@ public class GameManager : MonoBehaviour
     public bool previousFrozen = false;
     public AudioSource soundEffect;
 
-    public bool playedInVR;
     void Start()
     {
-        playedInVR = XRSettings.isDeviceActive;
         _ValidationSuccessStatus = true;
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
