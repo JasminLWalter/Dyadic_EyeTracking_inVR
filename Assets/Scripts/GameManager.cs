@@ -293,6 +293,7 @@ public class GameManager : MonoBehaviour
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
         {
+            /*
             if (role == "receiver")
             {
                 receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase), xrOriginSetup);
@@ -300,11 +301,12 @@ public class GameManager : MonoBehaviour
             }
             if (role == "signaler") 
             {
-                signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
+               signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup); 
 
             }
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             // EnterNextPhase();
+            */
         }
         // Phase 1: Embodiment (Embodiment Space)
         else if (phase == 1)
@@ -327,7 +329,7 @@ public class GameManager : MonoBehaviour
         {   
             if (calCounter == 0)
             {
-                //StartCoroutine(TriggerEyetrackingCalibration());   // Debug: commment this line; For experiment: uncomment this
+                //StartCoroutine(TriggerEyetrackingCalibration());   // Debug: commment this line; For experiment: uncomment this, because it triggers the initial calibration
                 calCounter += 1;
             } 
            
