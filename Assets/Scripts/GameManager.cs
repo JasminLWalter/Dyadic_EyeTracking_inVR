@@ -12,7 +12,7 @@ using System;
 public class GameManager : MonoBehaviour
 {
     [Tooltip("Stores the current condition of the experiment.")]
-    [SerializeField] private int condition = 0;
+    [SerializeField] private int condition = 1;  // what condition is meant here? freeze versus free moving condition or milky versus clear glass condition?
     [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: Testing Phase (Testing Space); Phase 4: End Phase (UI Space)")]
     public int phase = 0;
     private int currentPhase = 0;
@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     private ReceiverManager receiverManager;
 
     private EyetrackingValidation eyetrackingValidation;
-    private LSLSignalerOutlets lSLSignalerOutlets;
     private SignalerManager signalerManager;
     private EmbodimentManager embodimentManager;
     private BoxBehaviour boxBehaviour;
@@ -38,7 +37,6 @@ public class GameManager : MonoBehaviour
     public GameObject crosshair;
     public GameObject trainingSign;
     public GameObject trainingSignReceiver;
-    public Material invisible;
     private InputBindings _inputBindings;
     
     private int score = 0;
@@ -52,12 +50,12 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject TimeExceededTMPReceiver;
 
-    [SerializeField] private int roundsPerCondition = 0;
+    [SerializeField] private int roundsPerCondition;
     private int _currentRound = 0;
     public bool _startedRound = false;
     private bool _selected = false;
-    public bool firstFreeze = false;
-    public bool firstFreezeReceiver = false;
+    public bool firstFreeze = false; // Why is this variable needed?
+    public bool firstFreezeReceiver = false;  // Why is this variable needed?
     [SerializeField] public List<GameObject> boxes = null;
     
 
@@ -78,8 +76,6 @@ public class GameManager : MonoBehaviour
     public GameObject milkyGlass;
     public GameObject clearGlass;
 
-    //[Tooltip("The locations of the embodiment, start, condition 1, break, condition 2 and end space.")]
-
     [SerializeField] private List<Vector3> spaceLocationsReceiver = null;
     [SerializeField] private List<Vector3> spaceLocationsSignaler = null;
 
@@ -98,14 +94,10 @@ public class GameManager : MonoBehaviour
     private float _startRoundTime = 0;
 
     private float probabilityForOne = 0.5f;
-    //public Camera mainCamera;
 
     public LSLReceiverOutlets lslReceiverOutlets;
     public bool countdownRunning = false;
-    //private bool startedTimer = false;
-    // Start is called before the first frame update
     public bool milkyGlassBool;
-    private bool roleAssigned = false;
     private bool trainingEnd = false;
     private int calCounter = 0;
 
@@ -121,11 +113,6 @@ public class GameManager : MonoBehaviour
 
         _inputBindings = new InputBindings();
         _inputBindings.UI.Enable();
-        //  if (!roleAssigned)
-        // {
-        //     AssignRole();
-            
-        // }
 
         startTime = Time.time;
         menuManager = FindObjectOfType<MenuManager>();
@@ -147,44 +134,13 @@ public class GameManager : MonoBehaviour
         score = 0;
     }
 
-    // void AssignRole()
-    // {
-    //     if (_inputBindings.UI.Signaler.triggered) // 4 on keyboard
-    //     {
-    //         role = "signaler";
-    //         receiver.GetComponent<ReceiverManager>().enabled = false;
-    //         signaler.GetComponent<SignalerManager>().enabled = true;
-    //         signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
-    //         signalerManager.Teleport(new Vector3(-99.5999985f, -105.760002f, 66.6399994f), avatarSecondary);
-            
-    //         // LSL Streams
-    //         avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
-    //         avatarMain.GetComponent<LSLSignalerInlets>().enabled = true;
-    //         avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = true;
-    //         avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = true;
-            
-    //     }
-    //     else if (_inputBindings.UI.Receiver.triggered) // 6 on keyboard
-    //     {
-    //         role = "receiver";
-    //         receiver.GetComponent<ReceiverManager>().enabled = true;
-    //         signaler.GetComponent<SignalerManager>().enabled = false;
-    //         receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
-
-    //         // LSL Streams
-    //         avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
-    //         avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = true;
-    //         avatarMain.GetComponent<LSLReceiverInlets>().enabled = true;
-    //         avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;
-    //     }
-    //     roleAssigned = true;
-    // }
 
     // Update is called once per frame
     void Update()
     {
         Debug.Log("Phase" + phase);
 
+        // Make the glass either milky or clear according to current condition
         if(milkyGlassBool)
         {
             clearGlass.SetActive(false);
@@ -200,12 +156,10 @@ public class GameManager : MonoBehaviour
         {
             // Play the audio when the boolean changes
             PlayAudio();
-            
-            // Update previousBool to the new value of myBool
             previousFrozen = frozen;
         }
     
-
+        // Role assignment // TODO: put the role assignment in the if-block of phase 0
         if (_inputBindings.UI.Signaler.triggered) // "s" on keyboard
         {
             role = "signaler";
@@ -214,27 +168,21 @@ public class GameManager : MonoBehaviour
             signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
             signalerManager.Teleport(spaceLocationsReceiver.ElementAt(3), avatarSecondary);
             
-            // Eye data scripts
+            // Enable the Eye data scripts of the signaler and disable the ones of the receiver
             avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
             avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = false;
             avatarMain.GetComponent<SignalerEyeDataSender>().enabled = true;
             
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
-            // avatarSecondary.GetComponent<SignalerEyeDataSender>().enabled = false;
 
-            // LSL Streams
+            // Enable the LSL Streams of the signaler and disable the ones of the receiver
             avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
-            avatarMain.GetComponent<LSLSignalerInlets>().enabled = true;
-            // avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = true;
-            // avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = true;
-
-
-            // avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = false;
-            // avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = false;   
+            avatarMain.GetComponent<LSLSignalerInlets>().enabled = true; 
             avatarMain.GetComponent<LSLReceiverInlets>().enabled = false;
             avatarMain.GetComponent<LSLReceiverOutlets>().enabled = false;
 
+            // Show or disable displays of score and round number
             scoreDisplay.gameObject.SetActive(true);
             roundsDisplay.gameObject.SetActive(true);
             scoreDisplayReceiver.gameObject.SetActive(false);
@@ -246,50 +194,41 @@ public class GameManager : MonoBehaviour
             role = "receiver";
             receiver.GetComponent<ReceiverManager>().enabled = true;
             signaler.GetComponent<SignalerManager>().enabled = false;
-            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0), xrOriginSetup);
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0), xrOriginSetup); // No teleportation of the secondaryAvatar?
 
-            // Eye data scripts
+            // Enable the Eye data scripts of the receiver and disable the ones of the signaler
             avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
             avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = false;
             avatarMain.GetComponent<ReceiverEyeDataSender>().enabled = true;
             
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
             avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
-            // avatarSecondary.GetComponent<ReceiverEyeDataSender>().enabled = false;
 
-            // LSL Streams
+            // Enable the LSL Streams of the receiver and disable the ones of the signaler
             avatarMain.GetComponent<LSLReceiverInlets>().enabled = true;
-            avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;
-            // avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
-            // avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = true;   
-
+            avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;  
             avatarMain.GetComponent<LSLSignalerOutlets>().enabled = false;
             avatarMain.GetComponent<LSLSignalerInlets>().enabled = false;
-            // avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = false;
-            // avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = false;
 
+            // Show or disable displays of score and round number
             scoreDisplayReceiver.gameObject.SetActive(true);
             roundsDisplayReceiver.gameObject.SetActive(true);
             scoreDisplay.gameObject.SetActive(false);
             roundsDisplay.gameObject.SetActive(false);
-
-            
         }
+        // According to the role of the main player, set up the secondary avatar
+        // TODO: check if it is necessary that it happens every frame
         if (role == "receiver")
         {
             avatarSecondary.transform.rotation =Quaternion.Euler(new Vector3(0, -180, 0));
-            avatarSecondary.transform.position = new Vector3(-3f,3f,5.5f); //Vector3(-3.07173824,-2.07763529,-9.10935402)
-            Debug.LogWarning(lslReceiverOutlets);
-
-
+            avatarSecondary.transform.position = new Vector3(-3f,3f,5.5f); 
         }
         if (role == "signaler")
         {
-            // avatarSecondary.transform.rotation = new Vector3(0,0,0);
             avatarSecondary.transform.position = new Vector3(-3f,3.1f,-10f);
-            
         }
         #region Experimental process 
+
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
         {
@@ -311,7 +250,6 @@ public class GameManager : MonoBehaviour
         // Phase 1: Embodiment (Embodiment Space)
         else if (phase == 1)
         {
-            //player.role = "";
 
             // TODO: let the function be called from the menu manager or an embodiment phase manager 
             //EnterNextPhase();
@@ -321,7 +259,6 @@ public class GameManager : MonoBehaviour
         // Phase 2: Instruction Testing (UI Space)
         else if (phase == 2)
         {
-           // player.role = "";
             Debug.LogError("Phase 2");
         }
         // Phase 3: First Condition (Experiment Room)
@@ -333,20 +270,23 @@ public class GameManager : MonoBehaviour
                 calCounter += 1;
             } 
            
+           // Warning: this is done every frame -> is it necessary?
             if (role == "receiver")
             {
                 vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,-0.94f);
                 avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
-                xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, -360, 0)); //old y=270
+                xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, -360, 0)); 
             }
+            // Update the display that shows the current round number
             if(role == "signaler")
             {
                 roundsDisplay.text = "Round: " + _currentRound;
-            }
-            if(role == "receiver")
+            } 
+            else if(role == "receiver")
             {
                 roundsDisplayReceiver.text = "Round: " + _currentRound;
             }
+            // While the training phase is ongoing, show a respective sign
             if (_currentRound > 0 && _currentRound < 4 && !trainingEnd)
             {
                 if (role == "signaler")
@@ -358,22 +298,7 @@ public class GameManager : MonoBehaviour
                     trainingSignReceiver.gameObject.SetActive(true);
                 }
             } 
-            // if (_currentRound < roundsPerCondition)
-            // {   
-            //     Debug.Log("first layer of if condition" + _currentRound + " " + roundsPerCondition);
-            //     if (role == "receiver")
-            //     {
-            //         if (_startedRound == false && receiverManager.selectCounter > 1 && !frozen && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box"))
-            //         {
-            //             Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
-            //             receiverManager.boxSelected = true;
-            //             _startedRound = true;
-            //             StartCoroutine(Condition1());
-            //             //StartCoroutine(CountdownTimer(timerCountdownText));
-            //             trialNumber++;
-            //         }
-            //     }
-            // }          
+            // If the training phase is over, reset the score and remove the training sign         
             if (_currentRound == 4 && !trainingEnd) //this order could cause problems
             {    
                 ResetScoreRound();
@@ -387,30 +312,25 @@ public class GameManager : MonoBehaviour
                 }
                 trainingEnd = true;
             }
-            
+            // If enough rounds per condition have been played, go to the next phase
             else if (_currentRound == roundsPerCondition)
-            {
-                
+            { 
                 EnterNextPhase();
-                
             }
         }
        
         // Phase 4: End Phase (UI Space)
         else
         {
-           // Debug.Log("Phase 4");
            if (role == "receiver")
            {
-            
             vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,1.22000003f);
             xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
             avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0));
-            Debug.LogError("turn around");
            }
            if (role == "signaler")
            {
-            signalerManager.invisibleObject = invisibleObject;
+            signalerManager.invisibleObject = invisibleObject; // Why?
            }
         }
         #endregion
@@ -442,8 +362,8 @@ public class GameManager : MonoBehaviour
         {
             signalerManager.Teleport(pauseRoomSignaler, xrOriginSetup);
         }
-
     }
+
     public void ReturnToCurrentPhase()
     {
         currentPhase = GetCurrentPhase();
@@ -466,6 +386,8 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
+    // TODO: make this function more clean
     public IEnumerator Condition1()
     {
         
@@ -516,20 +438,9 @@ public class GameManager : MonoBehaviour
     // Shuffles the reward values and assigns them to the boxes.
     private void ShuffleRewards()
     {
-        Debug.Log("Inside ShuffleRewards");
-
-        // Ensure there are 8 boxes
-        // if (boxes.Count != 8)
-        // {
-        //     Debug.LogError("There must be exactly 8 boxes.");
-        //     return;
-        // }
-
         // Initialize the rewards list
 
         rewards = new List<int> { 100, 0, 0, 0, 0, 0, -25, -25 };
-
-        // Console.WriteLine("Original rewards: " + string.Join(", ", rewards));
 
         // Initialize the random number generator
         System.Random rng = new System.Random();
@@ -627,19 +538,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // TODO:
-    // Continuously stores measured data to a file.
-    private void StoreData()
-    {
-
-    }
-
-    // TODO:
-    // When the application is quit, the data storage file is closed and saved.
-    private void OnApplicationQuit()
-    {
-
-    }
+    
 
     public void SetValidationSuccessStatus(bool success)
     {

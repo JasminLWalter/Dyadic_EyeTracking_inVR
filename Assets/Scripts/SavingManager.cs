@@ -10,7 +10,6 @@ public class SavingManager : MonoBehaviour
     private EmbodimentManager embodimentManager;
     private SignalerManager signalerManager;
     private ReceiverManager receiverManager;
-   // private EyeRaycast eyeRaycast;
 
     private LSLStreams lslStreams;
     public float sampleRate = 90.0f;
