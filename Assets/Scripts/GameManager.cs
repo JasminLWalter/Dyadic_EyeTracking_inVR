@@ -166,7 +166,7 @@ public class GameManager : MonoBehaviour
             receiver.GetComponent<ReceiverManager>().enabled = false;
             signaler.GetComponent<SignalerManager>().enabled = true;
             signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
-            signalerManager.Teleport(spaceLocationsReceiver.ElementAt(3), avatarSecondary);
+            avatarSecondary.transform.position = new Vector3(-3f,3.4f,-10f);
             
             // Enable the Eye data scripts of the signaler and disable the ones of the receiver
             avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
@@ -194,7 +194,9 @@ public class GameManager : MonoBehaviour
             role = "receiver";
             receiver.GetComponent<ReceiverManager>().enabled = true;
             signaler.GetComponent<SignalerManager>().enabled = false;
-            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0), xrOriginSetup); // No teleportation of the secondaryAvatar?
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0), xrOriginSetup); 
+            avatarSecondary.transform.rotation =Quaternion.Euler(new Vector3(0, -180, 0));
+            avatarSecondary.transform.position = new Vector3(-3f,3.4f,4.8f);
 
             // Enable the Eye data scripts of the receiver and disable the ones of the signaler
             avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
@@ -217,15 +219,14 @@ public class GameManager : MonoBehaviour
             roundsDisplay.gameObject.SetActive(false);
         }
         // According to the role of the main player, set up the secondary avatar
-        // TODO: check if it is necessary that it happens every frame
+        // The secondary avatar has to put to this position every frame, since otherwise it falls down infinitely.
         if (role == "receiver")
         {
-            avatarSecondary.transform.rotation =Quaternion.Euler(new Vector3(0, -180, 0));
-            avatarSecondary.transform.position = new Vector3(-3f,3f,5.5f); 
+            avatarSecondary.transform.position = new Vector3(-3f,3.4f,4.8f); 
         }
         if (role == "signaler")
         {
-            avatarSecondary.transform.position = new Vector3(-3f,3.1f,-10f);
+            avatarSecondary.transform.position = new Vector3(-3f,3.4f,-10f);
         }
         #region Experimental process 
 
@@ -274,8 +275,8 @@ public class GameManager : MonoBehaviour
             if (role == "receiver")
             {
                 vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,-0.94f);
-                avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
-                xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, -360, 0)); 
+                //avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
+                //xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, -360, 0)); 
             }
             // Update the display that shows the current round number
             if(role == "signaler")

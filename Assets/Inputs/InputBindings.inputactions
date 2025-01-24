@@ -609,7 +609,7 @@
                     "path": "<XRController>{RightHand}/secondaryButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "VR",
                     "action": "Validation",
                     "isComposite": false,
                     "isPartOfComposite": false
