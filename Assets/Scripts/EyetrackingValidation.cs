@@ -27,7 +27,7 @@ public class EyetrackingValidation : MonoBehaviour
     public LSLReceiverOutlets lslReceiverOutlets;
     public LSLSignalerOutlets lslSignalerOutlets;
 
-    private bool _isValidationRunning;
+    private bool _isValidationRunning = false;
     private bool _isErrorCheckRunning;
    // private bool _isExperiment;
     

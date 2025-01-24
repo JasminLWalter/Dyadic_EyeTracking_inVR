@@ -631,7 +631,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""path"": ""<XRController>{RightHand}/secondaryButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""VR"",
                     ""action"": ""Validation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
