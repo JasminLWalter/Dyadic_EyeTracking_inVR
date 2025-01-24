@@ -271,12 +271,11 @@ public class GameManager : MonoBehaviour
                 calCounter += 1;
             } 
            
-           // Warning: this is done every frame -> is it necessary?
+           // Change the rotation of the receiver's avatar every frame, otherwise it is weirdly oriented, don't know why
             if (role == "receiver")
             {
                 vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,-0.94f);
-                //avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
-                //xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, -360, 0)); 
+                xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0)); 
             }
             // Update the display that shows the current round number
             if(role == "signaler")
