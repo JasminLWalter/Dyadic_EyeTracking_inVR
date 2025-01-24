@@ -3410,6 +3410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f0a306efde0e754386e1457bd8f3fa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugging: 0
   condition: 0
   phase: 0
   vRRig: {fileID: 7646968462962455502}
@@ -3430,6 +3431,7 @@ MonoBehaviour:
   TimeExceededTMP: {fileID: 115359661}
   TimeExceededTMPReceiver: {fileID: 301607826}
   roundsPerCondition: 80
+  _currentRound: 0
   _startedRound: 0
   firstFreeze: 0
   firstFreezeReceiver: 0
@@ -3463,7 +3465,6 @@ MonoBehaviour:
   - {x: -3.1, y: 3.35, z: 5}
   - {x: 0, y: -29, z: 55}
   rewards: 000000000500000000000000050000000a000000000000000500000000000000
-  _ValidationSuccessStatus: 0
   TimeExceeded: 0
   running: 0
   calDoneOneTime: 0
@@ -26440,6 +26441,7 @@ MonoBehaviour:
   lslReceiverOutlets: {fileID: 7646968462962455506}
   lslSignalerOutlets: {fileID: 7646968462962455504}
   valCalCounter: 0
+  errorThreshold: 1
 --- !u!4 &1670471451
 Transform:
   m_ObjectHideFlags: 0

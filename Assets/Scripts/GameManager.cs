@@ -11,6 +11,8 @@ using ViveSR.anipal.Eye;
 using System;
 public class GameManager : MonoBehaviour
 {
+    public bool debugging = false;
+
     [Tooltip("Stores the current condition of the experiment.")]
     [SerializeField] private int condition = 1;  // what condition is meant here? freeze versus free moving condition or milky versus clear glass condition?
     [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: Testing Phase (Testing Space); Phase 4: End Phase (UI Space)")]
@@ -51,7 +53,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject TimeExceededTMPReceiver;
 
     [SerializeField] private int roundsPerCondition;
-    private int _currentRound = 0;
+    public int _currentRound = 0; //only public for debugging
     public bool _startedRound = false;
     private bool _selected = false;
     public bool firstFreeze = false; // Why is this variable needed?
@@ -82,7 +84,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("There should be as many rewards as there are inner boxes.")]
     [SerializeField] private List<int> rewards;
 
-    public bool _ValidationSuccessStatus = true; 
+    private bool _ValidationSuccessStatus = true; 
     
     public bool TimeExceeded = false;
     public bool running = false;
@@ -107,7 +109,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        _ValidationSuccessStatus = true;
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
 
@@ -129,9 +130,11 @@ public class GameManager : MonoBehaviour
         TimeExceededTMP.gameObject.SetActive(false);
         TimeExceededTMPReceiver.gameObject.SetActive(false);
 
-        xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0)); // old y=90
+        xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0)); 
         
         score = 0;
+
+        StartCoroutine(TriggerEyetrackingCalibration());
     }
 
 
@@ -159,65 +162,7 @@ public class GameManager : MonoBehaviour
             previousFrozen = frozen;
         }
     
-        // Role assignment // TODO: put the role assignment in the if-block of phase 0
-        if (_inputBindings.UI.Signaler.triggered) // "s" on keyboard
-        {
-            role = "signaler";
-            receiver.GetComponent<ReceiverManager>().enabled = false;
-            signaler.GetComponent<SignalerManager>().enabled = true;
-            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
-            avatarSecondary.transform.position = new Vector3(-3f,3.4f,-10f);
-            
-            // Enable the Eye data scripts of the signaler and disable the ones of the receiver
-            avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
-            avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = false;
-            avatarMain.GetComponent<SignalerEyeDataSender>().enabled = true;
-            
-            avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
-            avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
-
-            // Enable the LSL Streams of the signaler and disable the ones of the receiver
-            avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
-            avatarMain.GetComponent<LSLSignalerInlets>().enabled = true; 
-            avatarMain.GetComponent<LSLReceiverInlets>().enabled = false;
-            avatarMain.GetComponent<LSLReceiverOutlets>().enabled = false;
-
-            // Show or disable displays of score and round number
-            scoreDisplay.gameObject.SetActive(true);
-            roundsDisplay.gameObject.SetActive(true);
-            scoreDisplayReceiver.gameObject.SetActive(false);
-            roundsDisplayReceiver.gameObject.SetActive(false);
-
-        }
-        if (_inputBindings.UI.Receiver.triggered && calCounter<1) // "r" on keyboard
-        {
-            role = "receiver";
-            receiver.GetComponent<ReceiverManager>().enabled = true;
-            signaler.GetComponent<SignalerManager>().enabled = false;
-            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0), xrOriginSetup); 
-            avatarSecondary.transform.rotation =Quaternion.Euler(new Vector3(0, -180, 0));
-            avatarSecondary.transform.position = new Vector3(-3f,3.4f,4.8f);
-
-            // Enable the Eye data scripts of the receiver and disable the ones of the signaler
-            avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
-            avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = false;
-            avatarMain.GetComponent<ReceiverEyeDataSender>().enabled = true;
-            
-            avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
-            avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
-
-            // Enable the LSL Streams of the receiver and disable the ones of the signaler
-            avatarMain.GetComponent<LSLReceiverInlets>().enabled = true;
-            avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;  
-            avatarMain.GetComponent<LSLSignalerOutlets>().enabled = false;
-            avatarMain.GetComponent<LSLSignalerInlets>().enabled = false;
-
-            // Show or disable displays of score and round number
-            scoreDisplayReceiver.gameObject.SetActive(true);
-            roundsDisplayReceiver.gameObject.SetActive(true);
-            scoreDisplay.gameObject.SetActive(false);
-            roundsDisplay.gameObject.SetActive(false);
-        }
+        
         // According to the role of the main player, set up the secondary avatar
         // The secondary avatar has to put to this position every frame, since otherwise it falls down infinitely.
         if (role == "receiver")
@@ -228,25 +173,72 @@ public class GameManager : MonoBehaviour
         {
             avatarSecondary.transform.position = new Vector3(-3f,3.4f,-10f);
         }
+
+
         #region Experimental process 
 
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
         {
-            /*
-            if (role == "receiver")
+            // Role assignment 
+            if (_inputBindings.UI.Signaler.triggered) // "s" on keyboard
             {
-                receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase), xrOriginSetup);
+                role = "signaler";
+                receiver.GetComponent<ReceiverManager>().enabled = false;
+                signaler.GetComponent<SignalerManager>().enabled = true;
+                signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
+                avatarSecondary.transform.position = new Vector3(-3f,3.4f,-10f);
+                
+                // Enable the Eye data scripts of the signaler and disable the ones of the receiver
+                avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
+                avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = false;
+                avatarMain.GetComponent<SignalerEyeDataSender>().enabled = true;
+                
+                avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
+                avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
+
+                // Enable the LSL Streams of the signaler and disable the ones of the receiver
+                avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
+                avatarMain.GetComponent<LSLSignalerInlets>().enabled = true; 
+                avatarMain.GetComponent<LSLReceiverInlets>().enabled = false;
+                avatarMain.GetComponent<LSLReceiverOutlets>().enabled = false;
+
+                // Show or disable displays of score and round number
+                scoreDisplay.gameObject.SetActive(true);
+                roundsDisplay.gameObject.SetActive(true);
+                scoreDisplayReceiver.gameObject.SetActive(false);
+                roundsDisplayReceiver.gameObject.SetActive(false);
 
             }
-            if (role == "signaler") 
+            else if (_inputBindings.UI.Receiver.triggered) // "r" on keyboard
             {
-               signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup); 
+                role = "receiver";
+                receiver.GetComponent<ReceiverManager>().enabled = true;
+                signaler.GetComponent<SignalerManager>().enabled = false;
+                receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0), xrOriginSetup); 
+                avatarSecondary.transform.rotation =Quaternion.Euler(new Vector3(0, -180, 0));
+                avatarSecondary.transform.position = new Vector3(-3f,3.4f,4.8f);
 
+                // Enable the Eye data scripts of the receiver and disable the ones of the signaler
+                avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
+                avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = false;
+                avatarMain.GetComponent<ReceiverEyeDataSender>().enabled = true;
+                
+                avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
+                avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
+
+                // Enable the LSL Streams of the receiver and disable the ones of the signaler
+                avatarMain.GetComponent<LSLReceiverInlets>().enabled = true;
+                avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;  
+                avatarMain.GetComponent<LSLSignalerOutlets>().enabled = false;
+                avatarMain.GetComponent<LSLSignalerInlets>().enabled = false;
+
+                // Show or disable displays of score and round number
+                scoreDisplayReceiver.gameObject.SetActive(true);
+                roundsDisplayReceiver.gameObject.SetActive(true);
+                scoreDisplay.gameObject.SetActive(false);
+                roundsDisplay.gameObject.SetActive(false);
             }
-            // TODO: let the function be called from the menu manager or an embodiment phase manager 
-            // EnterNextPhase();
-            */
         }
         // Phase 1: Embodiment (Embodiment Space)
         else if (phase == 1)
@@ -265,12 +257,6 @@ public class GameManager : MonoBehaviour
         // Phase 3: First Condition (Experiment Room)
         else if (phase == 3)
         {   
-            if (calCounter == 0)
-            {
-                //StartCoroutine(TriggerEyetrackingCalibration());   // Debug: commment this line; For experiment: uncomment this, because it triggers the initial calibration
-                calCounter += 1;
-            } 
-           
            // Change the rotation of the receiver's avatar every frame, otherwise it is weirdly oriented, don't know why
             if (role == "receiver")
             {
@@ -517,24 +503,29 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // Trigger eyetracking calibration every 10 min
+    // Trigger eyetracking calibration every 30 rounds
     private IEnumerator TriggerEyetrackingCalibration()
     {
-        Debug.Log("Started coroutine");
-        while(true)
+        Debug.Log("started eye coroutine");
+        // Once phase 3 has been entered start the eye tracking calibration cycle
+        bool FirstCal() => phase == 3;
+        yield return new WaitUntil(FirstCal);
+        Debug.Log("before while");
+
+        while(!debugging)
         {
-            // Do at most two calibrations
-            SRanipal_Eye_v2.LaunchEyeCalibration();
+            Debug.Log("while ");
+            //SRanipal_Eye_v2.LaunchEyeCalibration();
             EnterPausePhase();
             eyetrackingValidation.ValidateEyeTracking();
-            if (_ValidationSuccessStatus == false) 
-            {
-                SRanipal_Eye_v2.LaunchEyeCalibration();
-                EnterPausePhase();
-                eyetrackingValidation.ValidateEyeTracking();
-            }
+            // Do as many calibrations as needed to reduce the validation error to below 1
+            
+            // Debug // TODO: solve the problem
+            _ValidationSuccessStatus = true;
 
-            yield return new WaitForSeconds(600); 
+            // Wait for 30 rounds
+            bool NextVal() => (_ValidationSuccessStatus == false || (_currentRound % 30 == 0 && _currentRound != 0));
+            yield return new WaitUntil(NextVal); 
         }
     }
 
