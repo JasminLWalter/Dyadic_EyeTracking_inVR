@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject TimeExceededTMPReceiver;
 
+    [Tooltip("Must be an even number.")]
     [SerializeField] private int roundsPerCondition;
     public int _currentRound = 0; //only public for debugging
     public bool _startedRound = false;
@@ -95,11 +96,13 @@ public class GameManager : MonoBehaviour
     private float startTime;
     private float _startRoundTime = 0;
 
-    private float probabilityForOne = 0.5f;
+    private float probabilityForMilky = 0.5f;
 
     public LSLReceiverOutlets lslReceiverOutlets;
     public bool countdownRunning = false;
     public bool milkyGlassBool;
+    // Stores the boolean values for the clear or milky glass for all the trial rounds
+    private bool[] milkyBools;
     private bool trainingEnd = false;
     private int calCounter = 0;
 
@@ -133,6 +136,9 @@ public class GameManager : MonoBehaviour
         xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0)); 
         
         score = 0;
+
+        // Prepare the milky glass bools
+        ShowMilkyGlassRandom();
 
         StartCoroutine(TriggerEyetrackingCalibration());
     }
@@ -376,8 +382,10 @@ public class GameManager : MonoBehaviour
     // TODO: make this function more clean
     public IEnumerator Condition1()
     {
+        milkyGlassBool = milkyBools[_currentRound];
         
-        ShowMilkyGlassRandom();
+        string milkyGlassBoolString = milkyGlassBool.ToString();
+        lslReceiverOutlets.lslOmilkyGlassBool.push_sample(new string[] {milkyGlassBoolString});
         // _startedRound = true;
         _selected = false;
 
@@ -562,19 +570,45 @@ public class GameManager : MonoBehaviour
         
     }
 
+    // Called once in the start function
     private void ShowMilkyGlassRandom()
     {
+        /*
         float randomValue = UnityEngine.Random.value;
          
-         if(randomValue < probabilityForOne){
+         if(randomValue < probabilityForMilky){
             milkyGlassBool = true;
          } 
          else 
          {
             milkyGlassBool = false;
          }
+
         string milkyGlassBoolString = milkyGlassBool.ToString();
         lslReceiverOutlets.lslOmilkyGlassBool.push_sample(new string[] {milkyGlassBoolString});
+        */
+
+        // Create an array to store the boolean values of whether the glass is cear or milky in the respective round
+        milkyBools = new bool[roundsPerCondition];
+        // Fill the first half of the array with 'true' values
+        int cut = (int) Math.Round(roundsPerCondition*probabilityForMilky);
+        for (int i = 0; i < cut; i++)
+        {
+            milkyBools[i] = true;
+        }
+        // Fill the second half of the array with 'false' values
+        for (int i = cut; i < roundsPerCondition; i++)
+        {
+            milkyBools[i] = false;
+        }
+        // Shuffle the array randomly using the Knuth shuffle algorithm
+        for (int i = 0; i < milkyBools.Length; i++)
+        {
+            bool currentValue = milkyBools[i];
+            int rand = UnityEngine.Random.Range(i, milkyBools.Length);
+            milkyBools[i] = milkyBools[rand];
+            milkyBools[rand] = currentValue;
+        }
     }
 
 
