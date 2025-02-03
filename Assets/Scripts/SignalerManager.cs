@@ -95,6 +95,18 @@ public class SignalerManager : MonoBehaviour
             // Let crosshair appear where the signaler is looking at 
             simpleCrosshair.SetActive(true);
             simpleCrosshair.transform.position = hitData.point;
+
+            Vector3 hitPoint = hitData.point;
+
+            // Create sample array for LSL
+            float[] sample = new float[3];
+            sample[0] = float.Parse(FormatFloat(hitPoint.x, 8)); // Convert string back to float
+            sample[1] = float.Parse(FormatFloat(hitPoint.y, 8)); // Convert string back to float
+            sample[2] = float.Parse(FormatFloat(hitPoint.z, 8)); // Convert string back to float
+
+            // Push sample to LSL
+            lSLSignalerOutlets.lslOContinuousRaycastHitSignaler.push_sample(sample);
+
             
             if (_lastHit == null)
             {
