@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
+using TMPro;
 using ViveSR.anipal.Eye;
 
 public class EyetrackingValidation : MonoBehaviour
@@ -20,11 +21,13 @@ public class EyetrackingValidation : MonoBehaviour
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject fixationPoint;
     [SerializeField] private List<Vector3> keyPositions;
-    public GameManager gameManager;
+    private GameManager gameManager;
+    private DisableVRHeadMovement disableHeadMovement;
+    [SerializeField] private TMP_Text valText;
     public LSLReceiverOutlets lslReceiverOutlets;
     public LSLSignalerOutlets lslSignalerOutlets;
 
-    private bool _isValidationRunning;
+    private bool _isValidationRunning = false;
     private bool _isErrorCheckRunning;
    // private bool _isExperiment;
     
@@ -41,7 +44,9 @@ public class EyetrackingValidation : MonoBehaviour
     private Transform _hmdTransform;
     private List<EyeValidationData> _eyeValidationDataFrames;
     private EyeValidationData _eyeValidationData;
-    private const float ErrorThreshold = 1.0f;
+
+    [Tooltip("If participant is constantly but only slightly higher than the error threshold, adjust the threshold.")]
+    public float errorThreshold = 1.0f;
 
     private Vector3 rayOrigin = new Vector3();
     private Vector3 rayDirection = new Vector3();
@@ -67,6 +72,10 @@ public class EyetrackingValidation : MonoBehaviour
 
         fixationPoint.SetActive(false);
         _eyeValidationDataFrames = new List<EyeValidationData>();
+
+        gameManager = FindObjectOfType<GameManager>();
+        disableHeadMovement = FindObjectOfType<DisableVRHeadMovement>();
+        valText.gameObject.SetActive(false);
     }
     /*private void SaveValidationFile()
     {
@@ -112,6 +121,18 @@ public class EyetrackingValidation : MonoBehaviour
 
         _isValidationRunning = true;
 
+        // Disable head movement 
+        disableHeadMovement.DisableHeadMovement();
+
+        // Let instructions appear
+        valText.gameObject.SetActive(true);
+        valText.text = "Eye Tracking Validation";
+        yield return new WaitForSeconds(4f);
+        valText.text = "Please follow the dot with your eyes. \nDo not move your head.";
+        yield return new WaitForSeconds(5f);
+        valText.gameObject.SetActive(false);
+
+        // Let fixation point appear
         _validationId++;
 
         valCalCounter++;
@@ -222,19 +243,23 @@ public class EyetrackingValidation : MonoBehaviour
         fixationPoint.SetActive(false);
 
         // give feedback whether the error was too large or not
-        if (CalculateValidationError(anglesX) > ErrorThreshold || 
-            CalculateValidationError(anglesY) > ErrorThreshold ||
-            CalculateValidationError(anglesZ) > ErrorThreshold ||
+        if (CalculateValidationError(anglesX) > errorThreshold || 
+            CalculateValidationError(anglesY) > errorThreshold ||
+            CalculateValidationError(anglesZ) > errorThreshold ||
             _eyeValidationData.EyeValidationError == Vector3.zero)
         {
  
             gameManager.SetValidationSuccessStatus(false);
 
-          }
-          else
-          {
+        }
+        else
+        {
             gameManager.SetValidationSuccessStatus(true); //originally GameManager.Instance.SetValidationSuccessStatus(true)
         }
+
+        // Re-enable head movement
+        disableHeadMovement.EnableHeadMovement();
+
         gameManager.ReturnToCurrentPhase();
     }
     
@@ -295,9 +320,9 @@ public class EyetrackingValidation : MonoBehaviour
         fixationPoint.SetActive(false);
         
         // give feedback whether the error was too large or not
-        if (CalculateValidationError(anglesX) > ErrorThreshold || 
-            CalculateValidationError(anglesY) > ErrorThreshold ||
-            CalculateValidationError(anglesZ) > ErrorThreshold ||
+        if (CalculateValidationError(anglesX) > errorThreshold || 
+            CalculateValidationError(anglesY) > errorThreshold ||
+            CalculateValidationError(anglesZ) > errorThreshold ||
             _eyeValidationData.EyeValidationError == Vector3.zero)
         {
  
