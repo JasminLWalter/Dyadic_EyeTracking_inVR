@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 using TMPro;
 using System;
 using UnityEngine.InputSystem.HID;
@@ -13,17 +14,9 @@ public class SignalerManager : MonoBehaviour
    
     private InputBindings _inputBindings;
     private Collider _lastHit;
-    private int _layerMask = 1 << 3;  // Only objects on Layer 3 should be considered
+    private int _boxLayerMask;  // Only objects on the Box Layer should be hit by the raycast
 
     public GameObject hmd;
-    public Transform OriginTransform;
-
-    //  for displaying the eye movement of the signaler
-    [SerializeField] private Transform combinedEyes;
-    [SerializeField] private Transform leftEye;
-    [SerializeField] private Transform rightEye;
-    private Vector3 rayOrigin;
-    private Vector3 rayDirection;
 
     public Vector3 eyePositionCombinedWorld;
     public Vector3 eyeDirectionCombinedWorld;
@@ -33,29 +26,29 @@ public class SignalerManager : MonoBehaviour
     public GameManager gameManager;
 
     private EmbodimentManager embodimentManager;
-    private SimpleCrosshair simpleCrosshair;
+    public GameObject simpleCrosshair;
 
     public List<TMP_Text> TextsPhase3;
 
-    public bool frozen = false;
-    public bool phase3SecondPartCoroutineRunning = false;
+    public bool signalerReady = false;  // What is this variable used for?
 
     public GameObject invisibleObject;
-
-    public GameObject avatar;
-    private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
+    public RaycastHit hitData;
 
     public int freezeCounter = 0;
+    public LSLSignalerOutlets lSLSignalerOutlets;
+
+    // Debug
+    public GameObject focusDebugSphere;
+    
    
     // Start is called before the first frame update
     void Start()
     {
-         gameManager = FindObjectOfType<GameManager>();
-         menuManager = FindObjectOfType<MenuManager>();
-         embodimentManager = FindObjectOfType<EmbodimentManager>();
-         simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
-
-
+        gameManager = FindObjectOfType<GameManager>();
+        menuManager = FindObjectOfType<MenuManager>();
+        embodimentManager = FindObjectOfType<EmbodimentManager>();
+        
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
 
@@ -64,126 +57,133 @@ public class SignalerManager : MonoBehaviour
             TextPhase3.gameObject.SetActive(false);
         }
 
+        _boxLayerMask = LayerMask.GetMask("Box");
     }
 
     // Update is called once per frame
     void Update()
     {
-       /* if (!frozen)
+        // Start countdown // TODO: integrate countdown timer
+        if (gameManager.frozen == false && freezeCounter > 2 && gameManager.countdownRunning == false)
         {
-            if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out rayOrigin, out rayDirection))
-            {
-                combinedEyes.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.Self);
-                //Debug.LogError("Direction x:" + rayDirection.x + "Direction y:" + rayDirection.y + "Direction z:" + rayDirection.z);
-            }
+            //StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownText));
+        }
 
-            if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out rayOrigin, out rayDirection))
-            {
-                leftEye.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.Self);
-                //Debug.LogError("Direction x:" + rayDirection.x + "Direction y:" + rayDirection.y + "Direction z:" + rayDirection.z);
-
-                //eyes.localRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
-                
-                if (!_inputBindings.Player.EyeGazeIsTracked.triggered) 
-                {
-                    var mousePosition = _inputBindings.Player.MouseGaze.ReadValue<Vector2>();
-                    leftEye.localRotation = Quaternion.Euler(mousePosition.y, mousePosition.x, 0);
-                }
-                else
-                {
-                    eyes.localRotation = _inputBindings.Player.EyeTracking.ReadValue<Quaternion>();
-                }
-            }
-
-            if (SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out rayOrigin, out rayDirection))
-            {
-                rightEye.Rotate(rayDirection.x, rayDirection.y, rayDirection.z, Space.Self);
-                //Debug.LogError("Direction x:" + rayDirection.x + "Direction y:" + rayDirection.y + "Direction z:" + rayDirection.z);
-            }
-
-        }*/
-
-        //  gaze data of the signaler
+        // Get gaze data of the signaler
         SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
         eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmd.transform.position;
         Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1, verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
-
         eyeDirectionCombinedWorld = hmd.transform.rotation * coordinateAdaptedGazeDirectionCombined;
-        eyeRotationCombinedWorld = hmd.transform.rotation;
-
         invisibleObject.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
 
-
-        RaycastHit hitData;
-        if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _layerMask))
+        // Create a ray from the eyes along the focus direction
+        Ray ray;
+        if (XRSettings.isDeviceActive)
         {
-            
+            ray = new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld);
+        }
+        else  
+        {
+           Debug.LogError("No VR devices found in this frame. Using mouse position for signaler ray cast."); 
+           Vector2 mouseScreenPosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
+           ray = Camera.main.ScreenPointToRay(mouseScreenPosition); 
+        }
+
+        // If the ray hits a box
+        if (Physics.Raycast(ray, out hitData, Mathf.Infinity, _boxLayerMask)) // TODO: "&& gameManager.frozen" -> raycast only possible when it's the signaler's turn
+        {
+            // Let crosshair appear where the signaler is looking at 
+            simpleCrosshair.SetActive(true);
+            simpleCrosshair.transform.position = hitData.point;
             
             if (_lastHit == null)
             {
                 _lastHit = hitData.collider;
-                _lastHit.gameObject.SendMessage("StaredAt");
+                _lastHit.gameObject.SendMessage("StaredAt", SendMessageOptions.DontRequireReceiver);
             }
             else if (_lastHit != null && _lastHit != hitData.collider)
             {
-                Debug.Log("Hit something new: " + hitData.collider.name);
-                _lastHit.gameObject.SendMessage("NotLongerStaredAt");
+                _lastHit.gameObject.SendMessage("NotLongerStaredAt", SendMessageOptions.DontRequireReceiver);
                 _lastHit = hitData.collider;
-                _lastHit.gameObject.SendMessage("StaredAt");
-            }
-        /*    else if (_inputBindings.UI.Select.triggered)
-            {
-                Debug.Log("Selected " + _lastHit);
-                _lastHit.gameObject.SendMessage("Selected");
-            } */
-        }
-
-        else
-        {
-            if (_lastHit != null)
-            {
-                _lastHit.gameObject.SendMessage("NotLongerStaredAt");
-                _lastHit = null;
+                _lastHit.gameObject.SendMessage("StaredAt", SendMessageOptions.DontRequireReceiver);Vector3 screenPosition = Camera.main.WorldToScreenPoint(hitData.point);
             }
         }
-
-        if (gameManager.role == "signaler" && _inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)
+        // If the former box is not stared at anymore and no new box is stared at
+        else if (_lastHit != null)
         {
-            Freeze();
+            _lastHit.gameObject.SendMessage("NotLongerStaredAt", SendMessageOptions.DontRequireReceiver);
+            _lastHit = null;
+            simpleCrosshair.SetActive(false);
+        }
+
+
+        if (gameManager.role == "signaler" && _inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)  // TODO: check if gameManager.role == "signaler" is necessary, since the script is disabled if the role is receiver anyways
+        {
+            if(freezeCounter < 1)
+            {
+                gameManager.PlayAudio();
+            }
             freezeCounter += 1;
-            gameManager.firstFreeze = true;
-            if(phase3SecondPartCoroutineRunning == false)
+
+            Vector3 hitPoint = hitData.point;
+
+            // Debug focus points 
+            Debug.Log("Hit object: "+hitData.transform.name);
+            focusDebugSphere.SetActive(true);
+            focusDebugSphere.transform.position = hitPoint;
+
+            // Create sample array
+            float[] sample = new float[3];
+            sample[0] = float.Parse(FormatFloat(hitPoint.x, 8)); // Convert string back to float
+            sample[1] = float.Parse(FormatFloat(hitPoint.y, 8)); // Convert string back to float
+            sample[2] = float.Parse(FormatFloat(hitPoint.z, 8)); // Convert string back to float
+
+            // Push sample to LSL
+            lSLSignalerOutlets.lslORaycastHitSignaler.push_sample(sample);
+            int freezeCounterSignaler = freezeCounter;
+            lSLSignalerOutlets.lslOFreezeCounterSignaler.push_sample(new int[] {freezeCounterSignaler});
+            gameManager.firstFreeze = true; // Why is this necessary?
+
+
+            if(signalerReady == false)
             {
-                StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => phase3SecondPartCoroutineRunning = false));
-                phase3SecondPartCoroutineRunning = true;
+                StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => signalerReady = false));  // Once the coroutine is done, signalerReady will turn false
+                signalerReady = true;
+                string signalerReadyString = signalerReady.ToString();
+                lSLSignalerOutlets.lslOSignalerReady.push_sample(new string[] {signalerReadyString});
             }
-            
-            if(freezeCounter > 1)
-            {
-                gameManager.StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownTextReceiver));
-                
-            }
+
         }
 
     }
 
     public void Teleport(Vector3 location, GameObject avatar)
     {
-        avatar.transform.position = location;// + new Vector3(-0.4f, 5f, -0.7f);
+        avatar.transform.position = location;
     }
 
-    // Prevent the eye gameobjects from moving according to the EyeTracking data.
-    public void Freeze()
+    // // Prevent the eye gameobjects from moving according to the EyeTracking data.
+    // public void Freeze()
+    // {
+    //     frozen = true;
+
+    // }
+
+    // // Make the eye gameobjects follow the participants' eye movements again.
+    // public void Unfreeze()
+    // {
+    //     frozen = false;
+    // }
+
+
+    public static string FormatFloat(float value, int decimalPlaces)
     {
-        frozen = true;
-
+        return value.ToString($"F{decimalPlaces}");
     }
 
-    // Make the eye gameobjects follow the participants' eye movements again.
-    public void Unfreeze()
-    {
-        frozen = false;
-    }
 
 
 }
+
+
+

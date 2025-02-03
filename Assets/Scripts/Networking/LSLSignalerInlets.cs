@@ -2,23 +2,33 @@ using UnityEngine;
 using LSL;
 using System.Collections;
 using System.Linq;
+using System.Collections.Generic;
+using System;
+
+
 
 public class LSLSignalerInlets : MonoBehaviour
 {
-    private string[] streamNames = { "ExperimentPhase", "TimestampsReceiver", "ReceiverReady", "BoxSelectedByReceiver", "EyePosDirRotReceiver", "EyeOpennessLRReceiver", "PupilDiameterLRReceiver", "HMDPosDirRotReceiver", "HandPosDirRotReceiver", "PreferredHandReceiver", "ReceiverFinished", "BreakReceiver" };
+    private string[] streamNames = { "ExperimentPhase", "SelectCounter", "TimestampsReceiver", "ReceiverReady", "BoxSelectedByReceiver", "EyePosDirRotReceiver", "EyeOpennessLRReceiver", "PupilDiameterLRReceiver", "HMDPosDirRotReceiver", "HandPosDirRotReceiver", "PreferredHandReceiver", "ReceiverFinished", "FrozenReceiver", "RewardValuesReceiver","BreakReceiver", "ScoreReceiver", "milkyGlassBool" };
     private StreamInlet[] streamInlets;
     private int[] channelCounts;
     private int[][] intSamples;
     private float[][] floatSamples;
     private string[][] stringSamples;
-    public float sampleInterval = 0.0001f;
-    private ReceiverManager receiverManager;
+    public float sampleRate = 90f;
+    public float sampleInterval;
+    public ReceiverManager receiverManager;
     private GameManager gameManager;
+    public SignalerManager signalerManager;
+    public List<int> intList;
+
 
     void Start()
     {
-        receiverManager = GameObject.Find("ReceiverManager").GetComponent<ReceiverManager>();
+       
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
+        receiverManager = GameObject.Find("Receiver").GetComponent<ReceiverManager>();
 
         int streamCount = streamNames.Length;
         streamInlets = new StreamInlet[streamCount];
@@ -26,7 +36,8 @@ public class LSLSignalerInlets : MonoBehaviour
         intSamples = new int[streamCount][];
         floatSamples = new float[streamCount][];
         stringSamples = new string[streamCount][];
-
+        
+        sampleInterval = 1f/sampleRate;
         StartCoroutine(ResolveAndProcessStreams());
     }
 
@@ -123,7 +134,7 @@ public class LSLSignalerInlets : MonoBehaviour
 
     private void ProcessIntSample(int[] sample, double timeStamp, string streamName)
     {
-        Debug.LogWarning($"Received int sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+        // Debug.LogWarning($"Received int sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
 
         switch (streamName)
 
@@ -131,21 +142,38 @@ public class LSLSignalerInlets : MonoBehaviour
             case "ExperimentPhase":
                 // Handle ExperimentPhase stream
                 break;
+            case "SelectCounter":
+                Debug.Log("Received selectCounter: " + sample[0]);
+                receiverManager.selectCounter = (int)sample[0];
+                break;
+            case "ScoreReceiver":
+                Debug.Log("Received score: " + sample[0]);
+                int reward = (int)sample[0];
+                Debug.Log("Received reward: " + reward);
+                gameManager.UpdateScore(reward);
+                break;
         }
     }
 
     private void ProcessFloatSample(float[] sample, double timeStamp, string streamName)
     {
-        Debug.LogWarning($"Received float sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+        // Debug.LogWarning($"Received float sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
 
         switch (streamName)
         {
-            case "ReceiverReady":
-                // Handle ReceiverReady stream
-                break;
             case "BoxSelectedByReceiver":
-                int reward = (int)sample[3];
-                gameManager.UpdateScore(reward);
+                
+                break;
+            case "RewardValuesReceiver": 
+            // Handle RewardValues stream
+                Debug.Log("Received shuffled rewards: " + string.Join(", ", sample));
+                List<int> intSample = sample.Select(f => (int)Math.Round(f)).ToList();
+                for (int i = 0; i < gameManager.boxes.Count; i++)
+                {
+                    BoxBehaviour currentBox = gameManager.boxes.ElementAt(i).GetComponent<BoxBehaviour>();
+                    
+                    currentBox.ChangeReward(intSample.ElementAt(i));
+                }
                 break;
             case "HMDPosDirRotReceiver":
                 // Handle HMDPosDirRotReceiver stream
@@ -160,15 +188,25 @@ public class LSLSignalerInlets : MonoBehaviour
 
     private void ProcessStringSample(string[] sample, double timeStamp, string streamName)
     {
-        Debug.LogWarning($"Received string sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+        // Debug.LogWarning($"Received string sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
 
         // Example: Handling specific string stream data
         switch (streamName)
         {
-            case "ReceiverFinished":
-                receiverManager.boxSelected = true ? sample[0]=="true" : sample[0]=="false";
+            case "ReceiverReady":
+                receiverManager.receiverReady = sample[0]=="True";
                 break;
-            // Add additional cases for other streams as needed
+            case "ReceiverFinished":
+                receiverManager.boxSelected = sample[0]=="True";
+                break;
+            case "FrozenReceiver":
+                Debug.LogWarning("FrozenReceiver: " + sample[0]);
+                gameManager.frozen = sample[0]=="True";                
+                break;
+            case "milkyGlassBool":
+                gameManager.milkyGlassBool = sample[0]=="True";
+                Debug.Log("milkyGlass" + sample[0]);
+                break;
         }
     }
 }

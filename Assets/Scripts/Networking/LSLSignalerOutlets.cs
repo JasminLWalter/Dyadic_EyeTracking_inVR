@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using ViveSR.anipal.Eye;
 using UnityEngine;
 using LSL;
+
 
 public class LSLSignalerOutlets : MonoBehaviour
 {
@@ -23,35 +25,36 @@ public class LSLSignalerOutlets : MonoBehaviour
     public StreamOutlet lslOSignalerReady;
     // public StreamInfo lslIExperimentPhase;
     // public StreamOutlet lslOExperimentPhase;
-    // public StreamInfo lslIValidationError; 
-    // public StreamOutlet lslOValidationError; 
+    public StreamInfo lslIValidationError; 
+    public StreamOutlet lslOValidationError; 
     // public StreamInfo lslIValidationErrorCounter;
     // public StreamOutlet lslOValidationErrorCounter; 
     // public StreamInfo lslICalibrationCounter;
     // public StreamOutlet lslOCalibrationCounter;
     // public StreamInfo lslIEmbodimentTrainingTime;
     // public StreamOutlet lslOEmbodimentTrainingTime;
-    public StreamInfo lslIBoxSelectedBySignaler;
-    public StreamOutlet lslOBoxSelectedBySignaler;
+    // public StreamInfo lslIBoxSelectedBySignaler;
+    // public StreamOutlet lslOBoxSelectedBySignaler;
     // public StreamInfo lslIBoxSelectedByReceiver;
     // public StreamOutlet lslOBoxSelectedByReceiver;
 
     public StreamInfo lslIEyePosDirRot; 
     public StreamOutlet lslOEyePosDirRot;
-    public StreamInfo lslIRaycastHit; 
-    public StreamOutlet lslORaycastHit;
+    public StreamInfo lslIRaycastHitSignaler; 
+    public StreamOutlet lslORaycastHitSignaler;
     public StreamInfo lslIEyeOpennessLR; 
     public StreamOutlet lslOEyeOpennessLR;
     public StreamInfo lslIPupilDiameterLR; 
     public StreamOutlet lslOPupilDiameterLR;
-    public StreamInfo lslIhmdPosDirRot;
-    public StreamOutlet lslOhmdPosDirRot;
-    public StreamInfo lslIHandPosDirRot;
-    public StreamOutlet lslOHandPosDirRot;
+    // public StreamInfo lslIHandPosDirRot;
+    // public StreamOutlet lslOHandPosDirRot;
     public StreamInfo lslIPreferredHand;
     public StreamOutlet lslOPreferredHand;
     public StreamInfo lslIFrozenGaze;
     public StreamOutlet lslOFrozenGaze;
+    public StreamInfo lslIFreezeCounterSignaler;
+    public StreamOutlet lslOFreezeCounterSignaler;
+    
     // public StreamInfo lslITrialNumber;
     // public StreamOutlet lslOTrialNumber;
     // public StreamInfo lslIFailTrial;
@@ -60,14 +63,12 @@ public class LSLSignalerOutlets : MonoBehaviour
     // public StreamOutlet lslOFailedTrialCounter;
     public StreamInfo lslIBreak;
     public StreamOutlet lslOBreak;
-    public StreamInfo lslIRewards;
-    public StreamOutlet lslORewards;
     public StreamInfo lslIEndTime;
     public StreamOutlet lslOEndTime;
-
+    private double unityTimestamp;
     void Start()
     {
-        signalerManager = GameObject.Find("Complete XR Origin Set Up").GetComponent<SignalerManager>();
+        signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
 
 
         // // Metadata
@@ -99,6 +100,8 @@ public class LSLSignalerOutlets : MonoBehaviour
             1,
             NominalRate,
             LSL.channel_format_t.cf_string);
+        lslOSignalerReady = new StreamOutlet(lslISignalerReady);
+
 
         // // Experiment Phase
         // lslIExperimentPhase = new StreamInfo(
@@ -111,16 +114,16 @@ public class LSLSignalerOutlets : MonoBehaviour
         // lslOExperimentPhase = new StreamOutlet(lslIExperimentPhase);
         
         // // Validation Error 
-        // lslIValidationError = new StreamInfo(
-        //     "ValidationError",
-        //     "Markers",
-        //     3,
-        //     NominalRate,
-        //     LSL.channel_format_t.cf_float32);
-        // lslIValidationError.desc().append_child("ValX");
-        // lslIValidationError.desc().append_child("ValY");
-        // lslIValidationError.desc().append_child("ValZ");
-        // lslOValidationError = new StreamOutlet(lslIValidationError);
+        lslIValidationError = new StreamInfo(
+            "ValidationErrorSignaler",
+            "Markers",
+            3,
+            NominalRate,
+            LSL.channel_format_t.cf_float32);
+        lslIValidationError.desc().append_child("ValX");
+        lslIValidationError.desc().append_child("ValY");
+        lslIValidationError.desc().append_child("ValZ");
+        lslOValidationError = new StreamOutlet(lslIValidationError);
 
         // // Validation Error Counter
         // lslIValidationErrorCounter = new StreamInfo(
@@ -152,17 +155,17 @@ public class LSLSignalerOutlets : MonoBehaviour
         // lslOEmbodimentTrainingTime = new StreamOutlet(lslIEmbodimentTrainingTime);
 
         // Box Selected by Signaler
-        lslIBoxSelectedBySignaler = new StreamInfo(
-            "BoxSelectedBySignaler",
-            "Markers",
-            4,
-            NominalRate,
-            LSL.channel_format_t.cf_float32);
-        lslIBoxSelectedBySignaler.desc().append_child("BoxPosX");
-        lslIBoxSelectedBySignaler.desc().append_child("BoxPosY");
-        lslIBoxSelectedBySignaler.desc().append_child("BoxPosZ");
-        lslIBoxSelectedBySignaler.desc().append_child("Associated Reward");
-        lslOBoxSelectedBySignaler = new StreamOutlet(lslIBoxSelectedBySignaler);
+        // lslIBoxSelectedBySignaler = new StreamInfo(
+        //     "BoxSelectedBySignaler",
+        //     "Markers",
+        //     4,
+        //     NominalRate,
+        //     LSL.channel_format_t.cf_float32);
+        // lslIBoxSelectedBySignaler.desc().append_child("BoxPosX");
+        // lslIBoxSelectedBySignaler.desc().append_child("BoxPosY");
+        // lslIBoxSelectedBySignaler.desc().append_child("BoxPosZ");
+        // lslIBoxSelectedBySignaler.desc().append_child("Associated Reward");
+        // lslOBoxSelectedBySignaler = new StreamOutlet(lslIBoxSelectedBySignaler);
 
         // // Box Selected by Receiver
         // lslIBoxSelectedByReceiver = new StreamInfo(
@@ -176,6 +179,18 @@ public class LSLSignalerOutlets : MonoBehaviour
         // lslIBoxSelectedByReceiver.desc().append_child("BoxPosZ");
         // lslIBoxSelectedByReceiver.desc().append_child("Reward Received");
         // lslOBoxSelectedByReceiver = new StreamOutlet(lslIBoxSelectedByReceiver);
+
+        // Raycast Hit
+        lslIRaycastHitSignaler = new StreamInfo(
+            "RaycastHitSignaler",
+            "Markers",
+            3,
+            NominalRate,
+            LSL.channel_format_t.cf_float32);
+        lslIRaycastHitSignaler.desc().append_child("Hit.x");
+        lslIRaycastHitSignaler.desc().append_child("Hit.y");
+        lslIRaycastHitSignaler.desc().append_child("Hit.z");
+        lslORaycastHitSignaler = new StreamOutlet(lslIRaycastHitSignaler);
 
         // Eye Position, Direction, Rotation
         lslIEyePosDirRot = new StreamInfo(
@@ -217,68 +232,81 @@ public class LSLSignalerOutlets : MonoBehaviour
         lslIPupilDiameterLR.desc().append_child("DiameterR");
         lslOPupilDiameterLR = new StreamOutlet(lslIPupilDiameterLR);
 
-        // HMD Position, Direction, Rotation
-        lslIhmdPosDirRot = new StreamInfo(
-            "HMDPosDirRotSignaler",
-            "Markers",
-            15,
-            NominalRate,
-            LSL.channel_format_t.cf_float32);
-        lslIhmdPosDirRot.desc().append_child("PosX");
-        lslIhmdPosDirRot.desc().append_child("PosY");
-        lslIhmdPosDirRot.desc().append_child("PosZ");
-        lslIhmdPosDirRot.desc().append_child("DirForwardX");
-        lslIhmdPosDirRot.desc().append_child("DirForwardY");
-        lslIhmdPosDirRot.desc().append_child("DirForwardZ");
-        lslIhmdPosDirRot.desc().append_child("DirVerticalX");
-        lslIhmdPosDirRot.desc().append_child("DirVerticalY");
-        lslIhmdPosDirRot.desc().append_child("DirVerticalZ");
-        lslIhmdPosDirRot.desc().append_child("DirHorizontalX");
-        lslIhmdPosDirRot.desc().append_child("DirHorizontalY");
-        lslIhmdPosDirRot.desc().append_child("DirHorizontalZ");
-        lslIhmdPosDirRot.desc().append_child("RotX");
-        lslIhmdPosDirRot.desc().append_child("RotY");
-        lslIhmdPosDirRot.desc().append_child("RotZ");
-        lslOhmdPosDirRot = new StreamOutlet(lslIhmdPosDirRot);
-
         // Hand Position, Direction, Rotation
-        lslIHandPosDirRot = new StreamInfo(
-            "HandPosDirRotSignaler",
-            "Markers",
-            30,
-            NominalRate,
-            LSL.channel_format_t.cf_float32);
-        lslIHandPosDirRot.desc().append_child("LeftPosX");
-        lslIHandPosDirRot.desc().append_child("LeftPosY");
-        lslIHandPosDirRot.desc().append_child("LeftPosZ");
-        lslIHandPosDirRot.desc().append_child("LeftDirForwardX");
-        lslIHandPosDirRot.desc().append_child("LeftDirForwardY");
-        lslIHandPosDirRot.desc().append_child("LeftDirForwardZ");
-        lslIHandPosDirRot.desc().append_child("LeftDirVerticalX");
-        lslIHandPosDirRot.desc().append_child("LeftDirVerticalY");
-        lslIHandPosDirRot.desc().append_child("LeftDirVerticalZ");
-        lslIHandPosDirRot.desc().append_child("LeftDirHorizontalX");
-        lslIHandPosDirRot.desc().append_child("LeftDirHorizontalY");
-        lslIHandPosDirRot.desc().append_child("LeftDirHorizontalZ");
-        lslIHandPosDirRot.desc().append_child("LeftRotX");
-        lslIHandPosDirRot.desc().append_child("LeftRotY");
-        lslIHandPosDirRot.desc().append_child("LeftRotZ");
-        lslIHandPosDirRot.desc().append_child("RightPosX");
-        lslIHandPosDirRot.desc().append_child("RightPosY");
-        lslIHandPosDirRot.desc().append_child("RightPosZ");
-        lslIHandPosDirRot.desc().append_child("RightDirForwardX");
-        lslIHandPosDirRot.desc().append_child("RightDirForwardY");
-        lslIHandPosDirRot.desc().append_child("RightDirForwardZ");
-        lslIHandPosDirRot.desc().append_child("RightDirVerticalX");
-        lslIHandPosDirRot.desc().append_child("RightDirVerticalY");
-        lslIHandPosDirRot.desc().append_child("RightDirVerticalZ");
-        lslIHandPosDirRot.desc().append_child("RightDirHorizontalX");
-        lslIHandPosDirRot.desc().append_child("RightDirHorizontalY");
-        lslIHandPosDirRot.desc().append_child("RightDirHorizontalZ");
-        lslIHandPosDirRot.desc().append_child("RightRotX");
-        lslIHandPosDirRot.desc().append_child("RightRotY");
-        lslIHandPosDirRot.desc().append_child("RightRotZ");
-        lslOHandPosDirRot = new StreamOutlet(lslIHandPosDirRot);
+        // lslIHandPosDirRot = new StreamInfo(
+        //     "HandPosDirRotSignaler",
+        //     "Markers",
+        //     30,
+        //     NominalRate,
+        //     LSL.channel_format_t.cf_float32);
+        // lslIHandPosDirRot.desc().append_child("LeftPosX");
+        // lslIHandPosDirRot.desc().append_child("LeftPosY");
+        // lslIHandPosDirRot.desc().append_child("LeftPosZ");
+        // lslIHandPosDirRot.desc().append_child("LeftDirForwardX");
+        // lslIHandPosDirRot.desc().append_child("LeftDirForwardY");
+        // lslIHandPosDirRot.desc().append_child("LeftDirForwardZ");
+        // lslIHandPosDirRot.desc().append_child("LeftDirVerticalX");
+        // lslIHandPosDirRot.desc().append_child("LeftDirVerticalY");
+        // lslIHandPosDirRot.desc().append_child("LeftDirVerticalZ");
+        // lslIHandPosDirRot.desc().append_child("LeftDirHorizontalX");
+        // lslIHandPosDirRot.desc().append_child("LeftDirHorizontalY");
+        // lslIHandPosDirRot.desc().append_child("LeftDirHorizontalZ");
+        // lslIHandPosDirRot.desc().append_child("LeftRotX");
+        // lslIHandPosDirRot.desc().append_child("LeftRotY");
+        // lslIHandPosDirRot.desc().append_child("LeftRotZ");
+        // lslIHandPosDirRot.desc().append_child("RightPosX");
+        // lslIHandPosDirRot.desc().append_child("RightPosY");
+        // lslIHandPosDirRot.desc().append_child("RightPosZ");
+        // lslIHandPosDirRot.desc().append_child("RightDirForwardX");
+        // lslIHandPosDirRot.desc().append_child("RightDirForwardY");
+        // lslIHandPosDirRot.desc().append_child("RightDirForwardZ");
+        // lslIHandPosDirRot.desc().append_child("RightDirVerticalX");
+        // lslIHandPosDirRot.desc().append_child("RightDirVerticalY");
+        // lslIHandPosDirRot.desc().append_child("RightDirVerticalZ");
+        // lslIHandPosDirRot.desc().append_child("RightDirHorizontalX");
+        // lslIHandPosDirRot.desc().append_child("RightDirHorizontalY");
+        // lslIHandPosDirRot.desc().append_child("RightDirHorizontalZ");
+        // lslIHandPosDirRot.desc().append_child("RightRotX");
+        // lslIHandPosDirRot.desc().append_child("RightRotY");
+        // lslIHandPosDirRot.desc().append_child("RightRotZ");
+        // lslOHandPosDirRot = new StreamOutlet(lslIHandPosDirRot);
+        // lslIHandPosDirRot = new StreamInfo(
+        //     "HandPosDirRotSignaler",
+        //     "Markers",
+        //     30,
+        //     NominalRate,
+        //     LSL.channel_format_t.cf_float32);
+        // lslIHandPosDirRot.desc().append_child("LeftPosX");
+        // lslIHandPosDirRot.desc().append_child("LeftPosY");
+        // lslIHandPosDirRot.desc().append_child("LeftPosZ");
+        // lslIHandPosDirRot.desc().append_child("LeftDirForwardX");
+        // lslIHandPosDirRot.desc().append_child("LeftDirForwardY");
+        // lslIHandPosDirRot.desc().append_child("LeftDirForwardZ");
+        // lslIHandPosDirRot.desc().append_child("LeftDirVerticalX");
+        // lslIHandPosDirRot.desc().append_child("LeftDirVerticalY");
+        // lslIHandPosDirRot.desc().append_child("LeftDirVerticalZ");
+        // lslIHandPosDirRot.desc().append_child("LeftDirHorizontalX");
+        // lslIHandPosDirRot.desc().append_child("LeftDirHorizontalY");
+        // lslIHandPosDirRot.desc().append_child("LeftDirHorizontalZ");
+        // lslIHandPosDirRot.desc().append_child("LeftRotX");
+        // lslIHandPosDirRot.desc().append_child("LeftRotY");
+        // lslIHandPosDirRot.desc().append_child("LeftRotZ");
+        // lslIHandPosDirRot.desc().append_child("RightPosX");
+        // lslIHandPosDirRot.desc().append_child("RightPosY");
+        // lslIHandPosDirRot.desc().append_child("RightPosZ");
+        // lslIHandPosDirRot.desc().append_child("RightDirForwardX");
+        // lslIHandPosDirRot.desc().append_child("RightDirForwardY");
+        // lslIHandPosDirRot.desc().append_child("RightDirForwardZ");
+        // lslIHandPosDirRot.desc().append_child("RightDirVerticalX");
+        // lslIHandPosDirRot.desc().append_child("RightDirVerticalY");
+        // lslIHandPosDirRot.desc().append_child("RightDirVerticalZ");
+        // lslIHandPosDirRot.desc().append_child("RightDirHorizontalX");
+        // lslIHandPosDirRot.desc().append_child("RightDirHorizontalY");
+        // lslIHandPosDirRot.desc().append_child("RightDirHorizontalZ");
+        // lslIHandPosDirRot.desc().append_child("RightRotX");
+        // lslIHandPosDirRot.desc().append_child("RightRotY");
+        // lslIHandPosDirRot.desc().append_child("RightRotZ");
+        // lslOHandPosDirRot = new StreamOutlet(lslIHandPosDirRot);
 
         // Preferred Hand
         lslIPreferredHand = new StreamInfo(
@@ -291,13 +319,22 @@ public class LSLSignalerOutlets : MonoBehaviour
 
         // Frozen Gaze
         lslIFrozenGaze = new StreamInfo(
-            "FrozenGazeSignaler",
+            "FrozenSignaler",
             "Markers",
             1,
             NominalRate,
             LSL.channel_format_t.cf_string);
         lslOFrozenGaze = new StreamOutlet(lslIFrozenGaze);
 
+        // Freeze Counter
+        lslIFreezeCounterSignaler = new StreamInfo(
+            "FreezeCounterSignaler",
+            "Markers",
+            1,
+            NominalRate,
+            LSL.channel_format_t.cf_int32);
+        lslOFreezeCounterSignaler = new StreamOutlet(lslIFreezeCounterSignaler);
+       
         // // Trial Number
         // lslITrialNumber = new StreamInfo(
         //     "TrialNumber",
@@ -326,15 +363,6 @@ public class LSLSignalerOutlets : MonoBehaviour
         // lslIFailedTrialCounter.desc().append_child("Count");
         // lslOFailedTrialCounter = new StreamOutlet(lslIFailedTrialCounter);
 
-        // Rewards
-        lslIRewards = new StreamInfo(
-            "RewardSignaler",
-            "Markers",
-            8,
-            NominalRate,
-            LSL.channel_format_t.cf_int32);
-        lslORewards = new StreamOutlet(lslIRewards);
-
         // Break
         lslIBreak = new StreamInfo(
                 "BreakSignaler",
@@ -350,19 +378,48 @@ public class LSLSignalerOutlets : MonoBehaviour
 
     void Update()
     {
-        // Prepare the eye data to be sent through LSL
-        float[] eyeData = new float[9];
-        eyeData[0] = signalerManager.eyePositionCombinedWorld.x;
-        eyeData[1] = signalerManager.eyePositionCombinedWorld.y;
-        eyeData[2] = signalerManager.eyePositionCombinedWorld.z;
-        eyeData[3] = signalerManager.eyeDirectionCombinedWorld.x;
-        eyeData[4] = signalerManager.eyeDirectionCombinedWorld.y;
-        eyeData[5] = signalerManager.eyeDirectionCombinedWorld.z;
-        eyeData[6] = signalerManager.eyeRotationCombinedWorld.x;
-        eyeData[7] = signalerManager.eyeRotationCombinedWorld.y;
-        eyeData[8] = signalerManager.eyeRotationCombinedWorld.z;
 
-        lslOEyePosDirRot.push_sample(eyeData);
+        // Timestamp
+        double lslTimestamp = LSL.LSL.local_clock();
+        unityTimestamp = Time.realtimeSinceStartupAsDouble;
+        
+        double[] timestampData = new double[2] { lslTimestamp, unityTimestamp };
+        lslOTimestamps.push_sample(timestampData);
+
+        // var raycast = new float[3];
+        // raycast[0] = signalerManager.hitData.transform.position.x;
+        // raycast[1] = signalerManager.hitData.transform.position.x;
+        // raycast[2] = signalerManager.hitData.transform.position.x;
+
+        // lslORaycastHit.push_sample(raycast);
+
+        // Prepare the eye data to be sent through LSL
+        float[] eyePosDirRotData = new float[9];
+        eyePosDirRotData[0] = signalerManager.eyePositionCombinedWorld.x;
+        eyePosDirRotData[1] = signalerManager.eyePositionCombinedWorld.y;
+        eyePosDirRotData[2] = signalerManager.eyePositionCombinedWorld.z;
+        eyePosDirRotData[3] = signalerManager.eyeDirectionCombinedWorld.x;
+        eyePosDirRotData[4] = signalerManager.eyeDirectionCombinedWorld.y;
+        eyePosDirRotData[5] = signalerManager.eyeDirectionCombinedWorld.z;
+        eyePosDirRotData[6] = signalerManager.eyeRotationCombinedWorld.x;
+        eyePosDirRotData[7] = signalerManager.eyeRotationCombinedWorld.y;
+        eyePosDirRotData[8] = signalerManager.eyeRotationCombinedWorld.z;
+
+        // Retrieve eye openness and pupil diameter data from SRanipal
+        if (SRanipal_Eye_v2.GetVerboseData(out VerboseData eyeData))
+        {
+            // Eye openness
+            var opennessData = new float[2];
+            opennessData[0] = eyeData.left.eye_openness;
+            opennessData[1] = eyeData.right.eye_openness;
+            lslOEyeOpennessLR.push_sample(opennessData);
+
+            // Pupil diameter
+            var pupilDiameterData = new float[2];
+            pupilDiameterData[0] = eyeData.left.pupil_diameter_mm;
+            pupilDiameterData[1] = eyeData.right.pupil_diameter_mm;
+            lslOPupilDiameterLR.push_sample(pupilDiameterData);
+        }
     }
 
 }

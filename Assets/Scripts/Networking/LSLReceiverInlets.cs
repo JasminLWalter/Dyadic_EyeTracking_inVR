@@ -4,19 +4,23 @@ using System.Collections;
 
 public class LSLReceiverInlets : MonoBehaviour
 {
-    private string[] streamNames = { "ExperimentPhase", "TimestampsSignaler", "SignalerReady", "BoxSelectedBySignaler", "Rewards", "EyePosDirRotSignaler", "EyeOpennessLRSignaler", "PupilDiameterLRSignaler", "HMDPosDirRotSignaler", "HandPosDirRotSignaler", "PreferredHandSignaler", "FrozenGazeSignaler", "BreakSignaler" };
+    private string[] streamNames = { "ExperimentPhase", "TimestampsSignaler", "SignalerReady", "BoxSelectedBySignaler", "Rewards", "EyePosDirRotSignaler", "EyeOpennessLRSignaler", "PupilDiameterLRSignaler", "HMDPosDirRotSignaler", "HandPosDirRotSignaler", "PreferredHandSignaler", "FrozenSignaler", "FreezeCounterSignaler","BreakSignaler" };
     private StreamInlet[] streamInlets;
     private int[] channelCounts;
     private int[][] intSamples;
     private float[][] floatSamples;
     private string[][] stringSamples;
-    public float sampleInterval = 0.0001f;
+    public float sampleRate = 90f;
+    public float sampleInterval;
     private GameManager gameManager;
-
+    private SignalerManager signalerManager;
+    public ReceiverEyeDataSender receiverEyeDataSender;
 
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
+
 
         int streamCount = streamNames.Length;
         streamInlets = new StreamInlet[streamCount];
@@ -25,7 +29,7 @@ public class LSLReceiverInlets : MonoBehaviour
         floatSamples = new float[streamCount][];
         stringSamples = new string[streamCount][];
 
-
+        sampleInterval = 1f/sampleRate;
         StartCoroutine(ResolveAndProcessStreams());
     }
     private IEnumerator ResolveAndProcessStreams()
@@ -121,7 +125,7 @@ public class LSLReceiverInlets : MonoBehaviour
 
     private void ProcessIntSample(int[] sample, double timeStamp, string streamName)
     {
-        Debug.LogWarning($"Received int sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+        // Debug.LogWarning($"Received int sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
 
         switch (streamName)
 
@@ -134,13 +138,10 @@ public class LSLReceiverInlets : MonoBehaviour
 
     private void ProcessFloatSample(float[] sample, double timeStamp, string streamName)
     {
-        Debug.LogWarning($"Received float sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+        // Debug.LogWarning($"Received float sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
 
         switch (streamName)
         {
-            case "SignalerReady":
-                // Handle ReceiverReady stream
-                break;
             case "HMDPosDirRotSignaler":
                 // Handle HMDPosDirRotReceiver stream
                 break;
@@ -152,16 +153,23 @@ public class LSLReceiverInlets : MonoBehaviour
         }
     }
 
-    private void ProcessStringSample(string[] sample, double timeStamp, string streamName)
+    public void ProcessStringSample(string[] sample, double timeStamp, string streamName)
     {
-        Debug.LogWarning($"Received string sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+        // Debug.LogWarning($"Received string sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
 
         // Example: Handling specific string stream data
         switch (streamName)
         {
             case "ExperimentPhase":
                 break;
+            case "SignalerReady":
+                signalerManager.signalerReady = sample[0]=="True";
+                break;
             // Add additional cases for other streams as needed
+            case "FrozenSignaler":
+                Debug.LogWarning(sample[0]=="True");
+                gameManager.frozen = sample[0]=="True";
+                break;
         }
     }
 }

@@ -45,7 +45,7 @@ public class VRRig : MonoBehaviour
     void Update()
     {
         transform.position = headConstraint.position + headBodyOffset;
-        Debug.LogError("HeadBodyOffset" + headBodyOffset);
+        //Debug.LogError("HeadBodyOffset" + headBodyOffset);
         //transform.rotation = headConstraint.up;
         //transform.forward = Vector3.ProjectOnPlane(headConstraint.forward, Vector3.up).normalized;
         //transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(headConstraint.up, Vector3.up).normalized, Time.deltaTime*turnSmoothness);

@@ -14,6 +14,7 @@ public class BoxBehaviour : MonoBehaviour
     [SerializeField] private Material highlightMaterial;
 
     private TextMeshPro rewardText;
+    private LSLReceiverOutlets lslReceiverOutlets;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +44,7 @@ public class BoxBehaviour : MonoBehaviour
     // While the box is starred at (= while the x-ray collides with the box)
     public void Selected()
     {
+        gameManager.lslReceiverOutlets.lslOScore.push_sample( new int[] { int.Parse(rewardText.text) } );
         gameManager.UpdateScore(int.Parse(rewardText.text));
     }
 
