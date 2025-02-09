@@ -110,6 +110,11 @@ public class GameManager : MonoBehaviour
     public bool previousFrozen = false;
     public AudioSource soundEffect;
 
+    // Try to fix the frame rate to 90 fps
+    void Awake() {
+        Application.targetFrameRate = 90;
+    }
+
     void Start()
     {
         _inputBindings = new InputBindings();
