@@ -27,7 +27,7 @@ public class EyetrackingValidation : MonoBehaviour
     public LSLReceiverOutlets lslReceiverOutlets;
     public LSLSignalerOutlets lslSignalerOutlets;
 
-    private bool _isValidationRunning;
+    private bool _isValidationRunning = false;
     private bool _isErrorCheckRunning;
    // private bool _isExperiment;
     
@@ -44,7 +44,9 @@ public class EyetrackingValidation : MonoBehaviour
     private Transform _hmdTransform;
     private List<EyeValidationData> _eyeValidationDataFrames;
     private EyeValidationData _eyeValidationData;
-    private const float ErrorThreshold = 1.0f;
+
+    [Tooltip("If participant is constantly but only slightly higher than the error threshold, adjust the threshold.")]
+    public float errorThreshold = 1.0f;
 
     private Vector3 rayOrigin = new Vector3();
     private Vector3 rayDirection = new Vector3();
@@ -241,17 +243,17 @@ public class EyetrackingValidation : MonoBehaviour
         fixationPoint.SetActive(false);
 
         // give feedback whether the error was too large or not
-        if (CalculateValidationError(anglesX) > ErrorThreshold || 
-            CalculateValidationError(anglesY) > ErrorThreshold ||
-            CalculateValidationError(anglesZ) > ErrorThreshold ||
+        if (CalculateValidationError(anglesX) > errorThreshold || 
+            CalculateValidationError(anglesY) > errorThreshold ||
+            CalculateValidationError(anglesZ) > errorThreshold ||
             _eyeValidationData.EyeValidationError == Vector3.zero)
         {
  
             gameManager.SetValidationSuccessStatus(false);
 
-          }
-          else
-          {
+        }
+        else
+        {
             gameManager.SetValidationSuccessStatus(true); //originally GameManager.Instance.SetValidationSuccessStatus(true)
         }
 
@@ -318,9 +320,9 @@ public class EyetrackingValidation : MonoBehaviour
         fixationPoint.SetActive(false);
         
         // give feedback whether the error was too large or not
-        if (CalculateValidationError(anglesX) > ErrorThreshold || 
-            CalculateValidationError(anglesY) > ErrorThreshold ||
-            CalculateValidationError(anglesZ) > ErrorThreshold ||
+        if (CalculateValidationError(anglesX) > errorThreshold || 
+            CalculateValidationError(anglesY) > errorThreshold ||
+            CalculateValidationError(anglesZ) > errorThreshold ||
             _eyeValidationData.EyeValidationError == Vector3.zero)
         {
  

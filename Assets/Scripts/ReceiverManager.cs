@@ -150,7 +150,7 @@ public class ReceiverManager : MonoBehaviour
                     gameManager.trialNumber++;
                     lSLReceiverOutlets.lslOSelectCounter.push_sample(new int[] {selectCounter} );
                     
-                    if (gameManager.role == "receiver") // TODO: if clause not necessary, since the script is disabled if role is signaler anyways
+                    if (gameManager.role == "receiver") // TODO: if-clause not necessary, since the script is disabled if role is signaler anyways
                     {
                         gameManager._startedRound = false;
                     }
