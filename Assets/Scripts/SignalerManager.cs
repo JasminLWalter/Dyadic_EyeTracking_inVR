@@ -11,38 +11,41 @@ using ViveSR.anipal.Eye;
 
 public class SignalerManager : MonoBehaviour
 {
-   
+    // Input bindings determine from what VR devices and which buttons the input values are retrieved 
     private InputBindings _inputBindings;
-    private Collider _lastHit;
-    private int _boxLayerMask;  // Only objects on the Box Layer should be hit by the raycast
 
+    // Eye tracking variables
     public GameObject hmd;
-
     public Vector3 eyePositionCombinedWorld;
     public Vector3 eyeDirectionCombinedWorld;
     public Quaternion eyeRotationCombinedWorld;
+    public GameObject invisibleObject;
 
+    // Raycast variables
+    private Collider _lastHit;
+    private int _boxLayerMask;  // Only objects on the Box Layer should be hit by the raycast
+    public RaycastHit hitData;
+    public GameObject simpleCrosshair;  // Appears at the focus point of the signaler when they are looking at the boxes
+
+    // References to other managers
     public MenuManager menuManager;
     public GameManager gameManager;
-
     private EmbodimentManager embodimentManager;
-    public GameObject simpleCrosshair;
+    
+    // Game flow variables
+    public List<TMP_Text> TextsPhase3;  // A list of instructional texts for the training phase
+    public bool signalerReady = false;  // TODO: What is this variable used for?
+    public int freezeCounter = 0;  // Stores the number of freezes 
 
-    public List<TMP_Text> TextsPhase3;
-
-    public bool signalerReady = false;  // What is this variable used for?
-
-    public GameObject invisibleObject;
-    public RaycastHit hitData;
-
-    public int freezeCounter = 0;
+    // Networking
     public LSLSignalerOutlets lSLSignalerOutlets;
 
     // Debug
-    public GameObject focusDebugSphere;
+    public GameObject focusDebugSphere;  // Appears at the focus point when the signaler has been frozen
     
    
     // Start is called before the first frame update
+    // Used to assign the still missing attributes
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
@@ -61,6 +64,7 @@ public class SignalerManager : MonoBehaviour
     }
 
     // Update is called once per frame
+    // Meaning the following code runs again and again throughout the game
     void Update()
     {
         // Start countdown // TODO: integrate countdown timer
