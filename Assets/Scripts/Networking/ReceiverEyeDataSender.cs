@@ -306,7 +306,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 outlet.push_sample(sample);
             }
         
-            if(receiverManager.selectCounter > 1 && _inputBindings.Player.SelectBox.triggered && receiverManager._lastHitCollider.gameObject.layer == LayerMask.NameToLayer("Box") && gameManager.frozen)
+            if(receiverManager.selectCounter > 1 && _inputBindings.Player.SelectBox.triggered && receiverManager._lastHit.gameObject.layer == LayerMask.NameToLayer("Box") && gameManager.frozen)
             {
 
 

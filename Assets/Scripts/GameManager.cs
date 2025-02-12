@@ -254,11 +254,7 @@ public class GameManager : MonoBehaviour
         // Phase 1: Embodiment (Embodiment Space)
         else if (phase == 1)
         {
-
-            // TODO: let the function be called from the menu manager or an embodiment phase manager 
-            //EnterNextPhase();
-            Debug.LogError("Phase 1");
-            
+            Debug.LogError("Embodiment Phase");
         }
         // Phase 2: Instruction Testing (UI Space)
         else if (phase == 2)
@@ -327,7 +323,7 @@ public class GameManager : MonoBehaviour
            }
            if (role == "signaler")
            {
-            signalerManager.invisibleObject = invisibleObject; // Why?
+            signalerManager.invisibleObjectSignaler = invisibleObject; // Why?
            }
         }
         #endregion
@@ -419,10 +415,6 @@ public class GameManager : MonoBehaviour
         }
         // receiverManager.Unfreeze();
         // 5. Receiver chooses box 
-        if(receiverManager.boxSelected == true)
-        {
-            boxBehaviour.Selected();
-        }
 
         if (Time.time - _startRoundTime < _timeLimit){
             Debug.LogError("Time exceeded. We're at the end of the round. Receiver did not select");
@@ -635,7 +627,7 @@ public class GameManager : MonoBehaviour
             countdownText.text = "Go!";
             yield return new WaitForSeconds(1);
             countdownText.gameObject.SetActive(false);
-            signalerManager.invisibleObject = crosshair;
+            signalerManager.invisibleObjectSignaler = crosshair;
             
             StartCoroutine(CountdownTimer(timerCountdownText));
             

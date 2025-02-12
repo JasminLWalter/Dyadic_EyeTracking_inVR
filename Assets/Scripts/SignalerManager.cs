@@ -19,21 +19,20 @@ public class SignalerManager : MonoBehaviour
     public Vector3 eyePositionCombinedWorld;
     public Vector3 eyeDirectionCombinedWorld;
     public Quaternion eyeRotationCombinedWorld;
-    public GameObject invisibleObject;
+    public GameObject invisibleObjectSignaler;
 
     // Raycast variables
-    private Collider _lastHit;
     private int _boxLayerMask;  // Only objects on the Box Layer should be hit by the raycast
     public RaycastHit hitData;
+    private Collider _lastHit;
     public GameObject simpleCrosshair;  // Appears at the focus point of the signaler when they are looking at the boxes
 
     // References to other managers
     public MenuManager menuManager;
     public GameManager gameManager;
-    private EmbodimentManager embodimentManager;
     
     // Game flow variables
-    public List<TMP_Text> TextsPhase3;  // A list of instructional texts for the training phase
+    public List<TMP_Text> TextsPhase3Signaler;  // A list of instructional texts for the training phase
     public bool signalerReady = false;  // TODO: What is this variable used for?
     public int freezeCounter = 0;  // Stores the number of freezes 
 
@@ -50,12 +49,11 @@ public class SignalerManager : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         menuManager = FindObjectOfType<MenuManager>();
-        embodimentManager = FindObjectOfType<EmbodimentManager>();
         
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
 
-        foreach (TMP_Text TextPhase3 in TextsPhase3)
+        foreach (TMP_Text TextPhase3 in TextsPhase3Signaler)
         {
             TextPhase3.gameObject.SetActive(false);
         }
@@ -68,17 +66,19 @@ public class SignalerManager : MonoBehaviour
     void Update()
     {
         // Start countdown // TODO: integrate countdown timer
+        /*
         if (gameManager.frozen == false && freezeCounter > 2 && gameManager.countdownRunning == false)
         {
-            //StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownText));
+            StartCoroutine(gameManager.CountdownTimer(gameManager.timerCountdownText));
         }
+        */
 
         // Get gaze data of the signaler
         SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
         eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmd.transform.position;
         Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1, verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
         eyeDirectionCombinedWorld = hmd.transform.rotation * coordinateAdaptedGazeDirectionCombined;
-        invisibleObject.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
+        invisibleObjectSignaler.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
 
         // Create a ray from the eyes along the focus direction
         Ray ray;
@@ -102,7 +102,7 @@ public class SignalerManager : MonoBehaviour
 
             Vector3 hitPoint = hitData.point;
 
-            // Create sample array for LSL
+            // Create sample array for LSL to store continuous focus points
             float[] sample = new float[3];
             sample[0] = float.Parse(FormatFloat(hitPoint.x, 8)); // Convert string back to float
             sample[1] = float.Parse(FormatFloat(hitPoint.y, 8)); // Convert string back to float
@@ -111,7 +111,7 @@ public class SignalerManager : MonoBehaviour
             // Push sample to LSL
             lSLSignalerOutlets.lslOContinuousRaycastHitSignaler.push_sample(sample);
 
-            
+            // TODO: check if the following is necessary
             if (_lastHit == null)
             {
                 _lastHit = hitData.collider;
@@ -163,7 +163,7 @@ public class SignalerManager : MonoBehaviour
 
             if(signalerReady == false)
             {
-                StartCoroutine(menuManager.ShowTexts(TextsPhase3, () => signalerReady = false));  // Once the coroutine is done, signalerReady will turn false
+                StartCoroutine(menuManager.ShowTexts(TextsPhase3Signaler, () => signalerReady = false));  // Once the coroutine is done, signalerReady will turn false
                 signalerReady = true;
                 string signalerReadyString = signalerReady.ToString();
                 lSLSignalerOutlets.lslOSignalerReady.push_sample(new string[] {signalerReadyString});

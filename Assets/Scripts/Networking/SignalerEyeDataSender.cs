@@ -208,9 +208,9 @@ public class SignalerEyeDataSender : MonoBehaviour
                     eye_Right_Left = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Left) ? eyeWeightings[EyeShape_v2.Eye_Right_Left] : 0.0f;
                     eye_Right_Right = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Right_Right) ? eyeWeightings[EyeShape_v2.Eye_Right_Right] : 0.0f;
                     
-                    invisibleObjectPos.x = signalerManager.invisibleObject.transform.position.x;
-                    invisibleObjectPos.y = signalerManager.invisibleObject.transform.position.y;
-                    invisibleObjectPos.z = signalerManager.invisibleObject.transform.position.z;    
+                    invisibleObjectPos.x = signalerManager.invisibleObjectSignaler.transform.position.x;
+                    invisibleObjectPos.y = signalerManager.invisibleObjectSignaler.transform.position.y;
+                    invisibleObjectPos.z = signalerManager.invisibleObjectSignaler.transform.position.z;    
 
                     // headConstraintPos.x = headConstraint.transform.rotation.x;
                     // headConstraintPos.y = headConstraint.transform.rotation.y;
@@ -337,9 +337,9 @@ public class SignalerEyeDataSender : MonoBehaviour
                     // sample[21] = signalerManager.invisibleObject.transform.position.y;
                     // sample[22] = signalerManager.invisibleObject.transform.position.z;
 
-                    invisibleObjectPosFrozen.x = signalerManager.invisibleObject.transform.position.x;
-                    invisibleObjectPosFrozen.y = signalerManager.invisibleObject.transform.position.y;
-                    invisibleObjectPosFrozen.z = signalerManager.invisibleObject.transform.position.z;
+                    invisibleObjectPosFrozen.x = signalerManager.invisibleObjectSignaler.transform.position.x;
+                    invisibleObjectPosFrozen.y = signalerManager.invisibleObjectSignaler.transform.position.y;
+                    invisibleObjectPosFrozen.z = signalerManager.invisibleObjectSignaler.transform.position.z;
 
                     // headConstraintFrozen.x = headConstraint.transform.rotation.x;
                     // headConstraintFrozen.y = headConstraint.transform.rotation.y;
