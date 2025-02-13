@@ -12518,7 +12518,7 @@ MonoBehaviour:
   eyePositionCombinedWorld: {x: 0, y: 0, z: 0}
   eyeDirectionCombinedWorld: {x: 0, y: 0, z: 0}
   eyeRotationCombinedWorld: {x: 0, y: 0, z: 0, w: 0}
-  invisibleObjectSignaler: {fileID: 0}
+  invisibleObjectSignaler: {fileID: 1068163931}
   simpleCrosshair: {fileID: 1911593874}
   menuManager: {fileID: 1398317297}
   gameManager: {fileID: 171754634}
