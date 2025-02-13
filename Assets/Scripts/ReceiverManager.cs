@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
@@ -15,24 +16,16 @@ public class ReceiverManager : MonoBehaviour
     private InputBindings _inputBindings;
     private Collider _lastHit;
     public Collider _lastHitController;
-    private int _layerMask = 1 << 3;  // Only objects on Layer 3 should be considered
+    private int _boxLayerMask;  // Only objects on the Box Layer should be hit by the raycast
 
     public GameObject hmd;
-    public Transform OriginTransform;
-
-    //  for displaying the eye movement of the signaler
-    // [SerializeField] private Transform combinedEyes;
-    // [SerializeField] private Transform leftEye;
-    // [SerializeField] private Transform rightEye;
-    private Vector3 rayOrigin;
-    private Vector3 rayDirection;
 
     public Vector3 eyePositionCombinedWorld;
     public Vector3 eyeDirectionCombinedWorld;
     public Quaternion eyeRotationCombinedWorld;
     public RaycastHit hitData;
 
-    public Transform leftControllerTransform; // Reference to the VR controller's transform
+    public Transform leftControllerTransform; // Reference to the VR controller's transform // TODO: why not used?
     public Transform rightControllerTransform;
     public Transform preferredHandTransform;
 
@@ -42,31 +35,24 @@ public class ReceiverManager : MonoBehaviour
     public ReceiverManager receiverManager;
     public bool boxSelected = false;
     public bool receiverReady = false;
-    public bool didRunSecondPartReceiver = false;
+    public bool didRunSecondPartReceiver = false; // TODO: remove if not needed
     public List<TMP_Text> TextsPhase3Receiver;
 
-    public GameObject avatar;
     public bool CountdownStarted = false;
     public GameObject invisibleObjectReceiver;
-
-    private Vector3 offset = new Vector3(-57.7999992f,-0.810000002f,-0.419999987f);
     public int selectCounter = 0;
     private bool countdownRunning = false;
     public bool secondCheck = false;
 
     public LSLReceiverOutlets lSLReceiverOutlets;
 
-    private Camera mainCamera;
-
     // Start is called before the first frame update
     void Start()
     {
-        mainCamera = FindObjectOfType<Camera>();
         preferredHandTransform = rightControllerTransform;
         gameManager = FindObjectOfType<GameManager>();
         menuManager = FindObjectOfType<MenuManager>();
         signalerManager = FindObjectOfType<SignalerManager>();
-        // lSLReceiverOutlets = FindObjectOfType<LSLReceiverOutlets>();
 
         _inputBindings = new InputBindings();
         _inputBindings.Player.Enable();
@@ -76,41 +62,50 @@ public class ReceiverManager : MonoBehaviour
             TextPhase3Receiver.gameObject.SetActive(false);
         }
 
+        _boxLayerMask = LayerMask.GetMask("Box");
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Create a ray from the controller along the pointing direction
         Ray ray;
-        if (gameManager.playedInVR)
+        if (XRSettings.isDeviceActive)
         {
             ray = new Ray(preferredHandTransform.position, preferredHandTransform.forward);
         }
         else
         {
+            Debug.LogError("No VR devices found in this frame. Using mouse position for receiver ray cast."); 
             Vector2 mouseScreenPosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
             ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
         }
-        RaycastHit hit;
 
-        // Check if the ray hits any UI buttons
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, _layerMask))
+        RaycastHit hit;  // TODO: turn this into a class variable?
+
+        // If the ray hits a box 
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, _boxLayerMask)) // TODO: should be only possible when the signaler is frozen?
         {
-            if (_lastHitController == null)
+            // Let the box be highlighted while the receiver is pointing at it
+            if (_lastHitController == null) // if it is the first box that is pointed at
             {
                 _lastHitController = hit.collider;
-                _lastHitController.gameObject.SendMessage("StaredAtReceiver");
+                _lastHitController.gameObject.SendMessage("StaredAtReceiver"); // TODO: change the name of the functtion
             }
-            else if (_lastHitController != null && _lastHitController != hit.collider)
+            else if (_lastHitController != null && _lastHitController != hit.collider) // if it is the second (or more) box that is pointed at
             {
-                // Debug.Log("Hit something new: " + hit.collider.name);
+                // Make the old box not be highlighted anymore
                 _lastHitController.gameObject.SendMessage("NotLongerStaredAt");
                 _lastHitController = hit.collider;
+                // Let the new box be highlighted
                 _lastHitController.gameObject.SendMessage("StaredAtReceiver");
             }
-            else if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3 && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box"))
-            {
-                if ( selectCounter < 1)
+            
+            // If the receiver is selecting the current box and the current phase is the testing phase (isn't the second condition redundant?)
+            if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3)  
+            {   
+                // If still in training phase
+                if (selectCounter < 1)
                 {
                     if(menuManager.didRunReceiver && !receiverReady)
                     {
@@ -130,13 +125,15 @@ public class ReceiverManager : MonoBehaviour
                         }
                     }
                 }
-                // Debug.Log("selectCounter"+selectCounter);
-                if (selectCounter >= 1 && gameManager.frozen) 
+
+                // If not in training phase anymore
+                if (selectCounter >= 1 && gameManager.frozen)  // TODO: put gameManager.frozen to the Raycast-if
                 {
                     _lastHitController.gameObject.SendMessage("Selected");
                     selectCounter++;
                     receiverManager.boxSelected = true;
-                     // Access hit point
+
+                    // Store the coordinates of where the receiver pointed at when selecting the box // TODO: why are coordinates necessary?
                     Vector3 hitPoint = hit.point;
 
                     // Create sample array
@@ -148,20 +145,21 @@ public class ReceiverManager : MonoBehaviour
                     // Push sample to LSL
                     lSLReceiverOutlets.lslOBoxSelectedByReceiver.push_sample(sample);
 
-                    StartCoroutine(gameManager.Condition1());
+                    StartCoroutine(gameManager.Condition1());  // TODO: let this not be called from this script
                     //StartCoroutine(CountdownTimer(timerCountdownText));
                     gameManager.trialNumber++;
                     lSLReceiverOutlets.lslOSelectCounter.push_sample(new int[] {selectCounter} );
-                    // Debug.Log("selectCounter" + selectCounter);
-                    if (gameManager.role == "receiver")
+                    
+                    if (gameManager.role == "receiver") // TODO: if-clause not necessary, since the script is disabled if role is signaler anyways
                     {
-                            gameManager._startedRound = false;
+                        gameManager._startedRound = false;
                     }
                 }
             }
 
         }
-        else if (_lastHitController != null)
+        // If nothing is pointed at anymore
+        else if (_lastHitController != null) 
         {
             // Debug.Log("Not longer stared at.");
             _lastHitController.gameObject.SendMessage("NotLongerStaredAt");
@@ -174,6 +172,8 @@ public class ReceiverManager : MonoBehaviour
         }
 
         
+        // Get eye data of receiver 
+        // Only necessary for free moving condition! which is not implemented yet
         SRanipal_Eye_v2.GetVerboseData(out VerboseData verboseData);
         eyePositionCombinedWorld = verboseData.combined.eye_data.gaze_origin_mm / 1000 + hmd.transform.position;
         Vector3 coordinateAdaptedGazeDirectionCombined = new Vector3(verboseData.combined.eye_data.gaze_direction_normalized.x * -1, verboseData.combined.eye_data.gaze_direction_normalized.y, verboseData.combined.eye_data.gaze_direction_normalized.z);
@@ -183,8 +183,8 @@ public class ReceiverManager : MonoBehaviour
 
         invisibleObjectReceiver.transform.position = eyePositionCombinedWorld + (eyeDirectionCombinedWorld * 5);
 
-
-        if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _layerMask))
+        /*
+        if (Physics.Raycast(new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld), out hitData, Mathf.Infinity, _boxLayerMask))
         {
             
             
@@ -201,7 +201,6 @@ public class ReceiverManager : MonoBehaviour
                 //_lastHit.gameObject.SendMessage("StaredAt");
             }
         }
-
         else
         {
             if (_lastHit != null)
@@ -210,13 +209,14 @@ public class ReceiverManager : MonoBehaviour
                 _lastHit = null;
             }
         }
+        */
 
 
     }
         
     public void Teleport(Vector3 location, GameObject avatar)
     {
-        avatar.transform.position = location;// + new Vector3(-0.4f, 5f, -0.7f);
+        avatar.transform.position = location;
     }
     
 }

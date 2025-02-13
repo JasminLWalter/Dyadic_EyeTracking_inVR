@@ -5,6 +5,31 @@ using TMPro;
 using System;
 using System.Collections.Generic;
 
+/* Phases: 
+/// Phase 0: Welcoming
+- Welcome to the Experiment!
+- To continue, press the trackpad. 
+To register your chosen position during your task, press the trigger button.
+Signaler:
+- You have the role of the Signaler. You can signal a preferred box to your partner by fixating it with your eyes and pressing the trigger button to register your response. 
+- Keep in Mind that you point with your eyes. 
+Receiver: 
+- You have the role of the Receiver. Your goal is to choose the box your partner was signaling you to choose with their eyes.
+- By pointing to the box, the box will highlight and you will be able to choose the box by pressing the trigger button.
+- After you registered your box, you will have to wait for your partner to signal you the next box. 
+
+
+/// Phase 1: Embodiment (not done yet)
+
+/// Phase 2: End of embodiment phase (not done yet)
+
+/// Phase 6: End of experiment
+Congratulations!
+You finished the Experiment.
+
+Thank you, for your participation!
+*/
+
 public class MenuManager : MonoBehaviour
 {
     //Signaler
@@ -47,7 +72,6 @@ public class MenuManager : MonoBehaviour
     private SignalerManager signalerManager;
     public EyetrackingValidation eyetrackingValidation;
     private ReceiverEyeDataSender receiverEyeDataSender;
-    //public SRanipal_Eye_v2 sRanipal_Eye_v2;
     private InputBindings _inputBindings;
     private int currentTextIndex = 0;
 
@@ -61,7 +85,6 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        
         _inputBindings = new InputBindings();
         _inputBindings.UI.Enable();
         
@@ -70,13 +93,12 @@ public class MenuManager : MonoBehaviour
         receiverManager = FindObjectOfType<ReceiverManager>();
         signalerManager = FindObjectOfType<SignalerManager>();
         receiverEyeDataSender = FindObjectOfType<ReceiverEyeDataSender>();
-        //sRanipal_Eye_v2 = FindObjectOfType<SRanipal_Eye_v2>();
         
 
+        // Signaler
         TextPhase6.gameObject.SetActive(false);
         Pause.gameObject.SetActive(false);
         
-
         foreach (TMP_Text TextPhase0 in TextsPhase0)
         {
             TextPhase0.gameObject.SetActive(false);
@@ -90,7 +112,7 @@ public class MenuManager : MonoBehaviour
             TextPhase3.gameObject.SetActive(false);
         }
 
-        //Receiver
+        // Receiver
         TextPhase6Receiver.gameObject.SetActive(false);
         PauseReceiver.gameObject.SetActive(false);
         
@@ -115,7 +137,7 @@ public class MenuManager : MonoBehaviour
         {
             if (gameManager.role == "signaler" && !phase0CoroutineRunning)
             {
-                    StartCoroutine(ShowTexts(TextsPhase0, () => phase0CoroutineRunning = false));
+                    StartCoroutine(ShowTexts(TextsPhase0, () => phase0CoroutineRunning = false)); // Once the coroutine is done, phase0CoroutineRunning will turn false
                     phase0CoroutineRunning = true;
                     
             }
@@ -190,7 +212,7 @@ public class MenuManager : MonoBehaviour
             gameManager.EnterNextPhase();
         }
 
-        //Hides everything if wrong phase
+        //Hides everything if wrong phase // TODO: re-work this
         if (gameManager.GetCurrentPhase() != 0)
         {
             HideLists(TextsPhase0);
@@ -201,12 +223,13 @@ public class MenuManager : MonoBehaviour
             HideLists(TextsPhase2);
         }
 
-        if (gameManager.GetCurrentPhase() != 4)
+        if (gameManager.GetCurrentPhase() != 4)  // TODO: make the phases match
         {
             TextPhase6.gameObject.SetActive(false);
 
         }
 
+        // Better to put this in GameManager?
         if (_inputBindings.UI.Pause.triggered)
         {
             gameManager.EnterPausePhase();
@@ -226,17 +249,21 @@ public class MenuManager : MonoBehaviour
     public IEnumerator ShowTexts(List<TMP_Text> textComponents, Action coroutineFinishedCallback)
     {
         int currentTextIndex = 0;
-        //yield return new WaitForSeconds(3f);
+        
+        // Loop over all texts in the current phase
         while (currentTextIndex < textComponents.Count)
         {
+            // Show current text
             textComponents[currentTextIndex].gameObject.SetActive(true);
 
+            // If the participant wants to go back in the instructions
             if (_inputBindings.UI.Return.triggered && currentTextIndex > 0)
             {
                 textComponents[currentTextIndex].gameObject.SetActive(false);
                 currentTextIndex -= 1;
                 textComponents[currentTextIndex].gameObject.SetActive(true);
             }
+            // If the participant wants to read the next text
             else if (_inputBindings.UI.Continue.triggered)
             {
                 textComponents[currentTextIndex].gameObject.SetActive(false);
@@ -247,7 +274,7 @@ public class MenuManager : MonoBehaviour
                 {
                     textComponents[currentTextIndex].gameObject.SetActive(true);
                 }
-                else if (currentTextIndex >= textComponents.Count)
+                else if (currentTextIndex >= textComponents.Count)  // TODO: re-work this part
                 { 
                     // I think this initiates the Second Part of the instructions
                     if (gameManager.GetCurrentPhase() == 3 && signalerManager.signalerReady == false && !countdownRunning && receiverManager.receiverReady == false)
@@ -265,7 +292,7 @@ public class MenuManager : MonoBehaviour
                         Debug.Log("second part did run");
                         
                     } 
-                    if (gameManager.GetCurrentPhase() == 0) // || gameManager.GetCurrentPhase() == 2)
+                    else if (gameManager.GetCurrentPhase() == 0) // || gameManager.GetCurrentPhase() == 2)
                     {
                         gameManager.EnterNextPhase();
                         gameManager.EnterNextPhase();
@@ -273,30 +300,10 @@ public class MenuManager : MonoBehaviour
 
 
 
-                    }/*  
-                        //sRanipal_Eye_v2.LaunchEyeCalibration();
-                        //eyetrackingValidation.ValidateEyeTracking();
-                        //if(gameManager._ValidationSuccessStatus == true) //could cause problems because _ValidationSuccessStatus is initiated as true
-                        //{
-                            gameManager.EnterNextPhase();
-                        //}
-                        
-                    }*/
-
+                    }
                 }
-
             }
 
-            // if(_inputBindings.Player.Freeze.triggered && gameManager.role == "signaler"){
-            //     if(gameManager.frozen == true || signalerManager.freezeCounter < 1){
-            //         textGazeFixed.gameObject.SetActive(true);
-            //     }
-            //     if(gameManager.frozen == false){
-            //         textGazeFixed.gameObject.SetActive(false);
-            //     }
-    
-
-            // }
             yield return null;
         }
     } 
@@ -308,7 +315,7 @@ public class MenuManager : MonoBehaviour
             // Access each TMP_Text element and its gameObject to hide it
             if (textElement != null)
             {
-                textElement.gameObject.SetActive(false); // Hiding gameObject of each TMP_Text
+                textElement.gameObject.SetActive(false); 
             }
         }
     }
