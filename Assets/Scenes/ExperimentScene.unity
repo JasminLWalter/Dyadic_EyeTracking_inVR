@@ -12518,14 +12518,12 @@ MonoBehaviour:
   eyePositionCombinedWorld: {x: 0, y: 0, z: 0}
   eyeDirectionCombinedWorld: {x: 0, y: 0, z: 0}
   eyeRotationCombinedWorld: {x: 0, y: 0, z: 0, w: 0}
+  invisibleObjectSignaler: {fileID: 0}
+  simpleCrosshair: {fileID: 1911593874}
   menuManager: {fileID: 1398317297}
   gameManager: {fileID: 171754634}
-  simpleCrosshair: {fileID: 1911593874}
-  TextsPhase3:
-  - {fileID: 263224819}
-  - {fileID: 21529636}
+  TextsPhase3Signaler: []
   signalerReady: 0
-  invisibleObject: {fileID: 1068163931}
   freezeCounter: 0
   lSLSignalerOutlets: {fileID: 7646968462962455504}
   focusDebugSphere: {fileID: 1896939840}
@@ -26763,27 +26761,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fc515671ee60774a977218babec865e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lastHitController: {fileID: 0}
+  debugRunWithoutVR: 0
   hmd: {fileID: 1516416796}
   eyePositionCombinedWorld: {x: 0, y: 0, z: 0}
   eyeDirectionCombinedWorld: {x: 0, y: 0, z: 0}
   eyeRotationCombinedWorld: {x: 0, y: 0, z: 0, w: 0}
+  invisibleObjectReceiver: {fileID: 1068163931}
+  _lastHit: {fileID: 0}
   leftControllerTransform: {fileID: 9014170785090376802}
   rightControllerTransform: {fileID: 9014170783538599043}
   preferredHandTransform: {fileID: 9014170783538599043}
   gameManager: {fileID: 171754634}
   menuManager: {fileID: 1398317297}
   signalerManager: {fileID: 777719402}
-  receiverManager: {fileID: 1740773030}
   boxSelected: 0
-  receiverReady: 0
-  didRunSecondPartReceiver: 0
   TextsPhase3Receiver:
   - {fileID: 2076410788}
   - {fileID: 1789295080}
-  CountdownStarted: 0
-  invisibleObjectReceiver: {fileID: 1068163931}
+  receiverReady: 0
   selectCounter: 0
+  CountdownStarted: 0
   secondCheck: 0
   lSLReceiverOutlets: {fileID: 7646968462962455506}
 --- !u!4 &1740773031

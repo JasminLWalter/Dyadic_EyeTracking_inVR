@@ -12,6 +12,8 @@ using System;
 
 public class ReceiverManager : MonoBehaviour
 {
+    public bool debugRunWithoutVR = false;
+
     // Input bindings determine from what VR devices and which buttons the input values are retrieved 
     private InputBindings _inputBindings;
 
@@ -86,6 +88,13 @@ public class ReceiverManager : MonoBehaviour
         else
         {
             Debug.LogError("No VR devices found in this frame. Using mouse position for receiver ray cast."); 
+            Vector2 mouseScreenPosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
+            ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
+        }
+
+        if (debugRunWithoutVR)
+        {
+            Debug.LogError("Due to debugging, using the mouse input instead of VR controller input."); 
             Vector2 mouseScreenPosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
             ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
         }
