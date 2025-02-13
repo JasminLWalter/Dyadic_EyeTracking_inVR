@@ -12,7 +12,8 @@ using System;
 
 public class ReceiverManager : MonoBehaviour
 {
-
+    [Tooltip("Forces Unity to use the mouse input for box selection.")]
+    public bool debugRunWithoutVR = false;
     private InputBindings _inputBindings;
     private Collider _lastHit;
     public Collider _lastHitController;
@@ -74,12 +75,20 @@ public class ReceiverManager : MonoBehaviour
         {
             ray = new Ray(preferredHandTransform.position, preferredHandTransform.forward);
         }
-        else
+        else 
         {
             Debug.LogError("No VR devices found in this frame. Using mouse position for receiver ray cast."); 
             Vector2 mouseScreenPosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
+            ray = Camera.main.ScreenPointToRay(mouseScreenPosition);   
+        }
+
+        if (debugRunWithoutVR)
+        {
+            Debug.LogError("Due to debugging, using the mouse input instead of VR controller input."); 
+            Vector2 mouseScreenPosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
             ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
         }
+        
 
         RaycastHit hit;  // TODO: turn this into a class variable?
 

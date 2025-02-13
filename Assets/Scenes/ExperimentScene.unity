@@ -26763,6 +26763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fc515671ee60774a977218babec865e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugRunWithoutVR: 1
   _lastHitController: {fileID: 0}
   hmd: {fileID: 1516416796}
   eyePositionCombinedWorld: {x: 0, y: 0, z: 0}
