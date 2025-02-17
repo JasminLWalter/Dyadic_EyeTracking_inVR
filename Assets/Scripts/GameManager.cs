@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
     private EmbodimentManager embodimentManager;
     private BoxBehaviour boxBehaviour;
     private MenuManager menuManager;
-    private SimpleCrosshair simpleCrosshair;
 
     public VRRig vRRig;
     public GameObject xrOriginSetup;
@@ -129,7 +128,6 @@ public class GameManager : MonoBehaviour
         receiverManager = FindObjectOfType<ReceiverManager>();
         embodimentManager = FindObjectOfType<EmbodimentManager>();
         eyetrackingValidation = FindObjectOfType<EyetrackingValidation>();
-        simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
         boxBehaviour = FindObjectOfType<BoxBehaviour>();
         lslReceiverOutlets = avatarMain.GetComponent<LSLReceiverOutlets>();
 
@@ -341,6 +339,20 @@ public class GameManager : MonoBehaviour
         {
             signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
         }
+    }
+
+
+
+    public void FreezeSignaler()
+    {
+        frozen = true;
+        signalerManager.simpleCrosshair.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>().color = Color.red;
+    }
+
+    public void UnfreezeSignaler()
+    {
+        frozen = false;
+        signalerManager.simpleCrosshair.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>().color = Color.white;
     }
    
     public void EnterPausePhase()

@@ -12,6 +12,7 @@ using System;
 
 public class ReceiverManager : MonoBehaviour
 {
+    // Debug
     public bool debugRunWithoutVR = false;
 
     // Input bindings determine from what VR devices and which buttons the input values are retrieved 

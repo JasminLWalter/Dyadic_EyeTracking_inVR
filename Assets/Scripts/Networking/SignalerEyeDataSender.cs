@@ -13,7 +13,6 @@ public class SignalerEyeDataSender : MonoBehaviour
     public SignalerManager signalerManager;
     private ReceiverManager receiverManager;
     private GameManager gameManager;
-    // private GameObject invisibleObject;
     public Transform headConstraint;
 
     private float leftBlink;
@@ -70,7 +69,6 @@ public class SignalerEyeDataSender : MonoBehaviour
 
 
     public LSLSignalerOutlets lSLSignalerOutlets;
-   // private LSLReceiverOutlets lSLReceiverOutlets;
     void Start()
     {
         StreamInfo streamInfo = new StreamInfo("EyeTrackingSignaler", "Gaze", 27, 0, channel_format_t.cf_float32);
@@ -110,8 +108,6 @@ public class SignalerEyeDataSender : MonoBehaviour
         outlet = new StreamOutlet(streamInfo);
         
 
-
-        // signalerManager = FindObjectOfType<SignalerManager>();
         receiverManager = FindObjectOfType<ReceiverManager>();
         gameManager = FindObjectOfType<GameManager>();
 
@@ -128,59 +124,10 @@ public class SignalerEyeDataSender : MonoBehaviour
     {
         frozenString = gameManager.frozen.ToString();  // will be sent via LSL
         
-        // lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
-
-        // if(inletFrozenReceiver == null & gameManager.role == "signaler") {
-            
-        //     StreamInfo[] frozenReceiverStreams = LSL.LSL.resolve_stream("name", "FrozenReceiver", 1, 0.0);
-        //     inletFrozenReceiver = new StreamInlet(frozenReceiverStreams[0]);
-        //     Debug.LogError("ReceiverFrozen remotely: " + frozenReceiverStreams[0]);
-
-        // }
-        // if (inletFrozenReceiver == null && gameManager.phase == 3)
-        // {
-
-        //     // Resolve stream and check if there is a valid FrozenReceiver stream available
-        //     StreamInfo[] frozenReceiverStreams = LSL.LSL.resolve_stream("name", "FrozenReceiver", 1, 2.0);
-            
-        //     if (frozenReceiverStreams.Length > 0)
-        //     {
-        //         // Create the inlet only if a valid stream is found
-        //         inletFrozenReceiver = new StreamInlet(frozenReceiverStreams[0]);
-        //         Debug.Log("ReceiverFrozen stream found and inlet created.");
-        //     }
-        //     else
-        //     {
-        //         // Handle the case where no stream is found (optional logging)
-        //         Debug.LogError("No FrozenReceiver stream found.");
-        //     }
-        // }
-
-        // if (inletFrozenReceiver != null)
-        // {
-        //     // Pull sample from the frozen signaler inlet
-        //     string[] sampleFrozenReceiver = new string[1];
-        //     inletFrozenReceiver.pull_sample(sampleFrozenReceiver);
-        //     Debug.Log($"Frozen Signaler Sample: {sampleFrozenReceiver[0]}");
-            
-        //     if(sampleFrozenReceiver[0] == "true"){
-        //         signalerManager.frozen = true;
-        //     }
-        //     if(sampleFrozenReceiver[0] == "false"){
-        //         signalerManager.frozen = false;
-        //     }
-        // }
-        
         if (SRanipal_Eye_v2.GetEyeWeightings(out eyeWeightings))
         {
-            // invisibleObject = signalerManager.invisibleObject;
-            
-            // Vector3 leftGazeDirection, rightGazeDirection, combinedGazeDirection;
             Vector3 gazeOrigin;
-           // new Vector3 leftGazeDirectionFrozen;
-           // new Vector3 rightGazeDirectionFrozen, combinedGazeDirectionFrozen;
-
-
+           
 
                 if(gameManager.frozen == false)
                 {
@@ -189,8 +136,6 @@ public class SignalerEyeDataSender : MonoBehaviour
 
                     SRanipal_Eye_v2.GetGazeRay(GazeIndex.RIGHT, out gazeOrigin, out rightGazeDirection);
                     SRanipal_Eye_v2.GetGazeRay(GazeIndex.COMBINE, out gazeOrigin, out combinedGazeDirection);
-                    // Extract gaze direction
-                    // SRanipal_Eye_v2.GetGazeRay(GazeIndex.LEFT, out gazeOrigin, out leftGazeDirection);
 
                 // Get blink weightings
                     leftBlink = eyeWeightings.ContainsKey(EyeShape_v2.Eye_Left_Blink) ? eyeWeightings[EyeShape_v2.Eye_Left_Blink] : 0.0f;
@@ -211,11 +156,6 @@ public class SignalerEyeDataSender : MonoBehaviour
                     invisibleObjectPos.x = signalerManager.invisibleObjectSignaler.transform.position.x;
                     invisibleObjectPos.y = signalerManager.invisibleObjectSignaler.transform.position.y;
                     invisibleObjectPos.z = signalerManager.invisibleObjectSignaler.transform.position.z;    
-
-                    // headConstraintPos.x = headConstraint.transform.rotation.x;
-                    // headConstraintPos.y = headConstraint.transform.rotation.y;
-                    // headConstraintPos.z = headConstraint.transform.rotation.z;
-                    // headConstraintPos.w = headConstraint.transform.rotation.w;
                     
                 }
                 else if(gameManager.frozen)
@@ -253,19 +193,10 @@ public class SignalerEyeDataSender : MonoBehaviour
                     invisibleObjectPos.y = invisibleObjectPosFrozen.y;
                     invisibleObjectPos.z = invisibleObjectPosFrozen.z;
 
-                    // headConstraintPos.x = headConstraintFrozen.x;
-                    // headConstraintPos.y = headConstraintFrozen.y;
-                    // headConstraintPos.z = headConstraintFrozen.z;
-                    // headConstraintPos.w = headConstraintFrozen.w;
                 }
                 // Prepare LSL sample
-                //Debug.Log("Invisible Object: " + signalerManager.invisibleObject.transform.position);
-
                 float[] sample = new float[27];
-                //float[] sample = new float[22];
-                // sample[0] = leftGazeDirection.x;
-                // sample[1] = leftGazeDirection.y;
-                // sample[2] = leftGazeDirection.z;
+    
                 sample[0] = combinedGazeDirection.x;
                 sample[1] = combinedGazeDirection.y;
                 sample[2] = combinedGazeDirection.z;
@@ -292,11 +223,6 @@ public class SignalerEyeDataSender : MonoBehaviour
                 sample[20] = invisibleObjectPos.x;
                 sample[21] = invisibleObjectPos.y;
                 sample[22] = invisibleObjectPos.z;
-
-                // sample[23] = headConstraintPos.x;
-                // sample[24] = headConstraintPos.y;
-                // sample[25] = headConstraintPos.z;
-                // sample[26] = headConstraintPos.w;
 
                 // Send sample via LSL
                 outlet.push_sample(sample);
@@ -325,29 +251,17 @@ public class SignalerEyeDataSender : MonoBehaviour
                     combinedGazeDirectionFrozen.y = combinedGazeDirection.y;
                     combinedGazeDirectionFrozen.z = combinedGazeDirection.z;
                     
-                    // Debug.Log("Combined Gaze Direction: " + combinedGazeDirection.x + combinedGazeDirection.y + combinedGazeDirection.z);
-
-                    // Debug.Log("Combined Gaze Direction Frozen: " + combinedGazeDirectionFrozen.x + combinedGazeDirectionFrozen.y + combinedGazeDirectionFrozen.z);
-
+                   
                     rightGazeDirectionFrozen.x = rightGazeDirection.x;
                     rightGazeDirectionFrozen.y = rightGazeDirection.y;
                     rightGazeDirectionFrozen.z = rightGazeDirection.z;
-
-                    // sample[20] = signalerManager.invisibleObject.transform.position.x;
-                    // sample[21] = signalerManager.invisibleObject.transform.position.y;
-                    // sample[22] = signalerManager.invisibleObject.transform.position.z;
 
                     invisibleObjectPosFrozen.x = signalerManager.invisibleObjectSignaler.transform.position.x;
                     invisibleObjectPosFrozen.y = signalerManager.invisibleObjectSignaler.transform.position.y;
                     invisibleObjectPosFrozen.z = signalerManager.invisibleObjectSignaler.transform.position.z;
 
-                    // headConstraintFrozen.x = headConstraint.transform.rotation.x;
-                    // headConstraintFrozen.y = headConstraint.transform.rotation.y;
-                    // headConstraintFrozen.z = headConstraint.transform.rotation.z;
-                    // headConstraintFrozen.w = headConstraint.transform.rotation.w;
-
                     
-                    gameManager.frozen = true;
+                    gameManager.FreezeSignaler();
 
                     frozenString = gameManager.frozen.ToString();
                     lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );

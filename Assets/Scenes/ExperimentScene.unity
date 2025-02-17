@@ -12514,6 +12514,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 760160e0fc9fedb49b6f8756c65c01ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusDebugSphere: {fileID: 1896939840}
+  debugRunWithoutVR: 0
   hmd: {fileID: 1516416796}
   eyePositionCombinedWorld: {x: 0, y: 0, z: 0}
   eyeDirectionCombinedWorld: {x: 0, y: 0, z: 0}
@@ -12526,7 +12528,6 @@ MonoBehaviour:
   signalerReady: 0
   freezeCounter: 0
   lSLSignalerOutlets: {fileID: 7646968462962455504}
-  focusDebugSphere: {fileID: 1896939840}
 --- !u!4 &777719403
 Transform:
   m_ObjectHideFlags: 0

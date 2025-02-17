@@ -11,6 +11,10 @@ using ViveSR.anipal.Eye;
 
 public class SignalerManager : MonoBehaviour
 {
+    // Debug
+    public GameObject focusDebugSphere;  // Appears at the focus point when the signaler has been frozen
+    public bool debugRunWithoutVR = false;
+
     // Input bindings determine from what VR devices and which buttons the input values are retrieved 
     private InputBindings _inputBindings;
 
@@ -39,8 +43,6 @@ public class SignalerManager : MonoBehaviour
     // Networking
     public LSLSignalerOutlets lSLSignalerOutlets;
 
-    // Debug
-    public GameObject focusDebugSphere;  // Appears at the focus point when the signaler has been frozen
     
    
     // Start is called before the first frame update
@@ -92,9 +94,15 @@ public class SignalerManager : MonoBehaviour
            Vector2 mouseScreenPosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
            ray = Camera.main.ScreenPointToRay(mouseScreenPosition); 
         }
+        if (debugRunWithoutVR)
+        {
+            Debug.LogError("Due to debugging, using the mouse input instead of VR controller input."); 
+            Vector2 mouseScreenPosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
+            ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
+        }
 
         // If the ray hits a box
-        if (Physics.Raycast(ray, out hitData, Mathf.Infinity, _boxLayerMask)) // TODO: "&& gameManager.frozen" -> raycast only possible when it's the signaler's turn
+        if (Physics.Raycast(ray, out hitData, Mathf.Infinity, _boxLayerMask)) 
         {
             // Let crosshair appear where the signaler is looking at 
             simpleCrosshair.SetActive(true);
@@ -144,9 +152,8 @@ public class SignalerManager : MonoBehaviour
             Vector3 hitPoint = hitData.point;
 
             // Debug focus points 
-            Debug.Log("Hit object: "+hitData.transform.name);
-            focusDebugSphere.SetActive(true);
-            focusDebugSphere.transform.position = hitPoint;
+            //focusDebugSphere.SetActive(true);
+            //focusDebugSphere.transform.position = hitPoint;
 
             // Create sample array
             float[] sample = new float[3];
@@ -177,19 +184,6 @@ public class SignalerManager : MonoBehaviour
     {
         avatar.transform.position = location;
     }
-
-    // // Prevent the eye gameobjects from moving according to the EyeTracking data.
-    // public void Freeze()
-    // {
-    //     frozen = true;
-
-    // }
-
-    // // Make the eye gameobjects follow the participants' eye movements again.
-    // public void Unfreeze()
-    // {
-    //     frozen = false;
-    // }
 
 
     public static string FormatFloat(float value, int decimalPlaces)
