@@ -167,8 +167,20 @@ public class LSLReceiverInlets : MonoBehaviour
                 break;
             // Add additional cases for other streams as needed
             case "FrozenSignaler":
-                Debug.LogWarning(sample[0]=="True");
-                gameManager.frozen = sample[0]=="True";
+                bool freeze = sample[0]=="True";
+                if (gameManager.frozen != freeze)
+                {
+                    if (freeze)
+                    {
+                        gameManager.FreezeSignaler();
+                    }
+                    else
+                    {
+                        gameManager.UnfreezeSignaler();
+                    }
+                }
+                
+                //gameManager.frozen = sample[0]=="True";
                 break;
         }
     }

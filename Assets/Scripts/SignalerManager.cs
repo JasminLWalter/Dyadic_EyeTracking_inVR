@@ -102,7 +102,7 @@ public class SignalerManager : MonoBehaviour
         }
 
         // If the ray hits a box
-        if (Physics.Raycast(ray, out hitData, Mathf.Infinity, _boxLayerMask)) 
+        if (!gameManager.frozen && Physics.Raycast(ray, out hitData, Mathf.Infinity, _boxLayerMask)) 
         {
             // Let crosshair appear where the signaler is looking at 
             simpleCrosshair.SetActive(true);

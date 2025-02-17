@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     public GameObject avatarMain;
     public GameObject avatarSecondary;
     public GameObject invisibleObject;
-    public GameObject crosshair;
+    //public GameObject crosshair;
     public GameObject trainingSign;
     public GameObject trainingSignReceiver;
     private InputBindings _inputBindings;
@@ -353,6 +353,7 @@ public class GameManager : MonoBehaviour
     {
         frozen = false;
         signalerManager.simpleCrosshair.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>().color = Color.white;
+        Debug.Log("Unfreezing");
     }
    
     public void EnterPausePhase()
@@ -639,7 +640,7 @@ public class GameManager : MonoBehaviour
             countdownText.text = "Go!";
             yield return new WaitForSeconds(1);
             countdownText.gameObject.SetActive(false);
-            signalerManager.invisibleObjectSignaler = crosshair;
+            //signalerManager.invisibleObjectSignaler = crosshair;
             
             StartCoroutine(CountdownTimer(timerCountdownText));
             
