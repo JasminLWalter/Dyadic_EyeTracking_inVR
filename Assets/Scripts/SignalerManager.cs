@@ -137,7 +137,6 @@ public class SignalerManager : MonoBehaviour
         {
             _lastHit.gameObject.SendMessage("NotLongerStaredAt", SendMessageOptions.DontRequireReceiver);
             _lastHit = null;
-            simpleCrosshair.SetActive(false);
         }
 
 
