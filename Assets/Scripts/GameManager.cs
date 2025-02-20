@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int condition = 1;  // what condition is meant here? freeze versus free moving condition or milky versus clear glass condition?
     [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: Testing Phase (Testing Space); Phase 4: End Phase (UI Space)")]
     public int phase = 0;
-    private int currentPhase = 0;
 
     private ReceiverManager receiverManager;
 
@@ -372,15 +371,13 @@ public class GameManager : MonoBehaviour
 
     public void ReturnToCurrentPhase()
     {
-        currentPhase = GetCurrentPhase();
-
         if (role == "receiver")
         {
-            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(currentPhase), xrOriginSetup);
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase), xrOriginSetup);
         }
         if (role == "signaler") 
         {
-            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(currentPhase), xrOriginSetup);
+            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
         }
 
     }
