@@ -223,7 +223,6 @@ public class ReceiverEyeDataSender : MonoBehaviour
             {
                 if(receiverManager.selectCounter >= 2)
                 {
-                    Debug.Log("abh");
                     waitReceiver.gameObject.SetActive(true);
                     yourTurnReceiver.gameObject.SetActive(false);
                 }
@@ -306,7 +305,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 outlet.push_sample(sample);
             }
         
-            if(receiverManager.selectCounter > 1 && _inputBindings.Player.SelectBox.triggered && receiverManager._lastHitController.gameObject.layer == LayerMask.NameToLayer("Box") && gameManager.frozen)
+            if(receiverManager.selectCounter > 1 && _inputBindings.Player.SelectBox.triggered && gameManager.frozen)
             {
 
 
@@ -354,7 +353,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 // headConstraintFrozen.w = headConstraint.transform.rotation.w;
 
 
-                gameManager.frozen = false;
+                gameManager.UnfreezeSignaler();
                 
                 frozenString = gameManager.frozen.ToString();
                 lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );

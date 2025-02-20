@@ -166,6 +166,7 @@ public class LSLSignalerInlets : MonoBehaviour
                 break;
             case "RewardValuesReceiver": 
             // Handle RewardValues stream
+            // The following code block transfers the reward values from the receiver computer to the signaler computer.
                 Debug.Log("Received shuffled rewards: " + string.Join(", ", sample));
                 List<int> intSample = sample.Select(f => (int)Math.Round(f)).ToList();
                 for (int i = 0; i < gameManager.boxes.Count; i++)
@@ -200,12 +201,22 @@ public class LSLSignalerInlets : MonoBehaviour
                 receiverManager.boxSelected = sample[0]=="True";
                 break;
             case "FrozenReceiver":
-                Debug.LogWarning("FrozenReceiver: " + sample[0]);
-                gameManager.frozen = sample[0]=="True";                
+                bool freeze = sample[0]=="True";
+                if (gameManager.frozen != freeze)
+                {
+                    if (freeze)
+                    {
+                        gameManager.FreezeSignaler();
+                    }
+                    else
+                    {
+                        gameManager.UnfreezeSignaler();
+                    }
+                }
+                //gameManager.frozen = sample[0]=="True";                
                 break;
             case "milkyGlassBool":
                 gameManager.milkyGlassBool = sample[0]=="True";
-                Debug.Log("milkyGlass" + sample[0]);
                 break;
         }
     }

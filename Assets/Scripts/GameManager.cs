@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
     private EmbodimentManager embodimentManager;
     private BoxBehaviour boxBehaviour;
     private MenuManager menuManager;
-    private SimpleCrosshair simpleCrosshair;
 
     public VRRig vRRig;
     public GameObject xrOriginSetup;
@@ -36,7 +35,7 @@ public class GameManager : MonoBehaviour
     public GameObject avatarMain;
     public GameObject avatarSecondary;
     public GameObject invisibleObject;
-    public GameObject crosshair;
+    //public GameObject crosshair;
     public GameObject trainingSign;
     public GameObject trainingSignReceiver;
     private InputBindings _inputBindings;
@@ -110,6 +109,11 @@ public class GameManager : MonoBehaviour
     public bool previousFrozen = false;
     public AudioSource soundEffect;
 
+    // Try to fix the frame rate to 90 fps
+    void Awake() {
+        Application.targetFrameRate = 90;
+    }
+
     void Start()
     {
         _inputBindings = new InputBindings();
@@ -124,7 +128,6 @@ public class GameManager : MonoBehaviour
         receiverManager = FindObjectOfType<ReceiverManager>();
         embodimentManager = FindObjectOfType<EmbodimentManager>();
         eyetrackingValidation = FindObjectOfType<EyetrackingValidation>();
-        simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
         boxBehaviour = FindObjectOfType<BoxBehaviour>();
         lslReceiverOutlets = avatarMain.GetComponent<LSLReceiverOutlets>();
 
@@ -249,11 +252,7 @@ public class GameManager : MonoBehaviour
         // Phase 1: Embodiment (Embodiment Space)
         else if (phase == 1)
         {
-
-            // TODO: let the function be called from the menu manager or an embodiment phase manager 
-            //EnterNextPhase();
-            Debug.LogError("Phase 1");
-            
+            Debug.LogError("Embodiment Phase");
         }
         // Phase 2: Instruction Testing (UI Space)
         else if (phase == 2)
@@ -322,7 +321,7 @@ public class GameManager : MonoBehaviour
            }
            if (role == "signaler")
            {
-            signalerManager.invisibleObject = invisibleObject; // Why?
+            signalerManager.invisibleObjectSignaler = invisibleObject; // Why?
            }
         }
         #endregion
@@ -340,6 +339,21 @@ public class GameManager : MonoBehaviour
         {
             signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
         }
+    }
+
+
+
+    public void FreezeSignaler()
+    {
+        frozen = true;
+        signalerManager.simpleCrosshair.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>().color = Color.red;
+    }
+
+    public void UnfreezeSignaler()
+    {
+        frozen = false;
+        signalerManager.simpleCrosshair.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>().color = Color.white;
+        Debug.Log("Unfreezing");
     }
    
     public void EnterPausePhase()
@@ -414,10 +428,6 @@ public class GameManager : MonoBehaviour
         }
         // receiverManager.Unfreeze();
         // 5. Receiver chooses box 
-        if(receiverManager.boxSelected == true)
-        {
-            boxBehaviour.Selected();
-        }
 
         if (Time.time - _startRoundTime < _timeLimit){
             Debug.LogError("Time exceeded. We're at the end of the round. Receiver did not select");
@@ -630,7 +640,7 @@ public class GameManager : MonoBehaviour
             countdownText.text = "Go!";
             yield return new WaitForSeconds(1);
             countdownText.gameObject.SetActive(false);
-            signalerManager.invisibleObject = crosshair;
+            //signalerManager.invisibleObjectSignaler = crosshair;
             
             StartCoroutine(CountdownTimer(timerCountdownText));
             
