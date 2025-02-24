@@ -274,7 +274,7 @@ public class MenuManager : MonoBehaviour
                 {
                     textComponents[currentTextIndex].gameObject.SetActive(true);
                 }
-                else if (currentTextIndex >= textComponents.Count)  // TODO: re-work this part
+                else if (currentTextIndex >= textComponents.Count)  // If the end of this part's instructions is reached; TODO: re-work this part
                 { 
                     // I think this initiates the Second Part of the instructions
                     if (gameManager.GetCurrentPhase() == 3 && signalerManager.signalerReady == false && !countdownRunning && receiverManager.receiverReady == false)
@@ -289,7 +289,7 @@ public class MenuManager : MonoBehaviour
                     {
                         receiverEyeDataSender.waitReceiver.gameObject.SetActive(true);
                         StartCoroutine(gameManager.Countdown());
-                        Debug.Log("second part did run");
+                        Debug.Log("second part did run, second if");
                         
                     } 
                     else if (gameManager.GetCurrentPhase() == 0) // || gameManager.GetCurrentPhase() == 2)
