@@ -262,6 +262,7 @@ public class SignalerEyeDataSender : MonoBehaviour
 
                     
                     gameManager.FreezeSignaler();
+                    Debug.Log("Freeze SignalerEyeDataSender");
 
                     frozenString = gameManager.frozen.ToString();
                     lSLSignalerOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );

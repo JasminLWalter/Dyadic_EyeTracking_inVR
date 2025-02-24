@@ -207,10 +207,12 @@ public class LSLSignalerInlets : MonoBehaviour
                     if (freeze)
                     {
                         gameManager.FreezeSignaler();
+                        Debug.Log("Freeze LSLSignalerInlets");
                     }
                     else
                     {
                         gameManager.UnfreezeSignaler();
+                        Debug.Log("Unfreeze LSLSignalerInlets");
                     }
                 }
                 //gameManager.frozen = sample[0]=="True";                

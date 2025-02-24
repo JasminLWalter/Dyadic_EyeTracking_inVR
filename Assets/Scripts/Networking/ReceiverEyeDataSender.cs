@@ -354,6 +354,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
 
 
                 gameManager.UnfreezeSignaler();
+                Debug.Log("Unfreeze ReceiverEyeDataSender");
                 
                 frozenString = gameManager.frozen.ToString();
                 lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );

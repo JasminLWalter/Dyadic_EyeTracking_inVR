@@ -346,13 +346,14 @@ public class GameManager : MonoBehaviour
     {
         frozen = true;
         signalerManager.simpleCrosshair.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>().color = Color.red;
+        debugging.Log("Freeze method");
     }
 
     public void UnfreezeSignaler()
     {
         frozen = false;
         signalerManager.simpleCrosshair.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>().color = Color.white;
-        Debug.Log("Unfreezing");
+        Debug.Log("Unfreeze method");
     }
    
     public void EnterPausePhase()

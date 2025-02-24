@@ -173,10 +173,12 @@ public class LSLReceiverInlets : MonoBehaviour
                     if (freeze)
                     {
                         gameManager.FreezeSignaler();
+                        Debug.Log("Freeze LSLReceiverInlets");
                     }
                     else
                     {
                         gameManager.UnfreezeSignaler();
+                        Debug.Log("Unfreeze LSLReceiverInlets");
                     }
                 }
                 
