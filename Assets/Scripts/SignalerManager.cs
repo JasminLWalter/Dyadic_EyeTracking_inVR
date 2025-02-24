@@ -169,8 +169,7 @@ public class SignalerManager : MonoBehaviour
 
             if(signalerReady == false)
             {
-                StartCoroutine(menuManager.ShowTexts(TextsPhase3Signaler, () => signalerReady = false));  // Once the coroutine is done, signalerReady will turn false
-                signalerReady = true;  // signalerReady is turned true, until the coroutine is done 
+                StartCoroutine(menuManager.ShowTexts(TextsPhase3Signaler, () => signalerReady = true));  
                 string signalerReadyString = signalerReady.ToString();
                 lSLSignalerOutlets.lslOSignalerReady.push_sample(new string[] {signalerReadyString});
             }

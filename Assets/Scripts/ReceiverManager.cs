@@ -51,8 +51,6 @@ public class ReceiverManager : MonoBehaviour
     public bool CountdownStarted = false;
 
 
-    public bool secondCheck = false;  // TODO: what is it used for?
-
     // Networking
     public LSLReceiverOutlets lSLReceiverOutlets;
 
@@ -128,9 +126,7 @@ public class ReceiverManager : MonoBehaviour
                     {
                         gameManager.PlayAudio();
                         selectCounter++;
-                        secondCheck = true;
-                        StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => receiverReady = false));
-                        receiverReady = true;
+                        StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => receiverReady = true));
                         string receiverReadyString = receiverReady.ToString();
                         lSLReceiverOutlets.lslOReceiverReady.push_sample(new string[] {receiverReadyString} );
                         
