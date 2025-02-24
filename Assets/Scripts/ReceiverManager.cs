@@ -119,7 +119,7 @@ public class ReceiverManager : MonoBehaviour
             }
             
             // If the receiver is selecting the current box and the current phase is the testing phase (isn't the second condition redundant?)
-            if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3)   // change to GetCurrentPhase() == 2
+            if (gameManager.frozen && _inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3)   // change to GetCurrentPhase() == 2
             {   
                 // If still in training phase
                 if (selectCounter < 1)
@@ -142,7 +142,7 @@ public class ReceiverManager : MonoBehaviour
                     }
                 }
                 // If not in training phase anymore
-                else if (selectCounter >= 1 && gameManager.frozen)  // TODO: put gameManager.frozen to the Raycast-if
+                else if (selectCounter >= 1 && gameManager.frozen)  
                 {
                     _lastHit.gameObject.SendMessage("Selected");
                     selectCounter++;

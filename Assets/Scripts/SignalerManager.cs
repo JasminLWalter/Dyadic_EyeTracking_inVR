@@ -140,7 +140,7 @@ public class SignalerManager : MonoBehaviour
         }
 
 
-        if (gameManager.role == "signaler" && _inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)  // TODO: check if gameManager.role == "signaler" is necessary, since the script is disabled if the role is receiver anyways
+        if (!gameManager.frozen && gameManager.role == "signaler" && _inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)  // TODO: check if gameManager.role == "signaler" is necessary, since the script is disabled if the role is receiver anyways
         {
             if(freezeCounter < 1)
             {
