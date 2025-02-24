@@ -285,13 +285,13 @@ public class MenuManager : MonoBehaviour
                         
                     } 
                     //and this the countdown
-                    if (gameManager.GetCurrentPhase() == 3 && signalerManager.signalerReady == true && countdownRunning && receiverManager.receiverReady == true && receiverManager.secondCheck)
+                    /*if (gameManager.GetCurrentPhase() == 3 && signalerManager.signalerReady == true && countdownRunning && receiverManager.receiverReady == true && receiverManager.secondCheck)
                     {
                         receiverEyeDataSender.waitReceiver.gameObject.SetActive(true);
                         StartCoroutine(gameManager.Countdown());
                         Debug.Log("second part did run, second if");
                         
-                    } 
+                    } */
                     else if (gameManager.GetCurrentPhase() == 0) // || gameManager.GetCurrentPhase() == 2)
                     {
                         gameManager.EnterNextPhase();
