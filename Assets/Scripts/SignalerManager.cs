@@ -37,7 +37,7 @@ public class SignalerManager : MonoBehaviour
     
     // Game flow variables
     public List<TMP_Text> TextsPhase3Signaler;  // A list of instructional texts for the training phase
-    public bool signalerReady = false;  // TODO: What is this variable used for?
+    public bool signalerReady = false;  // If true, the signaler has read all instructions of the current phase
     public int freezeCounter = 0;  // Stores the number of freezes 
 
     // Networking
@@ -149,10 +149,6 @@ public class SignalerManager : MonoBehaviour
             freezeCounter += 1;
 
             Vector3 hitPoint = hitData.point;
-
-            // Debug focus points 
-            //focusDebugSphere.SetActive(true);
-            //focusDebugSphere.transform.position = hitPoint;
 
             // Create sample array
             float[] sample = new float[3];

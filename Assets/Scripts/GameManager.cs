@@ -34,7 +34,6 @@ public class GameManager : MonoBehaviour
     public GameObject avatarMain;
     public GameObject avatarSecondary;
     public GameObject invisibleObject;
-    //public GameObject crosshair;
     public GameObject trainingSign;
     public GameObject trainingSignReceiver;
     private InputBindings _inputBindings;

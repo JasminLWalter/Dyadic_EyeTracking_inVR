@@ -43,7 +43,7 @@ public class ReceiverManager : MonoBehaviour
     // Game flow variables
     public bool boxSelected = false;  // Shows if a box has been selected in the current round
     public List<TMP_Text> TextsPhase3Receiver;  // A list of instructional texts for the training phase
-    public bool receiverReady = false;  // TODO: what is it used for?
+    public bool receiverReady = false;  // If true, the receiver has read all instructions of the current phase
     public int selectCounter = 0;  // Stores the number of selections made
 
     // Countdown variables (not used at the moment)
