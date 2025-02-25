@@ -155,7 +155,7 @@ public class LSLReceiverInlets : MonoBehaviour
 
     public void ProcessStringSample(string[] sample, double timeStamp, string streamName)
     {
-        // Debug.LogWarning($"Received string sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
+        Debug.LogWarning($"Received string sample from {streamName} at {timeStamp}: {string.Join(", ", sample)}");
 
         // Example: Handling specific string stream data
         switch (streamName)
