@@ -57,7 +57,7 @@ public class SavingManager : MonoBehaviour
     void Update()
     {
         phase = gameManager.phase;
-        trialNumber = gameManager.trialNumber;
+        trialNumber = gameManager._currentRound;
         // trialFailedCount = gameManager.trialFailedCount;
         // validationError = eyetrackingValidation.GetValidationError();
         // valCalCounter = eyetrackingValidation.valCalCounter;

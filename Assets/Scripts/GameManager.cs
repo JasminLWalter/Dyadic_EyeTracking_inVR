@@ -11,102 +11,108 @@ using ViveSR.anipal.Eye;
 using System;
 public class GameManager : MonoBehaviour
 {
-    public bool debugging = false;
+    [Tooltip("If true, it prevents eye tracking validation and calibration")]
+    public bool debugging = false; 
 
-    [Tooltip("Stores the current condition of the experiment.")]
-    [SerializeField] private int condition = 1;  // what condition is meant here? freeze versus free moving condition or milky versus clear glass condition?
+    // Experiment parameters
     [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: Testing Phase (Testing Space); Phase 4: End Phase (UI Space)")]
     public int phase = 0;
+    private float probabilityForMilky = 0.5f;
+    public string role;
+    [Tooltip("Must be an even number.")]
+    [SerializeField] private int roundsPerCondition;
 
+
+    // References to managers
     private ReceiverManager receiverManager;
-
-    private EyetrackingValidation eyetrackingValidation;
     private SignalerManager signalerManager;
     private EmbodimentManager embodimentManager;
-    private BoxBehaviour boxBehaviour;
     private MenuManager menuManager;
 
+    
+    private BoxBehaviour boxBehaviour;
+
+    // Player variables
     public VRRig vRRig;
     public GameObject xrOriginSetup;
-    public GameObject signaler;
-
-    public GameObject receiver;
+    public GameObject invisibleObject;
     public GameObject avatarMain;
     public GameObject avatarSecondary;
-    public GameObject invisibleObject;
-    //public GameObject crosshair;
+    public GameObject signaler;
+    public GameObject receiver;
+
+
+    
+    
+    
+    
+    
+    private InputBindings _inputBindings;
+
+
+    // Game flow variables
+    public bool frozen = false;
+    public bool previousFrozen = false;
+    private int score = 0;
+    public int _currentRound = 0; //only public for debugging
+    private bool _selected = false;
+    public int trialFailedCount = 0;
+    private bool firstSelectionMade = false;
+    public bool milkyGlassBool;
+    private bool[] milkyBools; // Stores the boolean values for the clear or milky glass for all the trial rounds
+    private bool trainingEnd = false;
+
+
+    // Ressources 
+    public GameObject milkyGlass;
+    public GameObject clearGlass;
+    [SerializeField] public List<GameObject> boxes = null;
+    Vector3 pauseRoomSignaler = new Vector3();
+    Vector3 pauseRoomReceiver = new Vector3();
+    [SerializeField] private List<Vector3> spaceLocationsSignaler = null;
+    [SerializeField] private List<Vector3> spaceLocationsReceiver = null;
+    [Tooltip("There should be as many rewards as there are inner boxes.")]
+    [SerializeField] private List<int> rewards;
+    private List<int> shuffledRewards; // TODO: fuse with the above?
+    public AudioSource soundEffect;
+
+    
+    // UI 
     public GameObject trainingSign;
     public GameObject trainingSignReceiver;
-    private InputBindings _inputBindings;
-    
-    private int score = 0;
-    private List<int> shuffledRewards;
-    public string role;
     [SerializeField] private TextMeshProUGUI  scoreDisplay;
     [SerializeField] private TextMeshProUGUI roundsDisplay;
     [SerializeField] private TextMeshProUGUI  scoreDisplayReceiver;
     [SerializeField] private TextMeshProUGUI roundsDisplayReceiver;
-    [SerializeField] private GameObject TimeExceededTMP;
-
-    [SerializeField] private GameObject TimeExceededTMPReceiver;
-
-    [Tooltip("Must be an even number.")]
-    [SerializeField] private int roundsPerCondition;
-    public int _currentRound = 0; //only public for debugging
-    public bool _startedRound = false;
-    private bool _selected = false;
-    public bool firstFreeze = false; // Why is this variable needed?
-    public bool firstFreezeReceiver = false;  // Why is this variable needed?
-    [SerializeField] public List<GameObject> boxes = null;
     
 
-    public int trialNumber = 0;
-    public int trialFailedCount = 0;
-
-    Vector3 pauseRoomSignaler = new Vector3();
-    Vector3 pauseRoomReceiver = new Vector3();
-
-    private bool firstSelectionMade = false;
-
+    // Countdown variables, note: the Countdown has not been implemented yet
     private int countdownTime = 3;
     public TextMeshProUGUI  countdownText;
-
     public TextMeshProUGUI  countdownTextReceiver;
     public TextMeshProUGUI  timerCountdownText;
     public TextMeshProUGUI  timerCountdownTextReceiver;
-    public GameObject milkyGlass;
-    public GameObject clearGlass;
-
-    [SerializeField] private List<Vector3> spaceLocationsReceiver = null;
-    [SerializeField] private List<Vector3> spaceLocationsSignaler = null;
-
-    [Tooltip("There should be as many rewards as there are inner boxes.")]
-    [SerializeField] private List<int> rewards;
-
-    private bool _ValidationSuccessStatus = true; 
-    
+    [SerializeField] private GameObject TimeExceededTMP;
+    [SerializeField] private GameObject TimeExceededTMPReceiver;
     public bool TimeExceeded = false;
-    public bool running = false;
-    public bool calDoneOneTime = false;
-    
-
+    public bool countdownRunning = false;
     public float _timeLimit = 3;
     private float startTime;
     private float _startRoundTime = 0;
 
-    private float probabilityForMilky = 0.5f;
-
-    public LSLReceiverOutlets lslReceiverOutlets;
-    public bool countdownRunning = false;
-    public bool milkyGlassBool;
-    // Stores the boolean values for the clear or milky glass for all the trial rounds
-    private bool[] milkyBools;
-    private bool trainingEnd = false;
+    
+    
+    // Calibration & Validation variables
+    private bool _ValidationSuccessStatus = true; 
+    public bool calDoneOneTime = false;
     private int calCounter = 0;
+    private EyetrackingValidation eyetrackingValidation;
+    
 
-    public bool frozen = false;
-    public bool previousFrozen = false;
-    public AudioSource soundEffect;
+    // Networking
+    public LSLReceiverOutlets lslReceiverOutlets;
+
+
 
     // Try to fix the frame rate to 90 fps
     void Awake() {
@@ -398,7 +404,6 @@ public class GameManager : MonoBehaviour
         
         string milkyGlassBoolString = milkyGlassBool.ToString();
         lslReceiverOutlets.lslOmilkyGlassBool.push_sample(new string[] {milkyGlassBoolString});
-        // _startedRound = true;
         _selected = false;
 
         // 1. Freeze receiver 
@@ -502,9 +507,7 @@ public class GameManager : MonoBehaviour
         scoreDisplay.text = "Score: " + score;
         _currentRound += 1;
         _selected = true;
-        // _startedRound = false;
         receiverManager.boxSelected = false;
-
     }
 
     public void ResetScoreRound()
@@ -581,21 +584,6 @@ public class GameManager : MonoBehaviour
     // Called once in the start function
     private void ShowMilkyGlassRandom()
     {
-        /*
-        float randomValue = UnityEngine.Random.value;
-         
-         if(randomValue < probabilityForMilky){
-            milkyGlassBool = true;
-         } 
-         else 
-         {
-            milkyGlassBool = false;
-         }
-
-        string milkyGlassBoolString = milkyGlassBool.ToString();
-        lslReceiverOutlets.lslOmilkyGlassBool.push_sample(new string[] {milkyGlassBoolString});
-        */
-
         // Create an array to store the boolean values of whether the glass is cear or milky in the respective round
         milkyBools = new bool[roundsPerCondition];
         // Fill the first half of the array with 'true' values
@@ -619,10 +607,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    // Not used yet
     public IEnumerator Countdown()
     {
-        running = true;
         int count = countdownTime;
         yield return new WaitForSeconds(1f);
 
@@ -638,7 +625,6 @@ public class GameManager : MonoBehaviour
             countdownText.text = "Go!";
             yield return new WaitForSeconds(1);
             countdownText.gameObject.SetActive(false);
-            //signalerManager.invisibleObjectSignaler = crosshair;
             
             StartCoroutine(CountdownTimer(timerCountdownText));
             
@@ -669,38 +655,40 @@ public class GameManager : MonoBehaviour
         
     }
 
-public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
-{
-    countdownRunning = true;
-    receiverManager.CountdownStarted = true;
-    yield return new WaitForSeconds(1);
-    int count = 20;
-    while (count > 0)
+// Not used yet
+    public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
     {
-        if ((frozen && signalerManager.freezeCounter > 1)  || (_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 1))
-        {
-            CDT.text = string.Empty; 
-            Debug.LogError("stopped everything");
-            yield break; 
-        }
-        if (count <= 3)
-        {
-            CDT.text = $"<b><color=red>{count}</color></b>";
-        }
-        else
-        {
-            CDT.text = count.ToString();
-        }
+        countdownRunning = true;
+        receiverManager.CountdownStarted = true;
         yield return new WaitForSeconds(1);
-        count--;
+        int count = 20;
+        while (count > 0)
+        {
+            if ((frozen && signalerManager.freezeCounter > 1)  || (_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 1))
+            {
+                CDT.text = string.Empty; 
+                Debug.LogError("stopped everything");
+                yield break; 
+            }
+            if (count <= 3)
+            {
+                CDT.text = $"<b><color=red>{count}</color></b>";
+            }
+            else
+            {
+                CDT.text = count.ToString();
+            }
+            yield return new WaitForSeconds(1);
+            count--;
+        }
+        // Optionally, clear the countdown text after the loop ends
+        CDT.text = string.Empty;
+        StartCoroutine(ShowTimeExceeded());
+        trialFailedCount++;
+        UpdateScore(-20);
+        countdownRunning = false;
     }
-    // Optionally, clear the countdown text after the loop ends
-    CDT.text = string.Empty;
-    StartCoroutine(ShowTimeExceeded());
-    trialFailedCount++;
-    UpdateScore(-20);
-    countdownRunning = false;
-}
+
     public void PlayAudio()
     {
         // Play the audio
