@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int condition = 1;  // what condition is meant here? freeze versus free moving condition or milky versus clear glass condition?
     [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: Testing Phase (Testing Space); Phase 4: End Phase (UI Space)")]
     public int phase = 0;
-    private int currentPhase = 0;
 
     private ReceiverManager receiverManager;
 
@@ -26,7 +25,6 @@ public class GameManager : MonoBehaviour
     private EmbodimentManager embodimentManager;
     private BoxBehaviour boxBehaviour;
     private MenuManager menuManager;
-    private SimpleCrosshair simpleCrosshair;
 
     public VRRig vRRig;
     public GameObject xrOriginSetup;
@@ -36,7 +34,7 @@ public class GameManager : MonoBehaviour
     public GameObject avatarMain;
     public GameObject avatarSecondary;
     public GameObject invisibleObject;
-    public GameObject crosshair;
+    //public GameObject crosshair;
     public GameObject trainingSign;
     public GameObject trainingSignReceiver;
     private InputBindings _inputBindings;
@@ -129,7 +127,6 @@ public class GameManager : MonoBehaviour
         receiverManager = FindObjectOfType<ReceiverManager>();
         embodimentManager = FindObjectOfType<EmbodimentManager>();
         eyetrackingValidation = FindObjectOfType<EyetrackingValidation>();
-        simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
         boxBehaviour = FindObjectOfType<BoxBehaviour>();
         lslReceiverOutlets = avatarMain.GetComponent<LSLReceiverOutlets>();
 
@@ -342,6 +339,22 @@ public class GameManager : MonoBehaviour
             signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
         }
     }
+
+
+
+    public void FreezeSignaler()
+    {
+        frozen = true;
+        signalerManager.simpleCrosshair.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>().color = Color.red;
+        Debug.Log("Freeze method");
+    }
+
+    public void UnfreezeSignaler()
+    {
+        frozen = false;
+        signalerManager.simpleCrosshair.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>().color = Color.white;
+        Debug.Log("Unfreeze method");
+    }
    
     public void EnterPausePhase()
     {
@@ -359,15 +372,13 @@ public class GameManager : MonoBehaviour
 
     public void ReturnToCurrentPhase()
     {
-        currentPhase = GetCurrentPhase();
-
         if (role == "receiver")
         {
-            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(currentPhase), xrOriginSetup);
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase), xrOriginSetup);
         }
         if (role == "signaler") 
         {
-            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(currentPhase), xrOriginSetup);
+            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
         }
 
     }
@@ -627,7 +638,7 @@ public class GameManager : MonoBehaviour
             countdownText.text = "Go!";
             yield return new WaitForSeconds(1);
             countdownText.gameObject.SetActive(false);
-            signalerManager.invisibleObjectSignaler = crosshair;
+            //signalerManager.invisibleObjectSignaler = crosshair;
             
             StartCoroutine(CountdownTimer(timerCountdownText));
             

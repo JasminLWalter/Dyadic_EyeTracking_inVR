@@ -12,6 +12,7 @@ using System;
 
 public class ReceiverManager : MonoBehaviour
 {
+    // Debug
     public bool debugRunWithoutVR = false;
 
     // Input bindings determine from what VR devices and which buttons the input values are retrieved 
@@ -49,8 +50,6 @@ public class ReceiverManager : MonoBehaviour
     private bool countdownRunning = false;
     public bool CountdownStarted = false;
 
-
-    public bool secondCheck = false;  // TODO: what is it used for?
 
     // Networking
     public LSLReceiverOutlets lSLReceiverOutlets;
@@ -118,7 +117,7 @@ public class ReceiverManager : MonoBehaviour
             }
             
             // If the receiver is selecting the current box and the current phase is the testing phase (isn't the second condition redundant?)
-            if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3)   // change to GetCurrentPhase() == 2
+            if (gameManager.frozen && _inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3)   // change to GetCurrentPhase() == 2
             {   
                 // If still in training phase
                 if (selectCounter < 1)
@@ -127,9 +126,7 @@ public class ReceiverManager : MonoBehaviour
                     {
                         gameManager.PlayAudio();
                         selectCounter++;
-                        secondCheck = true;
-                        StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => receiverReady = false));
-                        receiverReady = true;
+                        StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => receiverReady = true));
                         string receiverReadyString = receiverReady.ToString();
                         lSLReceiverOutlets.lslOReceiverReady.push_sample(new string[] {receiverReadyString} );
                         
@@ -141,7 +138,7 @@ public class ReceiverManager : MonoBehaviour
                     }
                 }
                 // If not in training phase anymore
-                else if (selectCounter >= 1 && gameManager.frozen)  // TODO: put gameManager.frozen to the Raycast-if
+                else if (selectCounter >= 1 && gameManager.frozen)  
                 {
                     _lastHit.gameObject.SendMessage("Selected");
                     selectCounter++;
