@@ -120,13 +120,13 @@ public class ReceiverManager : MonoBehaviour
             // If the receiver is selecting the current box and the current phase is the testing phase (isn't the second condition redundant?)
             if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3)   // change to GetCurrentPhase() == 2
             {   
-                // If receiver tries to select a box the first time, they don't have to wait for the signaler to freeze
-                if (selectCounter < 1)
+                // If receiver tries to select a box the first or second time, they don't have to wait for the signaler to freeze
+                if (selectCounter < 2)
                 {
+                    gameManager.PlayAudio();
+                    selectCounter++;
                     if(menuManager.didRunReceiver && !receiverReady)
                     {
-                        gameManager.PlayAudio();
-                        selectCounter++;
                         StartCoroutine(menuManager.ShowTexts(TextsPhase3Receiver, () => receiverReady = true));
                         string receiverReadyString = receiverReady.ToString();
                         lSLReceiverOutlets.lslOReceiverReady.push_sample(new string[] {receiverReadyString} );
@@ -138,8 +138,8 @@ public class ReceiverManager : MonoBehaviour
                         }
                     }
                 }
-                // If it is the second or more selection
-                else if (selectCounter >= 1 && gameManager.frozen)  
+                // If it is the third or more selection
+                else if (gameManager.frozen)  
                 {
                     _lastHit.gameObject.SendMessage("Selected");
                     selectCounter++;

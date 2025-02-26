@@ -3410,7 +3410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f0a306efde0e754386e1457bd8f3fa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugging: 1
+  debugging: 0
   phase: 0
   role: 
   roundsPerCondition: 80
@@ -3466,6 +3466,7 @@ MonoBehaviour:
   TimeExceeded: 0
   countdownRunning: 0
   _timeLimit: 30
+  _ValidationSuccessStatus: 1
   calDoneOneTime: 0
   lslReceiverOutlets: {fileID: 0}
 --- !u!4 &171754635
@@ -26772,7 +26773,6 @@ MonoBehaviour:
   signalerManager: {fileID: 777719402}
   boxSelected: 0
   TextsPhase3Receiver:
-  - {fileID: 739091957}
   - {fileID: 2076410788}
   - {fileID: 1789295080}
   receiverReady: 0
@@ -31499,7 +31499,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 2.31, y: 5}
+  m_AnchoredPosition: {x: 1.219, y: 6.073}
   m_SizeDelta: {x: 644, y: 514}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1966964959

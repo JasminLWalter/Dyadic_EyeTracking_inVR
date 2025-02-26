@@ -525,24 +525,18 @@ public class GameManager : MonoBehaviour
     // Trigger eyetracking calibration every 30 rounds
     private IEnumerator TriggerEyetrackingCalibration()
     {
-        Debug.Log("started eye coroutine");
-        // Once phase 3 has been entered start the eye tracking calibration cycle
+        // Wait until phase 3 has been entered to start the eye tracking calibration cycle
         bool FirstCal() => phase == 3;
         yield return new WaitUntil(FirstCal);
-        Debug.Log("before while");
 
         while(!debugging)
         {
-            Debug.Log("while ");
-            //SRanipal_Eye_v2.LaunchEyeCalibration();
+            SRanipal_Eye_v2.LaunchEyeCalibration(); 
             EnterPausePhase();
             eyetrackingValidation.ValidateEyeTracking();
-            // Do as many calibrations as needed to reduce the validation error to below 1
-            
-            // Debug // TODO: solve the problem
-            _ValidationSuccessStatus = true;
 
-            // Wait for 30 rounds
+            // Do as many calibrations as needed to reduce the validation error to below 1
+            // If validation was successful, wait for 30 rounds
             bool NextVal() => (_ValidationSuccessStatus == false || (_currentRound % 30 == 0 && _currentRound != 0));
             yield return new WaitUntil(NextVal); 
         }
