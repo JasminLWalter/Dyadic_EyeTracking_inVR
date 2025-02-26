@@ -105,7 +105,7 @@ public class ReceiverManager : MonoBehaviour
             if (_lastHit == null) // if it is the first box that is pointed at
             {
                 _lastHit = hitData.collider;
-                _lastHit.gameObject.SendMessage("PointedAt"); // TODO: change the name of the functtion
+                _lastHit.gameObject.SendMessage("PointedAt"); 
             }
             else if (_lastHit != null && _lastHit != hitData.collider) // if it is the second (or more) box that is pointed at
             {
@@ -158,13 +158,7 @@ public class ReceiverManager : MonoBehaviour
 
                     StartCoroutine(gameManager.Condition1());  // TODO: let this not be called from this script
                     //StartCoroutine(CountdownTimer(timerCountdownText));
-                    gameManager.trialNumber++;
                     lSLReceiverOutlets.lslOSelectCounter.push_sample(new int[] {selectCounter} );
-                    
-                    if (gameManager.role == "receiver") // TODO: if-clause not necessary, since the script is disabled if role is signaler anyways
-                    {
-                        gameManager._startedRound = false;
-                    }
                 }
             }
 

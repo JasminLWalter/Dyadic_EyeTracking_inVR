@@ -160,7 +160,6 @@ public class SignalerManager : MonoBehaviour
             lSLSignalerOutlets.lslORaycastHitSignaler.push_sample(sample);
             int freezeCounterSignaler = freezeCounter;
             lSLSignalerOutlets.lslOFreezeCounterSignaler.push_sample(new int[] {freezeCounterSignaler});
-            gameManager.firstFreeze = true; // Why is this necessary?
 
 
             if(signalerReady == false)
