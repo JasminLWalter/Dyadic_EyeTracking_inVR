@@ -85,8 +85,9 @@ public class ReceiverManager : MonoBehaviour
             ray = new Ray(preferredHandTransform.position, preferredHandTransform.forward);
         }
         else
-        {
-            Debug.LogError("No VR devices found in this frame. Using mouse position for receiver ray cast."); 
+        {   // This error appears once in the beginning of the game, because the VR devices are activated later. 
+            // Thus, the error is only important if it appears continuously.
+            Debug.LogError("No VR devices found in this frame. Using mouse position for receiver ray cast. (Error is only important, if it appears continuously.)"); 
             Vector2 mouseScreenPosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
             ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
         }
@@ -117,9 +118,9 @@ public class ReceiverManager : MonoBehaviour
             }
             
             // If the receiver is selecting the current box and the current phase is the testing phase (isn't the second condition redundant?)
-            if (gameManager.frozen && _inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3)   // change to GetCurrentPhase() == 2
+            if (_inputBindings.Player.SelectBox.triggered && gameManager.GetCurrentPhase() == 3)   // change to GetCurrentPhase() == 2
             {   
-                // If still in training phase
+                // If receiver tries to select a box the first time, they don't have to wait for the signaler to freeze
                 if (selectCounter < 1)
                 {
                     if(menuManager.didRunReceiver && !receiverReady)
@@ -137,7 +138,7 @@ public class ReceiverManager : MonoBehaviour
                         }
                     }
                 }
-                // If not in training phase anymore
+                // If it is the second or more selection
                 else if (selectCounter >= 1 && gameManager.frozen)  
                 {
                     _lastHit.gameObject.SendMessage("Selected");

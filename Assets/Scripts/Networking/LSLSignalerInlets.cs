@@ -27,8 +27,8 @@ public class LSLSignalerInlets : MonoBehaviour
     {
        
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
-        receiverManager = GameObject.Find("Receiver").GetComponent<ReceiverManager>();
+        signalerManager = GameObject.Find("SignalerManager").GetComponent<SignalerManager>();
+        receiverManager = GameObject.Find("ReceiverManager").GetComponent<ReceiverManager>();
 
         int streamCount = streamNames.Length;
         streamInlets = new StreamInlet[streamCount];

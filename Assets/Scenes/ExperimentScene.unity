@@ -3411,29 +3411,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugging: 1
-  condition: 0
   phase: 0
+  role: 
+  roundsPerCondition: 80
   vRRig: {fileID: 7646968462962455502}
   xrOriginSetup: {fileID: 7313654230535762584}
-  signaler: {fileID: 777719401}
-  receiver: {fileID: 1740773029}
+  invisibleObject: {fileID: 1068163931}
   avatarMain: {fileID: 3617591434803581678}
   avatarSecondary: {fileID: 1980098680}
-  invisibleObject: {fileID: 1068163931}
-  trainingSign: {fileID: 819250514}
-  trainingSignReceiver: {fileID: 1090037908}
-  role: 
-  scoreDisplay: {fileID: 94297460}
-  roundsDisplay: {fileID: 269893570}
-  scoreDisplayReceiver: {fileID: 1743956259}
-  roundsDisplayReceiver: {fileID: 1882278240}
-  TimeExceededTMP: {fileID: 115359661}
-  TimeExceededTMPReceiver: {fileID: 301607826}
-  roundsPerCondition: 80
+  signaler: {fileID: 777719401}
+  receiver: {fileID: 1740773029}
+  frozen: 0
+  previousFrozen: 0
   _currentRound: 0
-  _startedRound: 0
-  firstFreeze: 0
-  firstFreezeReceiver: 0
+  trialFailedCount: 0
+  milkyGlassBool: 0
+  milkyGlass: {fileID: 1020737284}
+  clearGlass: {fileID: 593205184}
   boxes:
   - {fileID: 220224549}
   - {fileID: 1230517313}
@@ -3443,37 +3437,37 @@ MonoBehaviour:
   - {fileID: 1875879819}
   - {fileID: 103348864}
   - {fileID: 628579363}
-  trialNumber: 0
-  trialFailedCount: 0
-  countdownText: {fileID: 153426613}
-  countdownTextReceiver: {fileID: 443054693}
-  timerCountdownText: {fileID: 2066849474}
-  timerCountdownTextReceiver: {fileID: 0}
-  milkyGlass: {fileID: 1020737284}
-  clearGlass: {fileID: 593205184}
-  spaceLocationsReceiver:
-  - {x: -114.5, y: -29, z: 1.2}
-  - {x: -98.5, y: 20, z: -50.6}
-  - {x: -113.5, y: -29, z: 1.2}
-  - {x: -3, y: 3.35, z: -7.5}
-  - {x: -113.5, y: -29, z: 1.2}
   spaceLocationsSignaler:
   - {x: 0, y: -29, z: 55}
   - {x: -99, y: -100, z: 80}
   - {x: 0, y: -29, z: 55}
   - {x: -3.1, y: 3.35, z: 5}
   - {x: 0, y: -29, z: 55}
+  spaceLocationsReceiver:
+  - {x: -114.5, y: -29, z: 1.2}
+  - {x: -98.5, y: 20, z: -50.6}
+  - {x: -113.5, y: -29, z: 1.2}
+  - {x: -3, y: 3.35, z: -7.5}
+  - {x: -113.5, y: -29, z: 1.2}
   rewards: 000000000500000000000000050000000a000000000000000500000000000000
-  TimeExceeded: 0
-  running: 0
-  calDoneOneTime: 0
-  _timeLimit: 30
-  lslReceiverOutlets: {fileID: 0}
-  countdownRunning: 0
-  milkyGlassBool: 0
-  frozen: 0
-  previousFrozen: 0
   soundEffect: {fileID: 544546573}
+  trainingSign: {fileID: 819250514}
+  trainingSignReceiver: {fileID: 1090037908}
+  scoreDisplay: {fileID: 94297460}
+  roundsDisplay: {fileID: 269893570}
+  scoreDisplayReceiver: {fileID: 1743956259}
+  roundsDisplayReceiver: {fileID: 1882278240}
+  countdownText: {fileID: 153426613}
+  countdownTextReceiver: {fileID: 443054693}
+  timerCountdownText: {fileID: 2066849474}
+  timerCountdownTextReceiver: {fileID: 0}
+  TimeExceededTMP: {fileID: 115359661}
+  TimeExceededTMPReceiver: {fileID: 301607826}
+  TimeExceeded: 0
+  countdownRunning: 0
+  _timeLimit: 30
+  calDoneOneTime: 0
+  lslReceiverOutlets: {fileID: 0}
 --- !u!4 &171754635
 Transform:
   m_ObjectHideFlags: 0
@@ -12495,7 +12489,7 @@ GameObject:
   - component: {fileID: 777719403}
   - component: {fileID: 777719402}
   m_Layer: 0
-  m_Name: Signaler
+  m_Name: SignalerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12513,7 +12507,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 760160e0fc9fedb49b6f8756c65c01ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusDebugSphere: {fileID: 1896939840}
   debugRunWithoutVR: 0
   hmd: {fileID: 1516416796}
   eyePositionCombinedWorld: {x: 0, y: 0, z: 0}
@@ -12523,7 +12516,10 @@ MonoBehaviour:
   simpleCrosshair: {fileID: 1911593874}
   menuManager: {fileID: 1398317297}
   gameManager: {fileID: 171754634}
-  TextsPhase3Signaler: []
+  TextsPhase3Signaler:
+  - {fileID: 980921648}
+  - {fileID: 263224819}
+  - {fileID: 21529636}
   signalerReady: 0
   freezeCounter: 0
   lSLSignalerOutlets: {fileID: 7646968462962455504}
@@ -26743,7 +26739,7 @@ GameObject:
   - component: {fileID: 1740773031}
   - component: {fileID: 1740773030}
   m_Layer: 0
-  m_Name: Receiver
+  m_Name: ReceiverManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26756,7 +26752,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1740773029}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fc515671ee60774a977218babec865e, type: 3}
   m_Name: 
@@ -26776,12 +26772,12 @@ MonoBehaviour:
   signalerManager: {fileID: 777719402}
   boxSelected: 0
   TextsPhase3Receiver:
+  - {fileID: 739091957}
   - {fileID: 2076410788}
   - {fileID: 1789295080}
   receiverReady: 0
   selectCounter: 0
   CountdownStarted: 0
-  secondCheck: 0
   lSLReceiverOutlets: {fileID: 7646968462962455506}
 --- !u!4 &1740773031
 Transform:
@@ -34852,7 +34848,7 @@ GameObject:
   - component: {fileID: 2136688601}
   - component: {fileID: 2136688600}
   m_Layer: 0
-  m_Name: TestingInstructions
+  m_Name: TestingInstructionsSignaler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

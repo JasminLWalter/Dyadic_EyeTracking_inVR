@@ -12,8 +12,7 @@ using ViveSR.anipal.Eye;
 public class SignalerManager : MonoBehaviour
 {
     // Debug
-    public GameObject focusDebugSphere;  // Appears at the focus point when the signaler has been frozen
-    public bool debugRunWithoutVR = false;
+    public bool debugRunWithoutVR = false;  // Forces Unity to use mouse input instead of VR device input
 
     // Input bindings determine from what VR devices and which buttons the input values are retrieved 
     private InputBindings _inputBindings;
@@ -89,8 +88,9 @@ public class SignalerManager : MonoBehaviour
             ray = new Ray(eyePositionCombinedWorld, eyeDirectionCombinedWorld);
         }
         else  
-        {
-           Debug.LogError("No VR devices found in this frame. Using mouse position for signaler ray cast."); 
+        {   // This error appears once in the beginning of the game, because the VR devices are activated later. 
+            // Thus, the error is only important if it appears continuously.
+           Debug.LogError("No VR devices found in this frame. Using mouse position for signaler ray cast. (Error is only important, if it appears continuously.)"); 
            Vector2 mouseScreenPosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
            ray = Camera.main.ScreenPointToRay(mouseScreenPosition); 
         }

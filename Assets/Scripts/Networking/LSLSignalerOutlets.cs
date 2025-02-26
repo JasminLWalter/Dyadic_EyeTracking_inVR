@@ -70,7 +70,7 @@ public class LSLSignalerOutlets : MonoBehaviour
     private double unityTimestamp;
     void Start()
     {
-        signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
+        signalerManager = GameObject.Find("SignalerManager").GetComponent<SignalerManager>();
 
 
         // // Metadata

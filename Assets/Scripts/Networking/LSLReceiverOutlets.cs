@@ -76,7 +76,7 @@ public class LSLReceiverOutlets : MonoBehaviour
 
     void Start()
     {
-        receiverManager = GameObject.Find("Receiver").GetComponent<ReceiverManager>();
+        receiverManager = GameObject.Find("ReceiverManager").GetComponent<ReceiverManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         // // Metadata

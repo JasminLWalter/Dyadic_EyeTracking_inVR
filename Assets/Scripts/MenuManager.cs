@@ -180,8 +180,6 @@ public class MenuManager : MonoBehaviour
             }
             if (gameManager.role == "receiver" && !phase3CoroutineRunningReceiver)
             {
-                //xrOriginSetup.transform.rotation = Quaternion.Euler(0, 90, 0);  // why?
-
                 if(!didRunReceiver)
                 {
                     StartCoroutine(ShowTexts(TextsPhase3Receiver, () => phase3CoroutineRunningReceiver = false));
