@@ -4,112 +4,121 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR;
 using UnityEngine.UIElements;
 using VIVE.OpenXR;
 using ViveSR.anipal.Eye;
 using System;
 public class GameManager : MonoBehaviour
 {
-    [Tooltip("Stores the current condition of the experiment.")]
-    [SerializeField] private int condition = 0;
+    [Tooltip("If true, it prevents eye tracking validation and calibration")]
+    public bool debugging = false; 
+
+    // Experiment parameters
     [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: Testing Phase (Testing Space); Phase 4: End Phase (UI Space)")]
     public int phase = 0;
-    private int currentPhase = 0;
+    private float probabilityForMilky = 0.5f;
+    public string role;
+    [Tooltip("Must be an even number.")]
+    [SerializeField] private int roundsPerCondition;
 
+
+    // References to managers
     private ReceiverManager receiverManager;
-
-    private EyetrackingValidation eyetrackingValidation;
-    private LSLSignalerOutlets lSLSignalerOutlets;
     private SignalerManager signalerManager;
     private EmbodimentManager embodimentManager;
-    private BoxBehaviour boxBehaviour;
     private MenuManager menuManager;
-    private SimpleCrosshair simpleCrosshair;
 
+    
+    private BoxBehaviour boxBehaviour;
+
+    // Player variables
     public VRRig vRRig;
     public GameObject xrOriginSetup;
-    public GameObject signaler;
-
-    public GameObject receiver;
+    public GameObject invisibleObject;
     public GameObject avatarMain;
     public GameObject avatarSecondary;
-    public GameObject invisibleObject;
-    public GameObject crosshair;
+    public GameObject signaler;
+    public GameObject receiver;
+
+
+    
+    
+    
+    
+    
+    private InputBindings _inputBindings;
+
+
+    // Game flow variables
+    public bool frozen = false;
+    public bool previousFrozen = false;
+    private int score = 0;
+    public int _currentRound = 0; //only public for debugging
+    private bool _selected = false;
+    public int trialFailedCount = 0;
+    private bool firstSelectionMade = false;
+    public bool milkyGlassBool;
+    private bool[] milkyBools; // Stores the boolean values for the clear or milky glass for all the trial rounds
+    private bool trainingEnd = false;
+
+
+    // Ressources 
+    public GameObject milkyGlass;
+    public GameObject clearGlass;
+    [SerializeField] public List<GameObject> boxes = null;
+    Vector3 pauseRoomSignaler = new Vector3();
+    Vector3 pauseRoomReceiver = new Vector3();
+    [SerializeField] private List<Vector3> spaceLocationsSignaler = null;
+    [SerializeField] private List<Vector3> spaceLocationsReceiver = null;
+    [Tooltip("There should be as many rewards as there are inner boxes.")]
+    [SerializeField] private List<int> rewards;
+    private List<int> shuffledRewards; // TODO: fuse with the above?
+    public AudioSource soundEffect;
+
+    
+    // UI 
     public GameObject trainingSign;
     public GameObject trainingSignReceiver;
-    public Material invisible;
-    private InputBindings _inputBindings;
-    
-    private int score = 0;
-    private List<int> shuffledRewards;
-    public string role;
     [SerializeField] private TextMeshProUGUI  scoreDisplay;
     [SerializeField] private TextMeshProUGUI roundsDisplay;
     [SerializeField] private TextMeshProUGUI  scoreDisplayReceiver;
     [SerializeField] private TextMeshProUGUI roundsDisplayReceiver;
-    [SerializeField] private GameObject TimeExceededTMP;
-
-    [SerializeField] private GameObject TimeExceededTMPReceiver;
-
-    [SerializeField] private int roundsPerCondition = 0;
-    private int _currentRound = 0;
-    public bool _startedRound = false;
-    private bool _selected = false;
-    public bool firstFreeze = false;
-    public bool firstFreezeReceiver = false;
-    [SerializeField] public List<GameObject> boxes = null;
     
 
-    public int trialNumber = 0;
-    public int trialFailedCount = 0;
-
-    Vector3 pauseRoom = new Vector3();
-    Vector3 pauseRoomReceiver = new Vector3();
-
-    private bool firstSelectionMade = false;
-
+    // Countdown variables, note: the Countdown has not been implemented yet
     private int countdownTime = 3;
     public TextMeshProUGUI  countdownText;
-
     public TextMeshProUGUI  countdownTextReceiver;
     public TextMeshProUGUI  timerCountdownText;
     public TextMeshProUGUI  timerCountdownTextReceiver;
-    public GameObject milkyGlass;
-    public GameObject clearGlass;
-
-    //[Tooltip("The locations of the embodiment, start, condition 1, break, condition 2 and end space.")]
-
-    [SerializeField] private List<Vector3> spaceLocationsReceiver = null;
-    [SerializeField] private List<Vector3> spaceLocationsSignaler = null;
-
-    [Tooltip("There should be as many rewards as there are inner boxes.")]
-    [SerializeField] private List<int> rewards;
-
-    public bool _ValidationSuccessStatus = true;
-    
+    [SerializeField] private GameObject TimeExceededTMP;
+    [SerializeField] private GameObject TimeExceededTMPReceiver;
     public bool TimeExceeded = false;
-    public bool running = false;
-    
-
+    public bool countdownRunning = false;
     public float _timeLimit = 3;
     private float startTime;
     private float _startRoundTime = 0;
 
-    private float probabilityForOne = 0.5f;
-    public Camera mainCamera;
-
-    public LSLReceiverOutlets lslReceiverOutlets;
-    public bool countdownRunning = false;
-    //private bool startedTimer = false;
-    // Start is called before the first frame update
-    public bool milkyGlassBool;
-    private bool roleAssigned = false;
-    private bool trainingEnd = false;
+    
+    
+    // Calibration & Validation variables
+    private bool _ValidationSuccessStatus = true; 
+    public bool calDoneOneTime = false;
     private int calCounter = 0;
+    private EyetrackingValidation eyetrackingValidation;
+    
 
-    public bool frozen = false;
-    public bool previousFrozen = false;
-    public AudioSource soundEffect;
+    // Networking
+    public LSLReceiverOutlets lslReceiverOutlets;
+
+
+
+    // Try to fix the frame rate to 90 fps
+    void Awake() {
+        Application.targetFrameRate = 90;
+    }
+
     void Start()
     {
         _inputBindings = new InputBindings();
@@ -117,11 +126,6 @@ public class GameManager : MonoBehaviour
 
         _inputBindings = new InputBindings();
         _inputBindings.UI.Enable();
-        //  if (!roleAssigned)
-        // {
-        //     AssignRole();
-            
-        // }
 
         startTime = Time.time;
         menuManager = FindObjectOfType<MenuManager>();
@@ -129,7 +133,6 @@ public class GameManager : MonoBehaviour
         receiverManager = FindObjectOfType<ReceiverManager>();
         embodimentManager = FindObjectOfType<EmbodimentManager>();
         eyetrackingValidation = FindObjectOfType<EyetrackingValidation>();
-        simpleCrosshair = FindObjectOfType<SimpleCrosshair>();
         boxBehaviour = FindObjectOfType<BoxBehaviour>();
         lslReceiverOutlets = avatarMain.GetComponent<LSLReceiverOutlets>();
 
@@ -138,49 +141,23 @@ public class GameManager : MonoBehaviour
         TimeExceededTMP.gameObject.SetActive(false);
         TimeExceededTMPReceiver.gameObject.SetActive(false);
 
-        xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
+        xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0)); 
         
         score = 0;
 
+        // Prepare the milky glass bools
+        ShowMilkyGlassRandom();
 
+        StartCoroutine(TriggerEyetrackingCalibration());
     }
 
-    // void AssignRole()
-    // {
-    //     if (_inputBindings.UI.Signaler.triggered) // 4 on keyboard
-    //     {
-    //         role = "signaler";
-    //         receiver.GetComponent<ReceiverManager>().enabled = false;
-    //         signaler.GetComponent<SignalerManager>().enabled = true;
-    //         signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
-    //         signalerManager.Teleport(new Vector3(-99.5999985f, -105.760002f, 66.6399994f), avatarSecondary);
-            
-    //         // LSL Streams
-    //         avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
-    //         avatarMain.GetComponent<LSLSignalerInlets>().enabled = true;
-    //         avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = true;
-    //         avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = true;
-            
-    //     }
-    //     else if (_inputBindings.UI.Receiver.triggered) // 6 on keyboard
-    //     {
-    //         role = "receiver";
-    //         receiver.GetComponent<ReceiverManager>().enabled = true;
-    //         signaler.GetComponent<SignalerManager>().enabled = false;
-    //         receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0));
-
-    //         // LSL Streams
-    //         avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
-    //         avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = true;
-    //         avatarMain.GetComponent<LSLReceiverInlets>().enabled = true;
-    //         avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;
-    //     }
-    //     roleAssigned = true;
-    // }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Phase" + phase);
+
+        // Make the glass either milky or clear according to current condition
         if(milkyGlassBool)
         {
             clearGlass.SetActive(false);
@@ -196,153 +173,116 @@ public class GameManager : MonoBehaviour
         {
             // Play the audio when the boolean changes
             PlayAudio();
-            
-            // Update previousBool to the new value of myBool
             previousFrozen = frozen;
         }
     
-
-        Debug.Log("frozen in gameManager"+ frozen);
-        if (_inputBindings.UI.Signaler.triggered) // 4 on keyboard
-        {
-            role = "signaler";
-            receiver.GetComponent<ReceiverManager>().enabled = false;
-            signaler.GetComponent<SignalerManager>().enabled = true;
-            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
-            signalerManager.Teleport(spaceLocationsReceiver.ElementAt(3), avatarSecondary);
-            
-            // Eye data scripts
-            avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
-            avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = false;
-            avatarMain.GetComponent<SignalerEyeDataSender>().enabled = true;
-            
-            avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
-            avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
-            // avatarSecondary.GetComponent<SignalerEyeDataSender>().enabled = false;
-
-            // LSL Streams
-            avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
-            avatarMain.GetComponent<LSLSignalerInlets>().enabled = true;
-            // avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = true;
-            // avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = true;
-
-
-            // avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = false;
-            // avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = false;   
-            avatarMain.GetComponent<LSLReceiverInlets>().enabled = false;
-            avatarMain.GetComponent<LSLReceiverOutlets>().enabled = false;
-
-            scoreDisplay.gameObject.SetActive(true);
-            roundsDisplay.gameObject.SetActive(true);
-            scoreDisplayReceiver.gameObject.SetActive(false);
-            roundsDisplayReceiver.gameObject.SetActive(false);
-
-        }
-        if (_inputBindings.UI.Receiver.triggered && calCounter<1) // 6 on keyboard
-        {
-            role = "receiver";
-            receiver.GetComponent<ReceiverManager>().enabled = true;
-            signaler.GetComponent<SignalerManager>().enabled = false;
-            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0), xrOriginSetup);
-
-            // Eye data scripts
-            avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
-            avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = false;
-            avatarMain.GetComponent<ReceiverEyeDataSender>().enabled = true;
-            
-            avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
-            avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
-            // avatarSecondary.GetComponent<ReceiverEyeDataSender>().enabled = false;
-
-            // LSL Streams
-            avatarMain.GetComponent<LSLReceiverInlets>().enabled = true;
-            avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;
-            // avatarSecondary.GetComponent<LSLSignalerOutlets>().enabled = true;
-            // avatarSecondary.GetComponent<LSLSignalerInlets>().enabled = true;   
-
-            avatarMain.GetComponent<LSLSignalerOutlets>().enabled = false;
-            avatarMain.GetComponent<LSLSignalerInlets>().enabled = false;
-            // avatarSecondary.GetComponent<LSLReceiverOutlets>().enabled = false;
-            // avatarSecondary.GetComponent<LSLReceiverInlets>().enabled = false;
-
-            scoreDisplayReceiver.gameObject.SetActive(true);
-            roundsDisplayReceiver.gameObject.SetActive(true);
-            scoreDisplay.gameObject.SetActive(false);
-            roundsDisplay.gameObject.SetActive(false);
-
-            
-        }
+        
+        // According to the role of the main player, set up the secondary avatar
+        // The secondary avatar has to put to this position every frame, since otherwise it falls down infinitely.
         if (role == "receiver")
         {
-            avatarSecondary.transform.rotation =Quaternion.Euler(new Vector3(0, 180, 0));
-            avatarSecondary.transform.position = new Vector3(-3f,3f,5.5f); //Vector3(-3.07173824,-2.07763529,-9.10935402)
-            Debug.LogWarning(lslReceiverOutlets);
-
-
+            avatarSecondary.transform.position = new Vector3(-3f,3.4f,4.8f); 
         }
         if (role == "signaler")
         {
-            // avatarSecondary.transform.rotation = new Vector3(0,0,0);
-            avatarSecondary.transform.position = new Vector3(-3f,3.1f,-10f);
-            
+            avatarSecondary.transform.position = new Vector3(-3f,3.4f,-10f);
         }
+
+
         #region Experimental process 
+
         // Phase 0: Welcome & Instruction Embodiment (UI Space)
         if (phase == 0)
         {
-            if (role == "receiver")
+            // Role assignment 
+            if (_inputBindings.UI.Signaler.triggered) // "s" on keyboard
             {
-                receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase), xrOriginSetup);
+                role = "signaler";
+                receiver.GetComponent<ReceiverManager>().enabled = false;
+                signaler.GetComponent<SignalerManager>().enabled = true;
+                signalerManager.Teleport(spaceLocationsSignaler.ElementAt(0), xrOriginSetup);
+                avatarSecondary.transform.position = new Vector3(-3f,3.4f,-10f);
+                
+                // Enable the Eye data scripts of the signaler and disable the ones of the receiver
+                avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
+                avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = false;
+                avatarMain.GetComponent<SignalerEyeDataSender>().enabled = true;
+                
+                avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
+                avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
+
+                // Enable the LSL Streams of the signaler and disable the ones of the receiver
+                avatarMain.GetComponent<LSLSignalerOutlets>().enabled = true;
+                avatarMain.GetComponent<LSLSignalerInlets>().enabled = true; 
+                avatarMain.GetComponent<LSLReceiverInlets>().enabled = false;
+                avatarMain.GetComponent<LSLReceiverOutlets>().enabled = false;
+
+                // Show or disable displays of score and round number
+                scoreDisplay.gameObject.SetActive(true);
+                roundsDisplay.gameObject.SetActive(true);
+                scoreDisplayReceiver.gameObject.SetActive(false);
+                roundsDisplayReceiver.gameObject.SetActive(false);
 
             }
-            if (role == "signaler") 
+            else if (_inputBindings.UI.Receiver.triggered) // "r" on keyboard
             {
-                signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
+                role = "receiver";
+                receiver.GetComponent<ReceiverManager>().enabled = true;
+                signaler.GetComponent<SignalerManager>().enabled = false;
+                receiverManager.Teleport(spaceLocationsReceiver.ElementAt(0), xrOriginSetup); 
+                avatarSecondary.transform.rotation =Quaternion.Euler(new Vector3(0, -180, 0));
+                avatarSecondary.transform.position = new Vector3(-3f,3.4f,4.8f);
 
+                // Enable the Eye data scripts of the receiver and disable the ones of the signaler
+                avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = true;
+                avatarMain.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = false;
+                avatarMain.GetComponent<ReceiverEyeDataSender>().enabled = true;
+                
+                avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2>().enabled = false;
+                avatarSecondary.GetComponent<SRanipal_AvatarEyeSample_v2_modified>().enabled = true;
+
+                // Enable the LSL Streams of the receiver and disable the ones of the signaler
+                avatarMain.GetComponent<LSLReceiverInlets>().enabled = true;
+                avatarMain.GetComponent<LSLReceiverOutlets>().enabled = true;  
+                avatarMain.GetComponent<LSLSignalerOutlets>().enabled = false;
+                avatarMain.GetComponent<LSLSignalerInlets>().enabled = false;
+
+                // Show or disable displays of score and round number
+                scoreDisplayReceiver.gameObject.SetActive(true);
+                roundsDisplayReceiver.gameObject.SetActive(true);
+                scoreDisplay.gameObject.SetActive(false);
+                roundsDisplay.gameObject.SetActive(false);
             }
-            // TODO: let the function be called from the menu manager or an embodiment phase manager 
-            // EnterNextPhase();
         }
         // Phase 1: Embodiment (Embodiment Space)
         else if (phase == 1)
         {
-            //player.role = "";
-
-            // TODO: let the function be called from the menu manager or an embodiment phase manager 
-            //EnterNextPhase();
-            Debug.LogError("Phase 1");
-            
+            Debug.LogError("Embodiment Phase");
         }
         // Phase 2: Instruction Testing (UI Space)
         else if (phase == 2)
         {
-           // player.role = "";
             Debug.LogError("Phase 2");
         }
         // Phase 3: First Condition (Experiment Room)
         else if (phase == 3)
-        {
-            //assign role here?
-            //player.role = "receiver";
-            //Debug.LogError("Phase 3");
+        {   
+           // Change the rotation of the receiver's avatar every frame, otherwise it is weirdly oriented, don't know why
             if (role == "receiver")
             {
                 vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,-0.94f);
-                xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 270, 0));
-                avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0));
-                calCounter += 1;
-                // SRanipal_Eye_v2.LaunchEyeCalibration();
+                xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 0, 0)); 
             }
+            // Update the display that shows the current round number
             if(role == "signaler")
             {
                 roundsDisplay.text = "Round: " + _currentRound;
-                calCounter += 1;
-                // SRanipal_Eye_v2.LaunchEyeCalibration();
-            }
-            if(role == "receiver")
+            } 
+            else if(role == "receiver")
             {
                 roundsDisplayReceiver.text = "Round: " + _currentRound;
             }
+            // While the training phase is ongoing, show a respective sign
             if (_currentRound > 0 && _currentRound < 4 && !trainingEnd)
             {
                 if (role == "signaler")
@@ -354,22 +294,7 @@ public class GameManager : MonoBehaviour
                     trainingSignReceiver.gameObject.SetActive(true);
                 }
             } 
-            // if (_currentRound < roundsPerCondition)
-            // {   
-            //     Debug.Log("first layer of if condition" + _currentRound + " " + roundsPerCondition);
-            //     if (role == "receiver")
-            //     {
-            //         if (_startedRound == false && receiverManager.selectCounter > 1 && !frozen && _lastHitController.gameObject.layer == LayerMask.NameToLayer("Box"))
-            //         {
-            //             Debug.Log("second layer of if condition" + _currentRound + " " + roundsPerCondition);
-            //             receiverManager.boxSelected = true;
-            //             _startedRound = true;
-            //             StartCoroutine(Condition1());
-            //             //StartCoroutine(CountdownTimer(timerCountdownText));
-            //             trialNumber++;
-            //         }
-            //     }
-            // }          
+            // If the training phase is over, reset the score and remove the training sign         
             if (_currentRound == 4 && !trainingEnd) //this order could cause problems
             {    
                 ResetScoreRound();
@@ -383,37 +308,26 @@ public class GameManager : MonoBehaviour
                 }
                 trainingEnd = true;
             }
-            
+            // If enough rounds per condition have been played, go to the next phase
             else if (_currentRound == roundsPerCondition)
-            {
-                
+            { 
                 EnterNextPhase();
-                
             }
         }
        
         // Phase 4: End Phase (UI Space)
         else
         {
-           // Debug.Log("Phase 4");
            if (role == "receiver")
            {
-            
             vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,1.22000003f);
             xrOriginSetup.transform.rotation =  Quaternion.Euler(new Vector3(0, 90, 0));
             avatarMain.transform.rotation =  Quaternion.Euler(new Vector3(0, 180, 0));
-            Debug.LogError("turn around");
            }
            if (role == "signaler")
            {
-            signalerManager.invisibleObject = invisibleObject;
+            signalerManager.invisibleObjectSignaler = invisibleObject; // Why?
            }
-        }
-
-        if (_ValidationSuccessStatus == false) 
-        {
-            // SRanipal_Eye_v2.LaunchEyeCalibration();
-            _ValidationSuccessStatus = true;
         }
         #endregion
     }
@@ -430,12 +344,27 @@ public class GameManager : MonoBehaviour
         {
             signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
         }
-       // player.Teleport(spaceLocations.ElementAt(phase));
+    }
+
+
+
+    public void FreezeSignaler()
+    {
+        frozen = true;
+        signalerManager.simpleCrosshair.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>().color = Color.red;
+        Debug.Log("Freeze method");
+    }
+
+    public void UnfreezeSignaler()
+    {
+        frozen = false;
+        signalerManager.simpleCrosshair.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>().color = Color.white;
+        Debug.Log("Unfreeze method");
     }
    
     public void EnterPausePhase()
     {
-        pauseRoom = new Vector3(0, -26, 55);
+        pauseRoomSignaler = new Vector3(0, -26, 55);  //former y value: -31.54
         pauseRoomReceiver = new Vector3(-114, -27, 1);
         if (role == "receiver")
         {
@@ -443,21 +372,19 @@ public class GameManager : MonoBehaviour
         }
         if (role == "signaler") 
         {
-            signalerManager.Teleport(pauseRoom, xrOriginSetup);
+            signalerManager.Teleport(pauseRoomSignaler, xrOriginSetup);
         }
-
     }
+
     public void ReturnToCurrentPhase()
     {
-        currentPhase = GetCurrentPhase();
-
         if (role == "receiver")
         {
-            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(currentPhase), xrOriginSetup);
+            receiverManager.Teleport(spaceLocationsReceiver.ElementAt(phase), xrOriginSetup);
         }
         if (role == "signaler") 
         {
-            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(currentPhase), xrOriginSetup);
+            signalerManager.Teleport(spaceLocationsSignaler.ElementAt(phase), xrOriginSetup);
         }
 
     }
@@ -469,11 +396,14 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
+    // TODO: make this function more clean
     public IEnumerator Condition1()
     {
+        milkyGlassBool = milkyBools[_currentRound];
         
-        ShowMilkyGlassRandom();
-        // _startedRound = true;
+        string milkyGlassBoolString = milkyGlassBool.ToString();
+        lslReceiverOutlets.lslOmilkyGlassBool.push_sample(new string[] {milkyGlassBoolString});
         _selected = false;
 
         // 1. Freeze receiver 
@@ -501,10 +431,6 @@ public class GameManager : MonoBehaviour
         }
         // receiverManager.Unfreeze();
         // 5. Receiver chooses box 
-        if(receiverManager.boxSelected == true)
-        {
-            boxBehaviour.Selected();
-        }
 
         if (Time.time - _startRoundTime < _timeLimit){
             Debug.LogError("Time exceeded. We're at the end of the round. Receiver did not select");
@@ -519,20 +445,9 @@ public class GameManager : MonoBehaviour
     // Shuffles the reward values and assigns them to the boxes.
     private void ShuffleRewards()
     {
-        Debug.Log("Inside ShuffleRewards");
-
-        // Ensure there are 8 boxes
-        // if (boxes.Count != 8)
-        // {
-        //     Debug.LogError("There must be exactly 8 boxes.");
-        //     return;
-        // }
-
         // Initialize the rewards list
 
         rewards = new List<int> { 100, 0, 0, 0, 0, 0, -25, -25 };
-
-        // Console.WriteLine("Original rewards: " + string.Join(", ", rewards));
 
         // Initialize the random number generator
         System.Random rng = new System.Random();
@@ -590,17 +505,9 @@ public class GameManager : MonoBehaviour
         score += reward;
         scoreDisplayReceiver.text = "Score: " + score;
         scoreDisplay.text = "Score: " + score;
-
-        if(_currentRound == 1 ||_currentRound == 20 ||_currentRound == 30 ||_currentRound == 40 ||_currentRound == 50 )
-        {
-            // EnterPausePhase();
-            // eyetrackingValidation.ValidateEyeTracking();
-        }
         _currentRound += 1;
         _selected = true;
-        // _startedRound = false;
         receiverManager.boxSelected = false;
-
     }
 
     public void ResetScoreRound()
@@ -615,19 +522,27 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // TODO:
-    // Continuously stores measured data to a file.
-    private void StoreData()
+    // Trigger eyetracking calibration every 30 rounds
+    private IEnumerator TriggerEyetrackingCalibration()
     {
+        // Wait until phase 3 has been entered to start the eye tracking calibration cycle
+        bool FirstCal() => phase == 3;
+        yield return new WaitUntil(FirstCal);
 
+        while(!debugging)
+        {
+            SRanipal_Eye_v2.LaunchEyeCalibration(); 
+            EnterPausePhase();
+            eyetrackingValidation.ValidateEyeTracking();
+
+            // Do as many calibrations as needed to reduce the validation error to below 1
+            // If validation was successful, wait for 30 rounds
+            bool NextVal() => (_ValidationSuccessStatus == false || (_currentRound % 30 == 0 && _currentRound != 0));
+            yield return new WaitUntil(NextVal); 
+        }
     }
 
-    // TODO:
-    // When the application is quit, the data storage file is closed and saved.
-    private void OnApplicationQuit()
-    {
-
-    }
+    
 
     public void SetValidationSuccessStatus(bool success)
     {
@@ -660,25 +575,35 @@ public class GameManager : MonoBehaviour
         
     }
 
+    // Called once in the start function
     private void ShowMilkyGlassRandom()
     {
-        float randomValue = UnityEngine.Random.value;
-         
-         if(randomValue < probabilityForOne){
-            milkyGlassBool = true;
-         } 
-         else 
-         {
-            milkyGlassBool = false;
-         }
-        string milkyGlassBoolString = milkyGlassBool.ToString();
-        lslReceiverOutlets.lslOmilkyGlassBool.push_sample(new string[] {milkyGlassBoolString});
+        // Create an array to store the boolean values of whether the glass is cear or milky in the respective round
+        milkyBools = new bool[roundsPerCondition];
+        // Fill the first half of the array with 'true' values
+        int cut = (int) Math.Round(roundsPerCondition*probabilityForMilky);
+        for (int i = 0; i < cut; i++)
+        {
+            milkyBools[i] = true;
+        }
+        // Fill the second half of the array with 'false' values
+        for (int i = cut; i < roundsPerCondition; i++)
+        {
+            milkyBools[i] = false;
+        }
+        // Shuffle the array randomly using the Knuth shuffle algorithm
+        for (int i = 0; i < milkyBools.Length; i++)
+        {
+            bool currentValue = milkyBools[i];
+            int rand = UnityEngine.Random.Range(i, milkyBools.Length);
+            milkyBools[i] = milkyBools[rand];
+            milkyBools[rand] = currentValue;
+        }
     }
 
-
+    // Not used yet
     public IEnumerator Countdown()
     {
-        running = true;
         int count = countdownTime;
         yield return new WaitForSeconds(1f);
 
@@ -694,7 +619,6 @@ public class GameManager : MonoBehaviour
             countdownText.text = "Go!";
             yield return new WaitForSeconds(1);
             countdownText.gameObject.SetActive(false);
-            signalerManager.invisibleObject = crosshair;
             
             StartCoroutine(CountdownTimer(timerCountdownText));
             
@@ -725,38 +649,40 @@ public class GameManager : MonoBehaviour
         
     }
 
-public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
-{
-    countdownRunning = true;
-    receiverManager.CountdownStarted = true;
-    yield return new WaitForSeconds(1);
-    int count = 20;
-    while (count > 0)
+// Not used yet
+    public IEnumerator CountdownTimer(TextMeshProUGUI CDT)
     {
-        if ((frozen && signalerManager.freezeCounter > 1)  || (_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 1))
-        {
-            CDT.text = string.Empty; 
-            Debug.LogError("stopped everything");
-            yield break; 
-        }
-        if (count <= 3)
-        {
-            CDT.text = $"<b><color=red>{count}</color></b>";
-        }
-        else
-        {
-            CDT.text = count.ToString();
-        }
+        countdownRunning = true;
+        receiverManager.CountdownStarted = true;
         yield return new WaitForSeconds(1);
-        count--;
+        int count = 20;
+        while (count > 0)
+        {
+            if ((frozen && signalerManager.freezeCounter > 1)  || (_inputBindings.Player.SelectBox.triggered && receiverManager.selectCounter > 1))
+            {
+                CDT.text = string.Empty; 
+                Debug.LogError("stopped everything");
+                yield break; 
+            }
+            if (count <= 3)
+            {
+                CDT.text = $"<b><color=red>{count}</color></b>";
+            }
+            else
+            {
+                CDT.text = count.ToString();
+            }
+            yield return new WaitForSeconds(1);
+            count--;
+        }
+        // Optionally, clear the countdown text after the loop ends
+        CDT.text = string.Empty;
+        StartCoroutine(ShowTimeExceeded());
+        trialFailedCount++;
+        UpdateScore(-20);
+        countdownRunning = false;
     }
-    // Optionally, clear the countdown text after the loop ends
-    CDT.text = string.Empty;
-    StartCoroutine(ShowTimeExceeded());
-    trialFailedCount++;
-    UpdateScore(-20);
-    countdownRunning = false;
-}
+
     public void PlayAudio()
     {
         // Play the audio

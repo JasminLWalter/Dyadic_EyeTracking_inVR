@@ -57,7 +57,7 @@ public class Raycast : MonoBehaviour
         }
     else
         {
-            var mousePosition = _inputBindings.Player.MouseGaze.ReadValue<Vector2>();
+            var mousePosition = _inputBindings.Player.MousePosition.ReadValue<Vector2>();
             // Creates a Ray from the mouse position
             _ray = playerCamera.ScreenPointToRay(mousePosition);
             rayOrigin = _ray.origin;

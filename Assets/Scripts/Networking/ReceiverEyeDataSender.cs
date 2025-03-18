@@ -166,10 +166,10 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 invisibleObjectPos.y = receiverManager.invisibleObjectReceiver.transform.position.y;
                 invisibleObjectPos.z = receiverManager.invisibleObjectReceiver.transform.position.z;    
 
-                headConstraintPos.x = headConstraint.transform.rotation.x;
-                headConstraintPos.y = headConstraint.transform.rotation.y;
-                headConstraintPos.z = headConstraint.transform.rotation.z;
-                headConstraintPos.w = headConstraint.transform.rotation.w;
+                // headConstraintPos.x = headConstraint.transform.rotation.x;
+                // headConstraintPos.y = headConstraint.transform.rotation.y;
+                // headConstraintPos.z = headConstraint.transform.rotation.z;
+                // headConstraintPos.w = headConstraint.transform.rotation.w;
 
                                 
                 // Prepare LSL sample
@@ -208,10 +208,10 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 sample[21] = invisibleObjectPos.y;
                 sample[22] = invisibleObjectPos.z;
 
-                sample[23] = headConstraintPos.x;
-                sample[24] = headConstraintPos.y;
-                sample[25] = headConstraintPos.z;
-                sample[26] = headConstraintPos.w;
+                // sample[23] = headConstraintPos.x;
+                // sample[24] = headConstraintPos.y;
+                // sample[25] = headConstraintPos.z;
+                // sample[26] = headConstraintPos.w;
 
                 // Send sample via LSL
                 outlet.push_sample(sample);
@@ -223,7 +223,6 @@ public class ReceiverEyeDataSender : MonoBehaviour
             {
                 if(receiverManager.selectCounter >= 2)
                 {
-                    Debug.Log("abh");
                     waitReceiver.gameObject.SetActive(true);
                     yourTurnReceiver.gameObject.SetActive(false);
                 }
@@ -256,10 +255,10 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 invisibleObjectPos.y = invisibleObjectPosFrozen.y;
                 invisibleObjectPos.z = invisibleObjectPosFrozen.z;
 
-                headConstraintPos.x = headConstraintFrozen.x;
-                headConstraintPos.y = headConstraintFrozen.y;
-                headConstraintPos.z = headConstraintFrozen.z;
-                headConstraintPos.w = headConstraintFrozen.w;
+                // headConstraintPos.x = headConstraintFrozen.x;
+                // headConstraintPos.y = headConstraintFrozen.y;
+                // headConstraintPos.z = headConstraintFrozen.z;
+                // headConstraintPos.w = headConstraintFrozen.w;
             
                 // Prepare LSL sample
                 //Debug.Log("Invisible Object: " + signalerManager.invisibleObject.transform.position);
@@ -306,7 +305,7 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 outlet.push_sample(sample);
             }
         
-            if(receiverManager.selectCounter > 1 && _inputBindings.Player.SelectBox.triggered && receiverManager._lastHitController.gameObject.layer == LayerMask.NameToLayer("Box") && gameManager.frozen)
+            if(receiverManager.selectCounter > 1 && _inputBindings.Player.SelectBox.triggered && gameManager.frozen)
             {
 
 
@@ -348,18 +347,17 @@ public class ReceiverEyeDataSender : MonoBehaviour
                 invisibleObjectPosFrozen.y = receiverManager.invisibleObjectReceiver.transform.position.y;
                 invisibleObjectPosFrozen.z = receiverManager.invisibleObjectReceiver.transform.position.z;
 
-                headConstraintFrozen.x = headConstraint.transform.rotation.x;
-                headConstraintFrozen.y = headConstraint.transform.rotation.y;
-                headConstraintFrozen.z = headConstraint.transform.rotation.z;
-                headConstraintFrozen.w = headConstraint.transform.rotation.w;
+                // headConstraintFrozen.x = headConstraint.transform.rotation.x;
+                // headConstraintFrozen.y = headConstraint.transform.rotation.y;
+                // headConstraintFrozen.z = headConstraint.transform.rotation.z;
+                // headConstraintFrozen.w = headConstraint.transform.rotation.w;
 
 
-                gameManager.frozen = false;
+                gameManager.UnfreezeSignaler();
+                Debug.Log("Unfreeze ReceiverEyeDataSender");
                 
                 frozenString = gameManager.frozen.ToString();
                 lSLReceiverOutlets.lslOFrozenGaze.push_sample(new string[] {frozenString} );
-
-                Debug.LogError("Frozen Receiver :" + gameManager.frozen);
             }    
         }    
     }

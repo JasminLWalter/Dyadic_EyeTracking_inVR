@@ -28,7 +28,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
             ""id"": ""8032b4e0-ea07-448e-a46f-826428218e93"",
             ""actions"": [
                 {
-                    ""name"": ""MouseGaze"",
+                    ""name"": ""MousePosition"",
                     ""type"": ""PassThrough"",
                     ""id"": ""7b0bda95-acbb-4d86-bfc4-068e87d5f99b"",
                     ""expectedControlType"": ""Vector2"",
@@ -117,7 +117,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MouseGaze"",
+                    ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -189,11 +189,22 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""30784f23-c808-4cee-87dc-5d4d3e415a7f"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Freeze"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""641cd10e-72fe-4bc9-8afb-8e25a41ef0e3"",
                     ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/triggerpressed"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""VR"",
                     ""action"": ""Freeze"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -204,7 +215,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/triggerpressed"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""VR"",
                     ""action"": ""Freeze"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -212,7 +223,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""49621591-10b5-4f52-ab4f-35f2484b276f"",
-                    ""path"": """",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -226,7 +237,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/triggerpressed"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""VR"",
                     ""action"": ""SelectBox"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -237,7 +248,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/triggerpressed"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""VR"",
                     ""action"": ""SelectBox"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -440,6 +451,39 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""ba4583b1-ae59-46d7-b2aa-989192468639"",
+                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{RightHand}/triggerpressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""47e7d546-69aa-4128-816a-950c1cdadb3f"",
+                    ""path"": ""<XRInputV1::HTC::HTCViveControllerOpenXR>{LeftHand}/triggerpressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9314696d-3373-4065-9b0f-1042727d93b0"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""a47a8031-9228-44e9-a1b5-c2ad9758addc"",
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
@@ -485,7 +529,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a274a355-f0d4-40c1-8a2d-b9f621bfd34e"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -587,7 +631,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                     ""path"": ""<XRController>{RightHand}/secondaryButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""VR"",
                     ""action"": ""Validation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -661,7 +705,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""7ba05f75-2d9a-4df5-be34-9cd8dfb4f1d3"",
-                    ""path"": ""<Keyboard>/numpad6"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -672,7 +716,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2d2eed0c-5f3f-41bf-b62c-e9c9975b231a"",
-                    ""path"": ""<Keyboard>/numpad4"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -693,7 +737,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_MouseGaze = m_Player.FindAction("MouseGaze", throwIfNotFound: true);
+        m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
         m_Player_EyeTracking = m_Player.FindAction("EyeTracking", throwIfNotFound: true);
         m_Player_EyeGazeIsTracked = m_Player.FindAction("Eye Gaze Is Tracked", throwIfNotFound: true);
         m_Player_HeadPosition = m_Player.FindAction("HeadPosition", throwIfNotFound: true);
@@ -781,7 +825,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_MouseGaze;
+    private readonly InputAction m_Player_MousePosition;
     private readonly InputAction m_Player_EyeTracking;
     private readonly InputAction m_Player_EyeGazeIsTracked;
     private readonly InputAction m_Player_HeadPosition;
@@ -794,7 +838,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     {
         private @InputBindings m_Wrapper;
         public PlayerActions(@InputBindings wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MouseGaze => m_Wrapper.m_Player_MouseGaze;
+        public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
         public InputAction @EyeTracking => m_Wrapper.m_Player_EyeTracking;
         public InputAction @EyeGazeIsTracked => m_Wrapper.m_Player_EyeGazeIsTracked;
         public InputAction @HeadPosition => m_Wrapper.m_Player_HeadPosition;
@@ -812,9 +856,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
-            @MouseGaze.started += instance.OnMouseGaze;
-            @MouseGaze.performed += instance.OnMouseGaze;
-            @MouseGaze.canceled += instance.OnMouseGaze;
+            @MousePosition.started += instance.OnMousePosition;
+            @MousePosition.performed += instance.OnMousePosition;
+            @MousePosition.canceled += instance.OnMousePosition;
             @EyeTracking.started += instance.OnEyeTracking;
             @EyeTracking.performed += instance.OnEyeTracking;
             @EyeTracking.canceled += instance.OnEyeTracking;
@@ -843,9 +887,9 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IPlayerActions instance)
         {
-            @MouseGaze.started -= instance.OnMouseGaze;
-            @MouseGaze.performed -= instance.OnMouseGaze;
-            @MouseGaze.canceled -= instance.OnMouseGaze;
+            @MousePosition.started -= instance.OnMousePosition;
+            @MousePosition.performed -= instance.OnMousePosition;
+            @MousePosition.canceled -= instance.OnMousePosition;
             @EyeTracking.started -= instance.OnEyeTracking;
             @EyeTracking.performed -= instance.OnEyeTracking;
             @EyeTracking.canceled -= instance.OnEyeTracking;
@@ -1064,7 +1108,7 @@ public partial class @InputBindings: IInputActionCollection2, IDisposable
     }
     public interface IPlayerActions
     {
-        void OnMouseGaze(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
         void OnEyeTracking(InputAction.CallbackContext context);
         void OnEyeGazeIsTracked(InputAction.CallbackContext context);
         void OnHeadPosition(InputAction.CallbackContext context);

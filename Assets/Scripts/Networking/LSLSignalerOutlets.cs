@@ -42,6 +42,8 @@ public class LSLSignalerOutlets : MonoBehaviour
     public StreamOutlet lslOEyePosDirRot;
     public StreamInfo lslIRaycastHitSignaler; 
     public StreamOutlet lslORaycastHitSignaler;
+    public StreamInfo lslIContinuousRaycastHitSignaler;
+    public StreamOutlet lslOContinuousRaycastHitSignaler;
     public StreamInfo lslIEyeOpennessLR; 
     public StreamOutlet lslOEyeOpennessLR;
     public StreamInfo lslIPupilDiameterLR; 
@@ -68,7 +70,7 @@ public class LSLSignalerOutlets : MonoBehaviour
     private double unityTimestamp;
     void Start()
     {
-        signalerManager = GameObject.Find("Signaler").GetComponent<SignalerManager>();
+        signalerManager = GameObject.Find("SignalerManager").GetComponent<SignalerManager>();
 
 
         // // Metadata
@@ -191,6 +193,19 @@ public class LSLSignalerOutlets : MonoBehaviour
         lslIRaycastHitSignaler.desc().append_child("Hit.y");
         lslIRaycastHitSignaler.desc().append_child("Hit.z");
         lslORaycastHitSignaler = new StreamOutlet(lslIRaycastHitSignaler);
+
+        // Continuous Raycast Hit
+        lslIContinuousRaycastHitSignaler = new StreamInfo(
+            "ContinuousRaycastHitSignaler",
+            "Marker",
+            3, 
+            NominalRate,
+            LSL.channel_format_t.cf_float32);
+        lslIContinuousRaycastHitSignaler.desc().append_child("Hit.x");
+        lslIContinuousRaycastHitSignaler.desc().append_child("Hit.y");
+        lslIContinuousRaycastHitSignaler.desc().append_child("Hit.z");
+        lslOContinuousRaycastHitSignaler = new StreamOutlet(lslIContinuousRaycastHitSignaler);
+
 
         // Eye Position, Direction, Rotation
         lslIEyePosDirRot = new StreamInfo(
