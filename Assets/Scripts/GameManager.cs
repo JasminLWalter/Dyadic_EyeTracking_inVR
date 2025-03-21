@@ -14,10 +14,14 @@ public class GameManager : MonoBehaviour
     [Tooltip("If true, it prevents eye tracking validation and calibration")]
     public bool debugging = false; 
 
+
+    private InputBindings _inputBindings;
+
+
     // Experiment parameters
     [Tooltip("Phase 0: Welcome & Instruction Embodiment (UI Space); Phase 1: Embodiment (Embodiment Space); Phase 2: Instruction Testing (UI Space); Phase 3: Testing Phase (Testing Space); Phase 4: End Phase (UI Space)")]
     public int phase = 0;
-    private float probabilityForMilky = 0.5f;
+    private float probabilityForMilky = 0.5f;  // The probability of the glass being milky in the entire experiment run
     public string role;
     [Tooltip("Must be an even number.")]
     [SerializeField] private int roundsPerCondition;
@@ -29,8 +33,6 @@ public class GameManager : MonoBehaviour
     private EmbodimentManager embodimentManager;
     private MenuManager menuManager;
 
-    
-    private BoxBehaviour boxBehaviour;
 
     // Player variables
     public VRRig vRRig;
@@ -42,20 +44,12 @@ public class GameManager : MonoBehaviour
     public GameObject receiver;
 
 
-    
-    
-    
-    
-    
-    private InputBindings _inputBindings;
-
-
     // Game flow variables
-    public bool frozen = false;
+    public bool frozen = false;  // Is the signaler frozen at the moment?
     public bool previousFrozen = false;
     private int score = 0;
     public int _currentRound = 0; //only public for debugging
-    private bool _selected = false;
+    private bool _selected = false;  // Has a box been selected this round?
     public int trialFailedCount = 0;
     private bool firstSelectionMade = false;
     public bool milkyGlassBool;
@@ -67,6 +61,7 @@ public class GameManager : MonoBehaviour
     public GameObject milkyGlass;
     public GameObject clearGlass;
     [SerializeField] public List<GameObject> boxes = null;
+    private BoxBehaviour boxBehaviour;
     Vector3 pauseRoomSignaler = new Vector3();
     Vector3 pauseRoomReceiver = new Vector3();
     [SerializeField] private List<Vector3> spaceLocationsSignaler = null;
@@ -100,7 +95,6 @@ public class GameManager : MonoBehaviour
     private float startTime;
     private float _startRoundTime = 0;
 
-    
     
     // Calibration & Validation variables
     private bool _ValidationSuccessStatus = true; 
@@ -318,6 +312,7 @@ public class GameManager : MonoBehaviour
         // Phase 4: End Phase (UI Space)
         else
         {
+            // Place the participants in the end room with a 'thanks' message
            if (role == "receiver")
            {
             vRRig.headBodyOffset =   new Vector3(-0.0299999993f,-5.32000017f,1.22000003f);

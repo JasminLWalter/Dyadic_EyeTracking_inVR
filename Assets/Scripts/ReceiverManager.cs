@@ -102,7 +102,7 @@ public class ReceiverManager : MonoBehaviour
         // If the ray hits a box 
         if (Physics.Raycast(ray, out hitData, Mathf.Infinity, _boxLayerMask)) // TODO: should be only possible when the signaler is frozen?
         {
-            // Let the box be highlighted while the receiver is pointing at it
+            // Let the box be highlighted while the receiver is pointing at it with the VR controller
             if (_lastHit == null) // if it is the first box that is pointed at
             {
                 _lastHit = hitData.collider;

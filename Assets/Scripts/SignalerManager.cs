@@ -40,7 +40,7 @@ public class SignalerManager : MonoBehaviour
     public int freezeCounter = 0;  // Stores the number of freezes 
 
     // Networking
-    public LSLSignalerOutlets lSLSignalerOutlets;
+    public LSLSignalerOutlets lSLSignalerOutlets; // Stream for the data that is sent to the receiver's computer
 
     
    
@@ -139,7 +139,7 @@ public class SignalerManager : MonoBehaviour
             _lastHit = null;
         }
 
-
+        // If the signaler triggerss the 'freeze' button
         if (!gameManager.frozen && gameManager.role == "signaler" && _inputBindings.Player.Freeze.triggered && gameManager.GetCurrentPhase() == 3)  // TODO: check if gameManager.role == "signaler" is necessary, since the script is disabled if the role is receiver anyways
         {
             if(freezeCounter < 1)
@@ -148,9 +148,9 @@ public class SignalerManager : MonoBehaviour
             }
             freezeCounter += 1;
 
-            Vector3 hitPoint = hitData.point;
+            Vector3 hitPoint = hitData.point;  // TODO: check if this line is redundant
 
-            // Create sample array
+            // Create sample array for LSL to store the current freeze focus point
             float[] sample = new float[3];
             sample[0] = float.Parse(FormatFloat(hitPoint.x, 8)); // Convert string back to float
             sample[1] = float.Parse(FormatFloat(hitPoint.y, 8)); // Convert string back to float
